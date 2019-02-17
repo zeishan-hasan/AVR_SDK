@@ -5,7 +5,9 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <vector.h>
-
+#include <timer.h>
+#include <sensors.h>
+#include <util/atomic.h>
 enum CMD_LIST{
 	CMD_INVALID=-1,
 	//--------------ADC_COMMANDS READ_ONLY-------------//
@@ -53,25 +55,121 @@ enum CMD_LIST{
 	CMD_EXTENDED_R = 0x70, CMD_EXTENDED_W = 0xF0
 
 };
-
-enum CMD_PRIORITY{_LOW,_MEDIUM,_HIGH};
-#define _WRITE_CMD (1 << 7)
+/*
+static CMD_LIST writeVect[]={
+	CMD_LED0_W,
+	CMD_LED1_W,
+	CMD_LED2_W,
+	CMD_LED3_W,
+	CMD_RELAY0_W,
+	CMD_RELAY1_W,
+	CMD_RELAY2_W,
+	CMD_RELAY3_W,
+	CMD_EXTENDED_W
+};
+static CMD_LIST readVect[]={
+	CMD_ADC00_R,CMD_ADC01_R,CMD_ADC02_R,CMD_ADC03_R,CMD_ADC04_R,CMD_ADC05_R,CMD_ADC06_R,CMD_ADC07_R,
+	CMD_ADC08_R,CMD_ADC09_R,CMD_ADC10_R,CMD_ADC11_R,CMD_ADC12_R,CMD_ADC13_R,CMD_ADC14_R,CMD_ADC15_R,
+	CMD_US0_R,CMD_US1_R,CMD_US2_R,CMD_US3_R,
+	CMD_PIR0_R,CMD_PIR1_R,CMD_PIR2_R,CMD_PIR3_R,
+	CMD_LED0_R,CMD_LED1_R,CMD_LED2_R,CMD_LED3_R,
+	CMD_VCC_MOTOR_R,
+	CMD_RELAY0_R,CMD_RELAY1_R,CMD_RELAY2_R,CMD_RELAY3_R,
+	CMD_GPS_R,
+	CMD_EXTENDED_R
+};*/
+enum __LED{
+	_LED0,
+	_LED1,
+	_LED2,
+	_LED3,
+};
+enum __PIR{
+	_PIR0,
+	_PIR1,
+	_PIR2,
+	_PIR3,
+};
+enum __RELAY{
+	_VCC_RELAY,
+	_RELAY0,
+	_RELAY1,
+	_RELAY2,
+	_RELAY3,
+};
+enum __US{
+	_US0,
+	_US1,
+	_US2,
+	_US3,
+};
+enum __ADC{
+	_ADC00,
+	_ADC01,
+	_ADC02,
+	_ADC03,
+	_ADC04,
+	_ADC05,
+	_ADC06,
+	_ADC07,
+	_ADC08,
+	_ADC09,
+	_ADC10,
+	_ADC11,
+	_ADC12,
+	_ADC13,
+	_ADC14,
+	_ADC15,
+};
+enum CMD_PRIORITY{
+	CMD_PRIORITY_LOW,
+	CMD_PRIORITY_MEDIUM,
+	CMD_PRIORITY_HIGH};
+enum CMD_GROUP {
+	CMD_GROUP_ADC,
+	CMD_GROUP_US,
+	CMD_GROUP_PIR,
+	CMD_GROUP_LED,
+	CMD_GROUP_VCC_MOTOR,
+	CMD_GROUP_RELAY,
+	CMD_GROUP_GPS,
+	CMD_GROUP_EXTENDED};
+#define _WRITE_CMD 7
+#define _CMD_SEL	 4
+#define _WRITE_CMD_MSK  (1 << _WRITE_CMD)
+#define _CMD_SEL_MSK		(3 << _CMD_SEL)
+//struct Sensors sensors;
 class Command
 {
 public:
-	Command(Command *ptr);
-	void handleCommands();
-	void addCommand(uint8_t cmd);
-	void delCommand();
-	uint8_t decodeCommand();
+	Command();
+	static void handleCommands();
+	static void addCommand(uint8_t cmd);
+	static void delCommand();
+	static uint8_t decodeCommand();
 
-	uint8_t getQueueSize();
-
+	static uint8_t getQueueSize();
+	static uint8_t *serialOutput;
 private:
-	yanujz::vector<uint8_t> fetchCommandQueue;
+	static yanujz::vector<uint8_t> fetchCommandQueue;
+	//static yanujz::vector<func> executeCommandQueue;
 
 
 };
-static Command *_commandQueuePTR;
+inline void readPir(uint8_t sensorSelect);
+
+inline void readRelay(uint8_t sensorSelect);
+inline void writeRelay(uint8_t sensorSelect, uint8_t value);
+
+inline void readLed(uint8_t sensorSelect);
+inline void writeLed(uint8_t sensorSelect, uint8_t value);
+
+inline void readMotor(uint8_t sensorSelect);
+inline void writeMotor(uint8_t sensorSelect, uint8_t value);
+
+inline void readUS(uint8_t sensorSelect);
+
+inline void readADC(uint8_t sensorSelect);
+
 
 #endif // COMMAND_H
