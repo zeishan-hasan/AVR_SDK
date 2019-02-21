@@ -19,6 +19,8 @@ public:
 	static void init();
 	static void addTask(func *task);
 	static void removeTask();
+	static void stop();
+	static void start();
 	static func *getTask(size_t index);
 private:
 	static yanujz::vector<func*> scheduler;

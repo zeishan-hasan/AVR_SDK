@@ -11,11 +11,12 @@ bool Serial0::bufferReadable;
 
 void Serial0::init(UART baud, SerialPriority priority){
     UBRR0H = MYUBRR(baud)>>8;
-    UBRR0L = (uint8_t)(MYUBRR(baud));
+	UBRR0L = (uint8_t)(MYUBRR(baud));
     /* Enable receiver and transmitter */
     UCSR0B = (1<<RXEN0)|(1<<TXEN0);
     /* Set frame format: 8data, 1stop bit */
     UCSR0C = (1<<UCSZ01)|(1<<UCSZ00);
+	//UCSR0A = (1<<U2X0);						/// moltiplicatore
     Serial0::priority =  priority;
     Serial0::_read  = Serial0::USART0_BUFF;
     Serial0::_write = Serial0::USART0_BUFF+1;
@@ -31,6 +32,7 @@ void Serial0::printf(const char *fmt,...)
     va_end(arg);
     Serial0::print(buff);
 }
+
 
 uint8_t Serial0::available()
 {
@@ -61,7 +63,14 @@ void Serial0::readUntil(char *buffer,char _char)
 uint8_t Serial0::receive()
 {
     while (!(UCSR0A & (1<<RXC0)));
-    return UDR0;
+	return UDR0;
+}
+
+
+void Serial0::flush()
+{
+	uint8_t dummy;
+	while(UCSR0A & (1<<RXC0)) dummy=UDR0;
 }
 
 void Serial0::setRxISRCallBack(bool state)
@@ -125,7 +134,7 @@ uint8_t Serial0::shellEnabled = false;
 void Serial0::enableShell(bool value)
 {
     Serial0::shellEnabled = value;
-    Serial0::setRxISRCallBack(true);
+	//Serial0::setRxISRCallBack(true);
 }
 bool Serial0::shellIsEnabled(){
     return Serial0::shellEnabled;
@@ -276,7 +285,7 @@ uint8_t Serial1::shellEnabled = false;
 void Serial1::enableShell(bool value)
 {
     Serial1::shellEnabled = value;
-    Serial1::setRxISRCallBack(true);
+	//Serial1::setRxISRCallBack(true);
 }
 bool Serial1::shellIsEnabled(){
     return Serial1::shellEnabled;

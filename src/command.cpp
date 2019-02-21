@@ -8,7 +8,7 @@ ISR(USART2_RX_vect){
 
 void Command::handleCommands()
 {
-	//	serial0->setISRCallBack(1);
+	Command::addCommand(Serial0::_readData());
 }
 
 void Command::addCommand(uint8_t cmd)
@@ -34,6 +34,7 @@ uint8_t Command::decodeCommand()
 		}
 		break;
 	case CMD_GROUP_US:
+		PORTB ^= (1<<7);
 		ATOMIC_BLOCK(ATOMIC_FORCEON){
 			readUS(sensorSelect);
 		}
@@ -207,18 +208,19 @@ void writeLed(uint8_t  sensorSelect ,uint8_t value){
 }
 void readUS(uint8_t sensorSelect)
 {
+	while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _US0:
-        *Command::serialOutput = sensors.us.US0;
+		*Command::serialOutput = sensors.us.US0;
 		break;
 	case _US1:
-		*Command::serialOutput = sensors.us.US0;
+		*Command::serialOutput = sensors.us.US1;
 		break;
 	case _US2:
-		*Command::serialOutput = sensors.us.US0;
+		*Command::serialOutput = sensors.us.US2;
 		break;
 	case _US3:
-		*Command::serialOutput = sensors.us.US0;
+		*Command::serialOutput = sensors.us.US3;
 		break;
 	}
 }

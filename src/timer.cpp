@@ -16,7 +16,7 @@ void Scheduler::init()
 	OCR2A = 255;//244Hz
 	OCR2B = 100;//488Hz
 
-	TCCR2B |= (1 << CS22) |(0 << CS21) | (1 << CS20);
+	TCCR2B |= (1 << CS22) |(1 << CS21) | (1 << CS20);
 
 
 	TIMSK2 |=  (1 << TOIE2);
@@ -30,23 +30,34 @@ void Scheduler::addTask(func *task)
 void Scheduler::removeTask(){
 	Scheduler::scheduler.popLeft();
 }
+
+void Scheduler::stop()
+{
+	TCCR2B &= ~((1<<CS02) | (1<<CS01) | (1<<CS00));
+
+}
+
+void Scheduler::start()
+{
+	TCCR2B |= (1 << CS22) |(1 << CS21) | (1 << CS20);
+}
 func *Scheduler::getTask(size_t index)
 {
 	return (func*)Scheduler::scheduler[index];
 }
 
 ISR(TIMER2_OVF_vect){
-    static uint16_t p = 0;
-    if(++p != 1000){return;}
-    p = 0;
-
+	//static uint16_t p = 0;
+	//if(++p != 1000){return;}
+	//p = 0;
+	Scheduler::stop();
     func *f = Scheduler::getTask(0);
 	if(f != nullptr){
 		f();
 	}
 	Scheduler::removeTask();
 	Scheduler::addTask(f);
-    TCCR2B |= (1 << CS22) |(0 << CS21) | (1 << CS20);
+	Scheduler::start();
 };
 //---------End Scheduler Class---------//
 
