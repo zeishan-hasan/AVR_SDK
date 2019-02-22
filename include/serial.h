@@ -31,7 +31,8 @@ enum UART{
     BAUD_115200  =  115200,
     BAUD_250000  =  250000,
     BAUD_500000  =  500000,
-    BAUD_1000000 = 1000000
+	BAUD_1000000 = 1000000,
+	//BAUD_2000000 =
 };
 enum SerialPort{
     SERIAL0 = 0,
@@ -150,7 +151,6 @@ public:
     static void           enableShell      (bool value = false);
     static bool           shellIsEnabled   ();
     static SerialPriority getPriority      ();
-    static bool           bufferIsReadable  ();
     //-----------------VARIABLES---------------//
     static uint8_t USART3_BUFF[MAX_SERIAL_BUFFER];
 private:
