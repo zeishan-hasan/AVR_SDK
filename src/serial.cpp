@@ -16,6 +16,7 @@ void Serial0::init(UART baud, SerialPriority priority){
     UCSR0B = (1<<RXEN0)|(1<<TXEN0);
     /* Set frame format: 8data, 1stop bit */
     UCSR0C = (1<<UCSZ01)|(1<<UCSZ00);
+    //UCSR0A = (1<<U2X0);	//Multiply twice baudrates. Need to be implemented
     Serial0::priority =  priority;
     Serial0::_read  = Serial0::USART0_BUFF;
     Serial0::_write = Serial0::USART0_BUFF+1;
@@ -64,6 +65,11 @@ uint8_t Serial0::receive()
     return UDR0;
 }
 
+void Serial0::flush()
+{
+    uint8_t dummy;
+    while(UCSR0A & (1<<RXC0)) dummy=UDR0;
+}
 void Serial0::setRxISRCallBack(bool state)
 {
     if(state == 1){
@@ -96,23 +102,16 @@ void Serial0::_insertData(uint8_t data)
         }
     }
     *Serial0::_write = data;
-    //Serial0::bufferReadable = true;
 }
 uint8_t Serial0::_readData()
 {
 
-    //Serial0::bufferReadable = true;
     if( ++Serial0::_read > (uint8_t*)(&Serial0::USART0_BUFF+1)-1){
         Serial0::_read = Serial0::USART0_BUFF;
     }
     if(Serial0::_read > Serial0::_write){
-        //Serial0::bufferReadable = false;
         Serial0::_read = Serial0::_write;
         return  0;
-        //if(Serial0::_read<Serial0::USART0_BUFF){
-        //    Serial0::_read = (uint8_t*)(&Serial0::USART0_BUFF+1)-1;
-        //}
-        //return  *Serial0::_read;
     }
     uint8_t temp = *Serial0::_read;
     *Serial0::_read = 0;
@@ -121,11 +120,13 @@ uint8_t Serial0::_readData()
 
 
 
-uint8_t Serial0::shellEnabled = false;
+uint8_t Serial0::shellEnabled;
 void Serial0::enableShell(bool value)
 {
     Serial0::shellEnabled = value;
-    Serial0::setRxISRCallBack(true);
+    if(value){ //Untested code
+        Serial0::setRxISRCallBack(true); //FIX ME Because it's static, it enables ISR
+    }
 }
 bool Serial0::shellIsEnabled(){
     return Serial0::shellEnabled;
@@ -140,7 +141,7 @@ bool Serial0::bufferIsReadable()
 {
     if(Serial0::_read == Serial0::_write){return false;}
     return true;
-    ///return Serial0::bufferReadable;
+
 }
 
 //--------------------------------------------------End Public methods------------------------------------------//
@@ -222,6 +223,12 @@ uint8_t Serial1::receive()
     return UDR1;
 }
 
+void Serial1::flush()
+{
+    uint8_t dummy;
+    while(UCSR1A & (1<<RXC1)) dummy=UDR1;
+}
+
 void Serial1::setRxISRCallBack(bool state)
 {
     if(state == 1){
@@ -276,7 +283,9 @@ uint8_t Serial1::shellEnabled = false;
 void Serial1::enableShell(bool value)
 {
     Serial1::shellEnabled = value;
-    Serial1::setRxISRCallBack(true);
+    if(value){ //Untested code
+        Serial1::setRxISRCallBack(true); //FIX ME Because it's static, it enables ISR
+    }
 }
 bool Serial1::shellIsEnabled(){
     return Serial1::shellEnabled;
@@ -321,9 +330,9 @@ void Serial2::init(UART baud, SerialPriority priority)
     UCSR2B = (1<<RXEN2)|(1<<TXEN2);
     // Set frame format: 8data, 1stop bit
     UCSR2C = (1<<UCSZ21)|(1<<UCSZ20);
-     Serial2::priority =  priority;
-     Serial2::_read  = Serial2::USART2_BUFF;
-     Serial2::_write = Serial2::USART2_BUFF+1;
+    Serial2::priority =  priority;
+    Serial2::_read  = Serial2::USART2_BUFF;
+    Serial2::_write = Serial2::USART2_BUFF+1;
 }
 void Serial2::printf(const char *fmt,...)
 {
@@ -340,7 +349,6 @@ uint8_t Serial2::available()
 }
 void Serial2::readUntil(char *buffer, char _char)
 {
-
     register uint8_t i = 0;
 
     while (1) {
@@ -361,6 +369,12 @@ uint8_t Serial2::receive()
 {
     while (!(UCSR2A & (1<<RXC2)));
     return UDR2;
+}
+
+void Serial2::flush()
+{
+    uint8_t dummy;
+    while(UCSR2A & (1<<RXC2)) dummy=UDR2;
 }
 void Serial2::setRxISRCallBack(bool state)
 {
@@ -412,7 +426,9 @@ uint8_t Serial2::shellEnabled = false;
 void Serial2::enableShell(bool value)
 {
     Serial2::shellEnabled = value;
-    Serial2::setRxISRCallBack(true);
+    if(value){ //Untested code
+        Serial2::setRxISRCallBack(true); //FIX ME Because it's static, it enables ISR
+    }
 }
 bool Serial2::shellIsEnabled(){
     return Serial2::shellEnabled;
@@ -473,12 +489,11 @@ void Serial3::printf(const char *fmt,...)
 }
 uint8_t Serial3::available()
 {
-    return (UCSR3A & (1<<RXC3))>>RXC3; // 01011101 RCXC0 1
+    return (UCSR3A & (1<<RXC3))>>RXC3;
 }
 void Serial3::readUntil(char *buffer, char _char)
 {
     register uint8_t i = 0;
-
     while (1) {
         char temp = Serial3::receive();
         if(temp==_char){
@@ -497,6 +512,12 @@ uint8_t Serial3::receive()
 {
     while (!(UCSR3A & (1<<RXC3)));
     return UDR3;
+}
+
+void Serial3::flush()
+{
+    uint8_t dummy;
+    while(UCSR3A & (1<<RXC3)) dummy=UDR3;
 }
 void Serial3::setRxISRCallBack(bool state)
 {
@@ -530,19 +551,13 @@ void Serial3::_insertData(uint8_t data)
 }
 uint8_t Serial3::_readData()
 {
-
-    //Serial0::bufferReadable = true;
     if( ++Serial3::_read > (uint8_t*)(&Serial3::USART3_BUFF+1)-1){
         Serial3::_read = Serial3::USART3_BUFF;
     }
     if(Serial3::_read > Serial3::_write){
-        //Serial0::bufferReadable = false;
+
         Serial3::_read = Serial3::_write;
         return  0;
-        //if(Serial0::_read<Serial0::USART0_BUFF){
-        //    Serial0::_read = (uint8_t*)(&Serial0::USART0_BUFF+1)-1;
-        //}
-        //return  *Serial0::_read;
     }
     uint8_t temp = *Serial3::_read;
     *Serial3::_read = 0;
@@ -554,7 +569,9 @@ uint8_t Serial3::shellEnabled = false;
 void Serial3::enableShell(bool value)
 {
     Serial3::shellEnabled = value;
-    Serial3::setRxISRCallBack(true);
+    if(value){ //Untested code
+        Serial3::setRxISRCallBack(true); //FIX ME Because it's static, it enables ISR
+    }
 }
 bool Serial3::shellIsEnabled(){
     return Serial3::shellEnabled;
@@ -567,15 +584,14 @@ SerialPriority Serial3::getPriority()
 
 bool Serial3::bufferIsReadable()
 {
-   if(Serial3::_read == Serial3::_write) return false;
-   return true;
-    //return Serial3::bufferReadable;
+    if(Serial3::_read == Serial3::_write) return false;
+    return true;
 }
 
 
 
-//----------End Public methods----------//
-//----------Private Methods----------//
+//--------------------------------------------------End Public methods----------------------------------------------------//
+//--------------------------------------------------Private Methods-------------------------------------------------------//
 void Serial3::print(const char *str)
 {
     register int i=0;
@@ -587,26 +603,13 @@ void Serial3::print(const char *str)
 
     }
 }
-//----------End Private Methods----------//
+//---------------------------------------------------End Private Methods--------------------------------------------------//
 //------------------------------------------------------END SERIAL 3------------------------------------------------------//
+
+
+
 //-----------------------------------------------------Interrupt Service Routine------------------------------------------//
 
-//uint8_t TEMP_USART0_BUFF[MAX_SERIAL_BUFFER];
-//uint8_t Serial0::USART0_BUFF[MAX_SERIAL_BUFFER];
-//uint8_t Serial0::echoServer;
-/*void readLine(){
-    char temp;
-    Serial0::printf("\n");
-    while (1) {
-        temp = Serial0::_readData();
-        Serial0::printf("%c",temp);
-        //_delay_ms(10);
-        if(temp == '\r'){
-            Serial0::printf("\n");
-            break;
-        }
-    }
-}*/
 ISR(USART0_RX_vect){
     char temp = UDR0;
     Serial0::_insertData(temp);

@@ -1,14 +1,10 @@
 #include "command.h"
 
 yanujz::vector<uint8_t> Command::fetchCommandQueue;
-/*
-ISR(USART2_RX_vect){
-	Command::addCommand(UDR2);
-}*/
 
-void Command::handleCommands()
+void Command::handleCommands(void *f)
 {
-	//	serial0->setISRCallBack(1);
+    Command::addCommand(Serial0::_readData());
 }
 
 void Command::addCommand(uint8_t cmd)
@@ -19,7 +15,7 @@ void Command::addCommand(uint8_t cmd)
 }
 uint8_t Command::decodeCommand()
 {
-	uint8_t *structPtr = (uint8_t*)&sensors;
+    //uint8_t *structPtr = (uint8_t*)&sensors;
 	uint8_t isWrite = 0;
 	uint8_t sensorSelect =  Command::fetchCommandQueue.first() & 0xF;
 	if(Command::fetchCommandQueue.first() & _WRITE_CMD_MSK){
@@ -103,6 +99,7 @@ uint8_t Command::getQueueSize()
 uint8_t *Command::serialOutput = (uint8_t*)&UDR0;
 void readPir(uint8_t sensorSelect)
 {
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _PIR0:
 		*Command::serialOutput = sensors.pir.PIR0;
@@ -120,6 +117,7 @@ void readPir(uint8_t sensorSelect)
 }
 void readRelay(uint8_t sensorSelect)
 {
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _VCC_RELAY:
 		*Command::serialOutput = sensors.relay.VCC_RELAY;
@@ -173,7 +171,9 @@ void writeMotor(uint8_t sensorSelect, uint8_t value)
 		break;
 	}
 }
-void readLed(uint8_t  sensorSelect){
+void readLed(uint8_t  sensorSelect)
+{
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _LED0:
 		*Command::serialOutput = sensors.led.LED0;
@@ -189,7 +189,9 @@ void readLed(uint8_t  sensorSelect){
 		break;
 	}
 }
-void writeLed(uint8_t  sensorSelect ,uint8_t value){
+void writeLed(uint8_t  sensorSelect ,uint8_t value)
+{
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _LED0:
 		sensors.led.LED0 = value;
@@ -207,23 +209,25 @@ void writeLed(uint8_t  sensorSelect ,uint8_t value){
 }
 void readUS(uint8_t sensorSelect)
 {
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _US0:
         *Command::serialOutput = sensors.us.US0;
 		break;
 	case _US1:
-		*Command::serialOutput = sensors.us.US0;
+        *Command::serialOutput = sensors.us.US1;
 		break;
 	case _US2:
-		*Command::serialOutput = sensors.us.US0;
+        *Command::serialOutput = sensors.us.US2;
 		break;
 	case _US3:
-		*Command::serialOutput = sensors.us.US0;
+        *Command::serialOutput = sensors.us.US3;
 		break;
 	}
 }
 void readADC(uint8_t sensorSelect)
 {
+    while ( !( UCSR0A & (1<<UDRE0)) );
 	switch (sensorSelect) {
 	case _ADC00:
 		*Command::serialOutput = sensors.adc.ADC00>>8;

@@ -206,7 +206,7 @@ float Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIG
 
 	uint16_t _adcsrb_adxmux_reg = (autoTrigger<<8) | vRef | channel;
 	if(ADCSRA==0){
-		ADCSRA |= (1<<ADEN)| (1<<ADIE) | prescaler;
+        ADCSRA |= (1<<ADEN)| (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)
 	}
 	while(ADCSRA & (1<<ADIF) == 0);
 	ADCSRB	 = (_adcsrb_adxmux_reg>>8);

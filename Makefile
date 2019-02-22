@@ -1,33 +1,39 @@
-SRC_DIR = src
-BUILD_DIR = build
-FIRMW_DIR = firmware
-USER_DIR = user
+SRC_DIR 	= src
+BUILD_DIR 	= build
+FIRMW_DIR 	= firmware
+USER_DIR 	= user
+
+PROGRAMMER 		= stk500v2 
+MPROG 			= m2560
 MICROCONTROLLER = atmega2560
-CXX      = avr-g++
-CXX_SRCS = $(wildcard $(SRC_DIR)/*.cpp)
-CXX_OBJS = $(CXX_SRCS:.cpp=.o)
-FLASH_PORT = /dev/ttyUSB0
-COM_PORT = /dev/ttyUSB0
-FLASH_BAUDRATE = 115200
-COM_BAUDRATE = 1000000
+
+
+CXX       = avr-g++
+CXX_SRCS  = $(wildcard $(SRC_DIR)/*.cpp)
+CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
+CXX_FLAGS = -lstdc++ -std=c++11  -I include -I /usr/lib/avr/include
+LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
+
+
+FLASH_PORT 		= /dev/ttyUSB0
+COM_PORT 		= /dev/ttyUSB0
+FLASH_BAUDRATE 	= 115200
+COM_BAUDRATE 	= 1000000
 
 all:createdir $(CXX_OBJS) main.elf app
 
 upload: createdir $(CXX_OBJS) main.elf app
-	killall putty&
-	@avrdude -q -V -p m2560 -D -c stk500v2 -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
-	@putty -serial $(COM_PORT) -sercfg $(COM_BAUDRATE)&
-	@sleep 0.2
-	@$(eval PUTTY_ID = $(shell xdotool search --onlyvisible --name Putty))
-	@xdotool windowsize $(PUTTY_ID) 350 1000
-	@xdotool windowmove $(PUTTY_ID) 1700 0
+	@killall hexdump putty 2>/dev/null || true
+	@avrdude -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
+	
 app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
 main.elf: $(CXX_OBJS)
-	@$(CXX) -mmcu=$(MICROCONTROLLER) -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
+	@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) -lstdc++ -std=c++11  -I include -I /usr/lib/avr/include -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+
 
 createdir: $(BUILD_DIR) $(FIRMW_DIR) 
 
@@ -37,12 +43,13 @@ $(FIRMW_DIR):
 	@mkdir -p $@
 
 monitor:
-	@killall putty
-	@putty -serial $(USB_PORT) -sercfg 9600&
+	@killall hexdump putty 2>/dev/null || true
+	@putty -serial $(COM_PORT) -sercfg $(COM_BAUDRATE)&
 	@sleep 0.2
-	@$(eval PUTTY_ID = $(shell xdotool search --onlyvisible --name Putty))
-	@xdotool windowsize $(PUTTY_ID) 350 1000
-	@xdotool windowmove $(PUTTY_ID) 1700 0
+	@./moveWindow 0
+rawMonitor:
+	@killall hexdump putty 2>/dev/null || true
+	rawMonitorSerial $(COM_PORT) $(COM_BAUDRATE)
 
 clean:
 	@rm -rf $(BUILD_DIR) $(FIRMW_DIR)
