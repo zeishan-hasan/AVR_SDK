@@ -15,6 +15,7 @@ typedef void func(void);
 class Scheduler
 {
 public:
+
     static void init();
     static void addTask(func *task);
     static void removeTask();

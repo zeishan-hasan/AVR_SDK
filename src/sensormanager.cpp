@@ -1,4 +1,4 @@
-#include "include/sensormanager.h"
+#include "sensormanager.h"
 
 SensorManager::SensorManager()
 {
