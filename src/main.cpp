@@ -29,34 +29,17 @@ Pin US2_PIN_ECHO(A13,INPUT);
 
 Pin US3_PIN_TRIGGER(6,OUTPUT);
 Pin US3_PIN_ECHO(A12,INPUT);
-/*void ultraSonicRoutine(uint8_t pin){
-	switch(pin){
-	case 16:
-		US0_PIN_TRIGGER.on();
-		_delay_us(10);
-		US0_PIN_TRIGGER.off();
-		Serial0::printf("%d",sensors.us.US0);
-		break;
-	case 17:
-		US1_PIN_TRIGGER.on();
-		_delay_us(10);
-		US1_PIN_TRIGGER.off();
-		Serial0::printf("%d",sensors.us.US1);
-		break;
-	case 18:
-		US2_PIN_TRIGGER.on();
-		_delay_us(10);
-		US2_PIN_TRIGGER.off();
-		Serial0::printf("%d",sensors.us.US2);
-		break;
-	case 19:
-		US3_PIN_TRIGGER.on();
-		_delay_us(10);
-		US3_PIN_TRIGGER.off();
-		Serial0::printf("%d",sensors.us.US3);
-		break;
+
+Pin adc0(A0,INPUT);
+
+
+void readADC()
+{
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+	sensors.adc.ADC00=adc0.analogRead();
+	}
 }
-}*/
 
 void ultraSonicRoutine(uint8_t pin){
 	US0_PIN_TRIGGER.on();
@@ -288,7 +271,7 @@ int main(void)
 	Serial0::init(BAUD_1000000,_LOW_PRIORITY);
 	Serial2::init(BAUD_1000000,_LOW_PRIORITY);
 	Serial0::setEchoServer(false);
-	Serial0::setRxISRCallBack(true);
+	Serial0::setRxISRCallBack(false);
 	Serial0::enableShell(false);
 
 	//Serial3::init(BAUD_9600,_LOW_PRIORITY);
@@ -299,23 +282,28 @@ int main(void)
 	//Serial0::printf("init :%d\r\n",Serial3::bufferIsReadable());
 
 	//Serial3::init(BAUD_9600,_LOW_PRIORITY);
-	Interrupt::attachInterrupt(US0_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US1_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US2_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US3_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//Interrupt::attachInterrupt(US0_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//Interrupt::attachInterrupt(US1_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//Interrupt::attachInterrupt(US2_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//Interrupt::attachInterrupt(US3_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
 	//Scheduler::addTask((func*)ultraSonicRoutine);
 	////Scheduler::addTask((func*)func1);
-	Command::serialOutput = (uint8_t*)&UDR0;
-	Scheduler::addTask((func*)ultraSonicRoutine);
-	Scheduler::addTask(Command::handleCommands);
-	Scheduler::init();
+	//Command::serialOutput = (uint8_t*)&UDR0;
+	//Scheduler::addTask((func*)ultraSonicRoutine);
+	//Scheduler::addTask(readADC);
+	//Scheduler::addTask(Command::handleCommands);
+	//Scheduler::init();
 
 	uint8_t a=0;
 	Serial0::flush();
-	DDRB=0x80;
+	//DDRB=0x80;
+	//Serial2::printf("Pin number %d\r\n",adc0.getPinNumber());
+	//adc0.getPinData();
+	//uint16_t b=adc0.analogRead();
 	while (1) {
-		//Serial2::printf("%s\r\n",Serial0::USART0_BUFF);
-		//_delay_ms(500);
+
+		Serial2::printf("%lf\r\n",adc0.analogRead());
+		_delay_ms(500);
 	}
 }
 

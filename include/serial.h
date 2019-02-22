@@ -83,6 +83,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);
@@ -111,6 +112,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);
@@ -140,6 +142,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);

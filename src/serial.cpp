@@ -72,7 +72,7 @@ void Serial0::flush()
 	uint8_t dummy;
 	while(UCSR0A & (1<<RXC0)) dummy=UDR0;
 }
-
+//---------- FIX ME ----------//
 void Serial0::setRxISRCallBack(bool state)
 {
     if(state == 1){
@@ -82,7 +82,7 @@ void Serial0::setRxISRCallBack(bool state)
     UCSR0B &= ~(1 << RXCIE0);
 
 }
-
+//---------- END FIX ME ----------//
 uint8_t Serial0::getEchoServer()
 {
     return Serial0::echoServer;
@@ -131,11 +131,19 @@ uint8_t Serial0::_readData()
 
 
 uint8_t Serial0::shellEnabled = false;
+
+
+
+//---------- UNTESTED CODE ----------//
 void Serial0::enableShell(bool value)
 {
-    Serial0::shellEnabled = value;
-	//Serial0::setRxISRCallBack(true);
+	Serial0::shellEnabled = value;
+	if(value){
+	Serial0::setRxISRCallBack(true);}
 }
+//---------- END UNTESTED CODE ----------//
+
+
 bool Serial0::shellIsEnabled(){
     return Serial0::shellEnabled;
 }
@@ -230,6 +238,13 @@ uint8_t Serial1::receive()
     while (!(UCSR1A & (1<<RXC1)));
     return UDR1;
 }
+
+void Serial1::flush()
+{
+	uint8_t dummy;
+	while(UCSR1A & (1<<RXC1)) dummy=UDR1;
+}
+
 
 void Serial1::setRxISRCallBack(bool state)
 {
@@ -371,6 +386,13 @@ uint8_t Serial2::receive()
     while (!(UCSR2A & (1<<RXC2)));
     return UDR2;
 }
+
+void Serial2::flush()
+{
+	uint8_t dummy;
+	while(UCSR2A & (1<<RXC2)) dummy=UDR2;
+}
+
 void Serial2::setRxISRCallBack(bool state)
 {
     if(state == 1){
@@ -507,6 +529,13 @@ uint8_t Serial3::receive()
     while (!(UCSR3A & (1<<RXC3)));
     return UDR3;
 }
+
+void Serial3::flush()
+{
+	uint8_t dummy;
+	while(UCSR3A & (1<<RXC3)) dummy=UDR3;
+}
+
 void Serial3::setRxISRCallBack(bool state)
 {
     if(state == 1){
