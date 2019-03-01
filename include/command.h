@@ -9,11 +9,6 @@
 #include <sensors.h>
 #include <util/atomic.h>
 
-#define _WRITE_CMD      7
-#define _CMD_SEL        4
-#define _WRITE_CMD_MSK  (1 << _WRITE_CMD)
-#define _CMD_SEL_MSK	(3 << _CMD_SEL)
-
 
 enum CMD_LIST{
 	CMD_INVALID=-1,
@@ -61,6 +56,32 @@ enum CMD_LIST{
 	//----------EXTENDED_COMMAND READ&WRITE------------//
 	CMD_EXTENDED_R = 0x70, CMD_EXTENDED_W = 0xF0
 
+};
+/*
+static CMD_LIST writeVect[]={
+	CMD_LED0_W,
+	CMD_LED1_W,
+	CMD_LED2_W,
+	CMD_LED3_W,
+	CMD_RELAY0_W,
+	CMD_RELAY1_W,
+	CMD_RELAY2_W,
+	CMD_RELAY3_W,
+	CMD_EXTENDED_W
+};
+static CMD_LIST readVect[]={
+	CMD_ADC00_R,CMD_ADC01_R,CMD_ADC02_R,CMD_ADC03_R,CMD_ADC04_R,CMD_ADC05_R,CMD_ADC06_R,CMD_ADC07_R,
+	CMD_ADC08_R,CMD_ADC09_R,CMD_ADC10_R,CMD_ADC11_R,CMD_ADC12_R,CMD_ADC13_R,CMD_ADC14_R,CMD_ADC15_R,
+	CMD_US0_R,CMD_US1_R,CMD_US2_R,CMD_US3_R,
+	CMD_PIR0_R,CMD_PIR1_R,CMD_PIR2_R,CMD_PIR3_R,
+	CMD_LED0_R,CMD_LED1_R,CMD_LED2_R,CMD_LED3_R,
+	CMD_VCC_MOTOR_R,
+	CMD_RELAY0_R,CMD_RELAY1_R,CMD_RELAY2_R,CMD_RELAY3_R,
+	CMD_GPS_R,
+	CMD_EXTENDED_R
+};*/
+enum __MOTOR{
+	_VCC_MOTOR
 };
 
 enum __LED{
@@ -119,12 +140,16 @@ enum CMD_GROUP {
 	CMD_GROUP_RELAY,
 	CMD_GROUP_GPS,
 	CMD_GROUP_EXTENDED};
-
+#define _WRITE_CMD 7
+#define _CMD_SEL	 4
+#define _WRITE_CMD_MSK  (1 << _WRITE_CMD)
+#define _CMD_SEL_MSK		(7 << _CMD_SEL)
+//struct Sensors sensors;
 class Command
 {
 public:
 	Command();
-    static void handleCommands(void *f);
+	static void handleCommands();
 	static void addCommand(uint8_t cmd);
 	static void delCommand();
 	static uint8_t decodeCommand();

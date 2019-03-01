@@ -9,8 +9,14 @@ MICROCONTROLLER = atmega2560
 
 
 CXX       = avr-g++
+CC        = avr-gcc
 CXX_SRCS  = $(wildcard $(SRC_DIR)/*.cpp)
 CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
+ASM_SRCS  = $(wildcard $(SRC_DIR)/*.s)
+ASM_OBJS  = $(ASM_SRCS:.s=.o)
+
+
+
 CXX_FLAGS = -lstdc++ -std=c++11  -I include -I /usr/lib/avr/include
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
 
@@ -20,7 +26,17 @@ COM_PORT 		= /dev/ttyUSB0
 FLASH_BAUDRATE 	= 115200
 COM_BAUDRATE 	= 1000000
 
-all:createdir $(CXX_OBJS) main.elf app
+#OTA SETUP
+IP = 192.168.1.167
+USERNAME = pi
+
+all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app
+
+
+ota:
+	scp $(FIRMW_DIR)/main.hex $(USERNAME)@$(IP):~/firmwareDownload/$(FIRMW_DIR)/
+	ssh $(USERNAME)@$(IP) "cd ~/firmwareDownload && make upload"
+	 
 
 upload: createdir $(CXX_OBJS) main.elf app
 	@killall hexdump putty 2>/dev/null || true
@@ -33,6 +49,9 @@ main.elf: $(CXX_OBJS)
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
 	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+%.o: %.s
+	@echo "Compiling file : $(notdir $<)"
+	@$(CC)  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
 
 createdir: $(BUILD_DIR) $(FIRMW_DIR) 

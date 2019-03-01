@@ -43,12 +43,12 @@ Pin::Pin(uint8_t portNo, DDRx direction)
 		//}
 
 		//else{
-			_local_ctrl_bits  = _PWM_16BIT;
-			_pwm_16BIT.TCCRxA = (volatile uint8_t*)*(timers+temp);
-			_pwm_16BIT.TCCRxB = (volatile uint8_t*)_pwm_16BIT.TCCRxA + 1;
-			_pwm_16BIT.TCCRxC = (volatile uint8_t*)_pwm_16BIT.TCCRxB + 1;
-			_pwm_16BIT.TCNTx  = (volatile uint8_t*)_pwm_16BIT.TCCRxC + 2;
-			_pwm_16BIT.ICRx	  = (volatile uint8_t*)_pwm_16BIT.TCNTx  + 2;
+		_local_ctrl_bits  = _PWM_16BIT;
+		_pwm_16BIT.TCCRxA = (volatile uint8_t*)*(timers+temp);
+		_pwm_16BIT.TCCRxB = (volatile uint8_t*)_pwm_16BIT.TCCRxA + 1;
+		_pwm_16BIT.TCCRxC = (volatile uint8_t*)_pwm_16BIT.TCCRxB + 1;
+		_pwm_16BIT.TCNTx  = (volatile uint8_t*)_pwm_16BIT.TCCRxC + 2;
+		_pwm_16BIT.ICRx	  = (volatile uint8_t*)_pwm_16BIT.TCNTx  + 2;
 
 		//}
 	}
@@ -99,68 +99,68 @@ bool Pin::setPWM(uint16_t freq, uint8_t duty)
 {
 	//FIXME  REMOVE 8_BIT TIMER
 	switch (_local_ctrl_bits) {
-		case _PWM_8BIT:
-			_duty_pwm=(-2.55*duty) + 255;
-			*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
-			switch ((_controlBits & (0x3<<LETTER_SEL) >> LETTER_SEL)) {
-				case 0:
-					_pwm_8BIT.OCRx = (volatile uint8_t*)_pwm_8BIT.TCNTx + 1;
-					*_pwm_8BIT.TCCRxA |= (1<<7) | (1<<6);
-					break;
-				case 1:
-					_pwm_8BIT.OCRx = (volatile uint8_t*) _pwm_8BIT.TCNTx + 2;
-					*_pwm_8BIT.TCCRxA |= (1<<5) | (1<<4);
-					break;
-
-			}
-			*_pwm_8BIT.TCCRxA |= (0 << WGM11) | (1 << WGM10);				// Setting PWM, Phase Correct
-			*_pwm_8BIT.TCCRxB |= (0 << WGM22);								// TOP = OCRnA TOVx Flag = BOTTOM
-			*_pwm_8BIT.TCCRxB |= (0 << CS12) | (0 << CS11) | (1 << CS10);	// Setting prescaler to 1, so F_CPU
+	case _PWM_8BIT:
+		_duty_pwm=(-2.55*duty) + 255;
+		*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
+		switch ((_controlBits & (0x3<<LETTER_SEL) >> LETTER_SEL)) {
+		case 0:
+			_pwm_8BIT.OCRx = (volatile uint8_t*)_pwm_8BIT.TCNTx + 1;
+			*_pwm_8BIT.TCCRxA |= (1<<7) | (1<<6);
 			break;
-		case _PWM_16BIT:
-			_freq_pwm=calculateTicks(freq);
-			_duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
-			*((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
-			*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
-			switch( (_controlBits & (0x3<<LETTER_SEL) )>>LETTER_SEL){
-				case 0:
-					_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 2;
-					*_pwm_16BIT.TCCRxA |= (1<<7) | (1<<6) ;
-					break;
-				case 1:
-					_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 4;
-					*_pwm_16BIT.TCCRxA |= (1<<5) | (1<<4) ;
-					break;
-				case 2:
-					_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 6;
-					*_pwm_16BIT.TCCRxA |= (1<<3) | (1<<2) ;
-					break;
-			};
-
-			*_pwm_16BIT.TCCRxA	|= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
-			*_pwm_16BIT.TCCRxB  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
-			*_pwm_16BIT.TCCRxB  |= (0<< CS12) | (0 << CS11) | (1 << CS10); //Setting prescaler to 1, so F_CPU
+		case 1:
+			_pwm_8BIT.OCRx = (volatile uint8_t*) _pwm_8BIT.TCNTx + 2;
+			*_pwm_8BIT.TCCRxA |= (1<<5) | (1<<4);
 			break;
-		default:
-			return false;
+
+		}
+		*_pwm_8BIT.TCCRxA |= (0 << WGM11) | (1 << WGM10);				// Setting PWM, Phase Correct
+		*_pwm_8BIT.TCCRxB |= (0 << WGM22);								// TOP = OCRnA TOVx Flag = BOTTOM
+		*_pwm_8BIT.TCCRxB |= (0 << CS12) | (0 << CS11) | (1 << CS10);	// Setting prescaler to 1, so F_CPU
+		break;
+	case _PWM_16BIT:
+		_freq_pwm=calculateTicks(freq);
+		_duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
+		*((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
+		*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
+		switch( (_controlBits & (0x3<<LETTER_SEL) )>>LETTER_SEL){
+		case 0:
+			_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 2;
+			*_pwm_16BIT.TCCRxA |= (1<<7) | (1<<6) ;
+			break;
+		case 1:
+			_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 4;
+			*_pwm_16BIT.TCCRxA |= (1<<5) | (1<<4) ;
+			break;
+		case 2:
+			_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 6;
+			*_pwm_16BIT.TCCRxA |= (1<<3) | (1<<2) ;
+			break;
+		};
+
+		*_pwm_16BIT.TCCRxA	|= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
+		*_pwm_16BIT.TCCRxB  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
+		*_pwm_16BIT.TCCRxB  |= (0<< CS12) | (0 << CS11) | (1 << CS10); //Setting prescaler to 1, so F_CPU
+		break;
+	default:
+		return false;
 	}
 
 }
 
 bool Pin::setDuty(uint8_t duty)
 {
-//FIXME  REMOVE 8_BIT TIMER
+	//FIXME  REMOVE 8_BIT TIMER
 	switch (_local_ctrl_bits) {
-		case _PWM_8BIT:
-			_duty_pwm=(-2.55*duty)+255;
-			*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
-			break;
-		case _PWM_16BIT:
-			_duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
-			*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
-			break;
-		default:
-			return false;
+	case _PWM_8BIT:
+		_duty_pwm=(-2.55*duty)+255;
+		*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
+		break;
+	case _PWM_16BIT:
+		_duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
+		*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
+		break;
+	default:
+		return false;
 	}
 
 }
@@ -172,14 +172,14 @@ bool Pin::setFreq(uint16_t freq)
 	_freq_pwm=calculateTicks(freq);
 	_duty_pwm=(float)_freq_pwm/(float)ratio;
 	switch (_local_ctrl_bits) {
-		case _PWM_8BIT:
-			return false; //Can't change frequency
-		case _PWM_16BIT:
-			*((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
-			*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
-			break;
-		default:
-			return false;
+	case _PWM_8BIT:
+		return false; //Can't change frequency
+	case _PWM_16BIT:
+		*((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
+		*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
+		break;
+	default:
+		return false;
 	}
 }
 
@@ -192,7 +192,7 @@ bool Pin::digitalRead()
 }
 
 
-float Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIGGER autoTrigger)
+uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIGGER autoTrigger)
 {
 	if(_local_ctrl_bits == 0){
 		return 65535;
@@ -200,17 +200,25 @@ float Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIG
 	if(channel == 65535){
 		return 65535;
 	}
+
 	//			|   7   |    6  |   5   |   4  |   3  |   2   |   1   |   0   |
 	//	ADCSRB	|   -   |  ACME |   -   |   -  | MUX5 | ADTS2 | ADTS1 | ADTS0 |
 	//	ADMUX	| REFS1 | REFS0 | ADLAR | MUX4 | MUX3 |  MUX2 |  MUX1 |  MUX0 |
 
 	uint16_t _adcsrb_adxmux_reg = (autoTrigger<<8) | vRef | channel;
+
 	if(ADCSRA==0){
-        ADCSRA |= (1<<ADEN)| (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)
+
+		ADCSRA |= (1<<ADEN) | (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)
+
 	}
+
 	while(ADCSRA & (1<<ADIF) == 0);
-	ADCSRB	 = (_adcsrb_adxmux_reg>>8);
-	ADMUX	 = (_adcsrb_adxmux_reg&0xFF);
+
+	ADCSRB	 = (_adcsrb_adxmux_reg >> 8);
+
+	ADMUX = (_adcsrb_adxmux_reg & 0xFF);
+
 	ADCSRA	|= (1<<ADSC);
 
 	while(ADCSRA & (1<<ADSC));
@@ -220,32 +228,32 @@ float Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIG
 
 void Pin::getPinData()
 {
-    //Serial *serial0 = SerialManager::getSerial(SerialPort::SERIAL0);
-    /*serial0->printf("PINx\t: %p\r\n",_pinx);
-    serial0->printf("DDRx\t: %p\r\n",_ddrx);
-	serial0->printf("PORTx\t: %p\r\n",_portx);
-	serial0->printf("Reg bit\t: %d\r\n",_registerBit);
+	//Serial *serial0 = SerialManager::getSerial(SerialPort::SERIAL0);
+	Serial2::printf("PINx\t: %p\r\n",_pinx);
+	Serial2::printf("DDRx\t: %p\r\n",_ddrx);
+	Serial2::printf("PORTx\t: %p\r\n",_portx);
+	Serial2::printf("Reg bit\t: %d\r\n",_registerBit);
 	if(_controlBits & (1<<isPWM)){
-		serial0->printf("Pin is PWM Enabled\r\n");
-		serial0->printf("Timer\t: %d\r\n", (_controlBits & (0x7<<OUT_CMP_SEL)) >> OUT_CMP_SEL);
+		Serial2::printf("Pin is PWM Enabled\r\n");
+		Serial2::printf("Timer\t: %d\r\n", (_controlBits & (0x7<<OUT_CMP_SEL)) >> OUT_CMP_SEL);
 		switch( (_controlBits & (0x3<<LETTER_SEL) )>>LETTER_SEL){
-			case 0:
-				serial0->printf("Output\t: A\r\n");
-				break;
-			case 1:
-				serial0->printf("Output\t: B\r\n");
-				break;
-			case 2:
-				serial0->printf("Output\t: C\r\n");
-				break;
+		case 0:
+			Serial2::printf("Output\t: A\r\n");
+			break;
+		case 1:
+			Serial2::printf("Output\t: B\r\n");
+			break;
+		case 2:
+			Serial2::printf("Output\t: C\r\n");
+			break;
 		};
 
 	}
 	else if (_controlBits & (1<<isADC)) {
-		serial0->printf("Pin is ADC Enabled\r\n");
-		serial0->printf("Channel\t: %d\r\n", (_controlBits &(0xF<<ADC_SEL)) >> ADC_SEL);
+		Serial2::printf("Pin is ADC Enabled\r\n");
+		Serial2::printf("Channel\t: %d\r\n", (_controlBits &(0xF<<ADC_SEL)) >> ADC_SEL);
 	}
-*/
+
 
 }
 

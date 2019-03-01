@@ -1,4 +1,0 @@
-#!/bin/bash
-PUTTY_ID=$(xdotool search --onlyvisible --name Putty)
-xdotool windowsize $PUTTY_ID 350 1000
-xdotool windowmove $PUTTY_ID $1 0

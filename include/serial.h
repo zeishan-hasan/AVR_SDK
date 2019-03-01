@@ -31,7 +31,8 @@ enum UART{
     BAUD_115200  =  115200,
     BAUD_250000  =  250000,
     BAUD_500000  =  500000,
-    BAUD_1000000 = 1000000
+	BAUD_1000000 = 1000000,
+	//BAUD_2000000 =
 };
 enum SerialPort{
     SERIAL0 = 0,
@@ -51,8 +52,8 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
-    static void           flush            ();
-    static void           setRxISRCallBack (bool state = false);
+	static void			  flush		       ();
+    static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state = false);
     static void           _insertData      (uint8_t data);
@@ -82,7 +83,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
-    static void           flush            ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);
@@ -111,7 +112,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
-    static void           flush            ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);
@@ -141,7 +142,7 @@ public:
     static uint8_t        available        ();
     static void           readUntil        (char *buffer, char _char);
     static uint8_t        receive          ();
-    static void           flush            ();
+	static void			  flush		       ();
     static void           setRxISRCallBack (bool state);
     static uint8_t        getEchoServer    ();
     static void           setEchoServer    (bool state);
