@@ -210,6 +210,7 @@ public:
 	void getPinData();
 
 	uint8_t getPinNumber();
+	uint8_t getPWM();
 
 private:
 	volatile uint8_t *_ddrx;
@@ -217,7 +218,7 @@ private:
 	volatile uint8_t *_pinx;
 	uint16_t channel = 65535;
 	uint8_t _registerBit;
-	uint8_t _local_ctrl_bits = 0;
+	uint8_t _local_ctrl_bits;
 
 	PWM_16BIT _pwm_16BIT;
 	PWM_8BIT _pwm_8BIT;

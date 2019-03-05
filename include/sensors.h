@@ -9,26 +9,26 @@ struct _PIR{
     uint8_t PIR3			= 0;//3
 };
 struct _RELAY{
-    uint8_t VCC_RELAY = 0;//5
-    uint8_t RELAY0		= 0;//6
+	uint8_t VCC_RELAY	= 0;//5
+	uint8_t RELAY0		= 0;//6
     uint8_t RELAY1		= 0;//7
     uint8_t RELAY2		= 0;//8
     uint8_t RELAY3		= 0;//9
 };
 struct _LED{
-    uint8_t LED0			= 0;//10
-    uint8_t LED1			= 0;//11
-    uint8_t LED2			= 0;//12
-    uint8_t LED3			= 0;//13
+	uint8_t LED0			= 0;//10
+	uint8_t LED1			= 0;//11
+	uint8_t LED2			= 0;//12
+	uint8_t LED3			= 0;//13
 };
 struct _US{
-    uint8_t US0				= 0;//14
-    uint8_t US1				= 0;//15
-    uint8_t US2				= 0;//16
-    uint8_t US3				= 0;//17
+	uint8_t US0				= 0;//14
+	uint8_t US1				= 0;//15
+	uint8_t US2				= 0;//16
+	uint8_t US3				= 0;//17
 };
 struct _ADC{
-    uint16_t ADC00		= 0;//18
+	uint16_t ADC00		= 0;//18
     uint16_t ADC01		= 0;//19
     uint16_t ADC02		= 0;//20
     uint16_t ADC03		= 0;//21

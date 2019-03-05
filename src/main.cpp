@@ -37,10 +37,138 @@ Pin adc3(A3,INPUT);
 
 Pin vccMotor(28,OUTPUT);
 
-void readMOTOR(){
+Pin vccRelay(29,OUTPUT);
+
+Pin relay0(30,OUTPUT);
+Pin relay1(31,OUTPUT);
+Pin relay2(32,OUTPUT);
+Pin relay3(33,OUTPUT);
+
+Pin pir0(24,INPUT);
+Pin pir1(25,INPUT);
+Pin pir2(26,INPUT);
+Pin pir3(27,INPUT);
+
+Pin led0(13,OUTPUT);
+Pin led1(12,OUTPUT);
+Pin led2(11,OUTPUT);
+Pin led3(10,OUTPUT);
+
+
+
+void readLED(){
+
 	ATOMIC_BLOCK(ATOMIC_FORCEON){
-		sensors.VCC_MOTOR=vccMotor.digitalRead();
+		if(led0.getPWM()!=sensors.led.LED0){
+			led0.setDuty(sensors.led.LED0);
+		}
+		else{
+
+			sensors.led.LED0=led0.getPWM();
+		}
 	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		if(led1.getPWM()!=sensors.led.LED1){
+			led1.setDuty(sensors.led.LED1);
+		}
+		else{
+			sensors.led.LED1=led1.getPWM();
+		}
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		if(led2.getPWM()!=sensors.led.LED2){
+			led2.setDuty(sensors.led.LED2);
+		}
+		else{
+			sensors.led.LED2=led2.getPWM();
+		}
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		if(led3.getPWM()!=sensors.led.LED3){
+			led3.setDuty(sensors.led.LED3);
+		}
+		else{
+			sensors.led.LED3=led3.getPWM();
+		}
+	}
+}
+
+void readPIR(){
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		sensors.pir.PIR0=pir0.digitalRead();
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		sensors.pir.PIR1=pir1.digitalRead();
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		sensors.pir.PIR2=pir2.digitalRead();
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		sensors.pir.PIR3=pir3.digitalRead();
+	}
+}
+
+void readVCCRELAY()
+{
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+		if(vccRelay.digitalRead()!=sensors.relay.VCC_RELAY){
+			vccRelay.toggle();
+		}
+		sensors.relay.VCC_RELAY=vccRelay.digitalRead();
+	}
+}
+
+void readRELAY()
+{
+
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+		if(relay0.digitalRead()!=sensors.relay.RELAY0){
+			relay0.toggle();
+		}
+		else{
+			sensors.relay.RELAY0=relay0.digitalRead();
+		}
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+		if(relay1.digitalRead()!=sensors.relay.RELAY1){
+			relay1.toggle();
+		}
+		else{
+
+			sensors.relay.RELAY1=relay1.digitalRead();
+		}
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+		if(relay2.digitalRead()!=sensors.relay.RELAY2){
+			relay2.toggle();
+		}
+		sensors.relay.RELAY2=relay2.digitalRead();
+	}
+	ATOMIC_BLOCK(ATOMIC_FORCEON)
+	{
+		if(relay3.digitalRead()!=sensors.relay.RELAY3){
+			relay3.on(sensors.relay.RELAY3);
+		}
+		sensors.relay.RELAY3=relay3.digitalRead();
+	}
+}
+
+void readMOTOR(){
+
+	ATOMIC_BLOCK(ATOMIC_FORCEON){
+		if(vccMotor.digitalRead()!=sensors.VCC_MOTOR){
+			vccMotor.toggle();
+		}
+		else{
+
+			sensors.VCC_MOTOR=vccMotor.digitalRead();
+		}
+	}
+
 }
 
 void readADC()
@@ -286,6 +414,12 @@ void pippo(){
 int main(void)
 {
 
+	led0.setPWM(1000,0);
+	led1.setPWM(1000,0);
+	led2.setPWM(1000,0);
+	led3.setPWM(1000,0);
+	pir0.on();
+	//vccMotor.off();			//NEGATIVE LOGIC on DRONE(ON FOR OFF AND VICEVERSA) #######
 
 	Timer::start();
 	Serial0::init(BAUD_1000000,_LOW_PRIORITY);
@@ -293,7 +427,11 @@ int main(void)
 	Serial0::setEchoServer(false);
 	Serial0::setRxISRCallBack(true);
 	Serial0::enableShell(false);
-	vccMotor.on();
+
+
+
+	//relay0.on();
+
 	//Serial3::init(BAUD_9600,_LOW_PRIORITY);
 	//Serial3::setEchoServer(false);
 	//Serial3::setRxISRCallBack(true);
@@ -306,20 +444,33 @@ int main(void)
 	Interrupt::attachInterrupt(US1_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
 	Interrupt::attachInterrupt(US2_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
 	Interrupt::attachInterrupt(US3_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	//Scheduler::addTask((func*)ultraSonicRoutine);
 	////Scheduler::addTask((func*)func1);
 	//Command::serialOutput = (uint8_t*)&UDR0;
 	Scheduler::addTask((func*)ultraSonicRoutine);
+
+	Scheduler::addTask(readVCCRELAY);
+	//Scheduler::addTask()
+
+	Scheduler::addTask(readPIR);
+
+	Scheduler::addTask(readRELAY);
+
+	Scheduler::addTask(readLED);
+
 	Scheduler::addTask((func*)readMOTOR);
+
 	Scheduler::addTask(readADC);
-	Scheduler::addTask(Command::handleCommands);
+
 	Scheduler::init();
+	//Scheduler::addTask(Command::handleCommands);
 	//uint16_t a;
-	Serial0::flush();
 	//DDRB=0x80;
 	//Serial2::printf("Pin number %d\r\n",adc0.getPinNumber());
 	//adc0.getPinData();
 	//uint16_t b=adc0.analogRead();
+	//Pin pin(13,OUTPUT);
+	//pin.setDuty(25);
+	Serial0::flush();
 	while (1) {
 		//Serial0::printf("%u\r\n",sensors.VCC_MOTOR);
 		//Serial2::printf("%d\r\n",USART0_BUFF);
@@ -331,6 +482,7 @@ int main(void)
 
 		//Serial0::printf("%u\r\n",sensors.adc.ADC00);
 		//_delay_ms(1);
+		Command::handleCommands();
 	}
 }
 

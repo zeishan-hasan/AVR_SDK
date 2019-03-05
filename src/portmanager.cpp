@@ -99,29 +99,28 @@ bool Pin::setPWM(uint16_t freq, uint8_t duty)
 {
 	//FIXME  REMOVE 8_BIT TIMER
 	switch (_local_ctrl_bits) {
-	case _PWM_8BIT:
-		_duty_pwm=(-2.55*duty) + 255;
-		*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
-		switch ((_controlBits & (0x3<<LETTER_SEL) >> LETTER_SEL)) {
-		case 0:
-			_pwm_8BIT.OCRx = (volatile uint8_t*)_pwm_8BIT.TCNTx + 1;
-			*_pwm_8BIT.TCCRxA |= (1<<7) | (1<<6);
-			break;
-		case 1:
-			_pwm_8BIT.OCRx = (volatile uint8_t*) _pwm_8BIT.TCNTx + 2;
-			*_pwm_8BIT.TCCRxA |= (1<<5) | (1<<4);
-			break;
-
-		}
-		*_pwm_8BIT.TCCRxA |= (0 << WGM11) | (1 << WGM10);				// Setting PWM, Phase Correct
-		*_pwm_8BIT.TCCRxB |= (0 << WGM22);								// TOP = OCRnA TOVx Flag = BOTTOM
-		*_pwm_8BIT.TCCRxB |= (0 << CS12) | (0 << CS11) | (1 << CS10);	// Setting prescaler to 1, so F_CPU
-		break;
+	//case _PWM_8BIT:
+	//	_duty_pwm=(-2.55*duty) + 255;
+	//	*((volatile uint8_t*)_pwm_8BIT.OCRx)=_duty_pwm;
+	//	switch ((_controlBits & (0x3<<LETTER_SEL) >> LETTER_SEL)) {
+	//	case 0:
+	//		_pwm_8BIT.OCRx = (volatile uint8_t*)_pwm_8BIT.TCNTx + 1;
+	//		*_pwm_8BIT.TCCRxA |= (1<<7) | (1<<6);
+	//		break;
+	//	case 1:
+	//		_pwm_8BIT.OCRx = (volatile uint8_t*) _pwm_8BIT.TCNTx + 2;
+	//		*_pwm_8BIT.TCCRxA |= (1<<5) | (1<<4);
+	//		break;
+	//
+	//	}
+	//	*_pwm_8BIT.TCCRxA |= (0 << WGM11) | (1 << WGM10);				// Setting PWM, Phase Correct
+	//	*_pwm_8BIT.TCCRxB |= (0 << WGM22);								// TOP = OCRnA TOVx Flag = BOTTOM
+	//	*_pwm_8BIT.TCCRxB |= (0 << CS12) | (0 << CS11) | (1 << CS10);	// Setting prescaler to 1, so F_CPU
+	//	break;
 	case _PWM_16BIT:
 		_freq_pwm=calculateTicks(freq);
 		_duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
 		*((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
-		*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
 		switch( (_controlBits & (0x3<<LETTER_SEL) )>>LETTER_SEL){
 		case 0:
 			_pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 2;
@@ -136,6 +135,7 @@ bool Pin::setPWM(uint16_t freq, uint8_t duty)
 			*_pwm_16BIT.TCCRxA |= (1<<3) | (1<<2) ;
 			break;
 		};
+		*((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
 
 		*_pwm_16BIT.TCCRxA	|= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
 		*_pwm_16BIT.TCCRxB  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
@@ -260,6 +260,20 @@ void Pin::getPinData()
 uint8_t Pin::getPinNumber()
 {
 	return _pinNumber;
+}
+
+uint8_t Pin::getPWM()
+{
+	//if(_local_ctrl_bits == _PWM_16BIT){
+	return (uint8_t)((((float)_freq_pwm - (float)_duty_pwm) * (float)100) / (float)_freq_pwm) & 0xFF;
+	//Serial2::printf("value %u\r\n", (uint8_t)var & 0xFF);
+					//(*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx));
+
+
+	//return ((*((volatile uint16_t*)_pwm_16BIT.ICRx) - _duty_pwm)*100)/ *((volatile uint16_t*)_pwm_16BIT.ICRx);
+		//return (*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx);
+	//}
+	//return  0;
 }
 
 uint16_t Pin::calculateTicks(uint16_t freq)

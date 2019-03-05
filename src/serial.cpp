@@ -128,9 +128,13 @@ uint8_t Serial0::_readData()
     }
     uint8_t temp = *Serial0::_read;
 	*Serial0::_read = 0xFF;
-    return temp;
+	return temp;
 }
 
+void Serial0::incReadData(uint8_t value)
+{
+	++Serial0::_read;
+}
 
 
 uint8_t Serial0::shellEnabled = false;

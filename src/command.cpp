@@ -1,16 +1,11 @@
 #include "command.h"
 
 yanujz::vector<uint8_t> Command::fetchCommandQueue;
-/*
-ISR(USART2_RX_vect){
-	Command::addCommand(UDR2);
-}*/
 
 void Command::handleCommands()
 {
 	if(Serial0::bufferIsReadable()){
 		Command::addCommand(Serial0::_readData());
-
 	}
 }
 
@@ -22,17 +17,19 @@ void Command::addCommand(uint8_t cmd)
 }
 uint8_t Command::decodeCommand()
 {
+	if(Command::fetchCommandQueue[0]  == 0xFF){return 1;}
+
 	uint8_t *structPtr = (uint8_t*)&sensors;
 	uint8_t isWrite = 0;
-	uint8_t sensorSelect =  Command::fetchCommandQueue.first() & 0xF;
-	if(Command::fetchCommandQueue.first() & _WRITE_CMD_MSK){
+	uint8_t sensorSelect =  Command::fetchCommandQueue[0] & 0xF;
+
+	if((Command::fetchCommandQueue[0] & _WRITE_CMD_MSK) >> _WRITE_CMD){
 		isWrite = true;
 	}
-	switch ((Command::fetchCommandQueue.first() & _CMD_SEL_MSK) >> _CMD_SEL) {
+	switch ((Command::fetchCommandQueue[0] & _CMD_SEL_MSK) >> _CMD_SEL) {
 
 	case CMD_GROUP_ADC:
 		ATOMIC_BLOCK(ATOMIC_FORCEON){
-
 			readADC(sensorSelect);
 		}
 		break;
@@ -51,6 +48,8 @@ uint8_t Command::decodeCommand()
 		if(isWrite){
 			ATOMIC_BLOCK(ATOMIC_FORCEON){
 				writeLed(sensorSelect,Command::fetchCommandQueue[1]);
+				//Serial0::incReadData();
+				Serial0::_readData(); // NEEDED FOR +1 POINTER ROTARY ARRAY
 			}
 		}
 		else{
@@ -63,6 +62,7 @@ uint8_t Command::decodeCommand()
 		if(isWrite){
 			ATOMIC_BLOCK(ATOMIC_FORCEON){
 				writeMotor(sensorSelect,Command::fetchCommandQueue[1]);
+				Serial0::_readData();
 			}
 		}
 		else {
@@ -73,9 +73,11 @@ uint8_t Command::decodeCommand()
 
 		break;
 	case CMD_GROUP_RELAY:
+
 		if(isWrite){
 			ATOMIC_BLOCK(ATOMIC_FORCEON){
 				writeRelay(sensorSelect,Command::fetchCommandQueue[1]);
+				Serial0::_readData();
 			}
 		}
 		else{

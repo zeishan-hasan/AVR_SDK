@@ -58,6 +58,7 @@ public:
     static void           setEchoServer    (bool state = false);
     static void           _insertData      (uint8_t data);
     static uint8_t        _readData        ();
+	static void			  incReadData	   (uint8_t value = 1);
     static void           enableShell      (bool value = false);
     static bool           shellIsEnabled   ();
     static SerialPriority getPriority      ();
@@ -70,7 +71,7 @@ private:
     //-----------------VARIABLES---------------//
     static uint8_t        echoServer;
     static uint8_t        shellEnabled;
-    static uint8_t        *_read;
+	static uint8_t        *_read;
     static uint8_t        *_write;
     static SerialPriority priority;
     static bool           bufferReadable;
