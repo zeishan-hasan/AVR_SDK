@@ -4,9 +4,9 @@ yanujz::vector<uint8_t> Command::fetchCommandQueue;
 
 void Command::handleCommands()
 {
-	if(Serial0::bufferIsReadable()){
-		Command::addCommand(Serial0::_readData());
-	}
+	//if(Serial0::bufferIsReadable()){
+	//	Command::addCommand(Serial0::_readData());
+	//}
 }
 
 void Command::addCommand(uint8_t cmd)
@@ -17,7 +17,7 @@ void Command::addCommand(uint8_t cmd)
 }
 uint8_t Command::decodeCommand()
 {
-	if(Command::fetchCommandQueue[0]  == 0xFF){return 1;}
+	/*if(Command::fetchCommandQueue[0]  == 0xFF){return 1;}
 
 	uint8_t *structPtr = (uint8_t*)&sensors;
 	uint8_t isWrite = 0;
@@ -98,7 +98,7 @@ uint8_t Command::decodeCommand()
 	if(isWrite){
 		return 2;
 	}
-
+*/
 	return 1;
 }
 uint8_t Command::getQueueSize()

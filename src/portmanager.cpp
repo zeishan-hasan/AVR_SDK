@@ -228,7 +228,7 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 
 void Pin::getPinData()
 {
-	//Serial *serial0 = SerialManager::getSerial(SerialPort::SERIAL0);
+	/*//Serial *serial0 = SerialManager::getSerial(SerialPort::SERIAL0);
 	Serial2::printf("PINx\t: %p\r\n",_pinx);
 	Serial2::printf("DDRx\t: %p\r\n",_ddrx);
 	Serial2::printf("PORTx\t: %p\r\n",_portx);
@@ -254,7 +254,7 @@ void Pin::getPinData()
 		Serial2::printf("Channel\t: %d\r\n", (_controlBits &(0xF<<ADC_SEL)) >> ADC_SEL);
 	}
 
-
+*/
 }
 
 uint8_t Pin::getPinNumber()

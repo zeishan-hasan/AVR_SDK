@@ -167,11 +167,11 @@ public:
 	T& operator[](size_t index){
 			return _value[index];
 	}
-	/*
+/*
 	T& operator=(T a[]){
 		memcpy(_value,a,sizeof(a));
 	}
-	*/
+*/
 private:
 	T *_value;
 	size_t _size;

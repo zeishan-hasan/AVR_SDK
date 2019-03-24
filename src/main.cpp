@@ -15,9 +15,10 @@
 #include <interrupt.h>
 #include <sensors.h>
 #include <util/atomic.h>
-
+#include "spi.h"
 
 struct Sensors sensors;
+/*
 Pin US0_PIN_TRIGGER(9,OUTPUT);
 Pin US0_PIN_ECHO(A15,INPUT);
 
@@ -257,7 +258,7 @@ void ultraSonicISR(uint8_t pin) {
 void func1(){
 	// serial0->printf("Altra\r\n");
 };
-/*
+
 char TEMP_USART0_BUFF[MAX_SERIAL_BUFFER];
 char USART0_BUFF[MAX_SERIAL_BUFFER];
 char *temp[10];
@@ -338,7 +339,7 @@ void getGPS(){
 			sensors.gps.datetime.year   =  ( *(temp[8] +  4 ) & 0xF) * 10 + (* (temp[8] + 5) & 0xF);
 		}
 	}
-}*/
+}
 void readLine(){
 	TCCR2B &= ~(1 << CS22) |(1 << CS21) | (1 << CS20);
 	char temp = 0,buff[256];
@@ -411,22 +412,31 @@ void pippo(){
 	Serial0::printf("Dato %d\r\n",s);
 	return;
 }
+*/
+
+
+
+
+void asd(){
+	Serial *serial0 = SerialManager::getInstance(SERIAL0);
+	serial0->printf("Ciao dalla funzione %d\r\n",serial0->readData());
+}
 int main(void)
 {
 
-	led0.setPWM(1000,0);
-	led1.setPWM(1000,0);
-	led2.setPWM(1000,0);
-	led3.setPWM(1000,0);
-	pir0.on();
+	//led0.setPWM(1000,0);
+	//led1.setPWM(1000,0);
+	//led2.setPWM(1000,0);
+	//led3.setPWM(1000,0);
+	//pir0.on();
 	//vccMotor.off();			//NEGATIVE LOGIC on DRONE(ON FOR OFF AND VICEVERSA) #######
 
-	Timer::start();
-	Serial0::init(BAUD_1000000,_LOW_PRIORITY);
-	Serial2::init(BAUD_1000000,_LOW_PRIORITY);
-	Serial0::setEchoServer(false);
-	Serial0::setRxISRCallBack(true);
-	Serial0::enableShell(false);
+	//Timer::start();
+	//Serial0::init(BAUD_1000000,_LOW_PRIORITY);
+	//Serial2::init(BAUD_1000000,_LOW_PRIORITY);
+	//Serial0::setEchoServer(false);
+	//Serial0::setRxISRCallBack(true);4
+	//Serial0::enableShell(false);
 
 
 
@@ -440,28 +450,28 @@ int main(void)
 	//Serial0::printf("init :%d\r\n",Serial3::bufferIsReadable());
 
 	//Serial3::init(BAUD_9600,_LOW_PRIORITY);
-	Interrupt::attachInterrupt(US0_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US1_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US2_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	Interrupt::attachInterrupt(US3_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
-	////Scheduler::addTask((func*)func1);
-	//Command::serialOutput = (uint8_t*)&UDR0;
-	Scheduler::addTask((func*)ultraSonicRoutine);
+	//	Interrupt::attachInterrupt(US0_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//	Interrupt::attachInterrupt(US1_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//	Interrupt::attachInterrupt(US2_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//	Interrupt::attachInterrupt(US3_PIN_ECHO.getPinNumber(),POSITIVE_EDGE,ultraSonicISR);
+	//	////Scheduler::addTask((func*)func1);
+	//	//Command::serialOutput = (uint8_t*)&UDR0;
+	//	Scheduler::addTask((func*)ultraSonicRoutine);
 
-	Scheduler::addTask(readVCCRELAY);
-	//Scheduler::addTask()
+	//	Scheduler::addTask(readVCCRELAY);
+	//	//Scheduler::addTask()
 
-	Scheduler::addTask(readPIR);
+	//	Scheduler::addTask(readPIR);
 
-	Scheduler::addTask(readRELAY);
+	//	Scheduler::addTask(readRELAY);
 
-	Scheduler::addTask(readLED);
+	//	Scheduler::addTask(readLED);
 
-	Scheduler::addTask((func*)readMOTOR);
+	//	Scheduler::addTask((func*)readMOTOR);
 
-	Scheduler::addTask(readADC);
+	//	Scheduler::addTask(readADC);
 
-	Scheduler::init();
+	//	Scheduler::init();
 	//Scheduler::addTask(Command::handleCommands);
 	//uint16_t a;
 	//DDRB=0x80;
@@ -470,19 +480,64 @@ int main(void)
 	//uint16_t b=adc0.analogRead();
 	//Pin pin(13,OUTPUT);
 	//pin.setDuty(25);
-	Serial0::flush();
-	while (1) {
-		//Serial0::printf("%u\r\n",sensors.VCC_MOTOR);
-		//Serial2::printf("%d\r\n",USART0_BUFF);
-		//Serial0::printf("Timer : %lf\r\n",Timer::now()/1e6);
-		//a =adc0.analogRead();
-		//UDR0 = a >> 8;
-		//UDR0 = a & 0xFF;
-		//Serial0::printf("%c",adc0.analogRead());
+	//Serial0::flush();
 
-		//Serial0::printf("%u\r\n",sensors.adc.ADC00);
-		//_delay_ms(1);
-		Command::handleCommands();
+
+
+	Serial *serial0 = SerialManager::getInstance(SERIAL0);
+	serial0->init(BAUD_1000000,_LOW_PRIORITY);
+	//serial0->registerCallback((ser_cb_t*)asd);
+	serial0->setRxISRCallBack(false);
+	serial0->setEchoServer(false);
+
+	//SPI *master = new SPI(MASTER,FOSC_BY_2_x2);
+	SPI *slave = new SPI;
+	slave->setInterrupt(true);
+	serial0->printf("Setup complete\r\n");
+	uint8_t temp;
+	while (1) {
+		temp = slave->receive();
+		//master->send(97);
+		if(temp){
+			serial0->printf("Received : %d\r\n",temp);
+		}
+		//_delay_ms(100);
+
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
