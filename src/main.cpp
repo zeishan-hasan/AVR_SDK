@@ -15,7 +15,10 @@
 #include <interrupt.h>
 #include <sensors.h>
 #include <util/atomic.h>
-#include "spi.h"
+#include "spimaster.h"
+#include "spislave.h"
+
+
 
 struct Sensors sensors;
 /*
@@ -482,7 +485,35 @@ int main(void)
 	//pin.setDuty(25);
 	//Serial0::flush();
 
+/*
+	masterSPI_t data;
 
+	{
+		Pin miso(50,INPUT);
+		Pin mosi(51,INPUT);
+		Pin sck(52,INPUT);
+		Pin SS(53,INPUT);
+
+
+		data = masterSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck);
+		data.SS.pushRight(SS);
+
+	}*/
+
+
+	slaveSPI_t dataSlave;
+
+	{
+		Pin miso(50,INPUT);
+		Pin mosi(51,INPUT);
+		Pin sck(52,INPUT);
+		Pin SS(53,INPUT);
+
+
+		dataSlave = slaveSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck,&SS);
+		//data.SS.pushRight(SS);
+
+	}
 
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000,_LOW_PRIORITY);
@@ -490,21 +521,35 @@ int main(void)
 	serial0->setRxISRCallBack(false);
 	serial0->setEchoServer(false);
 
-	//SPI *master = new SPI(MASTER,FOSC_BY_2_x2);
-	SPI *slave = new SPI;
-	slave->setInterrupt(true);
+	//MasterSPI *master = new MasterSPI(data,FOSC_BY_128);
+	SlaveSPI *slave = new SlaveSPI(dataSlave);
+	//SPI *slave = new SPI(SLAVE);
+	//slave->setInterrupt(true);
 	serial0->printf("Setup complete\r\n");
-	uint8_t temp;
+	serial0->printf("SPI reg : 0x%02x\r\n",SPCR);
+	//serial0->printf("Data: %d\r\n",data.SS[0]->getRegisterBit());
+
+
+
+
+	uint8_t buff[]={20,30};
+	uint8_t temp[]={0,0};
+	uint8_t tmp;
 	while (1) {
-		temp = slave->receive();
-		//master->send(97);
-		if(temp){
-			serial0->printf("Received : %d\r\n",temp);
+
+		//master->send(0, temp, ELEMENT_IN_ARRAY(temp));
+		//master->send(0,30);
+		//master->send(0,20);
+		temp[0] = slave->receive();
+		temp[1] = slave->receive();
+		//slave->receive(temp,2);
+		if(temp[0]){
+			serial0->printf("Received : %d %d\r\n",temp[0],temp[1]);
 		}
-		//_delay_ms(100);
+		//_delay_us(10);
 
 	}
-}
+}	
 
 
 

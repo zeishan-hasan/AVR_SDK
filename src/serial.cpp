@@ -190,7 +190,6 @@ ISR(USART0_RX_vect){
 	}
 	serial0->rxCallBack();
 
-
 }
 ISR(USART1_RX_vect){
 	Serial *serial1 = SerialManager::getInstance(SERIAL1);

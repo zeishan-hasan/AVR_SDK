@@ -60,6 +60,11 @@ Pin::Pin(uint8_t portNo, DDRx direction)
 	setDirection(direction);
 }
 
+Pin::~Pin()
+{
+
+}
+
 void Pin::on(bool stat)
 {
 	if(stat==HIGH){
@@ -274,6 +279,11 @@ uint8_t Pin::getPWM()
 		//return (*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx);
 	//}
 	//return  0;
+}
+
+uint8_t Pin::getRegisterBit()
+{
+	return _registerBit;
 }
 
 uint16_t Pin::calculateTicks(uint16_t freq)

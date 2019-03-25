@@ -12,3 +12,6 @@ AVR_SDK.creator
 *.hex
 *.autosave
 *.autosave
+*.user
+*.files
+*.includes

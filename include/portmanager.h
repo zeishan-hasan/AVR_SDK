@@ -191,8 +191,9 @@ enum _LOCAL_CTRL_BITS:uint8_t{
 };
 class Pin{
 public:
+	Pin(){}
 	Pin(uint8_t portNo, DDRx direction);
-
+	~Pin();
 	void on(bool stat = true);
 	void off();
 	void toggle();
@@ -211,6 +212,8 @@ public:
 
 	uint8_t getPinNumber();
 	uint8_t getPWM();
+
+	uint8_t getRegisterBit();
 
 private:
 	volatile uint8_t *_ddrx;
