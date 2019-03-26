@@ -4,20 +4,22 @@
 
 struct masterSPI_t
 {
-	masterSPI_t (volatile uint8_t *ddrx = nullptr, Pin *miso = nullptr, Pin *mosi = nullptr, Pin *sck = nullptr){
+	masterSPI_t (volatile uint8_t *ddrx = nullptr, Pin *miso = nullptr, Pin *mosi = nullptr, Pin *sck = nullptr, Pin *ss = nullptr){
 		if(ddrx != nullptr){
 			DDRx	= ddrx;
 			PORTx	= ddrx + 1;
 		}
-		MISO	= miso	== nullptr ? 0xFF : miso->getRegisterBit();
-		MOSI	= mosi	== nullptr ? 0xFF : mosi->getRegisterBit();
-		SCK		= sck		== nullptr ? 0xFF : sck->getRegisterBit();
+		bitMISO	= miso	== nullptr ? 0xFF : miso->getRegisterBit();
+		bitMOSI	= mosi	== nullptr ? 0xFF : mosi->getRegisterBit();
+		bitSCK	= sck		== nullptr ? 0xFF : sck->getRegisterBit();
+		bitSS		= ss		== nullptr ? 0xFF : ss->getRegisterBit();
 	}
 	volatile uint8_t *DDRx;
 	volatile uint8_t *PORTx;
-	uint8_t MISO;
-	uint8_t MOSI;
-	uint8_t SCK;
+	uint8_t bitMISO;
+	uint8_t bitMOSI;
+	uint8_t bitSCK;
+	uint8_t bitSS;
 	yanujz::vector<Pin> SS;
 };
 
@@ -37,6 +39,7 @@ public:
 	void receive(uint8_t *buff, size_t size);
 
 	uint8_t sendReceive(uint8_t data);
+
 private:
 	bool slaveIsValid(uint8_t slave);
 	masterSPI_t self;

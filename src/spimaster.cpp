@@ -55,24 +55,26 @@ uint8_t SPI::receive()
 	return SPDR;
 }
 
-
+*/
 //-------ISR------/
 ISR(SPI_STC_vect){
 	UDR0 = 97;
-}*/
+}
 
 MasterSPI::MasterSPI(masterSPI_t data, SPI_CLKSEL clockSel, SPI_DORD dataOrder, SPI_CPOL clockPolarity, SPI_CPHA clockPhase)
 {
 	uint8_t i;
 	self = data;
+	*self.DDRx = 0;
 
 	SPCR = 0;
 
 	// Set MOSI and SCK output, all others input
-	*self.DDRx = (0 << self.MISO) | (1 << self.MOSI) | (1 << self.SCK);
+	*self.DDRx |=  (1 << self.bitMOSI) | (1 << self.bitSCK) | (1 << self.bitSS);
+
 	for(i = 0; i < self.SS.size(); ++i){
-		//self.SS[i].setDirection(OUTPUT);
-		self.SS[i].setState(true);
+		self.SS[i].setDirection(OUTPUT);
+		self.SS[i].on();
 	}
 
 	SPSR |= ((clockSel & 4) >> 2) << SPI2X;
@@ -136,7 +138,7 @@ void MasterSPI::receive(uint8_t *buff, size_t size)
 {
 	uint8_t i;
 	for(i = 0;i < size;++i){
-		*(buff + i) = receive();
+		buff[i] = receive();
 	}
 }
 

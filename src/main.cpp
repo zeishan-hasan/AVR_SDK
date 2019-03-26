@@ -1,4 +1,4 @@
-﻿#ifndef F_CPU
+#ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
 #include <avr/io.h>
@@ -485,9 +485,7 @@ int main(void)
 	//pin.setDuty(25);
 	//Serial0::flush();
 
-#define _master
-
-#ifdef _master
+	Pin ss_default(53,OUTPUT);
 
 	masterSPI_t data;
 
@@ -495,32 +493,16 @@ int main(void)
 		Pin miso(50,INPUT);
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
-		Pin SS(53,OUTPUT);
+		Pin slave0(22,OUTPUT);
 
 
-		data = masterSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck);
-		data.SS.pushRight(SS);
-
-	}
-	MasterSPI *master = new MasterSPI(data,FOSC_BY_128,MSB_FIRST,LF_TR);
-#endif
-
-#ifdef _slave
-	slaveSPI_t dataSlave;
-
-	{
-		Pin miso(50,OUTPUT);
-		Pin mosi(51,INPUT);
-		Pin sck(52,INPUT);
-		Pin SS(53,INPUT);
-
-
-		dataSlave = slaveSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck,&SS);
-		//data.SS.pushRight(SS);
+		data = masterSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck,&ss_default);
+		data.SS.pushRight(slave0);
 
 	}
-	SlaveSPI *slave = new SlaveSPI(dataSlave,MSB_FIRST);
-#endif
+	MasterSPI *master = new MasterSPI(data,FOSC_BY_4);
+
+
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000,_LOW_PRIORITY);
 	//serial0->registerCallback((ser_cb_t*)asd);
@@ -529,47 +511,35 @@ int main(void)
 
 
 
-	//SPI *slave = new SPI(SLAVE);
-	//slave->setInterrupt(true);
 	serial0->printf("Setup complete\r\n");
 	serial0->printf("SPI reg : 0x%02x\r\n",SPCR);
-	//serial0->printf("Data: %d\r\n",data.SS[0]->getRegisterBit());
-
-
 
 
 	uint8_t buff[]={32,128};
-	uint8_t temp[]={0,0};
-	uint8_t tmp;
-	uint8_t i = 0;
+	volatile uint8_t temp[]={0,0};
+	volatile uint8_t tmp = 0;
+	volatile uint8_t i = 0;
+	sei();
+	master->enableSlave(0);
 	while (1) {
-#ifdef _master
+
+
 		//master->enableSlave(0);
 
-		tmp = master->sendReceive(0xAA);
-		if(tmp){
-			serial0->printf("Received : %d\r\n",tmp);
+		//serial0->printf("SPIF : 0x%x\r\n",SPSR);
+		//serial0->printf("Sending %d\r\n",i);
+		temp[0] = master->sendReceive(0xAA);
+		//master->disableSlave(0);
+		//serial0->printf("Received : %d\r\n",temp[0]);
+		if(temp[0] == 6){
+			i++;
+			serial0->printf("Data sent ok\r\n");
+		}
+		else{
+			serial0->printf("Wrong crc\r\n");
 		}
 		//master->disableSlave(0);
-#endif
-		//_delay_ms(100);
-		//master->enableSlave(0);
-		//master->send(0, 30);
-		//master->send(0,30);
-		//master->disableSlave(0);
-		//master->send(0,20);
-		//		temp[0] = slave->receive();
-		//		temp[1] = slave->receive();
-#ifdef _slave
-		//tmp = slave->receive();
-		//if(tmp == 0xAA){
-		//	serial0->printf("Received : %d\r\n",tmp);
-		//	if(slave->busIsWritable()){
-		//		slave->send(0b10101010);
-		//	}
-		//}
-
-#endif
+		//_delay_ms(500);
 	}
 }	
 
