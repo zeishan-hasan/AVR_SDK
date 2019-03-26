@@ -485,6 +485,7 @@ int main(void)
 	//pin.setDuty(25);
 	//Serial0::flush();
 
+<<<<<<< Updated upstream
 	Pin ss_default(53,OUTPUT);
 
 	masterSPI_t data;
@@ -501,8 +502,29 @@ int main(void)
 
 	}
 	MasterSPI *master = new MasterSPI(data,FOSC_BY_4);
+=======
+	slaveSPI_t dataSlave;
+
+	{
+		Pin miso(50,OUTPUT);
+		Pin mosi(51,INPUT);
+		Pin sck(52,INPUT);
+		Pin SS(53,INPUT);
+
+>>>>>>> Stashed changes
 
 
+<<<<<<< Updated upstream
+=======
+	}
+	SlaveSPI *slave = new SlaveSPI(dataSlave,MSB_FIRST,FOSC_BY_2);
+	slave->setISR(true);
+
+
+
+
+
+>>>>>>> Stashed changes
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000,_LOW_PRIORITY);
 	//serial0->registerCallback((ser_cb_t*)asd);
@@ -510,12 +532,17 @@ int main(void)
 	serial0->setEchoServer(false);
 
 
+<<<<<<< Updated upstream
 
+=======
+	//SPI *slave = new SPI(SLAVE);
+	//slave->setInterrupt(true);
+>>>>>>> Stashed changes
 	serial0->printf("Setup complete\r\n");
 	serial0->printf("SPI reg : 0x%02x\r\n",SPCR);
 
-
 	uint8_t buff[]={32,128};
+<<<<<<< Updated upstream
 	volatile uint8_t temp[]={0,0};
 	volatile uint8_t tmp = 0;
 	volatile uint8_t i = 0;
@@ -539,9 +566,91 @@ int main(void)
 			serial0->printf("Wrong crc\r\n");
 		}
 		//master->disableSlave(0);
+=======
+	uint8_t temp[]={0,0};
+	volatile uint8_t tmp = 0;
+	uint8_t i = 0;
+
+	while (1) {
+		//		while(!(SPSR & (1<<SPIF)));
+		//		tmp = SPDR;
+
+		//		SPDR = tmp;
+		//		while(!(SPSR & (1<<SPIF)));
+
+		//slave->send(6);
+
+		//serial0->printf("Received : %d\r\n",tmp);
+		//
+		//serial0->printf("Sent : %d\r\n",tmp);
+
+
+		//slave->send(tmp);
+		////if(slave->busIsWritable()){
+		////}
+		//
+>>>>>>> Stashed changes
 		//_delay_ms(500);
 	}
-}	
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

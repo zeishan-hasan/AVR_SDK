@@ -30,7 +30,10 @@ struct slaveSPI_t
 class SlaveSPI
 {
 public:
-	SlaveSPI(slaveSPI_t data, SPI_DORD dataOrder = MSB_FIRST);
+	SlaveSPI(slaveSPI_t data, SPI_DORD dataOrder = MSB_FIRST, SPI_CLKSEL clockSel = FOSC_BY_16
+			,SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP);
+
+	void setISR(bool value = false);
 
 	void send(uint8_t data);
 	void send(uint8_t *buff,size_t size);

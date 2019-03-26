@@ -5,6 +5,7 @@
 #include <avr/iom2560.h>
 #include "vector.h"
 #include "portmanager.h"
+
 /*
 #define PORT_SPI	PORTB
 #define DDR_SPI		DDRB
@@ -65,4 +66,18 @@ enum SPI_CLKSEL: uint8_t{
 	FOSC_BY_32	,
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 #endif // SPI_H
+
