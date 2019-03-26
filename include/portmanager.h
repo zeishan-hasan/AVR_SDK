@@ -194,7 +194,8 @@ public:
 	Pin(){}
 	Pin(uint8_t portNo, DDRx direction);
 	~Pin();
-	void on(bool stat = true);
+	void on();
+	void setState(bool stat = true);
 	void off();
 	void toggle();
 

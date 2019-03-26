@@ -65,7 +65,7 @@ monitor:
 	@killall hexdump putty 2>/dev/null || true
 	@putty -serial $(COM_PORT) -sercfg $(COM_BAUDRATE)&
 	@sleep 0.2
-	@./moveWindow 0
+#@./moveWindow 0
 rawMonitor:
 	@killall hexdump putty 2>/dev/null || true
 	rawMonitorSerial $(COM_PORT) $(COM_BAUDRATE)

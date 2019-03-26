@@ -65,14 +65,19 @@ Pin::~Pin()
 
 }
 
-void Pin::on(bool stat)
+void Pin::on()
 {
-	if(stat==HIGH){
+	*_portx |= (1 << _registerBit);
+}
 
+void Pin::setState(bool stat)
+{
+	if(stat == HIGH){
 		*_portx |= (1 << _registerBit);
 		return;
 	}
 	*_portx &= ~(1 << _registerBit);
+
 }
 
 void Pin::off()
@@ -272,11 +277,11 @@ uint8_t Pin::getPWM()
 	//if(_local_ctrl_bits == _PWM_16BIT){
 	return (uint8_t)((((float)_freq_pwm - (float)_duty_pwm) * (float)100) / (float)_freq_pwm) & 0xFF;
 	//Serial2::printf("value %u\r\n", (uint8_t)var & 0xFF);
-					//(*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx));
+	//(*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx));
 
 
 	//return ((*((volatile uint16_t*)_pwm_16BIT.ICRx) - _duty_pwm)*100)/ *((volatile uint16_t*)_pwm_16BIT.ICRx);
-		//return (*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx);
+	//return (*((volatile uint16_t*)_pwm_16BIT.ICRx) - *((volatile uint16_t*)_pwm_16BIT.OCRx)) * 100 / *((volatile uint16_t*)_pwm_16BIT.ICRx);
 	//}
 	//return  0;
 }

@@ -9,6 +9,7 @@ struct slaveSPI_t
 		if(ddrx != nullptr){
 			DDRx	= ddrx;
 			PORTx	= ddrx + 1;
+			PINx	= ddrx - 1;
 		}
 		MISO	= miso	== nullptr ? 0xFF : miso->getRegisterBit();
 		MOSI	= mosi	== nullptr ? 0xFF : mosi->getRegisterBit();
@@ -17,6 +18,7 @@ struct slaveSPI_t
 	}
 	volatile uint8_t *DDRx;
 	volatile uint8_t *PORTx;
+	volatile uint8_t *PINx;
 	uint8_t MISO;
 	uint8_t MOSI;
 	uint8_t SCK;
@@ -35,6 +37,10 @@ public:
 
 	uint8_t receive();
 	void receive(uint8_t *buff,size_t size);
+
+	bool busIsWritable();
+
+	void registerCallback();
 private:
 	slaveSPI_t self;
 };

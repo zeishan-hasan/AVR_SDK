@@ -485,26 +485,31 @@ int main(void)
 	//pin.setDuty(25);
 	//Serial0::flush();
 
-/*
+#define _master
+
+#ifdef _master
+
 	masterSPI_t data;
 
 	{
 		Pin miso(50,INPUT);
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
-		Pin SS(53,INPUT);
+		Pin SS(53,OUTPUT);
 
 
 		data = masterSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck);
 		data.SS.pushRight(SS);
 
-	}*/
+	}
+	MasterSPI *master = new MasterSPI(data,FOSC_BY_128,MSB_FIRST,LF_TR);
+#endif
 
-
+#ifdef _slave
 	slaveSPI_t dataSlave;
 
 	{
-		Pin miso(50,INPUT);
+		Pin miso(50,OUTPUT);
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
 		Pin SS(53,INPUT);
@@ -514,15 +519,16 @@ int main(void)
 		//data.SS.pushRight(SS);
 
 	}
-
+	SlaveSPI *slave = new SlaveSPI(dataSlave,MSB_FIRST);
+#endif
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000,_LOW_PRIORITY);
 	//serial0->registerCallback((ser_cb_t*)asd);
 	serial0->setRxISRCallBack(false);
 	serial0->setEchoServer(false);
 
-	//MasterSPI *master = new MasterSPI(data,FOSC_BY_128);
-	SlaveSPI *slave = new SlaveSPI(dataSlave);
+
+
 	//SPI *slave = new SPI(SLAVE);
 	//slave->setInterrupt(true);
 	serial0->printf("Setup complete\r\n");
@@ -532,22 +538,38 @@ int main(void)
 
 
 
-	uint8_t buff[]={20,30};
+	uint8_t buff[]={32,128};
 	uint8_t temp[]={0,0};
 	uint8_t tmp;
+	uint8_t i = 0;
 	while (1) {
+#ifdef _master
+		//master->enableSlave(0);
 
-		//master->send(0, temp, ELEMENT_IN_ARRAY(temp));
-		//master->send(0,30);
-		//master->send(0,20);
-		temp[0] = slave->receive();
-		temp[1] = slave->receive();
-		//slave->receive(temp,2);
-		if(temp[0]){
-			serial0->printf("Received : %d %d\r\n",temp[0],temp[1]);
+		tmp = master->sendReceive(0xAA);
+		if(tmp){
+			serial0->printf("Received : %d\r\n",tmp);
 		}
-		//_delay_us(10);
+		//master->disableSlave(0);
+#endif
+		//_delay_ms(100);
+		//master->enableSlave(0);
+		//master->send(0, 30);
+		//master->send(0,30);
+		//master->disableSlave(0);
+		//master->send(0,20);
+		//		temp[0] = slave->receive();
+		//		temp[1] = slave->receive();
+#ifdef _slave
+		//tmp = slave->receive();
+		//if(tmp == 0xAA){
+		//	serial0->printf("Received : %d\r\n",tmp);
+		//	if(slave->busIsWritable()){
+		//		slave->send(0b10101010);
+		//	}
+		//}
 
+#endif
 	}
 }	
 
