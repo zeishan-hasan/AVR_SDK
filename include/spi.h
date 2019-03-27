@@ -5,7 +5,7 @@
 #include <avr/iom2560.h>
 #include "vector.h"
 #include "portmanager.h"
-
+#define MAX_SPI_BUFFER 256
 /*
 #define PORT_SPI	PORTB
 #define DDR_SPI		DDRB

@@ -291,6 +291,11 @@ uint8_t Pin::getRegisterBit()
 	return _registerBit;
 }
 
+volatile uint8_t* Pin::getPINxAddr()
+{
+	return _pinx;
+}
+
 uint16_t Pin::calculateTicks(uint16_t freq)
 {
 	return (1.0/freq)/(1.0/F_CPU);

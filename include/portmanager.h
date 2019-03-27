@@ -216,6 +216,8 @@ public:
 
 	uint8_t getRegisterBit();
 
+	volatile uint8_t *getPINxAddr();
+
 private:
 	volatile uint8_t *_ddrx;
 	volatile uint8_t *_portx;

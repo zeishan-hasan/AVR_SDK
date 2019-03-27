@@ -420,9 +420,9 @@ void pippo(){
 
 
 
-void asd(){
+void asd(uint8_t data){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
-	serial0->printf("Ciao dalla funzione %d\r\n",serial0->readData());
+	serial0->printf("Received :  %d\r\n",data);
 }
 int main(void)
 {
@@ -485,8 +485,12 @@ int main(void)
 	//pin.setDuty(25);
 	//Serial0::flush();
 
-<<<<<<< Updated upstream
-	Pin ss_default(53,OUTPUT);
+
+
+#define _master 1
+#define _slave	0
+
+#if _master == 1
 
 	masterSPI_t data;
 
@@ -494,15 +498,19 @@ int main(void)
 		Pin miso(50,INPUT);
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
+		Pin ss_default(53,OUTPUT);
+
 		Pin slave0(22,OUTPUT);
 
 
-		data = masterSPI_t((volatile uint8_t*)&DDRB,&miso,&mosi,&sck,&ss_default);
+		data = masterSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&ss_default);
 		data.SS.pushRight(slave0);
 
 	}
 	MasterSPI *master = new MasterSPI(data,FOSC_BY_4);
-=======
+#endif
+
+#if _slave == 1
 	slaveSPI_t dataSlave;
 
 	{
@@ -510,21 +518,17 @@ int main(void)
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
 		Pin SS(53,INPUT);
-
->>>>>>> Stashed changes
-
-
-<<<<<<< Updated upstream
-=======
+		dataSlave = slaveSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&SS);
 	}
-	SlaveSPI *slave = new SlaveSPI(dataSlave,MSB_FIRST,FOSC_BY_2);
+	SlaveSPI *slave = SlaveSPI::getInstance(dataSlave);
+	slave->registerCallback(asd);
 	slave->setISR(true);
 
+#endif
 
 
 
 
->>>>>>> Stashed changes
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000,_LOW_PRIORITY);
 	//serial0->registerCallback((ser_cb_t*)asd);
@@ -532,66 +536,80 @@ int main(void)
 	serial0->setEchoServer(false);
 
 
-<<<<<<< Updated upstream
 
-=======
-	//SPI *slave = new SPI(SLAVE);
-	//slave->setInterrupt(true);
->>>>>>> Stashed changes
+
 	serial0->printf("Setup complete\r\n");
 	serial0->printf("SPI reg : 0x%02x\r\n",SPCR);
 
-	uint8_t buff[]={32,128};
-<<<<<<< Updated upstream
-	volatile uint8_t temp[]={0,0};
+	uint8_t buff[]={192,168,10,50};
+
+	uint8_t temp[]={0,0,0,0};
 	volatile uint8_t tmp = 0;
 	volatile uint8_t i = 0;
-	sei();
-	master->enableSlave(0);
+
+
+#if _master  == 1
+
+
+
 	while (1) {
 
 
-		//master->enableSlave(0);
 
 		//serial0->printf("SPIF : 0x%x\r\n",SPSR);
 		//serial0->printf("Sending %d\r\n",i);
-		temp[0] = master->sendReceive(0xAA);
-		//master->disableSlave(0);
+		//temp[0] = master->sendReceive(0xAA);
+
+		master->enableSlave(0);
+		master->send(buff,4);
+		master->receive(temp,SIZE_OF_ARRAY(temp));
+		master->disableSlave(0);
+		for(i = 0; i< SIZE_OF_ARRAY(temp);++i){
+			serial0->printf("Reply from slave : %d\r\n",temp[i]);
+		}
+		_delay_ms(500);
 		//serial0->printf("Received : %d\r\n",temp[0]);
-		if(temp[0] == 6){
-			i++;
-			serial0->printf("Data sent ok\r\n");
-		}
-		else{
-			serial0->printf("Wrong crc\r\n");
-		}
+		//		if(temp[0] == 6){
+		//			i++;
+		//			serial0->printf("Data sent ok\r\n");
+		//		}
+		//		else{
+		//			serial0->printf("Wrong crc\r\n");
+		//		}
 		//master->disableSlave(0);
-=======
-	uint8_t temp[]={0,0};
-	volatile uint8_t tmp = 0;
-	uint8_t i = 0;
-
-	while (1) {
-		//		while(!(SPSR & (1<<SPIF)));
-		//		tmp = SPDR;
-
-		//		SPDR = tmp;
-		//		while(!(SPSR & (1<<SPIF)));
-
-		//slave->send(6);
-
-		//serial0->printf("Received : %d\r\n",tmp);
-		//
-		//serial0->printf("Sent : %d\r\n",tmp);
-
-
-		//slave->send(tmp);
-		////if(slave->busIsWritable()){
-		////}
-		//
->>>>>>> Stashed changes
-		//_delay_ms(500);
 	}
+#endif
+
+#if _slave == 1
+	while (1) {
+		//asm volatile("nop");
+		//if(slave->busIsWritable()){
+		//	serial0->printf("bus is ok\r\n");
+		//}
+		for(uint8_t i = 0; i< 4;++i){
+			temp[i] = slave->readData();
+		}
+
+		serial0->printf("Repling\r\n",slave->readData());
+		slave->send(temp,SIZE_OF_ARRAY(temp));
+		//if(slave->bufferIsReadable()){
+		//}
+		_delay_ms(100);
+	}
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
