@@ -424,6 +424,35 @@ void asd(uint8_t data){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->printf("Received :  %d\r\n",data);
 }
+
+
+void setupMasterSPI(MasterSPI *&master){
+	Pin miso(50,INPUT);
+	Pin mosi(51,INPUT);
+	Pin sck(52,INPUT);
+	Pin ss_default(53,OUTPUT);
+	// Setting slaves
+	Pin slave0(22,OUTPUT);
+
+	masterSPI_t data(miso.getPINxAddr(),&miso,&mosi,&sck,&ss_default);
+	data.SS.pushRight(slave0);
+
+	mSPIsetting_t settings(FOSC_BY_128, MSB_FIRST, LR_TF, LS_TP);
+
+	master = new MasterSPI(data,settings);
+
+}
+
+void setupSlaveSPI(SlaveSPI *&slave){
+	Pin miso(50,OUTPUT);
+	Pin mosi(51,INPUT);
+	Pin sck(52,INPUT);
+	Pin SS(53,INPUT);
+
+	slaveSPI_t dataSlave = slaveSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&SS);
+	slave = SlaveSPI::getInstance(dataSlave);
+}
+
 int main(void)
 {
 
@@ -491,38 +520,24 @@ int main(void)
 #define _slave	0
 
 #if _master == 1
-
-	masterSPI_t data;
-
-	{
-		Pin miso(50,INPUT);
-		Pin mosi(51,INPUT);
-		Pin sck(52,INPUT);
-		Pin ss_default(53,OUTPUT);
-
-		Pin slave0(22,OUTPUT);
-
-
-		data = masterSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&ss_default);
-		data.SS.pushRight(slave0);
-
-	}
-	MasterSPI *master = new MasterSPI(data,FOSC_BY_4);
+	MasterSPI *master;
+	setupMasterSPI(master);
 #endif
 
 #if _slave == 1
-	slaveSPI_t dataSlave;
-
-	{
+	SlaveSPI *slave;
+	setupSlaveSPI(slave);
+	/*{
 		Pin miso(50,OUTPUT);
 		Pin mosi(51,INPUT);
 		Pin sck(52,INPUT);
 		Pin SS(53,INPUT);
-		dataSlave = slaveSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&SS);
-	}
-	SlaveSPI *slave = SlaveSPI::getInstance(dataSlave);
+
+		slaveSPI_t dataSlave = slaveSPI_t(miso.getPINxAddr(),&miso,&mosi,&sck,&SS);
+		slave = SlaveSPI::getInstance(dataSlave);
+	}*/
 	slave->registerCallback(asd);
-	slave->setISR(true);
+	//slave->setISR(true);
 
 #endif
 
@@ -541,9 +556,12 @@ int main(void)
 	serial0->printf("Setup complete\r\n");
 	serial0->printf("SPI reg : 0x%02x\r\n",SPCR);
 
-	uint8_t buff[]={192,168,10,50};
 
-	uint8_t temp[]={0,0,0,0};
+	//0x00 00 01 AA
+	//uint8_t src[]={0x40,0x00,0x00,0x00,0x95};
+	uint8_t src[]={0x00,0x00,0x00,0x0};
+
+	uint8_t dst[SIZE_OF_ARRAY(src)];
 	volatile uint8_t tmp = 0;
 	volatile uint8_t i = 0;
 
@@ -552,22 +570,24 @@ int main(void)
 
 
 
+	master->enable();
 	while (1) {
 
+		master->enableSlave(0);
 
 
 		//serial0->printf("SPIF : 0x%x\r\n",SPSR);
 		//serial0->printf("Sending %d\r\n",i);
 		//temp[0] = master->sendReceive(0xAA);
 
-		master->enableSlave(0);
-		master->send(buff,4);
-		master->receive(temp,SIZE_OF_ARRAY(temp));
-		master->disableSlave(0);
-		for(i = 0; i< SIZE_OF_ARRAY(temp);++i){
-			serial0->printf("Reply from slave : %d\r\n",temp[i]);
+		master->sendReceive(dst,src,SIZE_OF_ARRAY(src));
+		//master->send(62);
+		//master->disableSlave(0);
+		//master->receive(temp,SIZE_OF_ARRAY(temp));
+		for(i = 0; i< SIZE_OF_ARRAY(dst);++i){
+			serial0->printf("Reply from slave [%d]: %d\r\n",i,dst[i]);
 		}
-		_delay_ms(500);
+		//_delay_ms(500);
 		//serial0->printf("Received : %d\r\n",temp[0]);
 		//		if(temp[0] == 6){
 		//			i++;
@@ -576,7 +596,7 @@ int main(void)
 		//		else{
 		//			serial0->printf("Wrong crc\r\n");
 		//		}
-		//master->disableSlave(0);
+		master->disableSlave(0);
 	}
 #endif
 
@@ -586,15 +606,15 @@ int main(void)
 		//if(slave->busIsWritable()){
 		//	serial0->printf("bus is ok\r\n");
 		//}
-		for(uint8_t i = 0; i< 4;++i){
-			temp[i] = slave->readData();
-		}
+		//		for(uint8_t i = 0; i< 4;++i){
+		//			temp[i] = slave->readData();
+		//		}
 
-		serial0->printf("Repling\r\n",slave->readData());
-		slave->send(temp,SIZE_OF_ARRAY(temp));
-		//if(slave->bufferIsReadable()){
-		//}
-		_delay_ms(100);
+		//		serial0->printf("Repling\r\n",slave->readData());
+		//		slave->send(temp,SIZE_OF_ARRAY(temp));
+		//		//if(slave->bufferIsReadable()){
+		//		//}
+		//		_delay_ms(100);
 	}
 
 #endif

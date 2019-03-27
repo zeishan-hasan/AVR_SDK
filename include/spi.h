@@ -6,15 +6,6 @@
 #include "vector.h"
 #include "portmanager.h"
 #define MAX_SPI_BUFFER 256
-/*
-#define PORT_SPI	PORTB
-#define DDR_SPI		DDRB
-#define DD_SS			0
-#define DD_SCK		1
-#define DD_MOSI		2
-#define DD_MISO		3
-*/
-
 
 enum SPI_MODE: uint8_t{
 	SLAVE,
