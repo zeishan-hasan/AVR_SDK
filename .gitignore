@@ -1,17 +1,7 @@
 
-Makefile_old
-src/main.cpp.autosave
-src/main.cpp.autosave
-*.config
-AVR_SDK.config
-AVR_SDK.config
-AVR_SDK.creator
 *.o
 *.elf
 *.map
 *.hex
 *.autosave
 *.autosave
-*.user
-*.files
-*.includes
