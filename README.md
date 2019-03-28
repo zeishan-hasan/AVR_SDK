@@ -20,33 +20,63 @@ sudo apt install libftdi1 libusb-0.1-4 binutils-avr gcc-avr avr-libc avrdude
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+To install it just do
 
 ```
-Give the example
+cd ~ && git clone https://github.com/Yanujz/AVR_SDK.git
 ```
+## Testing stuff
 
-And repeat
+Now let's check if everything is ok.
+```
+cd ~/AVR_SDK/blink
+make
+```
+You should have something like this 
+```
+Compiling file : interrupt.cpp
+Compiling file : portmanager.cpp
+Compiling file : cppfix.cpp
+Compiling file : timer.cpp
+Compiling file : spimaster.cpp
+Compiling file : spislave.cpp
+Compiling file : i2cmaster.cpp
+Compiling file : serial.cpp
+Compiling file : main.cpp
+```
+If you have this, everything is ok.
+
+### Uploading sketch
+```
+cd ~/AVR_SDK/blink
+make upload
+```
+You should have something like this
+```
+Compiling file : interrupt.cpp
+Compiling file : portmanager.cpp
+Compiling file : cppfix.cpp
+Compiling file : timer.cpp
+Compiling file : spimaster.cpp
+Compiling file : spislave.cpp
+Compiling file : i2cmaster.cpp
+Compiling file : serial.cpp
+Compiling file : main.cpp
+
+avrdude: AVR device initialized and ready to accept instructions
+avrdude: Device signature = 0x1e9801 (probably m2560)
+avrdude: reading input file "firmware/main.hex"
+avrdude: writing flash (19114 bytes):
+avrdude: 19114 bytes of flash written
+
+avrdude: safemode: Fuses OK (E:FD, H:D8, L:FF)
+
+avrdude done.  Thank you.
 
 ```
-until finished
-```
+If you have this, everything is ok.
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+N.B: Default port is /dev/ttyUSB0, you can change parameters in Makefile configuration. All available commands and flags are listed below.
 
 ### Makefile usage
 ```
@@ -75,37 +105,7 @@ Give an example
     make upload FLASH_PORT=/dev/ttyACM0 FLASH_BAUDRATE=115200
     make monitor COM_PORT=/dev/ttyACM0 COM_BAUDRATE=1000000
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Yanujz**
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
