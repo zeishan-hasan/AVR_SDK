@@ -1,7 +1,7 @@
 SRC_DIR 	= src
 BUILD_DIR 	= build
 FIRMW_DIR 	= firmware
-USER_DIR 	= user
+LIBS_DIR	= libs
 
 PROGRAMMER 		= stk500v2 
 MPROG 			= m2560
@@ -10,14 +10,20 @@ MICROCONTROLLER = atmega2560
 
 CXX       = avr-g++
 CC        = avr-gcc
-CXX_SRCS  = $(wildcard $(SRC_DIR)/*.cpp)
+
+CXX_SRCS := $(shell find $(LIBS_DIR)/ -type f -regex ".*\.cpp") \
+			$(shell find $(SRC_DIR)/ -type f -regex ".*\.cpp")
 CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
+
 ASM_SRCS  = $(wildcard $(SRC_DIR)/*.s)
 ASM_OBJS  = $(ASM_SRCS:.s=.o)
 
+INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
+	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
+	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  *.h -exec dirname {} \;))
 
 
-CXX_FLAGS = -lstdc++ -std=c++11  -I include -I /usr/lib/avr/include
+CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)  
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
 
 
@@ -31,6 +37,7 @@ IP = 192.168.1.167
 USERNAME = pi
 
 all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app
+
 
 
 ota:

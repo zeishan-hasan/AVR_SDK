@@ -53,7 +53,7 @@ public:
 private:
     //-----------------METHODS-----------------//
     SlaveSPI();
-		SlaveSPI(slaveSPI_t data, SPI_DORD dataOrder = MSB_FIRST, SPI_CLKSEL clockSel = FOSC_BY_2
+    SlaveSPI(slaveSPI_t data, SPI_DORD dataOrder = MSB_FIRST, SPI_CLKSEL clockSel = FOSC_BY_2
             ,SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP);
     //-----------------VARIABLES---------------//
     uint8_t SPI_BUFF[MAX_SPI_BUFFER];

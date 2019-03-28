@@ -1,6 +1,6 @@
 #ifndef SPIMASTER_H
 #define SPIMASTER_H
-#include "spi.h"
+#include "../spi.h"
 
 struct mSPIsetting_t
 {

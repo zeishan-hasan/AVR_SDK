@@ -20,7 +20,9 @@ uint8_t I2CMaster::start(uint8_t address)
 	while( !(TWCR & (1<<TWINT)) );
 
 	// check if the start condition was successfully transmitted
-	if((TWSR & 0xF8) != TW_START){ return 1; }
+	if((TWSR & 0xF8) != TW_START){
+		return 1;
+	}
 
 	// load slave address into data register
 	TWDR = address;
@@ -31,7 +33,9 @@ uint8_t I2CMaster::start(uint8_t address)
 
 	// check if the device has acknowledged the READ / WRITE mode
 	uint8_t twst = TW_STATUS & 0xF8;
-	if ( (twst != TW_MT_SLA_ACK) && (twst != TW_MR_SLA_ACK) ) return 1;
+	if ( (twst != TW_MT_SLA_ACK) && (twst != TW_MR_SLA_ACK) ){
+		return 1;
+	}
 
 	return 0;
 }
@@ -45,7 +49,9 @@ uint8_t I2CMaster::write(uint8_t data)
 	// wait for end of transmission
 	while( !(TWCR & (1<<TWINT)) );
 
-	if( (TWSR & 0xF8) != TW_MT_DATA_ACK ){ return 1; }
+	if( (TWSR & 0xF8) != TW_MT_DATA_ACK ){
+		return 1;
+	}
 
 	return 0;
 }
@@ -78,7 +84,9 @@ uint8_t I2CMaster::transmit(uint8_t address, uint8_t* data, uint16_t length)
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		if (write(data[i])) return 1;
+		if (write(data[i])){
+			return 1;
+		}
 	}
 
 	stop();
@@ -109,7 +117,9 @@ uint8_t I2CMaster::writeReg(uint8_t devaddr, uint8_t regaddr, uint8_t* data, uin
 
 	for (uint16_t i = 0; i < length; i++)
 	{
-		if (write(data[i])) return 1;
+		if (write(data[i])){
+			return 1;
+		}
 	}
 
 	stop();
