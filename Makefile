@@ -26,31 +26,34 @@ INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
 CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)  
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
 
+# Flash port (default: /dev/ttyUSB0)
+FLASH_PORT ?= /dev/ttyUSB0
+# Flash Baudrate (default: 115200)
+FLASH_BAUDRATE ?= 115200
+# Com Port (default: /dev/ttyUSB0)
+COM_PORT ?= /dev/ttyUSB0
+# Com Baudrate (default: 1000000)
+COM_BAUDRATE ?= 1000000
 
-FLASH_PORT 		= /dev/ttyUSB0
-COM_PORT 		= /dev/ttyUSB0
-FLASH_BAUDRATE 	= 115200
-COM_BAUDRATE 	= 1000000
-
-#OTA SETUP
+# OTA SETUP
 IP = 192.168.1.167
 USERNAME = pi
 
+
+#
 all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app
-
-
-
+# Remote upload
 ota:
 	scp $(FIRMW_DIR)/main.hex $(USERNAME)@$(IP):~/firmwareDownload/$(FIRMW_DIR)/
 	ssh $(USERNAME)@$(IP) "cd ~/firmwareDownload && make upload"
-	 
-
+# Local upload
 upload: createdir $(CXX_OBJS) main.elf app
 	@killall hexdump putty 2>/dev/null || true
 	@avrdude -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
-	
+#
 app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
+#
 main.elf: $(CXX_OBJS)
 	@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
 %.o: %.cpp
@@ -60,7 +63,7 @@ main.elf: $(CXX_OBJS)
 	@echo "Compiling file : $(notdir $<)"
 	@$(CC)  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
-
+# 
 createdir: $(BUILD_DIR) $(FIRMW_DIR) 
 
 $(BUILD_DIR):
@@ -68,14 +71,42 @@ $(BUILD_DIR):
 $(FIRMW_DIR):
 	@mkdir -p $@
 
+# Open putty with selected port
 monitor:
 	@killall hexdump putty 2>/dev/null || true
 	@putty -serial $(COM_PORT) -sercfg $(COM_BAUDRATE)&
 	@sleep 0.2
-#@./moveWindow 0
+	#@./moveWindow 0
+
+# Open terminal in raw mode
 rawMonitor:
 	@killall hexdump putty 2>/dev/null || true
 	rawMonitorSerial $(COM_PORT) $(COM_BAUDRATE)
 
+# Remove all build files
 clean:
 	@rm -rf $(BUILD_DIR) $(FIRMW_DIR)
+
+
+
+
+# Show this help prompt.
+help:
+	@ echo
+	@ echo '  Usage:'
+	@ echo ''
+	@ echo '    make <target> [flags...]'
+	@ echo ''
+	@ echo '  Targets:'
+	@ echo ''
+	@ awk '/^#/{ comment = substr($$0,3) } comment && /^[a-zA-Z][a-zA-Z0-9_-]+ ?:/{ print "   ", $$1, comment }' $(MAKEFILE_LIST) | column -t -s ':' | sort
+	@ echo ''
+	@ echo '  Flags:'
+	@ echo ''
+	@ awk '/^#/{ comment = substr($$0,3) } comment && /^[a-zA-Z][a-zA-Z0-9_-]+ ?\?=/{ print "   ", $$1, $$2, comment }' $(MAKEFILE_LIST) | column -t -s '?=' | sort
+	@ echo ''
+	@ echo '  Example:'
+	@ echo ''
+	@ echo '    make upload FLASH_PORT=/dev/ttyACM0 FLASH_BAUDRATE=115200'
+	@ echo '    make monitor COM_PORT=/dev/ttyACM0 COM_BAUDRATE=1000000'
+	@ echo ''
