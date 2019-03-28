@@ -6,7 +6,7 @@ This is my concept of AVR programming.
   atmega2560
 #
 In future others boards will be supported.
-This libraries are shared as is, without any warranty.
+These libraries are shared as is, without any warranty.
 
 ## Getting Started
 ### Prerequisites
