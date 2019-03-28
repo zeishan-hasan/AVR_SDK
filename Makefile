@@ -41,7 +41,7 @@ USERNAME = pi
 
 
 #
-all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app
+all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app size
 # Remote upload
 ota:
 	scp $(FIRMW_DIR)/main.hex $(USERNAME)@$(IP):~/firmwareDownload/$(FIRMW_DIR)/
@@ -56,12 +56,21 @@ app: main.elf
 #
 main.elf: $(CXX_OBJS)
 	@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
+# Show Memory Usage
+size:
+	@echo ''
+	@avr-size -C --mcu=$(MICROCONTROLLER) $(BUILD_DIR)/main.elf
+
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
 	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"
 	@$(CC)  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+
+
+
+
 
 # 
 createdir: $(BUILD_DIR) $(FIRMW_DIR) 
