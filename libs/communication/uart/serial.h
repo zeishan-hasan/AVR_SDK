@@ -86,6 +86,7 @@ public:
 	uint8_t	receive();
 	uint8_t	readData();
 	SerialPriority getPriority();
+        void clear();
 	//-----------------VARIABLES---------------//
 	uint8_t USART_BUFF[MAX_SERIAL_BUFFER];
 protected:

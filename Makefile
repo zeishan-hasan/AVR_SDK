@@ -85,7 +85,6 @@ monitor:
 	@killall hexdump putty 2>/dev/null || true
 	@putty -serial $(COM_PORT) -sercfg $(COM_BAUDRATE)&
 	@sleep 0.2
-	#@./moveWindow 0
 
 # Open terminal in raw mode
 rawMonitor:
