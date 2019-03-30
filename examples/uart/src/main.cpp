@@ -4,15 +4,15 @@
 
 int main(){
 
-	Serial *serial0 = SerialManager::getInstance(SERIAL0);
-	serial0->init(BAUD_1000000,_LOW_PRIORITY);
-	serial0->setRxISRCallBack(false);
-	serial0->setEchoServer(false);
+	Serial *serial1 = SerialManager::getInstance(SERIAL1);
+	serial1->init(BAUD_1000000,_LOW_PRIORITY);
+	serial1->setRxISRCallBack(false);
+	serial1->setEchoServer(false);
 
 
 
 	while (1) {
-		serial0->printf("Hello World\r\n");
+		serial1->printf("Hello World\r\n");
 		_delay_ms(500);
 	}
 

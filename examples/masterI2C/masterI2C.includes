@@ -10,5 +10,5 @@ libs/communication/spi/master
 libs/communication/spi/slave
 libs/communication/uart
 libs/communication/i2c
-src/src/miaclasse
-src/miaclasse
+libs/sensors/dht11
+libs/sensors/hmc5883
