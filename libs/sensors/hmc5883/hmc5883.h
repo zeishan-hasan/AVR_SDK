@@ -40,11 +40,14 @@ enum REGISTER: uint8_t{
 
 // Configuration Register A
 /*
-The configuration register is used to configure the device for setting the data     output rate and measurement configuration.
+The configuration register is used to configure the device for setting the data
+output rate and measurement configuration.
 
-CRA0 through CRA7 indicate bit locations, with CRA denoting the bits that are in the configuration register.
+CRA0 through CRA7 indicate bit locations, with CRA denoting the bits that are in the
+configuration register.
 
-CRA7 denotes the first bit of the data stream. The number in parenthesis indicates the default value of that bit.CRA default is 0x10.
+CRA7 denotes the first bit of the data stream. The number in parenthesis indicates the
+default value of that bit.CRA default is 0x10.
 
 +------+--------+--------+--------+--------+--------+--------+--------+
 | CRA7 |  CRA6  |  CRA5  |  CRA4  |  CRA3  |  CRA2  |  CRA1  |  CRA0  |
@@ -301,10 +304,28 @@ public:
     Hmc5883(uint8_t writeAddr = 0x3c, uint8_t readAddr = 0x3d);
     void init();
     compass_t getData();
+
+    void setSample(SAMPLE_MEASURE sample);
+    SAMPLE_MEASURE getSample();
+
+    void setOutRate();
+    OUTPUT_RATE getOutRate();
+
+    void setGain();
+    GAIN getGain();
+
+    void setOpMode();
+    OP_MODE getOpMode();
+
+    void setMeasureMode();
+    MEASURE_MODE getMeasureMode();
+
+
 private:
+//-------- METHODS --------//
     void getHeading();
 
-
+//-------- VARIABLES --------//
     hmc5883_t self;
     I2CMaster master;
     compass_t compass;

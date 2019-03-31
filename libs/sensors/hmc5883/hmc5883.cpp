@@ -33,6 +33,65 @@ compass_t Hmc5883::getData()
     return compass;
 }
 
+void Hmc5883::setSample(SAMPLE_MEASURE sample)
+{
+    self._sample &= ~(0x3 << 5);
+    self |= (sample << 5);
+
+    master.start(self._addr.writeAddr);
+    master.send(REG_A);
+    master.send(self._sample);
+    master.stop();
+
+}
+
+SAMPLE_MEASURE Hmc5883::getSample()
+{
+    return self._sample;
+}
+
+void Hmc5883::setOutRate()
+{
+
+}
+
+OUTPUT_RATE Hmc5883::getOutRate()
+{
+    return self._outRate;
+}
+
+void Hmc5883::setGain()
+{
+
+}
+
+GAIN Hmc5883::getGain()
+{
+    return self._gain;
+}
+
+void Hmc5883::setOpMode()
+{
+
+}
+
+OP_MODE Hmc5883::getOpMode()
+{
+    return self._opMode;
+}
+
+void Hmc5883::setMeasureMode()
+{
+
+}
+
+MEASURE_MODE Hmc5883::getMeasureMode()
+{
+    return self._measureMode;
+}
+
+//-------- PRIVATE METHODS --------//
+
 void Hmc5883::getHeading()
 {
     uint8_t buff[6];
