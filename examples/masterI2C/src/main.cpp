@@ -1,69 +1,9 @@
 #include "avr_sdk.h"
-#include <math.h>
+
 #define HMC5883L_WRITE 0x3C
 #define HMC5883L_READ 0x3D
 
-I2CMaster master;
-char buffer[6];
 
-int16_t raw_x = 0;
-int16_t raw_y = 0;
-int16_t raw_z = 0;
-float headingDegrees = 0;
-
-uint8_t test[6];
-
-
-void init_HMC5883L(void){
-	master.start(HMC5883L_WRITE);
-	master.send(0x00); // set pointer to CRA
-	master.send(0x70); // write 0x70 to CRA
-	master.stop();
-
-	master.start(HMC5883L_WRITE);
-	master.send(0x01); // set pointer to CRB
-	master.send(0xA0);
-	master.stop();
-
-	master.start(HMC5883L_WRITE);
-	master.send(0x02); // set pointer to measurement mode
-	master.send(0x00); // continous measurement
-	master.stop();
-}
-
-
-
-float getHeading(void){
-
-	master.readReg(HMC5883L_WRITE,0x03,test,SIZE_OF_ARRAY(test));
-
-
-
-	//if(master.start(HMC5883L_WRITE)){
-	//	return 0;
-	//}
-	//master.send(0x03); // set pointer to X axis MSB
-	//	/master.stop();
-
-	//master.start(HMC5883L_READ);
-
-	//master.receive(HMC5883L_READ,test,SIZE_OF_ARRAY(test));
-
-	//raw_x = ((uint8_t)master.read_sendAck())<<8;
-	//raw_x |= master.read_sendAck();
-	//
-	//raw_z = ((uint8_t)master.read_sendAck())<<8;
-	//raw_z |= master.read_sendAck();
-	//
-	//raw_y = ((uint8_t)master.read_sendAck())<<8;
-	//raw_y |= master.read_sendNack();
-	//
-	//master.stop();
-
-	//headingDegrees = atan2((double)raw_y,(double)raw_x) * 180 / 3.141592654 + 180;
-
-	return 0;//headingDegrees;
-}
 
 
 
@@ -74,6 +14,7 @@ int main(){
 	serial1->setRxISRCallBack(false);
 	serial1->setEchoServer(false);
 
+	I2CMaster master;
 	master.enable(SCL_100KHZ);
 
 
@@ -82,16 +23,20 @@ int main(){
 	serial1->printf("Setup complete\r\n");
 
 
-	init_HMC5883L();
+	//init_HMC5883L();
 
-
+	slave_t asd;
+	Hmc5883 hmc5883;
+	hmc5883.init();
+	compass_t compass;
 	while (1) {
 		serial1->clear();
-
-		getHeading();
-		serial1->printf("%d\r\n",(test[0] <<8) | test[1]);
-		serial1->printf("%d\r\n",(test[2] <<8) | test[3]);
-		serial1->printf("%d\r\n",(test[4] <<8) | test[5]);
+		compass = hmc5883.getData();
+		//getHeading();
+		serial1->printf("X : %d\r\n",compass.raw_x);
+		serial1->printf("Y : %d\r\n",compass.raw_y);
+		serial1->printf("Z : %d\r\n",compass.raw_z);
+		serial1->printf("Deg : %f\r\n",compass.headingDegrees);
 		//		itoa(raw_x, buffer, 10);
 		//		serial0->printf("%s",buffer);
 		//		serial0->printf("  ");
@@ -110,7 +55,7 @@ int main(){
 		//		serial0->printf("%s",buffer);
 		//		serial0->printf("  \r\n");
 
-		_delay_ms(100);
+		_delay_ms(10);
 	}
 
 	return 0;

@@ -2,7 +2,8 @@
 #define I2CMASTER_H
 #include <util/twi.h>
 #include <avr/iom2560.h>
-#include "avr_sdk.h"
+#include <avr/io.h>
+#include "vector.h"
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
@@ -24,12 +25,17 @@ enum F_SCL:uint8_t{
     SCL_500KHZ = TWBR_val(500000),
 };
 
+
 struct slave_t
 {
+    slave_t(uint8_t wAddr = 0, uint8_t rAddr = 0){
+        writeAddr = wAddr;
+        readAddr = rAddr;
+    }
+
     uint8_t writeAddr;
     uint8_t readAddr;
 };
-
 
 class I2CMaster
 {
