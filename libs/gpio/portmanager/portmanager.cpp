@@ -93,12 +93,12 @@ void Pin::toggle()
 void Pin::setDirection(DDRx direction)
 {
 
-    if(direction==OUTPUT){
+    if(direction == OUTPUT){
         *_ddrx |= (1 << _registerBit);
         return;
     }
     *_ddrx &= ~(1 <<_registerBit);
-    if(direction==INPUT_PULLUP){
+    if(direction == INPUT_PULLUP){
         on();
     }
 

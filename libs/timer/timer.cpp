@@ -80,7 +80,7 @@ bool Timer::_isInit = false;
 void Timer::init()
 {
 
-    TCCR0A  = 0;                // Setting 0 means that the timer will reach the overflow
+    TCCR0A  = 0;    // Setting 0 means that the timer will reach the overflow
     TCCR0B  = 0;
     TCNT0   = 0;		// Set counter to 0
     TIMSK0  = (1<<TOIE0);	// Set the ISR OVF vect

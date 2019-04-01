@@ -12,6 +12,7 @@ struct dht11_t
 class Dht11
 {
 public:
+    //-------- METHODS --------//
     Dht11(Pin pin);
     Dht11(uint8_t pin);
     Dht11(dht11_t dht11);
@@ -20,7 +21,12 @@ public:
     uint8_t getHumidity();
 
 private:
+    //-------- METHODS --------//
     bool checkCrc();
+    void getData();
+    inline bool startContition();
+
+    //-------- VARIABLES --------//
 
     dht11_t self;
 };
