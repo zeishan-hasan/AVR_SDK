@@ -12,13 +12,18 @@ int main(){
 
 	serial1->printf("Setup complete\r\n");
 
-	serial1->clear();
+	Hmc5883 hmc5883;
+	hmc5883.init();
+	compass_t compass;
 
-	slave_t slave = master.scan();
-	serial1->printf("Slave write address : 0x%x\r\n"
-																	"Slave read address : 0x%x\r\n",
-																	slave.writeAddr,slave.readAddr);
 	while (1) {
+		serial1->clear();
+		compass = hmc5883.getData();
+
+		serial1->printf("X : %d\r\n",compass.raw_x);
+		serial1->printf("Y : %d\r\n",compass.raw_y);
+		serial1->printf("Z : %d\r\n",compass.raw_z);
+		serial1->printf("Deg : %f\r\n",compass.headingDegrees);
 
 		_delay_ms(10);
 	}

@@ -176,6 +176,7 @@ slave_t I2CMaster::scan()
     }
     slave.writeAddr = buff[0];
     slave.readAddr = buff[1];
+    return slave;
 }
 
 yanujz::vector<slave_t> I2CMaster::scanMultiple()
