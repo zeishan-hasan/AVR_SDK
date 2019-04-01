@@ -1,12 +1,5 @@
 #include "avr_sdk.h"
 
-#define HMC5883L_WRITE 0x3C
-#define HMC5883L_READ 0x3D
-
-
-
-
-
 int main(){
 
 	Serial *serial1 = SerialManager::getInstance(SERIAL1);

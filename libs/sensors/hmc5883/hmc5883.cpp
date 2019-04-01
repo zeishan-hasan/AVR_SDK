@@ -35,8 +35,8 @@ compass_t Hmc5883::getData()
 
 void Hmc5883::setSample(SAMPLE_MEASURE sample)
 {
-    self._sample &= ~(0x3 << 5);
-    self |= (sample << 5);
+    self._sample = (SAMPLE_MEASURE)((uint8_t)self._sample & (~(0x3 << 5)));
+    self._sample = (SAMPLE_MEASURE)((uint8_t)self._sample | (sample << 5));
 
     master.start(self._addr.writeAddr);
     master.send(REG_A);

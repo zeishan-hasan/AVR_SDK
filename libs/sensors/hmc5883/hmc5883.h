@@ -137,7 +137,8 @@ enum MEASURE_MODE:uint8_t{
 /*
 The configuration register B for setting the device gain.
 
-CRB0 through CRB7 indicate bit locations, with CRB denoting the bits that are in the configuration register.
+CRB0 through CRB7 indicate bit locations, with CRB denoting the bits that are in the
+configuration register.
 
 CRB7 denotes the first bit of the data stream. The number in parenthesis
 indicates the default value of that bit. CRB default is 0x20.
@@ -207,14 +208,14 @@ enum GAIN:uint8_t{
 // Mode Register
 
 /*
-The mode register is an 8-bit register from which data can be read or to which data can be written. This register is used to
-select the operating mode of the device.
+The mode register is an 8-bit register from which data can be read or to which data can
+be written. This register is used to select the operating mode of the device.
 
 MR0 through MR7 indicate bit locations, with MR denoting the bits that are in the
 mode register.
 
-MR7 denotes the first bit of the data stream. The number in parenthesis indicates the default value of that
-bit. Mode register default is 0x01.
+MR7 denotes the first bit of the data stream. The number in parenthesis indicates the
+default value of that bit. Mode register default is 0x01.
 
 +-------+-----+-----+-----+-----+-----+--------+--------+
 | MR7   | MR6 | MR5 | MR4 | MR3 | MR2 | MR1    | MR0    |
@@ -226,6 +227,7 @@ bit. Mode register default is 0x01.
 | Location   | Name       | Description                                               |
 +------------+------------+-----------------------------------------------------------+
 | MR7 to MR2 | HS         | Set this pin to enable High Speed I2C, 3400kHz.           |
++------------+------------+-----------------------------------------------------------+
 | MR1 to MR0 | MD1 to MD0 | Mode Select Bits. These bits select the operation mode of |
 |            |            | this device.                                              |
 +------------+------------+-----------------------------------------------------------+
@@ -254,9 +256,8 @@ bit. Mode register default is 0x01.
 +-----+-----+-------------------------------------------------------------------------+
 | 1   | 1   | Idle Mode. Device is placed in idle mode.                               |
 +-----+-----+-------------------------------------------------------------------------+
-
-
 */
+
 enum OP_MODE{
     CONTINUOUS_MODE,
     SINGLE_MODE,
@@ -322,10 +323,10 @@ public:
 
 
 private:
-//-------- METHODS --------//
+    //-------- METHODS --------//
     void getHeading();
 
-//-------- VARIABLES --------//
+    //-------- VARIABLES --------//
     hmc5883_t self;
     I2CMaster master;
     compass_t compass;
