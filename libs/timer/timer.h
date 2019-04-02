@@ -40,21 +40,22 @@ struct Time{
         days            = 0;
     }
     //Atm not used
-
-    uint64_t microSeconds;
+    float uSecComma;
+ volatile uint32_t microSeconds;
     uint16_t milliSeconds;
     uint16_t seconds     ;
     uint16_t minutes     ;
     uint16_t hours       ;
     uint16_t days        ;
 };
+
 class Timer{
 public:
     //static Timer* getInstance();
     static void init();
     static void start();
     static void stop();
-    static double now();
+    static uint32_t now();
     static Time _time;
 
 private:

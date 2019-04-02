@@ -94,7 +94,7 @@ void Timer::start()
     if(_isInit == false){
         init();
     }
-    _time.microSeconds	= 8;
+    _time.microSeconds	= 0;
     TCCR0B |= (0 << CS02) |(0 << CS01) | (1 << CS00);
     TCNT0 = 0;
 
@@ -106,9 +106,11 @@ void Timer::stop()
 
 }
 
-double Timer::now()
+uint32_t Timer::now()
 {
-    return ((_time.microSeconds)+(0.0625*TCNT0));
+    //return ((_time.microSeconds)+((1.0/F_CPU*1e6)*TCNT0));
+    //_time.uSecComma = (0.0625*(float)TCNT0);
+    return _time.microSeconds;
 }
 
 
@@ -116,8 +118,10 @@ double Timer::now()
 uint8_t cnt;
 
 ISR(TIMER0_OVF_vect){
+    //PORTB ^= 0x80;
     //Serial *serial1 = SerialManager::getInstance(SERIAL1);
     Timer::_time.microSeconds += 16;
+    //micro += 16.0;
     //if(timer->_time.microSeconds >= 1008){
     //    return;
     //}

@@ -196,9 +196,9 @@ bool Pin::setFreq(uint16_t freq)
 bool Pin::digitalRead()
 {
     if(*_pinx & (1<<_registerBit)){
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
 
 
