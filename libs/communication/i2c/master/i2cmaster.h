@@ -60,9 +60,10 @@ public:
 
     slave_t scan();
     yanujz::vector<slave_t> scanMultiple();
-private:
+
     uint8_t read_sendAck(void);
     uint8_t read_sendNack(void);
+private:
 
 
 

@@ -1,15 +1,14 @@
 #include "avr_sdk.h"
 
 
-
 int main(){
+	Pin pwm(13,OUTPUT);
+	pwm.setPWM(1000,50);
+	pwm.setDuty(70);
+	pwm.setFreq(2000);
 
-	Pin pwm(53,OUTPUT);
-	//pwm.setPWM(15000,75);
 
 	while (1) {
-	pwm.toggle();
-	_delay_us(250);
 	}
 
 	return 0;

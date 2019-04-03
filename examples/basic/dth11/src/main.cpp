@@ -34,6 +34,24 @@ float getAVG(){
 }
 */
 
+uint8_t samples[8*1024];
+int i; // n sample = 8kb * 8
+int byte_i = i/8; // quale byte degli 8kb
+int bit_i = i%8; // [ 0 - 7 ] quale bit, del byte byte_i-esimo
+
+int byte_i = i>>3;
+int bit_i  = i&7;
+
+for(i=0; i<8*1024*8; i++)
+{
+	int byte_i = i>>3;
+	int bit_i  = i&7;
+
+	int v = digitalRead();
+	samples[byte_i] |= (v<<bit_i);
+}
+
+int bit_i = i
 void sample(){
 	//Serial *serial1 = SerialManager::getInstance(SERIAL1);
 	//serial1->printf("Sampling...\r\n");
