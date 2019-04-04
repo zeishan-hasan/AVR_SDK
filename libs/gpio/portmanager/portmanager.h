@@ -1,9 +1,5 @@
 #ifndef PORTMANAGER_H
 #define PORTMANAGER_H
-#ifndef F_CPU
-#define F_CPU 16000000UL
-#endif
-#define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
 #include <avr/io.h>
 #include <stdlib.h>
 #include <avr/iom2560.h>
@@ -14,6 +10,7 @@
 #include <avr/iomxx0_1.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
+#include "macros.h"
 #define _atmega2560 1
 
 #pragma pack(1)
@@ -22,8 +19,13 @@ struct MappedPort{
     uint8_t registerBit;
     uint16_t controlBits;
     //ControlBits explained
-    //|	  13  |	12	 |  11  |   10   |   9  |   8   |   7   |   6  |   5   |   4  |   3  |	  2	   |   1   |   0   |
-    //| isPWM |  Output Compare Sel  |  Letter Sel  | isADC |           ADC_SEL          |  isUART |    UART_SEL   |
+    /*
+    +-------+--------+------+--------+------+-------+-------+------+-------+------+------+---------+-------+-------+
+    |   13  |	12   |  11  |   10   |   9  |   8   |   7   |   6  |   5   |   4  |   3  |    2	   |   1   |   0   |
+    +-------+--------+------+--------+------+-------+-------+------+-------+------+------+---------+-------+-------+
+    | isPWM |    Output Compare Sel  |  Letter Sel  | isADC |           ADC_SEL          |  isUART |    UART_SEL   |
+    +-------+------------------------+--------------+-------+----------------------------+---------+---------------+
+    */
 
 };
 #pragma pop

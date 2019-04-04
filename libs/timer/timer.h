@@ -1,10 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#ifndef F_CPU
-#define F_CPU 16000000
-#endif
-
+#include "macros.h"
 #include <avr/io.h>
 #include <vector.h>
 #include <avr/iom2560.h>

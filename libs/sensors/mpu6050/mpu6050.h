@@ -1,14 +1,10 @@
 #ifndef MPU6050_H
 #define MPU6050_H
 #include "i2cmaster.h"
-#define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
+#include "macros.h"
 
 
-#define SLEEP_BIT 6
-
-
-/*
-GYRO_CONFIG
+/* Register GYRO_CONFIG 0x1B
 
 Description:
     This register is used to trigger gyroscope self-test and configure
@@ -49,8 +45,16 @@ FS_SEL:
     2-bit unsigned value. Selects the full scale range of gyroscopes.
 */
 
-/*
-ACCEL_CONFIG
+#define FS_SEL_BIT 3
+
+enum GYRO_RANGE: uint8_t{
+    MPU6050_GYRO_FS_250,
+    MPU6050_GYRO_FS_500,
+    MPU6050_GYRO_FS_1000,
+    MPU6050_GYRO_FS_2000
+};
+
+/* Register ACCEL_CONFIG 0x1C
 
 Description:
     This register is used to trigger accelerometer self test and configure
@@ -86,8 +90,16 @@ AFS_SEL:
     2-bit unsigned value. Selects the full scale range of accelerometers.
 */
 
-/*
-Register PWR_MGMT_1
+#define AFS_SEL_BIT 3
+
+enum ACCEL_RANGE: uint8_t{
+    MPU6050_RANGE_2G,
+    MPU6050_RANGE_4G,
+    MPU6050_RANGE_8G,
+    MPU6050_RANGE_16G
+};
+
+/* Register PWR_MGMT_1 0x6B
 
 Description:
     This register allows the user to configure the power mode and clock source.
@@ -146,8 +158,24 @@ CLKSEL:
     3-bit unsigned value. Specifies the clock source of the device.
 */
 
-/*
-Register PWR_MGMT_2 0x6C
+#define PWR1_RESET_BIT 7
+#define PWR1_SLEEP_BIT 6
+#define PWR1_CYCLE_BIT 5
+#define PWR1_TEMP_DIS_BIT 3
+
+enum PWR1_CLK_SEL: uint8_t{
+    MPU6050_CLOCK_INTERNAL_8MHZ,
+    MPU6050_CLOCK_PLL_XGYRO,
+    MPU6050_CLOCK_PLL_YGYRO,
+    MPU6050_CLOCK_PLL_ZGYRO,
+    MPU6050_CLOCK_EXTERNAL_32KHZ,
+    MPU6050_CLOCK_EXTERNAL_19MHZ,
+    MPU6050_RESERVED_NOT_USE,
+    MPU6050_CLOCK_KEEP_RESET
+
+};
+
+/* Register PWR_MGMT_2 0x6C
 
 Description:
     This register allows the user to configure the frequency of wake-ups
@@ -190,65 +218,96 @@ STBY_ZG:
 
 */
 
-enum MPU_REG :uint8_t{
-    GYRO_CONFIG = 0x1B, ACCEL_CONFIG = 0x1C,
-    ACCEL_XOUT_H = 0x3B, ACCEL_XOUT_L = 0x3C,
-    ACCEL_YOUT_H = 0x3D, ACCEL_YOUT_L = 0x3E,
-    ACCEL_ZOUT_H = 0x3F, ACCEL_ZOUT_L = 0x40,
-    TEMP_OUT_H = 0x41,  TEMP_OUT_L = 0x42,
-    GYRO_XOUT_H = 0x43, GYRO_XOUT_L = 0x44,
-    GYRO_YOUT_H = 0x45, GYRO_YOUT_L = 0x46,
-    GYRO_ZOUT_H = 0x47, GYRO_ZOUT_L = 0x48,
-    PWR_MGMT_1 = 0x6B, PWR_MGMT_2 = 0x6C,
+#define PWR2_LP_WAKE_CTRL_BIT 6
+#define PWR2_STBY_XA_BIT 5
+#define PWR2_STBY_YA_BIT 4
+#define PWR2_STBY_ZA_BIT 3
+#define PWR2_STBY_XG_BIT 2
+#define PWR2_STBY_YG_BIT 1
+#define PWR2_STBY_ZG_BIT 0
+
+enum LP_WAKE_CTRL: uint8_t{
+    MPU6050_WAKE_FREQ_1P25,
+    MPU6050_WAKE_FREQ_5,
+    MPU6050_WAKE_FREQ_20,
+    MPU6050_WAKE_FREQ_40
 };
 
-enum FS_SEL: uint8_t{
-    _250_DEG_BY_SEC,
-    _500_DEG_BY_SEC,
-    _1000_DEG_BY_SEC,
-    _2000_DEG_BY_SEC,
+
+// MPU6050 Registers
+
+enum MPU_REG :uint8_t{
+    MPU6050_GYRO_CONFIG  = 0x1B, MPU6050_ACCEL_CONFIG = 0x1C,
+    MPU6050_ACCEL_XOUT_H = 0x3B, MPU6050_ACCEL_XOUT_L = 0x3C,
+    MPU6050_ACCEL_YOUT_H = 0x3D, MPU6050_ACCEL_YOUT_L = 0x3E,
+    MPU6050_ACCEL_ZOUT_H = 0x3F, MPU6050_ACCEL_ZOUT_L = 0x40,
+    MPU6050_TEMP_OUT_H   = 0x41, MPU6050_TEMP_OUT_L   = 0x42,
+    MPU6050_GYRO_XOUT_H  = 0x43, MPU6050_GYRO_XOUT_L  = 0x44,
+    MPU6050_GYRO_YOUT_H  = 0x45, MPU6050_GYRO_YOUT_L  = 0x46,
+    MPU6050_GYRO_ZOUT_H  = 0x47, MPU6050_GYRO_ZOUT_L  = 0x48,
+    MPU6050_PWR_MGMT_1   = 0x6B, MPU6050_PWR_MGMT_2   = 0x6C,
 };
-enum AFS_SEL: uint8_t{
-    _2G,
-    _4G,
-    _8G,
-    _16G
+
+
+enum TEMP_UNITS : uint8_t{
+    CELSIUS_DEGREES,
+    FAHRENHEIT_DEGREES,
+    KELVIN_DEGREES
 };
 
 #pragma pack(1)
+struct mpu6050_f
+{
+    mpu6050_f() {}
+    float accelX;
+    float accelY;
+    float accelZ;
+    float temp;
+    float gyroX;
+    float gyroY;
+    float gyroZ;
+};
 struct mpu6050_d
 {
     mpu6050_d(){
-        accelX= 0;
-        accelY= 0;
-        accelZ= 0;
-        temp  = 0;
-        gyroX = 0;
-        gyroY = 0;
-        gyroZ = 0;
+        accelX  = 0;
+        accelY  = 0;
+        accelZ  = 0;
+        temp    = 0;
+        gyroX   = 0;
+        gyroY   = 0;
+        gyroZ   = 0;
     }
-    int16_t accelX;
-    int16_t accelY;
-    int16_t accelZ;
+    int16_t accelX, accelY, accelZ;
     int16_t temp;
-    int16_t gyroX;
-    int16_t gyroY;
-    int16_t gyroZ;
+    int16_t gyroX, gyroY, gyroZ;
 
 };
 
+struct mpu6050_s
+{
+    mpu6050_s(ACCEL_RANGE accel = MPU6050_RANGE_2G, GYRO_RANGE gyro = MPU6050_GYRO_FS_250) {
+        accelCfg = accel;
+        gyroCfg  = gyro;
+    }
+    uint8_t accelCfg;
+    uint8_t gyroCfg;
+};
+
 struct mpu6050_t
-{   mpu6050_t(slave_t addr = slave_t()){
+{
+    mpu6050_t(slave_t addr = slave_t()){
         if(addr.readAddr == 0){
-            _addr.writeAddr = 0xd0;
-            _addr.readAddr = 0xd1;
+            this->addr.writeAddr = 0xd0;
+            this->addr.readAddr = 0xd1;
         }
         else {
-            _addr = addr;
+            this->addr = addr;
         }
     }
-    slave_t _addr;
+    slave_t addr;
     mpu6050_d data;
+    mpu6050_s settings;
 
 };
 #pragma pop
@@ -258,10 +317,21 @@ class Mpu6050
 public:
     Mpu6050(slave_t addr);
     Mpu6050(uint8_t writeAddr =  0xD0, uint8_t readAddr = 0xD1);
-    mpu6050_d getData();
 
     void wakeUp();
     void sleep();
+
+
+    mpu6050_d getRawData();
+    mpu6050_f getDataFixed(TEMP_UNITS unit);
+
+
+    void setAccelRange(ACCEL_RANGE range =  MPU6050_RANGE_2G);
+    ACCEL_RANGE getAccelRange();
+
+    void setGyroRange(GYRO_RANGE range = MPU6050_GYRO_FS_250);
+    GYRO_RANGE getGyroRange();
+
 private:
     I2CMaster master;
     mpu6050_t self;

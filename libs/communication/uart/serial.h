@@ -1,19 +1,14 @@
 #ifndef SERIAL_H
 #define SERIAL_H
-#ifndef F_CPU
-#define F_CPU 16000000UL
-#endif
-#define BAUD 9600
-#define MYUBRR(x) (F_CPU/16/x-1)
-#define MAX_SERIAL_BUFFER 256
-#define ABS(N) ((N<0)?(-N):(N))
-#include <cppfix.h>
+#include "macros.h"
+#include "cppfix.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
 #include <avr/iom2560.h>
 #include <stdio.h>
 #include "vector.h"
+
 typedef void ser_cb_t();
 #define _atmega2560 1
 //#define _atmega328p 1

@@ -1,8 +1,8 @@
 #include "avr_sdk.h"
-static Pin pin(22,INPUT);
+//static Pin pin(22,INPUT);
 
-const size_t size = 1024;
-static volatile uint8_t *state;
+//const size_t size = 1024;
+//static volatile uint8_t *state;
 //static volatile uint32_t time[1024];
 
 /*
@@ -33,7 +33,7 @@ float getAVG(){
 	return asd;
 }
 */
-
+/*
 uint8_t samples[8*1024];
 int i; // n sample = 8kb * 8
 int byte_i = i/8; // quale byte degli 8kb
@@ -49,7 +49,6 @@ for(i=0; i<8*1024*8; i++)
 
 	int v = digitalRead();
 	samples[byte_i] |= (v<<bit_i);
-}
 
 int bit_i = i
 void sample(){
@@ -64,6 +63,7 @@ void sample(){
 	//serial1->printf("Done\r\n");
 }
 
+}*/
 int main(){
 
 	Timer::start();
@@ -73,15 +73,18 @@ int main(){
 
 
 
-	//Dht11 dht11(22);
+	Dht11 dht11(22);
 	DDRB = 0x80;
 	//Pin pin(38,INPUT);
 	serial1->clear();
 	serial1->printf("Setup complete\r\n");
 
 	uint16_t i = 0;
+	//dht11.getTemperature();
 	//sample();
 	while (1) {
+		dht11.startContition();
+		_delay_ms(2000);
 		//serial1->clear();
 
 		//i = 0;
@@ -91,17 +94,17 @@ int main(){
 		//	++i;
 		//}
 		//deltaT_high = pulseIn();
-		state = new uint8_t[4096];
-		if(serial1->isAvailable()){
-			char temp = serial1->receive();
-			if(temp == 'n'){
-				serial1->printf("Time : %lu State : %u\r\n",state[i]);
-				++i;
-			}
-			if(temp == 's'){
-				sample();
-			}
-		}
+//		state = new uint8_t[4096];
+//		if(serial1->isAvailable()){
+//			char temp = serial1->receive();
+//			if(temp == 'n'){
+//				serial1->printf("Time : %lu State : %u\r\n",state[i]);
+//				++i;
+//			}
+//			if(temp == 's'){
+//				sample();
+//			}
+//		}
 
 		//avg = 0;
 

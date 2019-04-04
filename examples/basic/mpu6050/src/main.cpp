@@ -2,27 +2,35 @@
 
 int main(){
 
-	Mpu6050 mpu6050;
 	Serial *serial1 = SerialManager::getInstance(SERIAL1);
 	serial1->init(BAUD_1000000,_LOW_PRIORITY);
 	serial1->setRxISRCallBack(false);
 	serial1->setEchoServer(false);
 
-	//I2CMaster master;
-	//master.enable(SCL_100KHZ);
-
-	//slave_t slave = master.scan();
-	mpu6050_d data;
 	serial1->clear();
-	serial1->printf("Setup complete\r\n");
-	//	serial1->printf("Slave addr : r 0x%x, w 0x%x\r\n ",slave.readAddr,slave.writeAddr);
+	Pin pin(13,OUTPUT);
+	pin.setPWM(1000,50);
+
+	Mpu6050 mpu6050;
+	mpu6050.setAccelRange();
+	mpu6050.setGyroRange();
 	mpu6050.wakeUp();
+
+	serial1->printf("Setup complete\r\n");
 	while (1) {
 		serial1->clear();
-		data = mpu6050.getData();
-		//serial1->printf("accel :%d\r\n",data.accelX);
-		serial1->printf("temp :%.02f giroX: %d\r\n",data.temp/340.00+36.53, data.gyroX);
-		_delay_ms(10);
+
+		serial1->printf("Accel x %f\r\n",mpu6050.getAccX());
+		serial1->printf("Accel y %f\r\n",mpu6050.getAccY());
+		serial1->printf("Accel z %f\r\n",mpu6050.getAccZ());
+
+		serial1->printf("Gyro x %f\r\n",mpu6050.getGyroX());
+		serial1->printf("Gyro y %f\r\n",mpu6050.getGyroY());
+		serial1->printf("Gyro z %f\r\n",mpu6050.getGyroZ());
+		serial1->printf("Temp : %f\r\n", mpu6050.getTemp(FAHRENHEIT_DEGREES));
+
+
+		_delay_ms(100);
 	}
 
 	return 0;

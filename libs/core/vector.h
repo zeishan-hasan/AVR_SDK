@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
-
+#include "macros.h"
 
 namespace yanujz {
 template<class T> class vector {

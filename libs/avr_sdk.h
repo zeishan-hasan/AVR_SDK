@@ -4,6 +4,7 @@
 #include "gpio/interrupt/interrupt.h"
 #include "core/vector.h"
 #include "core/cppfix.h"
+#include "core/macros.h"
 #include "timer/timer.h"
 #include "communication/spi/spi.h"
 #include "communication/uart/serial.h"
