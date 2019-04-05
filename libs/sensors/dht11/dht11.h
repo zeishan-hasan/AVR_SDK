@@ -7,8 +7,12 @@
 struct dht11_t
 {
     Pin pin;
-    uint8_t temperature;
     uint8_t humidity;
+    uint8_t humidity_float;
+    uint8_t temperature;
+    uint8_t temperature_float;
+    uint8_t crc;
+
 };
 class Dht11
 {
@@ -18,14 +22,16 @@ public:
     Dht11(uint8_t pin);
     Dht11(dht11_t dht11);
 
+
+
     uint8_t getTemperature();
     uint8_t getHumidity();
 
-    inline bool startContition();
+    bool startContition();
+    void getData();
+    bool checkCrc();
 private:
     //-------- METHODS --------//
-    bool checkCrc();
-    void getData();
 
     //-------- VARIABLES --------//
 

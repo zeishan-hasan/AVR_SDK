@@ -82,8 +82,11 @@ void Timer::init()
 
     TCCR0A  = 0;    // Setting 0 means that the timer will reach the overflow
     TCCR0B  = 0;
-    TCNT0   = 0;		// Set counter to 0
+    TCNT0   = 255;		// Set counter to 0
+    OCR0A   = 255;
     TIMSK0  = (1<<TOIE0);	// Set the ISR OVF vect
+
+
     sei();
     _isInit = true;
 
@@ -96,7 +99,7 @@ void Timer::start()
     }
     _time.microSeconds	= 0;
     TCCR0B |= (0 << CS02) |(0 << CS01) | (1 << CS00);
-    TCNT0 = 0;
+    //TCNT0   = 255;
 
 }
 
@@ -110,38 +113,18 @@ uint32_t Timer::now()
 {
     //return ((_time.microSeconds)+((1.0/F_CPU*1e6)*TCNT0));
     //_time.uSecComma = (0.0625*(float)TCNT0);
-    return _time.microSeconds;
+    return (_time.microSeconds);
 }
 
-
-
-uint8_t cnt;
-
 ISR(TIMER0_OVF_vect){
-    //PORTB ^= 0x80;
-    //Serial *serial1 = SerialManager::getInstance(SERIAL1);
-    Timer::_time.microSeconds += 16;
-    //micro += 16.0;
-    //if(timer->_time.microSeconds >= 1008){
-    //    return;
-    //}
-    //serial1->printf("Now : %u\r\n",timer->_time.microSeconds);
-
-    //    if(++cnt != 63){
-    //        return;
-    //    }
-    //PORTB ^= 0X80;
-    //cnt = 0;
-    //timer->_time.microSeconds = 8;
-    //timer->_time.milliSeconds++;
-    //
-    //if(timer->_time.milliSeconds == 1000){
-    //    timer->_time.milliSeconds = 0;
-    //    timer->_time.seconds++;
-    //}
-    //if(timer->_time.seconds == 60){
-    //    timer->_time.seconds = 0;
-    //    timer->_time.minutes++;
-    //}
+    asm volatile("LDS r17,0x22\n\t"
+                 "EOR r17,r19\n\t"
+                 "STS 0x22,r17\n\t"
+                );
+    //PORTA ^= 0x1;
+    Timer::_time.microSeconds++;
+    asm volatile ("LDI r16,255\n\t"
+                  "STS 0x46,R16 \n\t"
+                  );
 }
 //---------End Timer Class---------//

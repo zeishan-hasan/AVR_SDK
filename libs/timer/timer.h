@@ -29,21 +29,21 @@ private:
 
 struct Time{
     Time(){
-        microSeconds    = 8;
-        milliSeconds    = 0;
-        seconds         = 0;
-        minutes         = 0;
-        hours           = 0;
-        days            = 0;
+        microSeconds    = 0;
+       // milliSeconds    = 0;
+       // seconds         = 0;
+       // minutes         = 0;
+       // hours           = 0;
+       // days            = 0;
     }
     //Atm not used
-    float uSecComma;
- volatile uint32_t microSeconds;
-    uint16_t milliSeconds;
+    //float uSecComma;
+    uint32_t microSeconds;
+    /*uint16_t milliSeconds;
     uint16_t seconds     ;
     uint16_t minutes     ;
     uint16_t hours       ;
-    uint16_t days        ;
+    uint16_t days        ;*/
 };
 
 class Timer{
