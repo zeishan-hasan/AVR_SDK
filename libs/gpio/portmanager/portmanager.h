@@ -36,9 +36,9 @@ struct MappedPort{
 #define _TIMER3 0x03
 #define _TIMER4 0x04
 #define _TIMER5 0x05
-#define _A		0x00
-#define _B		0x01
-#define _C		0x02
+#define _A	0x00
+#define _B	0x01
+#define _C	0x02
 #define _UART0	0x00
 #define _UART1	0x01
 #define _UART2	0x02
@@ -149,10 +149,10 @@ enum Analogx:uint8_t{
 };
 
 enum _ADMUX:uint8_t{
-    INTERNAL_VREF		= (0<<REFS1) | (0<<REFS0), // AREF,Internal VREF turned OFF
-    AVCC						= (0<<REFS1) | (1<<REFS0), // AVCC at AREF Pin with external capacitor
-    INTERNAL_1_1V		= (1<<REFS1) | (0<<REFS0), // Internal 1.1Voltage reference with external capacitor at AREF pin
-    INTERNAL_2_56V	= (1<<REFS1) | (1<<REFS0), // Internal 2.56Voltage reference with external capacitor at AREF pin
+    INTERNAL_VREF   = (0<<REFS1) | (0<<REFS0), // AREF,Internal VREF turned OFF
+    AVCC            = (0<<REFS1) | (1<<REFS0), // AVCC at AREF Pin with external capacitor
+    INTERNAL_1_1V   = (1<<REFS1) | (0<<REFS0), // Internal 1.1Voltage reference with external capacitor at AREF pin
+    INTERNAL_2_56V  = (1<<REFS1) | (1<<REFS0), // Internal 2.56Voltage reference with external capacitor at AREF pin
 };
 enum _ADCSRA_PRESCALER:uint8_t{
     F_CPU_BY_2		= (0<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
@@ -165,28 +165,28 @@ enum _ADCSRA_PRESCALER:uint8_t{
 };
 
 enum _ADCSRB_AUTOTRIGGER:uint8_t{
-    FREE_RUNNING_MODE					= (0<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
-    ANALOG_COMPARATOR					= (0<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
+    FREE_RUNNING_MODE           = (0<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
+    ANALOG_COMPARATOR           = (0<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
     EXTERNAL_INTERRUPT_REQ_0	= (0<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
-    TNCT0_COMP_A							= (0<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
-    TNCT0_OVERFLOW						= (1<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
-    TNCT1_COMP_B							= (1<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
-    TNCT1_OVERFLOW						= (1<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
-    TNCT1_CAPTURE_EVENT				= (1<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
+    TNCT0_COMP_A		= (0<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
+    TNCT0_OVERFLOW		= (1<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
+    TNCT1_COMP_B		= (1<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
+    TNCT1_OVERFLOW		= (1<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
+    TNCT1_CAPTURE_EVENT		= (1<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
 };
 
 struct PWM_8BIT{
     volatile uint8_t *TCCRxA = (volatile uint8_t *)0xFF;
     volatile uint8_t *TCCRxB = (volatile uint8_t *)0xFF;
-    volatile uint8_t *TCNTx	 = (volatile uint8_t *)0xFF;
-    volatile uint8_t *OCRx	 = (volatile uint8_t *)0xFF;
+    volatile uint8_t *TCNTx  = (volatile uint8_t *)0xFF;
+    volatile uint8_t *OCRx   = (volatile uint8_t *)0xFF;
     //volatile uint8_t *OCRxA;
     //volatile uint8_t *OCRxB;
 };
 
 struct PWM_16BIT : PWM_8BIT {
     volatile uint8_t *TCCRxC = (volatile uint8_t *)0xFF;
-    volatile uint8_t *ICRx	= (volatile uint8_t *)0xFF;
+    volatile uint8_t *ICRx   = (volatile uint8_t *)0xFF;
 };
 enum _LOCAL_CTRL_BITS:uint8_t{
     _PWM_8BIT = 0x2, _PWM_16BIT = 0x3, _ADC = 0x4
@@ -203,7 +203,7 @@ public:
 
     void setDirection(DDRx direction);
 
-    bool setPWM(uint16_t freq, uint8_t duty = 50);
+    bool setPWM(uint32_t freq, uint8_t duty = 50);
     bool setDuty(uint8_t duty);
     bool setFreq(uint16_t freq);
     bool stopPWM();
@@ -235,7 +235,7 @@ private:
     uint16_t _duty_pwm;
     uint16_t _controlBits;
 
-    uint16_t calculateTicks(uint16_t freq);
+    uint16_t calculateTicks(uint32_t freq);
 
     uint8_t _pinNumber;
 };

@@ -120,7 +120,7 @@ ISR(TIMER0_OVF_vect){
     asm volatile("LDS r17,0x22\n\t"
                  "EOR r17,r19\n\t"
                  "STS 0x22,r17\n\t"
-                );
+                 );
     //PORTA ^= 0x1;
     Timer::_time.microSeconds++;
     asm volatile ("LDI r16,255\n\t"

@@ -25,11 +25,11 @@ Pin::Pin(uint8_t portNo, DDRx direction)
         /*CHANNEL_15*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0)
     };
 
-    _pinx		=	(volatile uint8_t*)pgm_read_word(&_flashMappedPort[portNo].pinx);
-    _ddrx		=	(volatile uint8_t*)( _pinx + 1);
-    _portx              =	(volatile uint8_t*)( _pinx + 2);
-    _registerBit	=	pgm_read_byte( &_flashMappedPort[portNo].registerBit );
-    _controlBits	=	pgm_read_word( &_flashMappedPort[portNo].controlBits );
+    _pinx		= (volatile uint8_t*)pgm_read_word(&_flashMappedPort[portNo].pinx);
+    _ddrx		= (volatile uint8_t*)( _pinx + 1);
+    _portx              = (volatile uint8_t*)( _pinx + 2);
+    _registerBit	= pgm_read_byte( &_flashMappedPort[portNo].registerBit );
+    _controlBits	= pgm_read_word( &_flashMappedPort[portNo].controlBits );
     _pinNumber		= portNo;
     if(pgm_read_word(&_flashMappedPort[portNo].controlBits) & (1<<isPWM)){
         uint16_t temp = (pgm_read_word(&_flashMappedPort[portNo].controlBits) & (0x7<<OUT_CMP_SEL)) >> OUT_CMP_SEL;
@@ -105,7 +105,7 @@ void Pin::setDirection(DDRx direction)
 
 }
 
-bool Pin::setPWM(uint16_t freq, uint8_t duty)
+bool Pin::setPWM(uint32_t freq, uint8_t duty)
 {
     //FIXME  REMOVE 8_BIT TIMER
     switch (_local_ctrl_bits) {
@@ -128,9 +128,9 @@ bool Pin::setPWM(uint16_t freq, uint8_t duty)
     //	*_pwm_8BIT.TCCRxB |= (0 << CS12) | (0 << CS11) | (1 << CS10);	// Setting prescaler to 1, so F_CPU
     //	break;
     case _PWM_16BIT:
-        _freq_pwm=calculateTicks(freq);
-        _duty_pwm=_freq_pwm-(_freq_pwm*((float)duty/100));
-        *((volatile uint16_t*)_pwm_16BIT.ICRx)=_freq_pwm;
+        _freq_pwm = calculateTicks(freq);
+        _duty_pwm = _freq_pwm-(_freq_pwm*((float)duty/100));
+        *((volatile uint16_t*)_pwm_16BIT.ICRx) = _freq_pwm;
         switch( (_controlBits & (0x3<<LETTER_SEL) )>>LETTER_SEL){
         case 0:
             _pwm_16BIT.OCRx = (volatile uint8_t*)_pwm_16BIT.ICRx + 2;
@@ -145,7 +145,7 @@ bool Pin::setPWM(uint16_t freq, uint8_t duty)
             *_pwm_16BIT.TCCRxA |= (1<<3) | (1<<2) ;
             break;
         };
-        *((volatile uint16_t*)_pwm_16BIT.OCRx)=_duty_pwm;
+        *((volatile uint16_t*)_pwm_16BIT.OCRx) = _duty_pwm;
 
         *_pwm_16BIT.TCCRxA  |= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
         *_pwm_16BIT.TCCRxB  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
@@ -225,7 +225,7 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 
     while(ADCSRA & (1<<ADIF) == 0);
 
-    ADCSRB	 = (_adcsrb_adxmux_reg >> 8);
+    ADCSRB = (_adcsrb_adxmux_reg >> 8);
 
     ADMUX = (_adcsrb_adxmux_reg & 0xFF);
 
@@ -296,7 +296,7 @@ volatile uint8_t* Pin::getPINxAddr()
     return _pinx;
 }
 
-uint16_t Pin::calculateTicks(uint16_t freq)
+uint16_t Pin::calculateTicks(uint32_t freq)
 {
     return (1.0/freq)/(1.0/F_CPU);
 }
