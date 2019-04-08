@@ -49,7 +49,7 @@ ota:
 # Local upload
 upload: createdir $(CXX_OBJS) main.elf app
 	@killall hexdump putty 2>/dev/null || true
-	@avrdude -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
+	@avrdude -q -v -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
 #
 app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
@@ -59,7 +59,7 @@ main.elf: $(CXX_OBJS)
 # Show Memory Usage
 size:
 	@echo ''
-	@avr-size -C --mcu=$(MICROCONTROLLER) $(BUILD_DIR)/main.elf
+	@avr-size --format=avr  -C --mcu=$(MICROCONTROLLER) $(BUILD_DIR)/main.elf
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
