@@ -70,6 +70,7 @@ asm volatile("LDI r19,0x1\n\t"
 
 int main(){
 
+	Pin asd(13,OUTPUT);
 	DDRA = 0x1;
 	asm volatile("LoopBegin:\n\t"
 														//"EOR r17,r19\n\t"
