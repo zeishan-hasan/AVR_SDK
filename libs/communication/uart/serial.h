@@ -123,10 +123,10 @@ private:
     Serial1(): Serial() {
         self.UCSRxA = (volatile uint8_t*)&UCSR1A;
         self.UCSRxB = (volatile uint8_t*)&UCSR1B;
-        self.UCSRxC	= (volatile uint8_t*)&UCSR1C;
+        self.UCSRxC = (volatile uint8_t*)&UCSR1C;
         self.UBRRxH = (volatile uint8_t*)&UBRR1H;
         self.UBRRxL = (volatile uint8_t*)&UBRR1L;
-        self.UDRx		= (volatile uint8_t*)&UDR1;
+        self.UDRx   = (volatile uint8_t*)&UDR1;
     }
 
 };
@@ -138,10 +138,10 @@ private:
     Serial2(): Serial() {
         self.UCSRxA = (volatile uint8_t*)&UCSR2A;
         self.UCSRxB = (volatile uint8_t*)&UCSR2B;
-        self.UCSRxC	= (volatile uint8_t*)&UCSR2C;
+        self.UCSRxC = (volatile uint8_t*)&UCSR2C;
         self.UBRRxH = (volatile uint8_t*)&UBRR2H;
         self.UBRRxL = (volatile uint8_t*)&UBRR2L;
-        self.UDRx		= (volatile uint8_t*)&UDR2;
+        self.UDRx   = (volatile uint8_t*)&UDR2;
     }
 
 };
@@ -152,10 +152,10 @@ private:
     Serial3(): Serial() {
         self.UCSRxA = (volatile uint8_t*)&UCSR3A;
         self.UCSRxB = (volatile uint8_t*)&UCSR3B;
-        self.UCSRxC	= (volatile uint8_t*)&UCSR3C;
+        self.UCSRxC = (volatile uint8_t*)&UCSR3C;
         self.UBRRxH = (volatile uint8_t*)&UBRR3H;
         self.UBRRxL = (volatile uint8_t*)&UBRR3L;
-        self.UDRx		= (volatile uint8_t*)&UDR3;
+        self.UDRx   = (volatile uint8_t*)&UDR3;
     }
 
 
@@ -165,8 +165,8 @@ class SerialManager
 {
 public:
     static Serial* getInstance(SerialPort port){
-        static Serial* instance[MAX_SERIAL];
-        if (instance[port] == 0)
+        static Serial* instance[4] = {nullptr};
+        if (instance[port] == nullptr)
         {
             switch (port) {
             case SERIAL0:

@@ -1,11 +1,11 @@
 #include "serial.h"
 #include <string.h>
-
+#include <math.h>
 
 void Serial::init(UART baud, SerialPriority priority)
 {
-    *self.UBRRxH = MYUBRR(baud)>>8;
-    *self.UBRRxL = (uint8_t)(MYUBRR(baud));
+    *self.UBRRxH = (uint8_t)MYUBRR(baud)>>8;
+    *self.UBRRxL = (uint8_t)round((MYUBRR(baud)));
     // Enable receiver and transmitter //
     *self.UCSRxB = (1<<RXEN0)|(1<<TXEN0);
     // Set frame format: 8data, 1stop bit //
@@ -217,13 +217,15 @@ ISR(USART2_RX_vect){
 }
 ISR(USART3_RX_vect){
     Serial *serial3 = SerialManager::getInstance(SERIAL3);
-    char temp = UDR3;
+    uint8_t temp = UDR3;
     serial3->insertData(temp);
     if(serial3->echoIsEnabled()){
         UDR3 = temp;
     }
     serial3->rxCallBack();
-
+    //Serial *serial0 = SerialManager::getInstance(SERIAL0);
+    //serial0->printf("Data received :0x%x\r\n",temp);
+    UDR0 = temp;
 }
 
 

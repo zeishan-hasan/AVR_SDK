@@ -9,7 +9,7 @@
 
 #define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
 #define BAUD 9600
-#define MYUBRR(x) (F_CPU/16/x-1)
+#define MYUBRR(x) (F_CPU/16/(float)x-1)
 
 #define MAX_SERIAL_BUFFER 256
 #define MAX_SPI_BUFFER 256
