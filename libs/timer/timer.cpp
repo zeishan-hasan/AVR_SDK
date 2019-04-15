@@ -80,10 +80,10 @@ bool Timer::_isInit = false;
 void Timer::init()
 {
 
-    TCCR0A  = 0;    // Setting 0 means that the timer will reach the overflow
+    TCCR0A  = (1<<WGM01);    // Setting 0 means that the timer will reach the overflow
     TCCR0B  = 0;
-    TCNT0   = 255;		// Set counter to 0
-    OCR0A   = 255;
+    TCNT0   = 0;		// Set counter to 0
+    OCR0A   = 15;
     TIMSK0  = (1<<TOIE0);	// Set the ISR OVF vect
 
 
@@ -115,16 +115,15 @@ uint32_t Timer::now()
     //_time.uSecComma = (0.0625*(float)TCNT0);
     return (_time.microSeconds);
 }
+volatile uint32_t __microSecond = 0;
+uint32_t micros()
+{
+    return __microSecond*0.0625;
 
-ISR(TIMER0_OVF_vect){
-    asm volatile("LDS r17,0x22\n\t"
-                 "EOR r17,r19\n\t"
-                 "STS 0x22,r17\n\t"
-                 );
-    //PORTA ^= 0x1;
-    Timer::_time.microSeconds++;
-    asm volatile ("LDI r16,255\n\t"
-                  "STS 0x46,R16 \n\t"
-                  );
 }
+
+ISR(TIMER0_COMPA_vect){
+    ++__microSecond;
+}
+
 //---------End Timer Class---------//

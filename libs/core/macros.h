@@ -4,6 +4,11 @@
 #define F_CPU 16000000UL
 #endif
 
+#define u8t uint8_t
+#define u16t uint16_t
+#define u32t uint32_t
+#define u64_t uint64_t
+
 
 
 
@@ -18,7 +23,12 @@
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
 #define is_bit_on(var, i) ((var)&(1<<(i)))
 
-
+#define toU8(x)     (static_cast<uint8_t>(x) )
+#define toU16(x)    (static_cast<uint16_t>(x))
+#define toU32(x)    (static_cast<uint32_t>(x))
+#define toU64(x)    (static_cast<uint64_t>(x))
+#define toFloat(x)  (static_cast<float>(x)   )
+#define toDouble(x) (static_cast<double>(x)  )
 
 
 

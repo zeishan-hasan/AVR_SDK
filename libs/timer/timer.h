@@ -61,4 +61,9 @@ private:
 };
 
 
+
+
+
+uint32_t micros();
+
 #endif // TIMER_H
