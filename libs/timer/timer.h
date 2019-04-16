@@ -7,6 +7,7 @@
 #include <avr/iom2560.h>
 #include <avr/interrupt.h>
 #include <serial.h>
+#include <util/atomic.h>
 /*
 typedef void func(void);
 class Scheduler
@@ -62,8 +63,5 @@ private:
 
 
 
-
-
 uint32_t micros();
-
 #endif // TIMER_H

@@ -1,0 +1,39 @@
+
+isr.o:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <__vector_22>:
+   0:	8f 93       	push	r24
+   2:	8f b7       	in	r24, 0x3f	; 63
+   4:	8f 93       	push	r24
+   6:	ff 93       	push	r31
+   8:	ef 93       	push	r30
+   a:	e0 e0       	ldi	r30, 0x00	; 0
+   c:	f0 e0       	ldi	r31, 0x00	; 0
+   e:	80 81       	ld	r24, Z
+  10:	80 30       	cpi	r24, 0x00	; 0
+  12:	01 f4       	brne	.+0      	; 0x14 <__vector_22+0x14>
+  14:	86 e0       	ldi	r24, 0x06	; 6
+
+00000016 <adder>:
+  16:	8f 4f       	sbci	r24, 0xFF	; 255
+  18:	81 93       	st	Z+, r24
+  1a:	80 81       	ld	r24, Z
+  1c:	00 f4       	brcc	.+0      	; 0x1e <adder+0x8>
+  1e:	ef 91       	pop	r30
+  20:	ff 91       	pop	r31
+  22:	8f 91       	pop	r24
+  24:	8f bf       	out	0x3f, r24	; 63
+  26:	8f 91       	pop	r24
+  28:	18 95       	reti
+
+Disassembly of section .bss:
+
+00000000 <ovfl_count>:
+	...
+
+00000001 <__system_time>:
+   1:	00 00       	nop
+	...

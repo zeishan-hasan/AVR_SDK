@@ -67,6 +67,7 @@ ISR(TIMER2_OVF_vect){
 
 Time Timer::_time;
 bool Timer::_isInit = false;
+volatile u8t __microSecond = 0;
 
 //Timer *Timer::getInstance()
 //{
@@ -80,13 +81,13 @@ bool Timer::_isInit = false;
 void Timer::init()
 {
 
-    TCCR0A  = (1<<WGM01);    // Setting 0 means that the timer will reach the overflow
+    TCCR0A  = 0;
     TCCR0B  = 0;
-    TCNT0   = 0;		// Set counter to 0
-    OCR0A   = 15;
-    TIMSK0  = (1<<TOIE0);	// Set the ISR OVF vect
-
-
+    TCNT0   = 0;
+    OCR0A   = 255;
+    TCCR0A |= (0 << COM0A1) | (0 << COM0A0)|( 1 << WGM01);
+    TCCR0B |= (0 << FOC0A) | (0 << CS02) | (0 << CS01) | (0 << CS00);
+    TIMSK0  = (0 << TOIE0) | (1 << OCIE0A);
     sei();
     _isInit = true;
 
@@ -109,21 +110,31 @@ void Timer::stop()
 
 }
 
-uint32_t Timer::now()
+u32t Timer::now()
 {
     //return ((_time.microSeconds)+((1.0/F_CPU*1e6)*TCNT0));
     //_time.uSecComma = (0.0625*(float)TCNT0);
-    return (_time.microSeconds);
+    return __microSecond;
 }
-volatile uint32_t __microSecond = 0;
+extern uint32_t __system_time;
 uint32_t micros()
 {
-    return __microSecond*0.0625;
+    ATOMIC_BLOCK(ATOMIC_FORCEON){
+        //Serial *serial0 = SerialManager::getInstance(SERIAL0);
+        //serial0->printf("Dentro micros\r\n");
+        return __system_time;
+    }
 
 }
 
-ISR(TIMER0_COMPA_vect){
-    ++__microSecond;
-}
+//ISR(TIMER0_COMPA_vect){
+//    asm volatile("inc %0\n\t"
+//                 :
+//                 :"r"(__microSecond));
+//    //ATOMIC_BLOCK(ATOMIC_FORCEON){
+//
+//        //PORTB ^= 0X1;
+//    //}
+//}
 
 //---------End Timer Class---------//
