@@ -18,14 +18,17 @@
 .section .text
 #define tmp8 r24 
 
-.global __vector_22
-__vector_22:
+.global TIMER0_COMPA_vect
+TIMER0_COMPA_vect:
     push r24
     in r24, 0x3F
     push r24                        ; save SREG
     push ZH
     push ZL
-
+    ldi r16,0xFF
+    in r17,PORTB
+    eor r16,r17
+    out PORTB,r16
     ldi ZL, lo8(ovfl_count)
     ldi ZH, hi8(ovfl_count)
     ld r24, Z                       ; load seconds fraction
@@ -42,4 +45,10 @@ adder:
     pop r24
     out 0x3F, r24
     pop r24
+reti
+
+
+
+.global __vector_default                ; Note [10]
+__vector_default:
 reti
