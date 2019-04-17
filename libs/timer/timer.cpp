@@ -116,23 +116,27 @@ u32t Timer::now()
     //_time.uSecComma = (0.0625*(float)TCNT0);
     return __microSecond;
 }
-extern uint32_t __system_time;
-uint32_t micros()
+extern u32t __system_time;
+extern u16t ovfl_count;
+uint16_t micros()
 {
     ATOMIC_BLOCK(ATOMIC_FORCEON){
         //Serial *serial0 = SerialManager::getInstance(SERIAL0);
         //serial0->printf("Dentro micros\r\n");
-        return __system_time;
+        return ovfl_count;
     }
 
 }
 
 //ISR(TIMER0_COMPA_vect){
-//    asm volatile("inc %0\n\t"
-//                 :
-//                 :"r"(__microSecond));
+//    //asm volatile("inc %0\n\t"
+//    //             "ldi r16,0x12"
+//    //             :
+//    //             :"r"(__microSecond));
+//    asm volatile("ldi r16,98\n\t"
+//                 "sts 0XCE,r16");
 //    //ATOMIC_BLOCK(ATOMIC_FORCEON){
-//
+
 //        //PORTB ^= 0X1;
 //    //}
 //}

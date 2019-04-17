@@ -63,5 +63,5 @@ private:
 
 
 
-uint32_t micros();
+uint16_t micros();
 #endif // TIMER_H

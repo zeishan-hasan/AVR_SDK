@@ -22,7 +22,7 @@ Pin::Pin(uint8_t portNo, DDRx direction)
         /*CHANNEL_12*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (0<<MUX0),
         /*CHANNEL_13*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (1<<MUX0),
         /*CHANNEL_14*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (0<<MUX0),
-        /*CHANNEL_15*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0)
+        /*CHANNEL_15*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0),
     };
 
     _pinx		= (volatile uint8_t*)pgm_read_word(&_flashMappedPort[portNo].pinx);
