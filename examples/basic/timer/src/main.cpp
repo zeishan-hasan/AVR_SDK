@@ -9,7 +9,7 @@ int main(){
 
 
 		/* Intializes random number generator */
-		srand((unsigned) time(&t));
+	srand((unsigned) time(&t));
 	DDRB = 0x80;
 
 	TCCR0A  = 0;

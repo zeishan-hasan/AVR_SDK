@@ -19,6 +19,7 @@
 
 
 .section .text
+
 #define tmp8 r24
 ;.dseg
 ;var1:  .BYTE 2 ; reserve 1 byte to var1
@@ -40,8 +41,6 @@ __vector_default:
     ldi r16,99
     sts 0XCE,r16
 reti
-
-
 
 
 
