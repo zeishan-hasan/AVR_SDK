@@ -1,5 +1,6 @@
 SRC_DIR 	= src
 BUILD_DIR 	= build
+ASM_DIR 	= $(BUILD_DIR)/asm
 FIRMW_DIR 	= firmware
 LIBS_DIR	= libs
 
@@ -67,6 +68,8 @@ size:
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
 	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
+	
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"
 	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
@@ -80,6 +83,7 @@ createdir: $(BUILD_DIR) $(FIRMW_DIR)
 
 $(BUILD_DIR):
 	@mkdir -p $@
+	@mkdir -p $(ASM_DIR)
 $(FIRMW_DIR):
 	@mkdir -p $@
 
