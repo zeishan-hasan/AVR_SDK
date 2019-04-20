@@ -397,35 +397,12 @@ _ZN7Mpu605012getDataFixedE10TEMP_UNITS:
 	call __addsf3
 	ldi r31,lo8(1)
 	cp r13,r31
-	breq .L8
-	cp r13,r31
-	brlo .L11
+	breq .L7
+	tst r13
+	breq .L11
 	ldi r18,lo8(2)
-	cpse r13,r18
-	rjmp .L6
-	ldi r18,lo8(51)
-	ldi r19,lo8(-109)
-	ldi r20,lo8(-120)
-	ldi r21,lo8(67)
-	rjmp .L12
-.L8:
-	ldi r18,lo8(102)
-	ldi r19,lo8(102)
-	ldi r20,lo8(-26)
-	ldi r21,lo8(63)
-	call __mulsf3
-	ldi r18,0
-	ldi r19,0
-	ldi r20,0
-	ldi r21,lo8(66)
-.L12:
-	call __addsf3
-.L11:
-	movw r30,r16
-	std Z+12,r22
-	std Z+13,r23
-	std Z+14,r24
-	std Z+15,r25
+	cp r13,r18
+	breq .L9
 .L6:
 	movw r24,r16
 /* epilogue start */
@@ -443,6 +420,31 @@ _ZN7Mpu605012getDataFixedE10TEMP_UNITS:
 	pop r14
 	pop r13
 	ret
+.L7:
+	ldi r18,lo8(102)
+	ldi r19,lo8(102)
+	ldi r20,lo8(-26)
+	ldi r21,lo8(63)
+	call __mulsf3
+	ldi r18,0
+	ldi r19,0
+	ldi r20,0
+	ldi r21,lo8(66)
+.L12:
+	call __addsf3
+.L11:
+	movw r30,r16
+	std Z+12,r22
+	std Z+13,r23
+	std Z+14,r24
+	std Z+15,r25
+	rjmp .L6
+.L9:
+	ldi r18,lo8(51)
+	ldi r19,lo8(-109)
+	ldi r20,lo8(-120)
+	ldi r21,lo8(67)
+	rjmp .L12
 	.size	_ZN7Mpu605012getDataFixedE10TEMP_UNITS, .-_ZN7Mpu605012getDataFixedE10TEMP_UNITS
 .global	_ZN7Mpu605013setAccelRangeE11ACCEL_RANGE
 	.type	_ZN7Mpu605013setAccelRangeE11ACCEL_RANGE, @function
@@ -481,6 +483,7 @@ _ZN7Mpu605013getAccelRangeEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+17
+/* epilogue start */
 	ret
 	.size	_ZN7Mpu605013getAccelRangeEv, .-_ZN7Mpu605013getAccelRangeEv
 .global	_ZN7Mpu605012setGyroRangeE10GYRO_RANGE
@@ -520,6 +523,7 @@ _ZN7Mpu605012getGyroRangeEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+18
+/* epilogue start */
 	ret
 	.size	_ZN7Mpu605012getGyroRangeEv, .-_ZN7Mpu605012getGyroRangeEv
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"

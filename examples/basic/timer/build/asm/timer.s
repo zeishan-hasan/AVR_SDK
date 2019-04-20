@@ -26,12 +26,13 @@ _ZN5Timer4initEv:
 	ldi r24,lo8(2)
 	sts 110,r24
 /* #APP */
- ;  91 "libs/timer/timer.cpp" 1
+ ;  91 "libs//timer/timer.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
 	ldi r24,lo8(1)
 	sts _ZN5Timer7_isInitE,r24
+/* epilogue start */
 	ret
 	.size	_ZN5Timer4initEv, .-_ZN5Timer4initEv
 .global	_ZN5Timer5startEv
@@ -53,6 +54,7 @@ _ZN5Timer5startEv:
 	in r24,0x25
 	ori r24,lo8(1)
 	out 0x25,r24
+/* epilogue start */
 	ret
 	.size	_ZN5Timer5startEv, .-_ZN5Timer5startEv
 .global	_ZN5Timer4stopEv
@@ -65,6 +67,7 @@ _ZN5Timer4stopEv:
 	in r24,0x25
 	andi r24,lo8(-8)
 	out 0x25,r24
+/* epilogue start */
 	ret
 	.size	_ZN5Timer4stopEv, .-_ZN5Timer4stopEv
 .global	_ZN5Timer3nowEv
@@ -76,8 +79,9 @@ _ZN5Timer3nowEv:
 .L__stack_usage = 0
 	lds r22,__microSecond
 	ldi r23,0
-	ldi r24,0
 	ldi r25,0
+	ldi r24,0
+/* epilogue start */
 	ret
 	.size	_ZN5Timer3nowEv, .-_ZN5Timer3nowEv
 	.section	.text.startup,"ax",@progbits
@@ -91,6 +95,7 @@ _GLOBAL__sub_I__ZN5Timer5_timeE:
 	sts _ZN5Timer5_timeE+1,__zero_reg__
 	sts _ZN5Timer5_timeE+2,__zero_reg__
 	sts _ZN5Timer5_timeE+3,__zero_reg__
+/* epilogue start */
 	ret
 	.size	_GLOBAL__sub_I__ZN5Timer5_timeE, .-_GLOBAL__sub_I__ZN5Timer5_timeE
 	.global __do_global_ctors
@@ -123,5 +128,5 @@ _ZN5Timer7_isInitE:
 	.size	_ZN5Timer5_timeE, 4
 _ZN5Timer5_timeE:
 	.zero	4
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_clear_bss

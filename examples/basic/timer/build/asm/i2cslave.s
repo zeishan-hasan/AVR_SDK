@@ -17,6 +17,7 @@ _Z16I2C_setCallbacksPFvhEPFvvE:
 	sts _ZL8I2C_recv,r24
 	sts _ZL7I2C_req+1,r23
 	sts _ZL7I2C_req,r22
+/* epilogue start */
 	ret
 	.size	_Z16I2C_setCallbacksPFvhEPFvvE, .-_Z16I2C_setCallbacksPFvhEPFvvE
 .global	_Z8I2C_inith
@@ -27,7 +28,7 @@ _Z8I2C_inith:
 /* stack size = 0 */
 .L__stack_usage = 0
 /* #APP */
- ;  17 "libs/communication/i2c/slave/i2cslave.cpp" 1
+ ;  17 "libs//communication/i2c/slave/i2cslave.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -36,10 +37,11 @@ _Z8I2C_inith:
 	ldi r24,lo8(-59)
 	sts 188,r24
 /* #APP */
- ;  22 "libs/communication/i2c/slave/i2cslave.cpp" 1
+ ;  22 "libs//communication/i2c/slave/i2cslave.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
+/* epilogue start */
 	ret
 	.size	_Z8I2C_inith, .-_Z8I2C_inith
 .global	_Z8I2C_stopv
@@ -50,17 +52,18 @@ _Z8I2C_stopv:
 /* stack size = 0 */
 .L__stack_usage = 0
 /* #APP */
- ;  28 "libs/communication/i2c/slave/i2cslave.cpp" 1
+ ;  28 "libs//communication/i2c/slave/i2cslave.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
 	sts 188,__zero_reg__
 	sts 186,__zero_reg__
 /* #APP */
- ;  31 "libs/communication/i2c/slave/i2cslave.cpp" 1
+ ;  31 "libs//communication/i2c/slave/i2cslave.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
+/* epilogue start */
 	ret
 	.size	_Z8I2C_stopv, .-_Z8I2C_stopv
 .global	__vector_39
@@ -92,29 +95,11 @@ __vector_39:
 	lds r24,185
 	andi r24,lo8(-8)
 	cpi r24,lo8(-128)
-	breq .L6
-	brsh .L7
-	cpse r24,__zero_reg__
-	rjmp .L5
-	sts 188,__zero_reg__
-	rjmp .L5
-.L7:
-	cpi r24,lo8(-88)
-	breq .L10
-	cpi r24,lo8(-72)
-	breq .L10
-	rjmp .L5
-.L6:
-	lds r24,187
-	lds r30,_ZL8I2C_recv
-	lds r31,_ZL8I2C_recv+1
-	eicall
-	rjmp .L5
-.L10:
-	lds r30,_ZL7I2C_req
-	lds r31,_ZL7I2C_req+1
-	eicall
-.L5:
+	breq .L5
+	brsh .L6
+	tst r24
+	breq .L7
+.L8:
 	ldi r24,lo8(-59)
 	sts 188,r24
 /* epilogue start */
@@ -137,10 +122,29 @@ __vector_39:
 	pop r0
 	pop r1
 	reti
+.L6:
+	cpi r24,lo8(-88)
+	breq .L10
+	cpi r24,lo8(-72)
+	brne .L8
+.L10:
+	lds r30,_ZL7I2C_req
+	lds r31,_ZL7I2C_req+1
+	eicall
+	rjmp .L8
+.L5:
+	lds r24,187
+	lds r30,_ZL8I2C_recv
+	lds r31,_ZL8I2C_recv+1
+	eicall
+	rjmp .L8
+.L7:
+	sts 188,__zero_reg__
+	rjmp .L8
 	.size	__vector_39, .-__vector_39
 	.local	_ZL7I2C_req
 	.comm	_ZL7I2C_req,2,1
 	.local	_ZL8I2C_recv
 	.comm	_ZL8I2C_recv,2,1
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_clear_bss

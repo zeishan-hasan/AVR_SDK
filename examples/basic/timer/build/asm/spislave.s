@@ -20,6 +20,7 @@ _ZN8SlaveSPIC2Ev:
 	std Z+7,r24
 	std Z+8,r24
 	std Z+9,r24
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPIC2Ev, .-_ZN8SlaveSPIC2Ev
 .global	_ZN8SlaveSPIC1Ev
@@ -33,14 +34,12 @@ _ZN8SlaveSPIC2E10slaveSPI_t8SPI_DORD10SPI_CLKSEL8SPI_CPOL8SPI_CPHA:
 	push r17
 	push r28
 	push r29
+	rcall .
+	rcall .
+	rcall .
+	push __tmp_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,10
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
 /* prologue: function */
 /* frame size = 10 */
 /* stack size = 16 */
@@ -71,80 +70,78 @@ _ZN8SlaveSPIC2E10slaveSPI_t8SPI_DORD10SPI_CLKSEL8SPI_CPOL8SPI_CPHA:
 	movw r30,r24
 	subi r30,-2
 	sbci r31,-2
-	ld r14,Z
-	ldd r15,Z+1
-	movw r20,r24
-	subi r20,-7
-	sbci r21,-2
-	ldi r18,lo8(1)
-	ldi r19,0
-	movw r22,r18
-	movw r26,r20
-	ld r0,X
+	ld r16,Z
+	ldd r17,Z+1
+	movw r18,r24
+	subi r18,-7
+	sbci r19,-2
+	movw r26,r18
+	ld r18,X
+	ldi r20,lo8(1)
+	ldi r21,0
+	movw r22,r20
 	rjmp 2f
 	1:
 	lsl r22
 	rol r23
 	2:
-	dec r0
+	dec r18
 	brpl 1b
-	subi r20,-1
-	sbci r21,-1
-	movw r16,r18
-	movw r26,r20
-	ld r0,X
+	movw r18,r22
+	movw r22,r24
+	subi r22,-8
+	sbci r23,-2
+	movw r26,r22
+	ld r19,X
+	movw r22,r20
 	rjmp 2f
 	1:
-	lsl r16
-	rol r17
+	lsl r22
 	2:
-	dec r0
+	dec r19
 	brpl 1b
-	or r22,r16
-	movw r20,r24
-	subi r20,-9
-	sbci r21,-2
-	movw r16,r18
-	movw r26,r20
-	ld r0,X
+	or r18,r22
+	movw r22,r24
+	subi r22,-9
+	sbci r23,-2
+	movw r26,r22
+	ld r19,X
+	movw r22,r20
 	rjmp 2f
 	1:
-	lsl r16
-	rol r17
+	lsl r22
 	2:
-	dec r0
+	dec r19
 	brpl 1b
-	movw r20,r16
-	or r20,r22
-	com r20
-	movw r26,r14
-	st X,r20
+	or r18,r22
+	com r18
+	movw r26,r16
+	st X,r18
 	ld __tmp_reg__,Z+
 	ld r31,Z
 	mov r30,__tmp_reg__
-	ld r20,Z
+	ld r18,Z
 	movw r26,r24
 	subi r26,-6
 	sbci r27,-2
-	ld r0,X
+	ld r19,X
 	rjmp 2f
 	1:
-	lsl r18
-	rol r19
+	lsl r20
 	2:
-	dec r0
+	dec r19
 	brpl 1b
-	or r18,r20
-	st Z,r18
+	or r20,r18
+	st Z,r20
 	in r18,0x2c
 	andi r18,lo8(-17)
 	out 0x2c,r18
 	in r18,0x2c
 	ori r18,lo8(64)
 	out 0x2c,r18
+	subi r24,-10
+	sbci r25,-2
 	movw r30,r24
-	subi r30,-10
-	sbci r31,-2
 	std Z+1,__zero_reg__
 	st Z,__zero_reg__
 /* epilogue start */
@@ -270,18 +267,19 @@ _ZN8SlaveSPI6setISREb:
 .L__stack_usage = 0
 	in r24,0x2c
 	tst r22
-	breq .L7
+	breq .L6
 	ori r24,lo8(-128)
 	out 0x2c,r24
 /* #APP */
- ;  56 "libs/communication/spi/slave/spislave.cpp" 1
+ ;  56 "libs//communication/spi/slave/spislave.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
 	ret
-.L7:
+.L6:
 	andi r24,lo8(127)
 	out 0x2c,r24
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI6setISREb, .-_ZN8SlaveSPI6setISREb
 .global	_ZN8SlaveSPI4sendEh
@@ -292,10 +290,10 @@ _ZN8SlaveSPI4sendEh:
 /* stack size = 0 */
 .L__stack_usage = 0
 	out 0x2e,r22
-.L10:
+.L9:
 	in __tmp_reg__,0x2d
 	sbrs __tmp_reg__,7
-	rjmp .L10
+	rjmp .L9
 /* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI4sendEh, .-_ZN8SlaveSPI4sendEh
@@ -317,21 +315,21 @@ _ZN8SlaveSPI4sendEPhj:
 	movw r14,r22
 	movw r12,r20
 	ldi r28,0
-.L14:
+.L13:
 	mov r24,r28
 	ldi r25,0
 	cp r24,r12
 	cpc r25,r13
-	brsh .L12
-	movw r30,r14
-	add r30,r24
-	adc r31,r25
+	brsh .L11
+	add r24,r14
+	adc r25,r15
+	movw r30,r24
 	ld r22,Z
 	movw r24,r16
 	call _ZN8SlaveSPI4sendEh
 	subi r28,lo8(-(1))
-	rjmp .L14
-.L12:
+	rjmp .L13
+.L11:
 /* epilogue start */
 	pop r28
 	pop r17
@@ -349,11 +347,12 @@ _ZN8SlaveSPI7receiveEv:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-.L16:
+.L15:
 	in __tmp_reg__,0x2d
 	sbrs __tmp_reg__,7
-	rjmp .L16
+	rjmp .L15
 	in r24,0x2e
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI7receiveEv, .-_ZN8SlaveSPI7receiveEv
 .global	_ZN8SlaveSPI7receiveEPhj
@@ -376,21 +375,20 @@ _ZN8SlaveSPI7receiveEPhj:
 	movw r12,r22
 	movw r10,r20
 	ldi r17,0
-.L20:
-	mov r24,r17
-	ldi r25,0
-	cp r24,r10
-	cpc r25,r11
-	brsh .L18
-	movw r28,r12
-	add r28,r24
-	adc r29,r25
+.L19:
+	mov r28,r17
+	ldi r29,0
+	cp r28,r10
+	cpc r29,r11
+	brsh .L17
+	add r28,r12
+	adc r29,r13
 	movw r24,r14
 	call _ZN8SlaveSPI7receiveEv
 	st Y,r24
 	subi r17,lo8(-(1))
-	rjmp .L20
-.L18:
+	rjmp .L19
+.L17:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -416,9 +414,9 @@ _ZN8SlaveSPI13busIsWritableEv:
 	ld r31,Z
 	mov r30,__tmp_reg__
 	ld r18,Z
+	subi r24,-9
+	sbci r25,-2
 	movw r30,r24
-	subi r30,-9
-	sbci r31,-2
 	ld r24,Z
 	ldi r19,0
 	mov r0,r24
@@ -429,10 +427,10 @@ _ZN8SlaveSPI13busIsWritableEv:
 	2:
 	dec r0
 	brpl 1b
+	com r18
+	com r19
 	andi r18,1
 	clr r19
-	ldi r25,1
-	eor r18,r25
 	rjmp 2f
 	1:
 	asr r19
@@ -442,9 +440,10 @@ _ZN8SlaveSPI13busIsWritableEv:
 	brpl 1b
 	ldi r24,lo8(1)
 	or r18,r19
-	brne .L22
+	brne .L21
 	ldi r24,0
-.L22:
+.L21:
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI13busIsWritableEv, .-_ZN8SlaveSPI13busIsWritableEv
 .global	_ZN8SlaveSPI16registerCallbackEPFvhE
@@ -458,15 +457,16 @@ _ZN8SlaveSPI16registerCallbackEPFvhE:
 	ori r18,lo8(-128)
 	out 0x2c,r18
 /* #APP */
- ;  56 "libs/communication/spi/slave/spislave.cpp" 1
+ ;  56 "libs//communication/spi/slave/spislave.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
+	subi r24,-10
+	sbci r25,-2
 	movw r30,r24
-	subi r30,-10
-	sbci r31,-2
 	std Z+1,r23
 	st Z,r22
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI16registerCallbackEPFvhE, .-_ZN8SlaveSPI16registerCallbackEPFvhE
 .global	_ZN8SlaveSPI8callbackEh
@@ -482,10 +482,11 @@ _ZN8SlaveSPI8callbackEh:
 	ld r30,X+
 	ld r31,X
 	sbiw r30,0
-	breq .L24
+	breq .L23
 	mov r24,r22
 	eijmp
-.L24:
+.L23:
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI8callbackEh, .-_ZN8SlaveSPI8callbackEh
 .global	_ZN8SlaveSPI10insertDataEh
@@ -509,14 +510,10 @@ _ZN8SlaveSPI10insertDataEh:
 	sbci r21,-1
 	cp r20,r18
 	cpc r21,r19
-	brlo .L27
+	brlo .L26
 	std Z+1,r19
 	st Z,r18
-	rjmp .L28
 .L27:
-	std Z+1,r25
-	st Z,r24
-.L28:
 	ld r26,Z
 	ldd r27,Z+1
 	movw r28,r24
@@ -526,25 +523,29 @@ _ZN8SlaveSPI10insertDataEh:
 	ldd r19,Y+1
 	cp r26,r18
 	cpc r27,r19
-	brne .L29
-	sbiw r26,1
-	cp r26,r24
-	cpc r27,r25
-	brsh .L30
-	std Z+1,r21
-	st Z,r20
-	rjmp .L26
-.L29:
+	breq .L28
 	st X,r22
-	rjmp .L26
-.L30:
-	std Z+1,r27
-	st Z,r26
-.L26:
+.L25:
 /* epilogue start */
 	pop r29
 	pop r28
 	ret
+.L26:
+	std Z+1,r25
+	st Z,r24
+	rjmp .L27
+.L28:
+	sbiw r26,1
+	cp r26,r24
+	cpc r27,r25
+	brlo .L30
+	std Z+1,r27
+	st Z,r26
+	rjmp .L25
+.L30:
+	std Z+1,r21
+	st Z,r20
+	rjmp .L25
 	.size	_ZN8SlaveSPI10insertDataEh, .-_ZN8SlaveSPI10insertDataEh
 .global	_ZN8SlaveSPI8readDataEv
 	.type	_ZN8SlaveSPI8readDataEv, @function
@@ -571,33 +572,33 @@ _ZN8SlaveSPI8readDataEv:
 	sbci r21,-1
 	cp r20,r18
 	cpc r21,r19
-	brlo .L34
+	brlo .L32
 	std Z+1,r19
 	st Z,r18
-	rjmp .L35
-.L34:
-	std Z+1,r25
-	st Z,r24
-.L35:
+.L33:
 	ld __tmp_reg__,Z+
 	ld r31,Z
 	mov r30,__tmp_reg__
+	subi r24,-14
+	sbci r25,-2
 	movw r28,r24
-	subi r28,-14
-	sbci r29,-2
 	ld r24,Y
 	ldd r25,Y+1
 	cp r30,r24
 	cpc r31,r25
-	breq .L36
+	breq .L34
 	ldi r24,lo8(1)
 	st X,r24
-.L36:
+.L34:
 	ld r24,Z
 /* epilogue start */
 	pop r29
 	pop r28
 	ret
+.L32:
+	std Z+1,r25
+	st Z,r24
+	rjmp .L33
 	.size	_ZN8SlaveSPI8readDataEv, .-_ZN8SlaveSPI8readDataEv
 .global	_ZN8SlaveSPI16bufferIsReadableEv
 	.type	_ZN8SlaveSPI16bufferIsReadableEv, @function
@@ -619,9 +620,10 @@ _ZN8SlaveSPI16bufferIsReadableEv:
 	ldd r19,Z+1
 	cp r20,r18
 	cpc r21,r19
-	brne .L38
+	brne .L36
 	ldi r24,0
-.L38:
+.L36:
+/* epilogue start */
 	ret
 	.size	_ZN8SlaveSPI16bufferIsReadableEv, .-_ZN8SlaveSPI16bufferIsReadableEv
 .global	__vector_24
@@ -716,5 +718,5 @@ __vector_24:
 	.size	__vector_24, .-__vector_24
 	.local	_ZZN8SlaveSPI11getInstanceE10slaveSPI_tE8instance
 	.comm	_ZZN8SlaveSPI11getInstanceE10slaveSPI_tE8instance,2,1
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_clear_bss

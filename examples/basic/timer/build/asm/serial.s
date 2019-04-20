@@ -5,11 +5,11 @@ __SREG__ = 0x3f
 __RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
+	.text
 .global	__floatunsisf
 .global	__divsf3
 .global	__subsf3
 .global	__fixunssfsi
-	.text
 .global	_ZN6Serial4initE4UART14SerialPriority
 	.type	_ZN6Serial4initE4UART14SerialPriority, @function
 _ZN6Serial4initE4UART14SerialPriority:
@@ -31,11 +31,6 @@ _ZN6Serial4initE4UART14SerialPriority:
 	ld r31,Z
 	mov r30,__tmp_reg__
 	st Z,__zero_reg__
-	movw r30,r24
-	subi r30,-15
-	sbci r31,-2
-	ld r14,Z
-	ldd r15,Z+1
 	movw r24,r22
 	movw r22,r20
 	call __floatunsisf
@@ -52,6 +47,11 @@ _ZN6Serial4initE4UART14SerialPriority:
 	ldi r21,lo8(63)
 	call __subsf3
 	call round
+	movw r30,r28
+	subi r30,-15
+	sbci r31,-2
+	ld r14,Z
+	ldd r15,Z+1
 	call __fixunssfsi
 	movw r30,r14
 	st Z,r22
@@ -118,13 +118,13 @@ _ZN6Serial5flushEv:
 	sbci r31,-2
 	ld r26,Z
 	ldd r27,Z+1
-	movw r28,r24
-	subi r28,-17
-	sbci r29,-2
+	subi r24,-17
+	sbci r25,-2
 .L4:
 	ld r18,X
 	sbrs r18,7
 	rjmp .L2
+	movw r28,r24
 	ld r30,Y
 	ldd r31,Y+1
 	ld r18,Z
@@ -142,26 +142,26 @@ _ZN6Serial16setRxISRCallBackEb:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
-	movw r30,r24
-	subi r30,-9
-	sbci r31,-2
-	ld __tmp_reg__,Z+
-	ld r31,Z
-	mov r30,__tmp_reg__
+	subi r24,-9
+	sbci r25,-2
+	movw r26,r24
+	ld r30,X+
+	ld r31,X
 	ld r24,Z
 	tst r22
-	breq .L7
+	breq .L6
 	ori r24,lo8(-128)
 	st Z,r24
 /* #APP */
- ;  62 "libs/communication/uart/serial.cpp" 1
+ ;  62 "libs//communication/uart/serial.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
 	ret
-.L7:
+.L6:
 	andi r24,lo8(127)
 	st Z,r24
+/* epilogue start */
 	ret
 	.size	_ZN6Serial16setRxISRCallBackEb, .-_ZN6Serial16setRxISRCallBackEb
 .global	_ZN6Serial13setEchoServerEb
@@ -174,6 +174,7 @@ _ZN6Serial13setEchoServerEb:
 	inc r25
 	movw r30,r24
 	st Z,r22
+/* epilogue start */
 	ret
 	.size	_ZN6Serial13setEchoServerEb, .-_ZN6Serial13setEchoServerEb
 .global	_ZN6Serial10insertDataEh
@@ -197,14 +198,10 @@ _ZN6Serial10insertDataEh:
 	sbci r21,-1
 	cp r20,r18
 	cpc r21,r19
-	brlo .L11
+	brlo .L10
 	std Z+1,r19
 	st Z,r18
-	rjmp .L12
 .L11:
-	std Z+1,r25
-	st Z,r24
-.L12:
 	ld r26,Z
 	ldd r27,Z+1
 	movw r28,r24
@@ -214,25 +211,29 @@ _ZN6Serial10insertDataEh:
 	ldd r19,Y+1
 	cp r26,r18
 	cpc r27,r19
-	brne .L13
-	sbiw r26,1
-	cp r26,r24
-	cpc r27,r25
-	brsh .L14
-	std Z+1,r21
-	st Z,r20
-	rjmp .L10
-.L13:
+	breq .L12
 	st X,r22
-	rjmp .L10
-.L14:
-	std Z+1,r27
-	st Z,r26
-.L10:
+.L9:
 /* epilogue start */
 	pop r29
 	pop r28
 	ret
+.L10:
+	std Z+1,r25
+	st Z,r24
+	rjmp .L11
+.L12:
+	sbiw r26,1
+	cp r26,r24
+	cpc r27,r25
+	brlo .L14
+	std Z+1,r27
+	st Z,r26
+	rjmp .L9
+.L14:
+	std Z+1,r21
+	st Z,r20
+	rjmp .L9
 	.size	_ZN6Serial10insertDataEh, .-_ZN6Serial10insertDataEh
 .global	_ZN6Serial11incReadDataEh
 	.type	_ZN6Serial11incReadDataEh, @function
@@ -244,12 +245,14 @@ _ZN6Serial11incReadDataEh:
 	movw r30,r24
 	subi r30,-3
 	sbci r31,-2
-	ld r18,Z
-	ldd r19,Z+1
-	add r18,r22
-	adc r19,__zero_reg__
-	std Z+1,r19
-	st Z,r18
+	ld r24,Z
+	ldd r25,Z+1
+	add r22,r24
+	mov r23,r25
+	adc r23,__zero_reg__
+	std Z+1,r23
+	st Z,r22
+/* epilogue start */
 	ret
 	.size	_ZN6Serial11incReadDataEh, .-_ZN6Serial11incReadDataEh
 .global	_ZN6Serial11enableShellEb
@@ -263,18 +266,20 @@ _ZN6Serial11enableShellEb:
 	subi r30,-1
 	sbci r31,-2
 	st Z,r22
-	adiw r30,8
-	ld __tmp_reg__,Z+
-	ld r31,Z
-	mov r30,__tmp_reg__
+	subi r24,-9
+	sbci r25,-2
+	movw r26,r24
+	ld r30,X+
+	ld r31,X
 	ld r24,Z
 	ori r24,lo8(-128)
 	st Z,r24
 /* #APP */
- ;  62 "libs/communication/uart/serial.cpp" 1
+ ;  62 "libs//communication/uart/serial.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
+/* epilogue start */
 	ret
 	.size	_ZN6Serial11enableShellEb, .-_ZN6Serial11enableShellEb
 .global	_ZN6Serial16registerCallbackEPFvvE
@@ -289,6 +294,7 @@ _ZN6Serial16registerCallbackEPFvvE:
 	movw r30,r24
 	std Z+1,r23
 	st Z,r22
+/* epilogue start */
 	ret
 	.size	_ZN6Serial16registerCallbackEPFvvE, .-_ZN6Serial16registerCallbackEPFvvE
 .global	_ZN6Serial10rxCallBackEv
@@ -304,9 +310,10 @@ _ZN6Serial10rxCallBackEv:
 	ld r30,X+
 	ld r31,X
 	sbiw r30,0
-	breq .L20
+	breq .L18
 	eijmp
-.L20:
+.L18:
+/* epilogue start */
 	ret
 	.size	_ZN6Serial10rxCallBackEv, .-_ZN6Serial10rxCallBackEv
 .global	_ZN6Serial14shellIsEnabledEv
@@ -320,6 +327,7 @@ _ZN6Serial14shellIsEnabledEv:
 	sbci r25,-2
 	movw r30,r24
 	ld r24,Z
+/* epilogue start */
 	ret
 	.size	_ZN6Serial14shellIsEnabledEv, .-_ZN6Serial14shellIsEnabledEv
 .global	_ZN6Serial16bufferIsReadableEv
@@ -342,9 +350,10 @@ _ZN6Serial16bufferIsReadableEv:
 	ldd r19,Z+1
 	cp r20,r18
 	cpc r21,r19
-	brne .L24
+	brne .L22
 	ldi r24,0
-.L24:
+.L22:
+/* epilogue start */
 	ret
 	.size	_ZN6Serial16bufferIsReadableEv, .-_ZN6Serial16bufferIsReadableEv
 .global	_ZN6Serial11isAvailableEv
@@ -363,6 +372,7 @@ _ZN6Serial11isAvailableEv:
 	rol r24
 	clr r24
 	rol r24
+/* epilogue start */
 	ret
 	.size	_ZN6Serial11isAvailableEv, .-_ZN6Serial11isAvailableEv
 .global	_ZN6Serial13echoIsEnabledEv
@@ -375,6 +385,7 @@ _ZN6Serial13echoIsEnabledEv:
 	inc r25
 	movw r30,r24
 	ld r24,Z
+/* epilogue start */
 	ret
 	.size	_ZN6Serial13echoIsEnabledEv, .-_ZN6Serial13echoIsEnabledEv
 .global	_ZN6Serial7receiveEv
@@ -390,17 +401,17 @@ _ZN6Serial7receiveEv:
 	ld __tmp_reg__,Z+
 	ld r31,Z
 	mov r30,__tmp_reg__
-.L28:
+.L26:
 	ld r18,Z
 	sbrs r18,7
-	rjmp .L28
-	movw r30,r24
-	subi r30,-17
-	sbci r31,-2
-	ld __tmp_reg__,Z+
-	ld r31,Z
-	mov r30,__tmp_reg__
+	rjmp .L26
+	subi r24,-17
+	sbci r25,-2
+	movw r26,r24
+	ld r30,X+
+	ld r31,X
 	ld r24,Z
+/* epilogue start */
 	ret
 	.size	_ZN6Serial7receiveEv, .-_ZN6Serial7receiveEv
 .global	_ZN6Serial9readUntilEPcc
@@ -420,28 +431,27 @@ _ZN6Serial9readUntilEPcc:
 	movw r16,r22
 	mov r29,r20
 	ldi r28,0
-.L32:
+.L30:
 	movw r24,r14
 	call _ZN6Serial7receiveEv
-	mov r18,r28
-	ldi r19,0
-	ldi r25,lo8(1)
-	add r25,r28
-	movw r30,r16
-	add r30,r18
-	adc r31,r19
+	movw r26,r16
+	add r26,r28
+	adc r27,__zero_reg__
+	ldi r30,lo8(1)
+	add r30,r28
 	cpse r24,r29
-	rjmp .L31
+	rjmp .L29
 	ldi r24,lo8(10)
-	st Z,r24
-	movw r30,r16
-	add r30,r25
+	st X,r24
+	add r30,r16
+	mov r31,r17
 	adc r31,__zero_reg__
 	ldi r24,lo8(13)
 	st Z,r24
-	subi r28,lo8(-(2))
-	movw r30,r16
+	ldi r30,lo8(2)
 	add r30,r28
+	add r30,r16
+	mov r31,r17
 	adc r31,__zero_reg__
 	st Z,__zero_reg__
 /* epilogue start */
@@ -452,10 +462,10 @@ _ZN6Serial9readUntilEPcc:
 	pop r15
 	pop r14
 	ret
-.L31:
-	st Z,r24
-	mov r28,r25
-	rjmp .L32
+.L29:
+	st X,r24
+	mov r28,r30
+	rjmp .L30
 	.size	_ZN6Serial9readUntilEPcc, .-_ZN6Serial9readUntilEPcc
 .global	_ZN6Serial8readDataEv
 	.type	_ZN6Serial8readDataEv, @function
@@ -482,33 +492,33 @@ _ZN6Serial8readDataEv:
 	sbci r21,-1
 	cp r20,r18
 	cpc r21,r19
-	brlo .L35
+	brlo .L33
 	std Z+1,r19
 	st Z,r18
-	rjmp .L36
-.L35:
-	std Z+1,r25
-	st Z,r24
-.L36:
+.L34:
 	ld __tmp_reg__,Z+
 	ld r31,Z
 	mov r30,__tmp_reg__
+	subi r24,-5
+	sbci r25,-2
 	movw r28,r24
-	subi r28,-5
-	sbci r29,-2
 	ld r24,Y
 	ldd r25,Y+1
 	cp r30,r24
 	cpc r31,r25
-	breq .L37
+	breq .L35
 	ldi r24,lo8(1)
 	st X,r24
-.L37:
+.L35:
 	ld r24,Z
 /* epilogue start */
 	pop r29
 	pop r28
 	ret
+.L33:
+	std Z+1,r25
+	st Z,r24
+	rjmp .L34
 	.size	_ZN6Serial8readDataEv, .-_ZN6Serial8readDataEv
 .global	_ZN6Serial11getPriorityEv
 	.type	_ZN6Serial11getPriorityEv, @function
@@ -521,6 +531,7 @@ _ZN6Serial11getPriorityEv:
 	sbci r25,-2
 	movw r30,r24
 	ld r24,Z
+/* epilogue start */
 	ret
 	.size	_ZN6Serial11getPriorityEv, .-_ZN6Serial11getPriorityEv
 .global	_ZN6Serial5printEPKc
@@ -536,29 +547,29 @@ _ZN6Serial5printEPKc:
 	movw r26,r24
 	subi r26,-7
 	sbci r27,-2
-	movw r28,r24
-	subi r28,-17
-	sbci r29,-2
-.L42:
+	subi r24,-17
+	sbci r25,-2
+.L40:
 	movw r30,r22
 	add r30,r18
 	adc r31,__zero_reg__
 	ld r19,Z
 	tst r19
-	breq .L39
+	breq .L37
 	ld r30,X+
 	ld r31,X
 	sbiw r26,1
-.L41:
+.L39:
 	ld r20,Z
 	sbrs r20,5
-	rjmp .L41
+	rjmp .L39
+	movw r28,r24
 	ld r30,Y
 	ldd r31,Y+1
 	st Z,r19
 	subi r18,lo8(-(1))
-	rjmp .L42
-.L39:
+	rjmp .L40
+.L37:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -636,6 +647,7 @@ _ZN6Serial5clearEv:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
+/* epilogue start */
 	ret
 	.size	_ZN6Serial5clearEv, .-_ZN6Serial5clearEv
 .global	__vector_25
@@ -670,7 +682,7 @@ __vector_25:
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	or r24,r25
-	brne .L48
+	brne .L46
 	ldi r24,lo8(22)
 	ldi r25,lo8(1)
 	call _Znwj
@@ -708,7 +720,7 @@ __vector_25:
 	st Z,r18
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
-.L48:
+.L46:
 	lds r28,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	lds r29,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	lds r17,198
@@ -719,8 +731,8 @@ __vector_25:
 	inc r31
 	ld r24,Z
 	cpse r24,__zero_reg__
-	rjmp .L49
-.L50:
+	sts 198,r17
+.L47:
 	movw r24,r28
 	call _ZN6Serial10rxCallBackEv
 /* epilogue start */
@@ -746,9 +758,6 @@ __vector_25:
 	pop r0
 	pop r1
 	reti
-.L49:
-	sts 198,r17
-	rjmp .L50
 	.size	__vector_25, .-__vector_25
 .global	__vector_36
 	.type	__vector_36, @function
@@ -782,7 +791,7 @@ __vector_36:
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2+1
 	or r24,r25
-	brne .L53
+	brne .L52
 	ldi r24,lo8(22)
 	ldi r25,lo8(1)
 	call _Znwj
@@ -820,7 +829,7 @@ __vector_36:
 	st Z,r18
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+2+1,r25
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+2,r24
-.L53:
+.L52:
 	lds r28,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2
 	lds r29,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2+1
 	lds r17,206
@@ -831,8 +840,8 @@ __vector_36:
 	inc r31
 	ld r24,Z
 	cpse r24,__zero_reg__
-	rjmp .L54
-.L55:
+	sts 206,r17
+.L53:
 	movw r24,r28
 	call _ZN6Serial10rxCallBackEv
 /* epilogue start */
@@ -858,9 +867,6 @@ __vector_36:
 	pop r0
 	pop r1
 	reti
-.L54:
-	sts 206,r17
-	rjmp .L55
 	.size	__vector_36, .-__vector_36
 .global	__vector_51
 	.type	__vector_51, @function
@@ -943,8 +949,8 @@ __vector_51:
 	inc r31
 	ld r24,Z
 	cpse r24,__zero_reg__
-	rjmp .L59
-.L60:
+	sts 214,r17
+.L59:
 	movw r24,r28
 	call _ZN6Serial10rxCallBackEv
 /* epilogue start */
@@ -970,9 +976,6 @@ __vector_51:
 	pop r0
 	pop r1
 	reti
-.L59:
-	sts 214,r17
-	rjmp .L60
 	.size	__vector_51, .-__vector_51
 .global	__vector_54
 	.type	__vector_54, @function
@@ -1006,7 +1009,7 @@ __vector_54:
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+6
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+6+1
 	or r24,r25
-	brne .L63
+	brne .L64
 	ldi r24,lo8(22)
 	ldi r25,lo8(1)
 	call _Znwj
@@ -1044,7 +1047,7 @@ __vector_54:
 	st Z,r18
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+6+1,r25
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+6,r24
-.L63:
+.L64:
 	lds r16,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+6
 	lds r17,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+6+1
 	lds r28,310
@@ -1055,7 +1058,7 @@ __vector_54:
 	inc r31
 	ld r24,Z
 	cpse r24,__zero_reg__
-	rjmp .L64
+	sts 310,r28
 .L65:
 	movw r24,r16
 	call _ZN6Serial10rxCallBackEv
@@ -1083,9 +1086,6 @@ __vector_54:
 	pop r0
 	pop r1
 	reti
-.L64:
-	sts 310,r28
-	rjmp .L65
 	.size	__vector_54, .-__vector_54
 	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
@@ -1093,6 +1093,6 @@ __vector_54:
 	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
 	.zero	8
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_copy_data
 .global __do_clear_bss

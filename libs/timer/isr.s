@@ -33,22 +33,16 @@ _Z6microsv:
         sei                 ; 1 cycle
         in r21, __TCNT0__   ; 1 cycle
                             ;
-        bst r21,3           ; 1 cycle
-        clr r20             ; 1 cycle
-        bld r20,0           ; 1 cycle
         swap r21            ; 1 cycle
         cbr r21,0xF0        ; 1 cycle
-        ;subi r21,0x1
-        add r21,r20         ; 1 cycle
                             ;
         cbr r25,0x0F        ; 1 cycle
         swap r25            ; 1 cycle
         cbr r24,0xF0        ; 1 cycle
         swap r24            ; 1 cycle
-        ;clr r25
         add r24,r21         ; 1 cycle
         ret                 ; 5 cycles
-                            ; 22 cycles -> 22*0.0625 = 1.375 uS
+                            ; 18 cycles -> 18*0.0625 = 1.125 uS
 
 .global __vector_21
 .type	__vector_21, @function

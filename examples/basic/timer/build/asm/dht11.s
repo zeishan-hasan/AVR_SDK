@@ -5,6 +5,7 @@ __SREG__ = 0x3f
 __RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
+	.text
 	.section	.text._ZN3PinC2Ev,"axG",@progbits,_ZN3PinC5Ev,comdat
 	.weak	_ZN3PinC2Ev
 	.type	_ZN3PinC2Ev, @function
@@ -40,6 +41,7 @@ _ZN3PinC2Ev:
 	std Z+26,r24
 	std Z+29,r25
 	std Z+28,r24
+/* epilogue start */
 	ret
 	.size	_ZN3PinC2Ev, .-_ZN3PinC2Ev
 	.weak	_ZN3PinC1Ev
@@ -172,6 +174,7 @@ _ZN5Dht1114getTemperatureEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+39
+/* epilogue start */
 	ret
 	.size	_ZN5Dht1114getTemperatureEv, .-_ZN5Dht1114getTemperatureEv
 .global	_ZN5Dht1111getHumidityEv
@@ -183,6 +186,7 @@ _ZN5Dht1111getHumidityEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+37
+/* epilogue start */
 	ret
 	.size	_ZN5Dht1111getHumidityEv, .-_ZN5Dht1111getHumidityEv
 .global	_ZN5Dht1114startContitionEv
@@ -217,50 +221,20 @@ _ZN5Dht1114startContitionEv:
 	movw r24,r28
 	call _ZN3Pin12setDirectionE4DDRx
 	ldi r17,lo8(21)
-.L9:
+.L10:
 	movw r24,r28
 	call _ZN3Pin11digitalReadEv
 	tst r24
-	breq .L8
+	breq .L13
 	ldi r18,lo8(10)
 1:	dec r18
 	brne 1b
 	rjmp .
 	subi r17,lo8(-(-1))
-	brne .L9
-.L12:
+	brne .L10
+.L9:
 	ldi r17,0
-	rjmp .L10
-.L8:
-	ldi r16,lo8(46)
-.L13:
-	movw r24,r28
-	call _ZN3Pin11digitalReadEv
-	mov r17,r24
-	cpse r24,__zero_reg__
-	rjmp .L11
-	ldi r24,lo8(10)
-1:	dec r24
-	brne 1b
-	rjmp .
-	subi r16,lo8(-(-1))
-	brne .L13
-	rjmp .L12
-.L11:
-	ldi r16,lo8(46)
-.L14:
-	movw r24,r28
-	call _ZN3Pin11digitalReadEv
-	tst r24
-	breq .L10
-	ldi r25,lo8(10)
-1:	dec r25
-	brne 1b
-	rjmp .
-	subi r16,lo8(-(-1))
-	brne .L14
-	rjmp .L12
-.L10:
+.L7:
 	mov r24,r17
 /* epilogue start */
 	pop r29
@@ -268,6 +242,35 @@ _ZN5Dht1114startContitionEv:
 	pop r17
 	pop r16
 	ret
+.L13:
+	ldi r16,lo8(46)
+.L8:
+	movw r24,r28
+	call _ZN3Pin11digitalReadEv
+	mov r17,r24
+	cpse r24,__zero_reg__
+	rjmp .L14
+	ldi r24,lo8(10)
+1:	dec r24
+	brne 1b
+	rjmp .
+	subi r16,lo8(-(-1))
+	brne .L8
+	rjmp .L9
+.L14:
+	ldi r16,lo8(46)
+.L11:
+	movw r24,r28
+	call _ZN3Pin11digitalReadEv
+	tst r24
+	breq .L7
+	ldi r25,lo8(10)
+1:	dec r25
+	brne 1b
+	rjmp .
+	subi r16,lo8(-(-1))
+	brne .L11
+	rjmp .L9
 	.size	_ZN5Dht1114startContitionEv, .-_ZN5Dht1114startContitionEv
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
@@ -300,14 +303,11 @@ _ZN5Dht117getDataEv:
 	push r17
 	push r28
 	push r29
+	rcall .
+	rcall .
+	push __tmp_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,7
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
 /* prologue: function */
 /* frame size = 7 */
 /* stack size = 25 */
@@ -316,7 +316,7 @@ _ZN5Dht117getDataEv:
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2+1
 	or r24,r25
-	brne .L27
+	brne .L26
 	ldi r24,lo8(22)
 	ldi r25,lo8(1)
 	call _Znwj
@@ -354,7 +354,7 @@ _ZN5Dht117getDataEv:
 	st Z,r18
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+2+1,r25
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+2,r24
-.L27:
+.L26:
 	lds r2,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+2
 	lds r3,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+3
 	movw r24,r28
@@ -369,7 +369,7 @@ _ZN5Dht117getDataEv:
 	movw r24,r16
 	call _ZN5Dht1114startContitionEv
 	cpse r24,__zero_reg__
-	rjmp .L28
+	rjmp .L27
 	ldi r31,lo8(6399999)
 	ldi r18,hi8(6399999)
 	ldi r24,hlo8(6399999)
@@ -379,163 +379,7 @@ _ZN5Dht117getDataEv:
 	brne 1b
 	rjmp .
 	nop
-	rjmp .L26
-.L28:
-	ldi r22,lo8(2)
-	movw r24,r16
-	call _ZN3Pin12setDirectionE4DDRx
-	movw r30,r28
-	adiw r30,6
-	std Y+7,r31
-	std Y+6,r30
-.L36:
-	ldi r24,lo8(7)
-	mov r10,r24
-	mov r11,__zero_reg__
-.L35:
-	call _ZN5Timer3nowEv
-	movw r4,r22
-	movw r6,r24
-.L31:
-	movw r24,r16
-	call _ZN3Pin11digitalReadEv
-	cpse r24,__zero_reg__
-	rjmp .L30
-	call _ZN5Timer3nowEv
-	movw r12,r22
-	movw r14,r24
-	sub r12,r4
-	sbc r13,r5
-	sbc r14,r6
-	sbc r15,r7
-	movw r26,r14
-	movw r24,r12
-	sub r24,r4
-	sbc r25,r5
-	sbc r26,r6
-	sbc r27,r7
-	cpi r24,90
-	cpc r25,__zero_reg__
-	cpc r26,__zero_reg__
-	cpc r27,__zero_reg__
-	brlo .L31
-	ldi r24,lo8(.LC0)
-	ldi r25,hi8(.LC0)
-	rjmp .L42
-.L30:
-	call _ZN5Timer3nowEv
-	movw r4,r22
-	movw r6,r24
-.L33:
-	movw r24,r16
-	call _ZN3Pin11digitalReadEv
-	tst r24
-	breq .L32
-	call _ZN5Timer3nowEv
-	movw r12,r22
-	movw r14,r24
-	sub r12,r4
-	sbc r13,r5
-	sbc r14,r6
-	sbc r15,r7
-	ldi r31,90
-	cp r12,r31
-	cpc r13,__zero_reg__
-	cpc r14,__zero_reg__
-	cpc r15,__zero_reg__
-	brlo .L33
-	ldi r24,lo8(.LC1)
-	ldi r25,hi8(.LC1)
-.L42:
-	push r25
-	push r24
-	push r3
-	push r2
-	call _ZN6Serial6printfEPKcz
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	rjmp .L26
-.L32:
-	push r15
-	push r14
-	push r13
-	push r12
-	ldi r24,lo8(.LC2)
-	ldi r25,hi8(.LC2)
-	push r25
-	push r24
-	push r3
-	push r2
-	call _ZN6Serial6printfEPKcz
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
-	ldi r25,20
-	cp r12,r25
-	cpc r13,__zero_reg__
-	cpc r14,__zero_reg__
-	cpc r15,__zero_reg__
-	brlo .L34
-	ldi r24,lo8(1)
-	ldi r25,0
-	mov r0,r10
-	rjmp 2f
-	1:
-	lsl r24
-	2:
-	dec r0
-	brpl 1b
-	com r24
-	movw r30,r8
-	ld r25,Z
-	and r24,r25
-	st Z,r24
-.L34:
-	ldi r31,1
-	sub r10,r31
-	sbc r11,__zero_reg__
-	brcs .+2
-	rjmp .L35
-	movw r30,r8
-	ld r24,Z+
-	movw r8,r30
-	push __zero_reg__
-	push r24
-	ldi r24,lo8(.LC3)
-	ldi r25,hi8(.LC3)
-	push r25
-	push r24
-	push r3
-	push r2
-	call _ZN6Serial6printfEPKcz
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	ldd r24,Y+6
-	ldd r25,Y+7
-	cp r8,r24
-	cpc r9,r25
-	breq .+2
-	rjmp .L36
-	ldd r24,Y+1
-	movw r30,r16
-	std Z+37,r24
-	ldd r24,Y+2
-	std Z+38,r24
-	ldd r24,Y+3
-	std Z+39,r24
-	ldd r24,Y+4
-	std Z+40,r24
-	ldd r24,Y+5
-	std Z+41,r24
-.L26:
+.L25:
 /* epilogue start */
 	adiw r28,7
 	in __tmp_reg__,__SREG__
@@ -562,6 +406,163 @@ _ZN5Dht117getDataEv:
 	pop r3
 	pop r2
 	ret
+.L27:
+	ldi r22,lo8(2)
+	movw r24,r16
+	call _ZN3Pin12setDirectionE4DDRx
+	movw r30,r28
+	adiw r30,6
+	std Y+7,r31
+	std Y+6,r30
+.L35:
+	ldi r24,lo8(7)
+	mov r10,r24
+	mov r11,__zero_reg__
+.L34:
+	call _ZN5Timer3nowEv
+	movw r4,r22
+	movw r6,r24
+.L30:
+	movw r24,r16
+	call _ZN3Pin11digitalReadEv
+	cpse r24,__zero_reg__
+	rjmp .L29
+	call _ZN5Timer3nowEv
+	movw r12,r22
+	movw r14,r24
+	sub r12,r4
+	sbc r13,r5
+	sbc r14,r6
+	sbc r15,r7
+	movw r26,r14
+	movw r24,r12
+	sub r24,r4
+	sbc r25,r5
+	sbc r26,r6
+	sbc r27,r7
+	cpi r24,90
+	cpc r25,__zero_reg__
+	cpc r26,__zero_reg__
+	cpc r27,__zero_reg__
+	brlo .L30
+	ldi r24,lo8(.LC0)
+	ldi r25,hi8(.LC0)
+.L41:
+	push r25
+	push r24
+	push r3
+	push r2
+	call _ZN6Serial6printfEPKcz
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	rjmp .L25
+.L29:
+	call _ZN5Timer3nowEv
+	movw r4,r22
+	movw r6,r24
+.L32:
+	movw r24,r16
+	call _ZN3Pin11digitalReadEv
+	tst r24
+	breq .L31
+	call _ZN5Timer3nowEv
+	movw r12,r22
+	movw r14,r24
+	sub r12,r4
+	sbc r13,r5
+	sbc r14,r6
+	sbc r15,r7
+	ldi r31,90
+	cp r12,r31
+	cpc r13,__zero_reg__
+	cpc r14,__zero_reg__
+	cpc r15,__zero_reg__
+	brlo .L32
+	ldi r24,lo8(.LC1)
+	ldi r25,hi8(.LC1)
+	rjmp .L41
+.L31:
+	push r15
+	push r14
+	push r13
+	push r12
+	ldi r24,lo8(.LC2)
+	ldi r25,hi8(.LC2)
+	push r25
+	push r24
+	push r3
+	push r2
+	call _ZN6Serial6printfEPKcz
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28
+	ldi r25,20
+	cp r12,r25
+	cpc r13,__zero_reg__
+	cpc r14,__zero_reg__
+	cpc r15,__zero_reg__
+	brlo .L33
+	ldi r24,lo8(1)
+	ldi r25,0
+	mov r0,r10
+	rjmp 2f
+	1:
+	lsl r24
+	2:
+	dec r0
+	brpl 1b
+	mov r25,r24
+	com r25
+	movw r30,r8
+	ld r24,Z
+	and r24,r25
+	st Z,r24
+.L33:
+	ldi r31,1
+	sub r10,r31
+	sbc r11,__zero_reg__
+	brcs .+2
+	rjmp .L34
+	movw r30,r8
+	ld r24,Z+
+	movw r8,r30
+	push __zero_reg__
+	push r24
+	ldi r24,lo8(.LC3)
+	ldi r25,hi8(.LC3)
+	push r25
+	push r24
+	push r3
+	push r2
+	call _ZN6Serial6printfEPKcz
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	pop __tmp_reg__
+	ldd r24,Y+6
+	ldd r25,Y+7
+	cp r24,r8
+	cpc r25,r9
+	breq .+2
+	rjmp .L35
+	ldd r24,Y+1
+	movw r30,r16
+	std Z+37,r24
+	ldd r24,Y+2
+	std Z+38,r24
+	ldd r24,Y+3
+	std Z+39,r24
+	ldd r24,Y+4
+	std Z+40,r24
+	ldd r24,Y+5
+	std Z+41,r24
+	rjmp .L25
 	.size	_ZN5Dht117getDataEv, .-_ZN5Dht117getDataEv
 .global	_ZN5Dht118checkCrcEv
 	.type	_ZN5Dht118checkCrcEv, @function
@@ -582,7 +583,8 @@ _ZN5Dht118checkCrcEv:
 	ldd r18,Z+41
 	cpse r25,r18
 	ldi r24,0
-.L44:
+.L43:
+/* epilogue start */
 	ret
 	.size	_ZN5Dht118checkCrcEv, .-_ZN5Dht118checkCrcEv
 	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
@@ -591,6 +593,6 @@ _ZN5Dht118checkCrcEv:
 	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
 	.zero	8
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_copy_data
 .global __do_clear_bss

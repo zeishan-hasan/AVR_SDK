@@ -61,13 +61,13 @@ _ZN7Hmc58834initEv:
 	ldd r24,Z+2
 	ldi r31,lo8(32)
 	mul r24,r31
-	movw r18,r0
+	movw r24,r0
 	clr __zero_reg__
 	movw r30,r16
-	ldd r25,Z+3
+	ldd r18,Z+3
 	ldi r31,lo8(4)
-	mul r25,r31
-	movw r24,r0
+	mul r18,r31
+	movw r18,r0
 	clr __zero_reg__
 	or r24,r18
 	movw r30,r16
@@ -134,16 +134,14 @@ _ZN7Hmc58839setSampleE14SAMPLE_MEASURE:
 /* stack size = 4 */
 .L__stack_usage = 4
 	movw r28,r24
-	mov r24,r22
-	ldd r22,Y+2
-	mov r25,r22
-	andi r25,lo8(-97)
-	ldi r18,lo8(32)
-	mul r24,r18
+	ldd r24,Y+2
+	andi r24,lo8(-97)
+	ldi r25,lo8(32)
+	mul r22,r25
 	movw r22,r0
 	clr __zero_reg__
-	or r22,r25
-	std Y+2,r22
+	or r24,r22
+	std Y+2,r24
 	movw r16,r28
 	subi r16,-8
 	sbci r17,-1
@@ -173,6 +171,7 @@ _ZN7Hmc58839getSampleEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+2
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc58839getSampleEv, .-_ZN7Hmc58839getSampleEv
 .global	_ZN7Hmc588310setOutRateEv
@@ -182,6 +181,7 @@ _ZN7Hmc588310setOutRateEv:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc588310setOutRateEv, .-_ZN7Hmc588310setOutRateEv
 .global	_ZN7Hmc588310getOutRateEv
@@ -193,6 +193,7 @@ _ZN7Hmc588310getOutRateEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+3
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc588310getOutRateEv, .-_ZN7Hmc588310getOutRateEv
 .global	_ZN7Hmc58837setGainEv
@@ -202,6 +203,7 @@ _ZN7Hmc58837setGainEv:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc58837setGainEv, .-_ZN7Hmc58837setGainEv
 .global	_ZN7Hmc58837getGainEv
@@ -213,6 +215,7 @@ _ZN7Hmc58837getGainEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+4
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc58837getGainEv, .-_ZN7Hmc58837getGainEv
 .global	_ZN7Hmc58839setOpModeEv
@@ -222,6 +225,7 @@ _ZN7Hmc58839setOpModeEv:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc58839setOpModeEv, .-_ZN7Hmc58839setOpModeEv
 .global	_ZN7Hmc58839getOpModeEv
@@ -234,6 +238,7 @@ _ZN7Hmc58839getOpModeEv:
 	movw r30,r24
 	ldd r24,Z+5
 	ldd r25,Z+6
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc58839getOpModeEv, .-_ZN7Hmc58839getOpModeEv
 .global	_ZN7Hmc588314setMeasureModeEv
@@ -243,6 +248,7 @@ _ZN7Hmc588314setMeasureModeEv:
 /* frame size = 0 */
 /* stack size = 0 */
 .L__stack_usage = 0
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc588314setMeasureModeEv, .-_ZN7Hmc588314setMeasureModeEv
 .global	_ZN7Hmc588314getMeasureModeEv
@@ -254,6 +260,7 @@ _ZN7Hmc588314getMeasureModeEv:
 .L__stack_usage = 0
 	movw r30,r24
 	ldd r24,Z+7
+/* epilogue start */
 	ret
 	.size	_ZN7Hmc588314getMeasureModeEv, .-_ZN7Hmc588314getMeasureModeEv
 .global	__floatsisf
@@ -292,30 +299,30 @@ _ZN7Hmc588310getHeadingEv:
 	ld r22,Z
 	adiw r24,8
 	call _ZN9I2CMaster7readRegEhhPhj
-	ldd r22,Y+1
-	ldd r23,Y+2
-	eor r23,r22
-	eor r22,r23
-	eor r23,r22
+	ldd r18,Y+1
+	ldd r19,Y+2
+	eor r19,r18
+	eor r18,r19
+	eor r19,r18
 	movw r30,r14
-	std Z+10,r23
-	std Z+9,r22
-	ldd r24,Y+3
-	ldd r25,Y+4
-	eor r25,r24
-	eor r24,r25
-	eor r25,r24
-	std Z+14,r25
-	std Z+13,r24
+	std Z+10,r19
+	std Z+9,r18
 	ldd r16,Y+5
 	ldd r17,Y+6
 	eor r17,r16
 	eor r16,r17
 	eor r17,r16
-	std Z+12,r17
-	std Z+11,r16
-	mov __tmp_reg__,r23
-	lsl r0
+	ldd r22,Y+3
+	ldd r23,Y+4
+	ldd r24,Y+5
+	ldd r25,Y+6
+	call __bswapsi2
+	std Z+11,r22
+	std Z+12,r23
+	std Z+13,r24
+	std Z+14,r25
+	movw r22,r18
+	lsl r19
 	sbc r24,r24
 	sbc r25,r25
 	call __floatsisf
@@ -400,4 +407,4 @@ _ZN7Hmc58837getDataEv:
 	pop r16
 	ret
 	.size	_ZN7Hmc58837getDataEv, .-_ZN7Hmc58837getDataEv
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"

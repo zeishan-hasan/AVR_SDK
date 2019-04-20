@@ -5,6 +5,7 @@ __SREG__ = 0x3f
 __RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
+	.text
 	.section	.rodata.str1.1,"aMS",@progbits,1
 .LC0:
 	.string	"_Now :%u\r\n"
@@ -16,16 +17,14 @@ __zero_reg__ = 1
 .global	main
 	.type	main, @function
 main:
-	push r28
-	push r29
 	rcall .
-	push __zero_reg__
+	push __tmp_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
 /* prologue: function */
 /* frame size = 4 */
-/* stack size = 6 */
-.L__stack_usage = 6
+/* stack size = 4 */
+.L__stack_usage = 4
 	movw r24,r28
 	adiw r24,1
 	call time
@@ -107,7 +106,7 @@ main:
 	mov r25,r16
 	call _ZN6Serial5clearEv
 /* #APP */
- ;  32 "src/main.cpp" 1
+ ;  32 "src//main.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
@@ -125,20 +124,6 @@ main:
 	out 0x25,r24
 	call _Z6microsv
 	movw r14,r24
-/* #APP */
- ;  40 "src/main.cpp" 1
-	nop
- ;  0 "" 2
- ;  41 "src/main.cpp" 1
-	nop
- ;  0 "" 2
- ;  42 "src/main.cpp" 1
-	nop
- ;  0 "" 2
- ;  43 "src/main.cpp" 1
-	nop
- ;  0 "" 2
-/* #NOAPP */
 	call _Z6microsv
 	movw r12,r24
 	sub r12,r14
@@ -202,6 +187,6 @@ main:
 	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
 	.zero	8
-	.ident	"GCC: (GNU) 5.4.0"
+	.ident	"GCC: (GNU) 8.2.0"
 .global __do_copy_data
 .global __do_clear_bss

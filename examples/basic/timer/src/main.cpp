@@ -37,10 +37,6 @@ int main(){
 
 
 	_prev = micros();
-	asm volatile("nop");
-	asm volatile("nop");
-	asm volatile("nop");
-	asm volatile("nop");
 	_now = micros();
 	_deltaT = ABS(_now-_prev);
 
