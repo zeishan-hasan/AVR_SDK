@@ -1,0 +1,109 @@
+#!/bin/bash
+
+#abort on error
+set -e
+
+function usage
+{
+    echo "usage: createNewProject -n [name] -i [ide]"
+    echo "   ";
+    echo "  -n | --name       : Specify project name";
+    echo "  -i | --ide        : Specify ide configuration";
+    echo "  -h | --help       : Prompt usage message";
+    echo " Example:"
+    echo "./createNewProject -n test -i qtcreator"
+}
+
+function parse_args
+{
+  # positional args
+  args=()
+
+  # named args
+  while [ "$1" != "" ]; do
+      case "$1" in
+          -n | --name )               name="$2";        shift;;
+		      -i | --ide )                ide="$2";         shift;;
+          -h | --help )               usage;            exit;; # quit and show usage
+          * )                         args+=("$1")             # if no match, add it to the positional args
+      esac
+      shift # move to next kv pair
+  done
+
+  # restore positional args
+  set -- "${args[@]}"
+
+  # set positionals to vars
+  positional_1="${args[0]}"
+  positional_2="${args[1]}"
+
+  # validate required args
+  if [[ -z "${name}" ]]; then
+      echo "Invalid argument"
+      usage
+      exit;
+  fi
+
+}
+function select_ide
+{
+	DIR=~/.avr_sdk/dependencies/ide/
+	
+	case $ide in
+     qtcreator)      
+          qtcreator
+          ;;
+     eclipse)      
+          echo "not supported yet"
+          ;;
+     boh)
+          echo "not supported yet"
+          ;; 
+     *)          DIR=
+          ;;
+esac
+}
+
+function qtcreator
+{
+	DIR=${DIR}qtcreator/
+  mapfile -t array < <(ls -l ${DIR} | awk '{print $9}')
+  for element in "${array[@]:1}"
+  do
+	
+	 #filename=${element%.*}
+	 extension=${element#*.}
+	 cp ${DIR}${element} ${name}/${name}.${extension}
+  done
+  sed -i 's,'"{BUILD_DIR}"','"$(pwd)/${name}"',' ${name}/${name}.creator.user
+}
+
+
+
+
+function run
+{
+  parse_args "$@"
+
+  mkdir -p ${name}
+  mkdir $name/src
+  ln -s /home/${USER}/Documenti/GitHub/AVR_SDK/Makefile ./$name
+  ln -s /home/${USER}/Documenti/GitHub/AVR_SDK/libs/ ./$name
+  echo -e "#include \"avr_sdk.h\"\\n\n\nint main(){\n\n\twhile(1){\n\n\t}\n\n\treturn 0;\n}" > $name/src/main.cpp 
+  select_ide ${ide}
+
+}
+
+
+
+run "$@";
+
+
+
+
+
+
+
+
+
+

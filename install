@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir ~/.avr_sdk
+cp -r ./tools/createNewAvrProject/dependencies ~/.avr_sdk/
+sudo cp  ./tools/createNewAvrProject/createNewAvrProject /usr/local/bin
+sudo cp  ./tools/rawSerialMonitor/rawSerialMonitor /usr/local/bin

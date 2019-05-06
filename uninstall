@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -r ~/.avr_sdk
+sudo rm /usr/local/bin/createNewAvrProject
+sudo rm /usr/local/bin/rawSerialMonitor
