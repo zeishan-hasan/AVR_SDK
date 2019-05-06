@@ -7,3 +7,6 @@
 [submodule "tools/bootloader_mega2560"]
 	path = tools/bootloader_mega2560
 	url = https://github.com/Yanujz/bootloader_mega2560.git
+[submodule "tools/createNewAvrProject"]
+	path = tools/createNewAvrProject
+	url = https://github.com/Yanujz/createNewAvrProject.git
