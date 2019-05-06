@@ -1,5 +1,18 @@
 #!/bin/bash
+echo "Removing files..."
+if [ -d ~/.avr_sdk ]; then 
+	$(rm -r ~/.avr_sdk)
+fi
 
-rm -r ~/.avr_sdk
-sudo rm /usr/local/bin/createNewAvrProject
-sudo rm /usr/local/bin/rawSerialMonitor
+if [ -d /usr/local/bin/createNewAvrProject ]; then 
+	$(sudo rm /usr/local/bin/createNewAvrProject)
+fi
+
+if [ -d /usr/local/bin/rawSerialMonitor ]; then 
+	$(sudo rm /usr/local/bin/rawSerialMonitor)
+fi
+
+if [ -d /usr/local/bin/asmCycleCounter ]; then 
+	$(sudo rm /usr/local/bin/asmCycleCounter)
+fi
+echo "Done."
