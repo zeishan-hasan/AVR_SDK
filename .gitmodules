@@ -4,3 +4,6 @@
 [submodule "tools/rawSerialMonitor"]
 	path = tools/rawSerialMonitor
 	url = https://github.com/Yanujz/rawSerialMonitor.git
+[submodule "tools/bootloader_mega2560"]
+	path = tools/bootloader_mega2560
+	url = https://github.com/Yanujz/bootloader_mega2560.git
