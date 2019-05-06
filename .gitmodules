@@ -7,3 +7,6 @@
 [submodule "tools/createNewAvrProject"]
 	path = tools/createNewAvrProject
 	url = https://github.com/Yanujz/createNewAvrProject.git
+[submodule "tools/AsmCyclesCounter"]
+	path = tools/AsmCyclesCounter
+	url = https://github.com/Yanujz/AsmCyclesCounter.git
