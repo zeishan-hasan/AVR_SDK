@@ -1,6 +1,3 @@
-[submodule "tools/AsmCyclesCounter"]
-	path = tools/AsmCyclesCounter
-	url = https://github.com/Yanujz/AsmCyclesCounter.git
 [submodule "tools/rawSerialMonitor"]
 	path = tools/rawSerialMonitor
 	url = https://github.com/Yanujz/rawSerialMonitor.git
