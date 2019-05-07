@@ -4,6 +4,7 @@
 #include <avr/iom2560.h>
 #include <avr/io.h>
 #include "vector.h"
+#include <stdint.h>
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
@@ -49,8 +50,8 @@ public:
     void stop(void);
 
     uint8_t send(uint8_t data);
-    uint8_t send(uint8_t *buff,size_t size);
-    uint8_t send(uint8_t address,uint8_t *buff,size_t size);
+    uint8_t send(uint8_t *buff, uint16_t length);
+    uint8_t send(uint8_t address, uint8_t *buff, uint16_t length);
 
     uint8_t receive(uint8_t address);
     uint8_t receive(uint8_t address, uint8_t* data, uint16_t length);

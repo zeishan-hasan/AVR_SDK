@@ -67,11 +67,15 @@ uint8_t I2CMaster::send(uint8_t data)
     return 0;
 }
 
-uint8_t I2CMaster::send(uint8_t *buff, size_t size)
+uint8_t I2CMaster::send(uint8_t *buff, uint16_t length)
 {
-    for (size_t i = 0; i < size; ++i) {
-        send(buff[i]);
+
+    uint8_t success = 1;
+    for (size_t i = 0; i < length; ++i) {
+        success &= send(buff[i]);
     }
+
+    return success;
 }
 
 uint8_t I2CMaster::send(uint8_t address, uint8_t* data, uint16_t length)

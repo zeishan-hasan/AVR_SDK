@@ -9,6 +9,7 @@
 #include <avr/iomxx0_1.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "macros.h"
 
 //#define __AVR_ATmega2560__

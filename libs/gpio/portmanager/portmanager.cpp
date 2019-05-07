@@ -1,7 +1,6 @@
 #include "portmanager.h"
 
 
-
 Pin::Pin(uint8_t portNo, DDRx direction)
 {
     uint16_t timers[] = {0x24,0x80,0xB0,0x90,0xA0,0x120};
@@ -155,6 +154,7 @@ bool Pin::setPWM(uint32_t freq, uint8_t duty)
         return false;
     }
 
+    return true;
 }
 
 bool Pin::setDuty(uint8_t duty)
@@ -173,6 +173,7 @@ bool Pin::setDuty(uint8_t duty)
         return false;
     }
 
+    return true;
 }
 
 bool Pin::setFreq(uint16_t freq)
@@ -191,6 +192,8 @@ bool Pin::setFreq(uint16_t freq)
     default:
         return false;
     }
+
+    return true;
 }
 
 bool Pin::digitalRead()
