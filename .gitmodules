@@ -10,3 +10,6 @@
 [submodule "tools/AsmCyclesCounter"]
 	path = tools/AsmCyclesCounter
 	url = https://github.com/Yanujz/AsmCyclesCounter.git
+[submodule "tools/createCppClass"]
+	path = tools/createCppClass
+	url = https://github.com/Yanujz/createCppClass.git
