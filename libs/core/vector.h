@@ -6,6 +6,7 @@
 #include <string.h>
 #include "macros.h"
 #include "initializer_list.h"
+#include "cppfix.h"
 namespace yanujz {
 
 //template<class T>
@@ -44,10 +45,10 @@ public:
         return *(_value + (_size-1));
     }
 
-    T* begin(){
+    T* begin() const{
         return _value;
     }
-    T* end(){
+    T* end() const {
         return _value + (_size-1);
     }
 
@@ -127,7 +128,7 @@ public:
         _value = reinterpret_cast<T*> (realloc( _value, _size * sizeof(T)));
 
         if(_value == nullptr){
-            delete temp;
+            free(temp);
             return;
         }
 
@@ -135,17 +136,40 @@ public:
 
         memcpy(_value + size + index, temp + index, _tempSize);
 
-        delete  temp;
+        free(temp);
     }
 
+    void insert(T *dst,T *srcStart,T *srcEnd){
+        //if(_value == nullptr){
+        //    return;
+        //}
+        //
+        //size_t _tempSize = _size*sizeof(T);
+        //T *temp = (T*)malloc(_tempSize);
+        //memcpy(temp, _value, _tempSize);
+        //
+        //_size += size;
+        //
+        //
+        //_value = reinterpret_cast<T*> (realloc( _value, _size * sizeof(T)));
+        //
+        //if(_value == nullptr){
+        //    delete temp;
+        //    return;
+        //}
+        //
+        //memcpy(_value + index, arr, size*sizeof(T));
+        //
+        //memcpy(_value + size + index, temp + index, _tempSize);
+        //
+        //delete  temp;
+    }
     void popRight(size_t value = 1){
         if(value > _size){
             return;
         }
         _size -= value;
         _value = reinterpret_cast<T*>(realloc(_value, (_size * sizeof(T)) ) );
-
-
     }
     void popLeft(size_t value = 1){
         if(value > _size){
@@ -154,7 +178,6 @@ public:
         _size -= value;
         memmove(_value, _value + value, _size*sizeof(T));
         _value = reinterpret_cast<T*>(realloc(_value, (_size * sizeof(T)) ) );
-
     }
     size_t size() const {
         return _size;
@@ -181,14 +204,16 @@ public:
         return _value[index];
     }
 
-    //void operator=(T &a){
-    //    memcpy(_value,a,sizeof(a));
-    //}
+    void operator=(const vector<T> &a){
+        //clear();
+        memcpy(this->begin(),a.begin(),a.size());
+        _size = a.size();
+    }
     T operator=(std::initializer_list<T> list){
         for (int i : list) pushRight(i);
         //memcpy(_value,a,sizeof(a));
     }
-    //bool operator== (const T & rhs) const {
+
 
     bool operator==(const vector<T>&rhs){
 

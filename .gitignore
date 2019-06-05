@@ -6,3 +6,8 @@
 *.autosave
 *.autosave
 *.s
+*.user
+*.20
+*.user
+*.user
+examples/basic/rdm630/rdm630.creator.user

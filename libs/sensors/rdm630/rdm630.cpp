@@ -1,10 +1,9 @@
 #include "rdm630.h"
-
-//#include "streambuf"
+#include "macros.h"
 
 Rdm6300::Rdm6300(){
 
-    serial0 = SerialManager::getInstance(SERIAL0);
+    //serial0 = SerialManager::getInstance(SERIAL0);
 
 }
 
@@ -19,28 +18,18 @@ bool Rdm6300::attachTo(SerialPort serial, UART baud)
     return true;
 }
 
-yanujz::vector<uint8_t> Rdm6300::readData()
+void Rdm6300::getData(uint8_t *arr)
 {
-    /*  uint8_t temp = 0;
-    //vector<int> a;
-    yanujz::vector<uint8_t> data;
-    if(serial->isAvailable()) {
-        for(uint8_t i = 0; i < 14; ++i){
-            temp = serial->receive();
-            data.pushRight(temp);
-        }
-        if(data.first() == 0x02 && data.last() == 0x03 &&
-                data.size() == 14){
-            if(calcCrc(data) == false){
-                data.clear();
-            }
-            else{
-                lastCard = data;
-            }
+    //yanujz::vector<uint8_t> data;
+    //uint8_t i = 0;
 
-        }
-    }*/
-    return lastCard;
+    memcpy(arr,lastCard.begin()+1,10);
+    arr[10] = '\0';
+    //data.pushRight(50);
+    //memcpy(data.begin(),lastCard.begin()+1,10);
+    //data.insert(data.begin(),lastCard.begin()+1,lastCard.end()-1);
+
+    //return data;
 }
 
 bool Rdm6300::calcCrc(yanujz::vector<uint8_t> & buff)
@@ -70,18 +59,22 @@ bool Rdm6300::isValidPacket(yanujz::vector<uint8_t> &data)
 
 bool Rdm6300::isNewCard()
 {
-    //for(uint16_t i = 0; i < lastCard.size(); ++i){
-    //    serial0->printf("%c 0x%02x\r\n",lastCard[i],lastCard[i]);
-    //}
+    static uint16_t count = 0;
 
     uint8_t temp = 0;
     yanujz::vector<uint8_t> data;
+    if(++count == 3000){
+        lastCard = data;
+        PORTB=0X80;
+        _delay_ms(1000);
+        count = 0;
+    }
 
     if(serial->isAvailable()){
         temp = serial->receive();
         if(temp == 0x2){
             data.pushRight(temp);
-            // serial0->printf("start frame\r\n");
+           // serial0->printf("start frame\r\n");
             while (1) {
                 if(serial->isAvailable()){
                     temp = serial->receive();
@@ -92,17 +85,21 @@ bool Rdm6300::isNewCard()
                     break;
                 }
             }
-            //   serial0->printf("stop frame\r\n");
+            //serial0->printf("stop frame\r\n");
         }
 
     }
     if(isValidPacket(data)){
-        serial0->printf("packet is valid\r\n");
+        //serial0->printf("packet is valid\r\n");
         if (data != lastCard){
-            // serial0->printf("new card\r\n");
+            //   serial0->printf("new card\r\n");
             lastCard = data;
             return true;
         }
+        //else if(data == lastCard && minTimeElapsed){
+        //
+        //}
+
         //serial0->printf("card present\r\n");
     }
     //serial0->printf("leaving\r\n");

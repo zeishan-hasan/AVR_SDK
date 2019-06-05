@@ -2,7 +2,7 @@
 #define RDM6300_H
 #include "serial.h"
 #include "vector.h"
-
+#include <avr/delay.h>
 
 #pragma pack(1)
 //struct rdm6300_t
@@ -22,14 +22,15 @@ public:
     Rdm6300();
     bool attachTo(enum SerialPort serial, enum UART baud);
     bool isNewCard();
-    yanujz::vector<uint8_t> readData();
+    void getData(uint8_t *arr);
 private:
+    //---- Methods ----//
     bool calcCrc(yanujz::vector<uint8_t> &buff);
     bool isValidPacket(yanujz::vector<uint8_t> &data);
 
-
+    //---- Variables ----//
     Serial *serial;
-    Serial *serial0;
+    //Serial *serial0;
     yanujz::vector<uint8_t> lastCard;
 };
 
