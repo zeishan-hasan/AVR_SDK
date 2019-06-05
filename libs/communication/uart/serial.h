@@ -10,6 +10,7 @@
 #include "vector.h"
 
 typedef void ser_cb_t();
+
 #define _atmega2560 1
 //#define _atmega328p 1
 

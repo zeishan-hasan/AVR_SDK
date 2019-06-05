@@ -13,7 +13,7 @@ CXX       = avr-g++
 CC        = avr-gcc
 
 CXX_SRCS := $(shell find $(LIBS_DIR)/ -type f -regex ".*\.cpp") \
-			$(shell find $(SRC_DIR)/ -type f -regex ".*\.cpp")
+			$(shell find $(SRC_DIR)/ -type f -regex ".*\.cpp") 
 CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
 
 ASM_SRCS  = $(shell find $(LIBS_DIR)/ -type f -regex ".*\.s") \
@@ -27,7 +27,7 @@ INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
 
 
 
-CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)  
+CXX_FLAGS = -lstdc++ -std=c++14 $(INCLUDE_DIR)
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
 
 # Select programmer (default: stk500v2)

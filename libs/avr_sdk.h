@@ -18,6 +18,7 @@
 #include "sensors/dht11/dht11.h"
 #include "sensors/hmc5883/hmc5883.h"
 #include "sensors/mpu6050/mpu6050.h"
+#include "sensors/rdm630/rdm630.h"
 
 
 

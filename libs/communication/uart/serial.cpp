@@ -31,11 +31,13 @@ void Serial::printf(const char *fmt,...)
 
 void Serial::readUntil(char *buffer, char chr)
 {
-    register uint8_t i = 0;
+    Serial *serial0 = SerialManager::getInstance(SERIAL0);
+    uint8_t i = 0;
+    while (char temp = receive()) {
+        serial0->printf("pushing %c %x\r\n",temp);
 
-    while (1) {
-        char temp = receive();
         if(temp == chr){
+            serial0->printf("terminator ok\r\n");
             buffer[i] ='\n';
             ++i;
             buffer[i] ='\r';
@@ -223,9 +225,6 @@ ISR(USART3_RX_vect){
         UDR3 = temp;
     }
     serial3->rxCallBack();
-    //Serial *serial0 = SerialManager::getInstance(SERIAL0);
-    //serial0->printf("Data received :0x%x\r\n",temp);
-    UDR0 = temp;
 }
 
 
