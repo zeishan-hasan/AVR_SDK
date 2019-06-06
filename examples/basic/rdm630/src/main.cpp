@@ -1,5 +1,6 @@
 #include "avr_sdk.h"
 
+
 int main(){
 
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
@@ -22,24 +23,18 @@ int main(){
 	//yanujz::vector<uint8_t> data;
 	uint8_t buff[20];
 	Pin pin(13,OUTPUT);
+	pin.setPWM(1000,0);
 	while(1){
 		if(rdm6300.isNewCard()){
 			serial0->printf("New Card found!\r\n");
 			rdm6300.getData(buff);
 			serial0->printf("%s\r\n",buff);
-			//serial0->printf("size : %u\r\n",data.size());
-			//if(data.empty() == false){
-			//	serial0->printf("ID:");
-			//	for(uint8_t i = 0; i < data.size(); ++i){
-			//		serial0->printf("%x",data.at(i));
-			//	}
-			//	serial0->printf("\r\n");
-			for(uint8_t i = 0; i < 10; ++i){
-				pin.toggle();
-				_delay_ms(250);
-			}
+			pin.setPWM(1000,20);
+			_delay_ms(250);
+			pin.setPWM(3000,20);
+			_delay_ms(250);
+			pin.setDuty(0);
 			_delay_ms(1000);
-			//}
 		}
 		_delay_ms(10);
 	}

@@ -2,8 +2,7 @@
 #define RDM6300_H
 #include "serial.h"
 #include "vector.h"
-#include <avr/delay.h>
-
+#include "portmanager.h"
 #pragma pack(1)
 //struct rdm6300_t
 //{

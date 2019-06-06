@@ -65,7 +65,6 @@ bool Rdm6300::isNewCard()
     yanujz::vector<uint8_t> data;
     if(++count == 3000){
         lastCard = data;
-        PORTB=0X80;
         _delay_ms(1000);
         count = 0;
     }
@@ -90,6 +89,7 @@ bool Rdm6300::isNewCard()
 
     }
     if(isValidPacket(data)){
+        Pin pin(13,OUTPUT);
         //serial0->printf("packet is valid\r\n");
         if (data != lastCard){
             //   serial0->printf("new card\r\n");
@@ -99,6 +99,11 @@ bool Rdm6300::isNewCard()
         //else if(data == lastCard && minTimeElapsed){
         //
         //}
+        pin.setPWM(3000,20);
+        _delay_ms(250);
+        //pin.setPWM(1000,50);
+        //_delay_ms(250);
+        pin.setDuty(0);
 
         //serial0->printf("card present\r\n");
     }
