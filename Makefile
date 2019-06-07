@@ -98,8 +98,8 @@ size:
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
-	@$(CXX) $(CXX_FLAGS) -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
+	@$(CXX) $(CXX_FLAGS) -nostdlib -I standardCpp -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -nostdlib -I standardCpp -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
 
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"

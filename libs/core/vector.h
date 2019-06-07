@@ -7,6 +7,9 @@
 #include "macros.h"
 #include "initializer_list.h"
 #include "cppfix.h"
+#include "serial.h"
+//static Serial *serial = SerialManager::getInstance(SERIAL0);
+
 namespace yanujz {
 
 //template<class T>
@@ -193,9 +196,9 @@ public:
     }
 
     T at(size_t index) const {
-        if(index > _size){
-            return 0;
-        }
+        //if(index > _size){
+        //    return 0;
+        //}
         return _value[index];
     }
 
@@ -203,16 +206,27 @@ public:
     T& operator[](size_t index){
         return _value[index];
     }
-
-    void operator=(const vector<T> &a){
-        //clear();
-        memcpy(this->begin(),a.begin(),a.size());
-        _size = a.size();
+    //T& operator=( const vecTtor& other );
+    //T& operator=(const vector<T> &a){
+    //    memcpy(begin(),a.begin(),sizeof(T)*a.size());
+    //    _size = a.size();
+    //}
+    //template <class T>
+    vector<T>& operator=(const vector<T> &v)   {
+        _size = v.size();
+        if(_value !=  nullptr){
+            //delete[] _value;
+        }
+        //_value = (T*) malloc( v.size() );
+        _value = new T[v.size()];
+        for(size_t i = 0; i < _size; i++)
+            _value[i] = v.at(i);
+        return *this;
     }
-    T operator=(std::initializer_list<T> list){
-        for (int i : list) pushRight(i);
-        //memcpy(_value,a,sizeof(a));
-    }
+    //T operator=(std::initializer_list<T> list){
+    //    for (int i : list) pushRight(i);
+    //    //memcpy(_value,a,sizeof(a));
+    //}
 
 
     bool operator==(const vector<T>&rhs){

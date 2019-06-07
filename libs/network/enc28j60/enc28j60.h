@@ -104,10 +104,10 @@ bit 1 STRCH: LED Pulse Stretching Enable bit
 bit 0 Reserved: Write as 0
 */
 enum ENC28J60_PHLCON_LDEA {
-
+    //TODO
 };
 enum ENC28J60_PHLCON_LDEB {
-
+    //TODO
 };
 
 /* ECON1 REGISTER
@@ -516,6 +516,7 @@ enum ENC28J60_MACON1{
     RXPAUS  = (1 << 2),
     TRXPAUS = (1 << 3)
 };
+
 /* MACON3: MAC CONTROL REGISTER 3
 +---------+---------+---------+---------+---------+--------+------------+--------+
 | 7       | 6       | 5       | 4       | 3       | 2      | 1          | 0      |
@@ -699,15 +700,485 @@ enum ENC28J60_PHCON2{
 +-------+--------+-------+-------+-------+--------+-------+--------+
 | UCEN  | ANDOR  | CRCEN | PMEN  | MPEN  | HTEN   | MCEN  | BCEN   |
 +-------+--------+-------+-------+-------+--------+-------+--------+
+
+bit 7 UCEN: Unicast Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets not having a destination address matching the local MAC address will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Packets with a destination address matching the local MAC address will be accepted
+        0 = Filter disabled
+
+bit 6 ANDOR: AND/OR Filter Select bit
+    1 = AND: Packets will be rejected unless all enabled filters accept the packet
+    0 = OR: Packets will be accepted unless all enabled filters reject the packet
+
+bit 5 CRCEN: Post-Filter CRC Check Enable bit
+    1 = All packets with an invalid CRC will be discarded
+    0 = The CRC validity will be ignored
+
+bit 4 PMEN: Pattern Match Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets must meet the Pattern Match criteria or they will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Packets which meet the Pattern Match criteria will be accepted
+        0 = Filter disabled
+
+bit 3 MPEN: Magic PacketTM Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets must be Magic Packets for the local MAC address or they will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Magic Packets for the local MAC address will be accepted
+        0 = Filter disabled
+
+bit 2 HTEN: Hash Table Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets must meet the Hash Table criteria or they will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Packets which meet the Hash Table criteria will be accepted
+        0 = Filter disabled
+
+bit 1 MCEN: Multicast Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets must have the Least Significant bit set in the destination address or they will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Packets which have the Least Significant bit set in the destination address will be accepted
+        0 = Filter disabled
+
+bit 0 BCEN: Broadcast Filter Enable bit
+    When ANDOR = 1:
+        1 = Packets must have a destination address of FF-FF-FF-FF-FF-FF or they will be discarded
+        0 = Filter disabled
+    When ANDOR = 0:
+        1 = Packets which have a destination address of FF-FF-FF-FF-FF-FF will be accepted
+        0 = Filter disabled
 */
+enum ENC28J60_ERXFCON {
+    BCEN    =  (1 << 0),
+    MCEN    =  (1 << 1),
+    HTEN    =  (1 << 2),
+    MPEN    =  (1 << 3),
+    PMEN    =  (1 << 4),
+    CRCEN   =  (1 << 5),
+    ANDOR   =  (1 << 6),
+    UCEN    =  (1 << 7),
+};
+
+/* EFLOCON: ETHERNET FLOW CONTROL REGISTER
++-----+--------+-------+-------+-------+---------+-------+--------+
+| 7   | 6      | 5     | 4     | 3     | 2       | 1     | 0      |
++-----+--------+-------+-------+-------+---------+-------+--------+
+| U-0 | U-0    | U-0   | U-0   | U-0   | R-0     | R/W-0 | R/W-0  |
++-----+--------+-------+-------+-------+---------+-------+--------+
+| —   | —      | —     | —     | —     | FULDPXS | FCEN1 | FCEN0  |
++-----+--------+-------+-------+-------+---------+-------+--------+
+
+bit 7-3 Unimplemented: Read as ‘0’
+
+bit 2 FULDPXS: Read-Only MAC Full-Duplex Shadow bit
+    1 = MAC is configured for Full-Duplex mode, FULDPX (MACON3<0>) is set
+    0 = MAC is configured for Half-Duplex mode, FULDPX (MACON3<0>) is clear
+
+bit 1-0 FCEN1:FCEN0: Flow Control Enable bits
+    When FULDPXS = 1:
+        11 = Send one pause frame with a ‘0’ timer value and then turn flow control off
+        10 = Send pause frames periodically
+        01 = Send one pause frame then turn flow control off
+        00 = Flow control off
+    When FULDPXS = 0:
+        11 = Flow control on
+        10 = Flow control off
+        01 = Flow control on
+        00 = Flow control off
+*/
+enum EFLOCON {
+    FLOW_CTRL_OFF = 0,
+    FLOW_CTRL_ON  = 1,
+    SEND_PAUSE_OFF_FLOWCTRL = 1,
+    SEND_PAUSE_PERIODICALLY = 2,
+    SEND_PAUSE_WITH_0_OFF_FLOWCTRL = 3,
+    FULDPXS = (1 << 2)
+};
+
+/* PHCON1: PHY CONTROL REGISTER 1
++-------+---------+-----+-----+--------+-------+-----+-----------+
+|  15   |   14    | 13  | 12  |   11   |  10   |  9  |     8     |
++-------+---------+-----+-----+--------+-------+-----+-----------+
+| R/W-0 | R/W-0   | U-0 | U-0 | R/W-0  | R/W-0 | U-0 | R/W-0     |
++-------+---------+-----+-----+--------+-------+-----+-----------+
+| PRST  | PLOOPBK | —   | —   | PPWRSV | r     | —   | PDPXMD(1) |
++-------+---------+-----+-----+--------+-------+-----+-----------+
++-------+---------+-----+-----+--------+-------+-----+-----------+
+| 7     | 6       | 5   | 4   | 3      | 2     | 1   | 0         |
++-------+---------+-----+-----+--------+-------+-----+-----------+
+| R/W-0 | U-0     | U-0 | U-0 | U-0    | U-0   | U-0 | U-0       |
++-------+---------+-----+-----+--------+-------+-----+-----------+
+| r     | —       | —   | —   | —      | —     | —   | —         |
++-------+---------+-----+-----+--------+-------+-----+-----------+
+
+bit 15 PRST: PHY Software Reset bit
+    1 = PHY is processing a Software Reset (automatically resets to ‘0’ when done)
+    0 = Normal operation
+
+bit 14 PLOOPBK: PHY Loopback bit
+    1 = All data transmitted will be returned to the MAC. The twisted-pair interface will be disabled.
+    0 = Normal operation
+
+bit 13-12 Unimplemented: Read as ‘0’
+
+bit 11 PPWRSV: PHY Power-Down bit
+    1 = PHY is shut down
+    0 = Normal operation
+
+bit 10 Reserved: Maintain as ‘0’
+
+bit 9 Unimplemented: Read as ‘0’
+
+bit 8 PDPXMD: PHY Duplex Mode bit (1)
+    1 = PHY operates in Full-Duplex mode
+    0 = PHY operates in Half-Duplex mode
+
+bit 7 Reserved: Maintain as ‘0’
+
+bit 6-0 Unimplemented: Read as ‘0’
+Note 1: Reset values of the Duplex mode/status bits depend on the connection
+        of the LED to the LEDB pin (see Section 2.6 “LED Configuration” for additional details).
+*/
+enum ENC28J60_PHCON1 {
+    PDPXMD  = (1 <<  8),
+    PPWRSV  = (1 << 11),
+    PLOOPBK = (1 << 14),
+    PRST    = (1 << 15)
+};
+
+/* ESTAT: ETHERNET STATUS REGISTER
++-------+---------+-----+---------+--------+--------+--------+-----------+
+| 7     | 6       | 5   | 4       | 3      | 2      | 1      | 0         |
++-------+---------+-----+---------+--------+--------+--------+-----------+
+| R-0   | R/C-0   | R-0 | R/C-0   | U-0    | R-0    | R/C-0  | R/W-0     |
++-------+---------+-----+---------+--------+--------+--------+-----------+
+| INT   | BUFER   | r   | LATECOL | —      | RXBUSY | TXABRT | CLKRDY(1) |
++-------+---------+-----+---------+--------+--------+--------+-----------+
+
+bit 7 INT: INT Interrupt Flag bit
+    1 = INT interrupt is pending
+    0 = No INT interrupt is pending
+
+bit 6 BUFER: Ethernet Buffer Error Status bit
+    1 = An Ethernet read or write has generated a buffer error (overrun or underrun)
+    0 = No buffer error has occurred
+
+bit 5 Reserved: Read as ‘0’
+
+bit 4 LATECOL: Late Collision Error bit
+    1 = A collision occurred after 64 bytes had been transmitted
+    0 = No collisions after 64 bytes have occurred
+
+bit 3 Unimplemented: Read as ‘0’
+
+bit 2 RXBUSY: Receive Busy bit
+    1 = Receive logic is receiving a data packet
+    0 = Receive logic is Idle
+
+bit 1 TXABRT: Transmit Abort Error bit
+    1 = The transmit request was aborted
+    0 = No transmit abort error
+
+bit 0 CLKRDY: Clock Ready bit (1)
+    1 = OST has expired; PHY is ready
+    0 = OST is still counting; PHY is not ready
+Note 1:CLKRDY resets to ‘0’ on Power-on Reset but is unaffected on all other Resets.
+*/
+enum ENC28J60_ESTAT {
+    CLKRDY  = (1 << 0),
+    TXABRT  = (1 << 1),
+    RXBUSY  = (1 << 2),
+    LATECOL = (1 << 4),
+    BUFER   = (1 << 6),
+    INT     = (1 << 7)
+};
+
+/* EIE: ETHERNET INTERRUPT ENABLE REGISTER
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| 7     | 6       | 5     | 4      | 3      | 2     | 1      | 0         |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| R/W-0 | R/W-0   | R/W-0 | R/W-0  | R/W-0  | R/W-0 | R/W-0  | R/W-0     |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| INTIE | PKTIE   | DMAIE | LINKIE | TXIE   | r     | TXERIE | RXERIE    |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+
+bit 7 INTIE: Global INT Interrupt Enable bit
+    1 = Allow interrupt events to drive the INT pin
+    0 = Disable all INT pin activity (pin is continuously driven high)
+
+bit 6 PKTIE: Receive Packet Pending Interrupt Enable bit
+    1 = Enable receive packet pending interrupt
+    0 = Disable receive packet pending interrupt
+
+bit 5 DMAIE: DMA Interrupt Enable bit
+    1 = Enable DMA interrupt
+    0 = Disable DMA interrupt
+
+bit 4 LINKIE: Link Status Change Interrupt Enable bit
+    1 = Enable link change interrupt from the PHY
+    0 = Disable link change interrupt
+
+bit 3 TXIE: Transmit Enable bit
+    1 = Enable transmit interrupt
+    0 = Disable transmit interrupt
+
+bit 2 Reserved: Maintain as ‘0’
+
+bit 1 TXERIE: Transmit Error Interrupt Enable bit
+    1 = Enable transmit error interrupt
+    0 = Disable transmit error interrupt
+
+bit 0 RXERIE: Receive Error Interrupt Enable bit
+    1 = Enable receive error interrupt
+    0 = Disable receive error interrupt
+*/
+enum ENC28J60_EIE{
+    RXERIE  = (1 << 0),
+    TXERIE  = (1 << 1),
+    TXIE    = (1 << 3),
+    LINKIE  = (1 << 4),
+    DMAIE   = (1 << 5),
+    PKTIE   = (1 << 6),
+    INTIE   = (1 << 7)
+};
+
+/* EIR: ETHERNET INTERRUPT REQUEST (FLAG) REGISTER
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| 7     | 6       | 5     | 4      | 3      | 2     | 1      | 0         |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| U-0   | R-0     | R/C-0 | R-0    | R/C-0  | R-0   | R/C-0  | R/C-0     |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+| —     | PKTIF   | DMAIF | LINKIF | TXIF   | r     | TXERIF | RXERIF    |
++-------+---------+-------+--------+--------+-------+--------+-----------+
+
+bit 7 Unimplemented: Read as ‘0’
+
+bit 6 PKTIF: Receive Packet Pending Interrupt Flag bit
+    1 = Receive buffer contains one or more unprocessed packets; cleared when PKTDEC is set
+    0 = Receive buffer is empty
+
+bit 5 DMAIF: DMA Interrupt Flag bit
+    1 = DMA copy or checksum calculation has completed
+    0 = No DMA interrupt is pending
+
+bit 4 LINKIF: Link Change Interrupt Flag bit
+    1 = PHY reports that the link status has changed; read PHIR register to clear
+    0 = Link status has not changed
+
+bit 3 TXIF: Transmit Interrupt Flag bit
+    1 = Transmit request has ended
+    0 = No transmit interrupt is pending
+
+bit 2 Reserved: Maintain as ‘0’
+
+bit 1 TXERIF: Transmit Error Interrupt Flag bit
+    1 = A transmit error has occurred
+    0 = No transmit error has occurred
+
+bit 0 RXERIF: Receive Error Interrupt Flag bit
+    1 = A packet was aborted because there is insufficient buffer space or the packet count is 255
+    0 = No receive error interrupt is pending
+*/
+enum ENC28J60_EIR{
+    RXERIF  = (1 << 0),
+    TXERIF  = (1 << 1),
+    TXIF    = (1 << 3),
+    LINKIF  = (1 << 4),
+    DMAIF   = (1 << 5),
+    PKTIF   = (1 << 6),
+    INTIF   = (1 << 7)
+};
+
+/* PHIE: PHY INTERRUPT ENABLE REGISTER
++-----+-----+-------+--------+-----+-----+-------+-------+
+| 15  | 14  |  13   |   12   | 11  | 10  |   9   |   8   |
++-----+-----+-------+--------+-----+-----+-------+-------+
+| R-0 | R-0 | R-0   | R-0    | R-0 | R-0 | R-0   | R-0   |
++-----+-----+-------+--------+-----+-----+-------+-------+
+| r   | r   | r     |  r     | r   | r   | r     | r     |
++-----+-----+-------+--------+-----+-----+-------+-------+
+
++-----+-----+-------+--------+-----+-----+-------+-------+
+| 7   | 6   | 5     | 4      | 3   | 2   | 1     | 0     |
++-----+-----+-------+--------+-----+-----+-------+-------+
+| R-0 | R-0 | R/W-0 | R/W-0  | R-0 | R-0 | R/W-0 | R/W-0 |
++-----+-----+-------+--------+-----+-----+-------+-------+
+| r   | r   | r     | PLNKIE | r   | r   | PGEIE | r     |
++-----+-----+-------+--------+-----+-----+-------+-------+
+
+bit 15-6 Reserved: Write as ‘0’, ignore on read
+
+bit 5 Reserved: Maintain as ‘0’
+
+bit 4 PLNKIE: PHY Link Change Interrupt Enable bit
+    1 = PHY link change interrupt is enabled
+    0 = PHY link change interrupt is disabled
+
+bit 3-2 Reserved: Write as ‘0’, ignore on read
+
+bit 1 PGEIE: PHY Global Interrupt Enable bit
+    1 = PHY interrupts are enabled
+    0 = PHY interrupts are disabled
+
+bit 0 Reserved: Maintain as ‘0
+*/
+enum ENC28J60_PHIE {
+    PGEIE  = (1 << 1) ,
+    PLNKIE = (1 << 4)
+};
+
+/* PHIR: PHY INTERRUPT REQUEST (FLAG) REGISTER
++-----+------+-----+--------+-----+--------+-----+-----+
+| 15  |  14  | 13  |   12   | 11  |   10   |  9  |  8  |
++-----+------+-----+--------+-----+--------+-----+-----+
+| R-x | R-x  | R-x | R-x    | R-x | R-x    | R-x | R-x |
++-----+------+-----+--------+-----+--------+-----+-----+
+| r   | r    | r   |  r     | r   | r      | r   | r   |
++-----+------+-----+--------+-----+--------+-----+-----+
+
++-----+------+-----+--------+-----+--------+-----+-----+
+| 7   | 6    | 5   | 4      | 3   | 2      | 1   | 0   |
++-----+------+-----+--------+-----+--------+-----+-----+
+| R-x | R-x  | R-0 | R/SC-0 | R-0 | R/SC-0 | R-x | R-0 |
++-----+------+-----+--------+-----+--------+-----+-----+
+| r   | r    | r   | PLNKIF | r   | PGIF   | r   | r   |
++-----+------+-----+--------+-----+--------+-----+-----+
+
+bit 15-6 Reserved: Do not modify
+
+bit 5 Reserved: Read as ‘0’
+
+bit 4 PLNKIF: PHY Link Change Interrupt Flag bit
+    1 = PHY link status has changed since PHIR was last read; resets to ‘0’ when read
+    0 = PHY link status has not changed since PHIR was last read
+
+bit 3 Reserved: Read as ‘0’
+
+bit 2 PGIF: PHY Global Interrupt Flag bit
+    1 = One or more enabled PHY interrupts have occurred since PHIR was last read; resets to ‘0’ when read
+    0 = No PHY interrupts have occurred
+
+bit 1 Reserved: Do not modify
+
+bit 0 Reserved: Read as ‘0’
+*/
+enum ENC28J60_PHIR{
+    PGIF    = (1 << 2),
+    PLNKIF  = (1 << 4)
+};
+
+
+/* EBSTCON: ETHERNET SELF-TEST CONTROL REGISTER
++-------+-------+-------+-------+--------+--------+-------+--------+
+| 7     | 6     | 5     | 4     | 3      | 2      | 1     | 0      |
++-------+-------+-------+-------+--------+--------+-------+--------+
+| R/W-0 | R/W-0 | R/W-0 | R/W-0 | R/W-0  | R/W-0  | R/W-0 | R/W-0  |
++-------+-------+-------+-------+--------+--------+-------+--------+
+| PSV2  | PSV1  | PSV0  | PSEL  | TMSEL1 | TMSEL0 | TME   | BISTST |
++-------+-------+-------+-------+--------+--------+-------+--------+
+
+bit 7-5 PSV2:PSV0: Pattern Shift Value bits
+    When TMSEL<1:0> = 10:
+        The bits in EBSTSD will shift left by this amount after writing to each memory location.
+    When TMSEL<1:0> = 00, 01 or 11:
+        This value is ignored.
+
+bit 4 PSEL: Port Select bit
+    1 = DMA and BIST modules will swap ports when accessing the memory
+    0 = Normal configuration
+
+bit 3-2 TMSEL1:TMSEL0: Test Mode Select bits
+    11 = Reserved
+    10 = Pattern shift fill
+    01 = Address fill
+    00 = Random data fill
+
+bit 1 TME: Test Mode Enable bit
+    1 = Enable Test mode
+    0 = Disable Test mode
+
+bit 0 BISTST: Built-in Self-Test Start/Busy bit
+    1 = Test in progress; cleared automatically when test is done
+    0 = No test running
+*/
+enum ENC28J60_EBSTCON{
+    BISTST             = (1 << 0),
+    TME                = (1 << 1),
+    RANDOM_DATA_FILL   = (0 << 2),
+    ADDRESS_FILL       = (1 << 2),
+    PATTERN_SHIFT_FILL = (2 << 2),
+    PSEL               = (1 << 4)
+};
+
+
+
+
+
 
 class Enc28j60
 {
 public:
     Enc28j60();
+    bool init();
+    void send();
+    void setSPI(uint8_t miso, uint8_t mosi, uint8_t sck, uint8_t ss);
+
 private:
     MasterSPI *master;
+
 
 };
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

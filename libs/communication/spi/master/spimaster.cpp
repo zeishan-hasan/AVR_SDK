@@ -3,9 +3,12 @@
 
 MasterSPI::MasterSPI(masterSPI_t data, mSPIsetting_t settings)
 {
+    Serial *serial0 = SerialManager::getInstance(SERIAL0);
     uint8_t i;
     self = data;
+    //self.SS = data.SS;
     SPCR = 0;
+    serial0->printf("pinx %p\r\n",self.SS[0].getPINxAddr());
 
     // Set MOSI and SCK output SS output, all others input
     *self.DDRx |=  (1 << self.bitMOSI) | (1 << self.bitSCK);

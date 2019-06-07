@@ -1,5 +1,6 @@
 #include "avr_sdk.h"
-
+#include <vector>
+#include <string>
 
 int main(){
 
@@ -10,32 +11,36 @@ int main(){
 	serial0->clear();
 
 
-	//Serial *serial3 = SerialManager::getInstance(SERIAL3);
-	//serial3->init(BAUD_9600);
-	//serial3->setRxISRCallBack(false);
-	//serial3->setEchoServer(false);
-	//serial3->clear();
-
+	//Enc28j60 encj2860;
+	//encj2860.init();
+	//encj2860.setSPI(50,51,52,53);
 	Rdm6300 rdm6300;
+	rdm6300.setBuzzerPin(13);
 	if(rdm6300.attachTo(SERIAL3,BAUD_9600)){
 		serial0->printf("Attach ok\r\n");
 	}
-	//yanujz::vector<uint8_t> data;
-	uint8_t buff[20];
-	Pin pin(13,OUTPUT);
-	pin.setPWM(1000,0);
+	uint8_t cardNumber[20];
+
+	std::vector<uint8_t> cardNum;
+	std::string ciao("ciuao");
+	//yanujz::vector<uint8_t> _data;
 	while(1){
+		//encj2860.send();
+		serial0->printf("Sending %s\r\n",ciao.c_str());
 		if(rdm6300.isNewCard()){
 			serial0->printf("New Card found!\r\n");
-			rdm6300.getData(buff);
-			serial0->printf("%s\r\n",buff);
-			pin.setPWM(1000,20);
-			_delay_ms(250);
-			pin.setPWM(3000,20);
-			_delay_ms(250);
-			pin.setDuty(0);
+			cardNum = rdm6300.getData(cardNumber);
+			serial0->printf("%s\r\n",cardNumber);
+			serial0->printf("%s\r\n",cardNum.size());
+			//free(_data.begin());
+
 			_delay_ms(1000);
 		}
+		//_delay_ms(10);
+
 		_delay_ms(10);
 	}
+
+
+
 }

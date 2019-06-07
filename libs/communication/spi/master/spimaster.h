@@ -1,7 +1,7 @@
 #ifndef SPIMASTER_H
 #define SPIMASTER_H
 #include "../spi.h"
-
+#pragma pack(1)
 struct mSPIsetting_t
 {
 
@@ -46,6 +46,7 @@ struct masterSPI_t
     mSPIsetting_t settings;
 };
 
+#pragma pop
 
 class MasterSPI
 {
@@ -79,9 +80,9 @@ public:
     uint8_t sendReceive(uint8_t data);
     void sendReceive(uint8_t *dst, uint8_t *src, size_t size);
 
+    masterSPI_t self;
 private:
     bool slaveIsValid(uint8_t slave);
-    masterSPI_t self;
 
 };
 

@@ -12,3 +12,4 @@ libs/communication/uart
 libs/communication/i2c
 libs/sensors/rdm630
 src/include
+std/

@@ -3,6 +3,8 @@
 #include "serial.h"
 #include "vector.h"
 #include "portmanager.h"
+#include "macros.h"
+#include "../std/vector"
 #pragma pack(1)
 //struct rdm6300_t
 //{
@@ -21,16 +23,21 @@ public:
     Rdm6300();
     bool attachTo(enum SerialPort serial, enum UART baud);
     bool isNewCard();
-    void getData(uint8_t *arr);
+    std::vector<uint8_t> getData(uint8_t *arr);
+    void setBuzzerPin(uint8_t pin);
 private:
     //---- Methods ----//
-    bool calcCrc(yanujz::vector<uint8_t> &buff);
-    bool isValidPacket(yanujz::vector<uint8_t> &data);
+    bool calcCrc(std::vector<uint8_t> &buff);
+    bool isValidPacket(std::vector<uint8_t> &data);
+
+    void buzzerIncoming();
+    void buzzerOutcoming();
+    void buzzerDenied();
 
     //---- Variables ----//
     Serial *serial;
-    //Serial *serial0;
-    yanujz::vector<uint8_t> lastCard;
+    std::vector<uint8_t> lastCard;
+    Pin buzzer;
 };
 
 #endif
