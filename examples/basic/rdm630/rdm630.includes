@@ -11,5 +11,7 @@ libs/communication/spi/slave
 libs/communication/uart
 libs/communication/i2c
 libs/sensors/rdm630
+libs/strutil/
+libs/utils/
 src/include
-std/
+~/Documents/GitHub/AVR_SDK/standardCpp

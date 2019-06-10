@@ -1,13 +1,67 @@
-TOPDIR=../
-include $(TOPDIR)Rules.mak
+BUILD_DIR 	= build
+STATICLIB_DIR = static_lib
+# Select FCPU (default: 16000000)
+FCPU ?= 16000000
+# Select microntroller (default: atmega2560)
+MICROCONTROLLER ?= atmega2560
+# Select SDK Path (default: ~/Documents/GitHub/AVR_SDK)
+SDK_PATH ?= ~/Documents/GitHub/AVR_SDK
+# Select SDK Path (default: ~/Documents/GitHub/AVR_SDK/libs)
+LIBS_DIR ?= $(SDK_PATH)/libs
+# Select SDK Path (default: lib_atmega2560.a)
+LIBNAME ?= libysdk_$(MICROCONTROLLER).a
 
-all:
+#
+CXX_SRCS := $(shell find ./ -type f -regex ".*\.cpp")
+CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
+INCLUDE_DIR := -I . -I /usr/lib/avr/include -I $(SDK_PATH)/standardCpp -I $(SDK_PATH) \
+	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.h' -exec dirname {} \;)) 
+#
+CXX_FLAGS = -lstdc++ -std=c++14
+#
+CXX = avr-g++
+#
+all: createdir $(CXX_OBJS) lib
 
+#
+lib: $(CXX_OBJS)
+	@echo "Creating library"
+	@avr-ar rcs $(STATICLIB_DIR)/$(LIBNAME) $(BUILD_DIR)/*.o
+	@echo "Removing $(BUILD_DIR)/*.o"
+	@rm -rf $(BUILD_DIR)
+#
+%.o: %.cpp
+	@echo "Compiling file : $(notdir $<)"
+	@$(CXX) $(CXX_FLAGS) $(INCLUDE_DIR) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+
+
+#
+createdir: $(BUILD_DIR) $(STATICLIB_DIR)
+
+$(BUILD_DIR):
+	@mkdir -p $@
+$(STATICLIB_DIR):
+	@mkdir -p $@
+
+# Remove all build files
 clean:
+	@rm -rf $(BUILD_DIR)
+	@rm -rf $(STATICLIB_DIR)
 
-distclean:
-
-HEADERS = $(filter-out .svn CVS Makefile,$(wildcard *))
-install:
-	$(INSTALL) -d $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
-	$(INSTALL) -m 644 $(HEADERS) $(PREFIX)$(UCLIBCXX_RUNTIME_INCLUDEDIR)
+# Show this help prompt.
+help:
+	@ echo
+	@ echo '  Usage:'
+	@ echo ''
+	@ echo '    make <target> [flags...]'
+	@ echo ''
+	@ echo '  Targets:'
+	@ echo ''
+	@ awk '/^#/{ comment = substr($$0,3) } comment && /^[a-zA-Z][a-zA-Z0-9_-]+ ?:/{ print "   ", $$1, comment }' $(MAKEFILE_LIST) | column -t -s ':' | sort
+	@ echo ''
+	@ echo '  Flags:'
+	@ echo ''
+	@ awk '/^#/{ comment = substr($$0,3) } comment && /^[a-zA-Z][a-zA-Z0-9_-]+ ?\?=/{ print "   ", $$1, $$2, comment }' $(MAKEFILE_LIST) | column -t -s '?=' | sort
+	@ echo ''
+	@ echo ''
+	@ echo ''

@@ -20,15 +20,18 @@ ASM_SRCS  = $(shell find $(LIBS_DIR)/ -type f -regex ".*\.s") \
 			$(shell find $(SRC_DIR)/ -type f -regex ".*\.s")
 ASM_OBJS  = $(ASM_SRCS:.s=.o)
 
-INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
-	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
-	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  *.h -exec dirname {} \;)) \
-	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.inc -exec dirname {} \;))
-
+#INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
+#	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
+#	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  *.h -exec dirname {} \;)) \
+#
+INCLUDE_DIR := -I include -I /usr/lib/avr/include -I /home/zetes/Documents/GitHub/AVR_SDK/standardCpp -I libs \
+	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.h' -exec dirname {} \;)) \
+	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  '*.h' -exec dirname {} \;)) \
+	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.inc' -exec dirname {} \;))
 
 
 CXX_FLAGS = -lstdc++ -std=c++14 $(INCLUDE_DIR)
-LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt
+LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L/home/zetes/Documents/GitHub/AVR_SDK/standardCpp/static_lib -lstl
 
 # Select programmer (default: stk500v2)
 PROGRAMMER ?= atmelice_isp 
@@ -90,7 +93,8 @@ app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
 #
 main.elf: $(CXX_OBJS) $(ASM_OBJS)
-	@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
+	@$(CXX) -mmcu=$(MICROCONTROLLER) -o $(BUILD_DIR)/$@ $(BUILD_DIR)/*.o $(LD_FLAGS)
+#@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
 # Show Memory Usage
 size:
 	@echo ''
@@ -98,8 +102,8 @@ size:
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -nostdlib -I standardCpp -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
-	@$(CXX) $(CXX_FLAGS) -nostdlib -I standardCpp -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
+	@$(CXX) $(CXX_FLAGS) -nostdlib  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -nostdlib  -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
 
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"

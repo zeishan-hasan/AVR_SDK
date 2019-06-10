@@ -5,7 +5,7 @@ Enc28j60::Enc28j60(){
 
 }
 
-bool Enc28j60::init()
+bool Enc28j60::init(std::string ip)
 {
 
 
@@ -30,7 +30,7 @@ void Enc28j60::setSPI(uint8_t miso, uint8_t mosi, uint8_t sck, uint8_t ss)
     Pin slave0(ss,OUTPUT);
 
     masterSPI_t data(_miso.getPINxAddr(),&_miso,&_mosi,&_sck,&ss_default);
-    data.SS.pushRight(slave0);
+    data.SS.push_back(slave0);
 
     mSPIsetting_t settings(FOSC_BY_128, MSB_FIRST, LR_TF, LS_TP);
 

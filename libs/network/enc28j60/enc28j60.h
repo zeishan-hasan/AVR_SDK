@@ -1,7 +1,7 @@
 #ifndef ENC28J60_H
 #define ENC28J60_H
-#include "spimaster.h"
-
+#include <spimaster.h>
+#include <string>
 /*Legend:
 +-------------------------------------------------------------------------+
 |R = Readable bit   W = Writable bit    U = Unimplemented bit, read as ‘0’|
@@ -1128,7 +1128,7 @@ class Enc28j60
 {
 public:
     Enc28j60();
-    bool init();
+    bool init(std::string ip);
     void send();
     void setSPI(uint8_t miso, uint8_t mosi, uint8_t sck, uint8_t ss);
 
@@ -1139,10 +1139,6 @@ private:
 };
 
 #endif
-
-
-
-
 
 
 

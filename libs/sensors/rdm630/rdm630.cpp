@@ -6,15 +6,21 @@ Rdm6300::Rdm6300(){
 
 }
 
+Rdm6300::~Rdm6300()
+{
+
+}
+
 bool Rdm6300::attachTo(SerialPort serial, UART baud)
 {
     this->serial = SerialManager::getInstance(serial);
     this->serial->init(baud);
     this->serial->setRxISRCallBack(false);
     this->serial->setEchoServer(false);
-    //ser_cb_t *ptr = (ser_cb_t*)isNewCard();
-    //this->serial->registerCallback((ser_cb_t*)isNewCard());
-    return true;
+    if(this->serial != nullptr){
+        return true;
+    }
+    return false;
 }
 
 std::vector<uint8_t> Rdm6300::getData()
@@ -24,9 +30,16 @@ std::vector<uint8_t> Rdm6300::getData()
     return data;
 }
 
-void Rdm6300::setBuzzerPin(uint8_t pin = 13)
+bool Rdm6300::setBuzzerPin(uint8_t pin)
 {
-    buzzer = Pin(pin,OUTPUT);
+    buzzer = new Pin(pin,OUTPUT);
+
+
+    if(buzzer->setPWM(1000,0)){
+        return true;
+    }
+    buzzer = nullptr;
+    return false;
 }
 
 bool Rdm6300::calcCrc(std::vector<uint8_t> & buff)
@@ -56,28 +69,40 @@ bool Rdm6300::isValidPacket(std::vector<uint8_t> &data)
 
 void Rdm6300::buzzerIncoming()
 {
-    buzzer.setPWM(1000,70);
+    if(buzzer == nullptr){
+        return;
+    }
+
+    buzzer->setPWM(1000,70);
     _delay_ms(250);
-    buzzer.setPWM(3000,70);
+    buzzer->setPWM(3000,70);
     _delay_ms(250);
-    buzzer.setDuty(0);
+    buzzer->setDuty(0);
 }
 
 void Rdm6300::buzzerOutcoming()
 {
-    buzzer.setPWM(3000,70);
+    if(buzzer == nullptr){
+        return;
+    }
+
+    buzzer->setPWM(3000,70);
     _delay_ms(250);
-    buzzer.setPWM(1000,70);
+    buzzer->setPWM(1000,70);
     _delay_ms(250);
-    buzzer.setDuty(0);
+    buzzer->setDuty(0);
 }
 
 
 void Rdm6300::buzzerDenied()
 {
-    buzzer.setPWM(3000,70);
+    if(buzzer == nullptr){
+        return;
+    }
+
+    buzzer->setPWM(3000,70);
     _delay_ms(500);
-    buzzer.setDuty(0);
+    buzzer->setDuty(0);
 }
 
 bool Rdm6300::isNewCard()

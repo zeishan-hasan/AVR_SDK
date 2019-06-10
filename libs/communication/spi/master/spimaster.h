@@ -1,6 +1,8 @@
 #ifndef SPIMASTER_H
 #define SPIMASTER_H
-#include "../spi.h"
+//#include "../spi.h"
+#include <spi.h>
+#include <vector>
 #pragma pack(1)
 struct mSPIsetting_t
 {
@@ -42,7 +44,7 @@ struct masterSPI_t
     uint8_t bitSCK;
     uint8_t bitSS;
     Pin _ss;
-    yanujz::vector<Pin> SS;
+    std::vector<Pin> SS;
     mSPIsetting_t settings;
 };
 

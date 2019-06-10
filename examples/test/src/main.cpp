@@ -3,6 +3,8 @@
 #include <string>
 #include <portmanager.h>
 #include <test.h>
+#include <strutil.h>
+
 
 int main(){
 	Pin pin(13,OUTPUT);
@@ -14,6 +16,8 @@ serial0->setRxISRCallBack(false);
 serial0->setEchoServer(false);
 serial0->clear();
 Test test;
+std::string x("ciao");
+to_upper(x);
 while(1){
 	test.hello();
 _delay_ms(500);

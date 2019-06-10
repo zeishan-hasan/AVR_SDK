@@ -33,7 +33,7 @@ INCLUDE_DIR := -I include -I /usr/lib/avr/include -I $(SDK_PATH)/standardCpp -I 
 
 
 CXX_FLAGS = -lstdc++ -std=c++14 $(INCLUDE_DIR)
-LD_FLAGS  =  -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt,-L$(shell realpath $(STATIC_LIB)) -l$(LIB_NAME)
+LD_FLAGS  =  -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt,-L$(shell realpath $(STATIC_LIB)) -l$(LIB_NAME) -L/home/zetes/Documents/GitHub/AVR_SDK/standardCpp/static_lib -lstl
 
 # Select programmer (default: stk500v2)
 PROGRAMMER ?= atmelice_isp 

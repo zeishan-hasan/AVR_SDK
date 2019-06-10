@@ -1,30 +1,22 @@
 #ifndef RDM6300_H
 #define RDM6300_H
-#include "serial.h"
-#include "vector.h"
-#include "portmanager.h"
-#include "macros.h"
+#include <serial.h>
+#include <portmanager.h>
+#include <macros.h>
 #include <vector>
-#pragma pack(1)
-//struct rdm6300_t
-//{
-//    rdm6300_t(uint8_t start,) {
-//
-//    }
-//    uint8_t start;
-//    uint16_t data; // 10 Bits
-//    uint16_t crc;
-//    uint8_t stop;
-//};
-#pragma pop
+
 class Rdm6300
 {
 public:
+    //---- Methods ----//
     Rdm6300();
+    ~Rdm6300();
     bool attachTo(enum SerialPort serial, enum UART baud);
     bool isNewCard();
     std::vector<uint8_t> getData();
-    void setBuzzerPin(uint8_t pin);
+    bool setBuzzerPin(uint8_t pin);
+
+    //---- Variables ----//
 private:
     //---- Methods ----//
     bool calcCrc(std::vector<uint8_t> &buff);
@@ -37,7 +29,7 @@ private:
     //---- Variables ----//
     Serial *serial;
     std::vector<uint8_t> lastCard;
-    Pin buzzer;
+    Pin *buzzer;
 };
 
 #endif
