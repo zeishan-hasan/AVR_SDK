@@ -1,0 +1,33 @@
+
+LIBS_DIR = /home/zetes/Documents/GitHub/AVR_SDK/libs
+
+ #$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  \*.h -exec dirname {} \;)) 
+INCLUDE_DIR := -I/home/zetes/Downloads/uClibc++-0.2.5/include -I. -I /usr/lib/avr/include 
+LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -Wall -Os -fpack-struct -fshort-enums -funsigned-char -funsigned-bitfields -fno-exceptions
+NCLUDE_DIR := -I include -I /usr/lib/avr/include -I standardCpp \
+	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
+
+
+#@echo $(INCLUDE_DIR)
+all: elf
+	@echo "Compiling"
+	
+	@echo "Done"
+
+elf: main.o
+	@avr-g++  $(LD_FLAGS) -mmcu=atmega2560 -DF_CPU=1600000  -o main.elf main.o
+main.o: 
+	@avr-g++ -nostdlib $(INCLUDE_DIR) -c -o main.o -std=c++14 -mmcu=atmega2560  -ffunction-sections -fdata-sections -fno-exceptions -Os -DF_CPU=16000000  main.cpp
+
+
+clean:
+	rm main.map main.o
+#app: main.elf
+#	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
+
+#!/bin/bash
+
+#avr-gcc -Os -w -ffunction-sections -fdata-sections -MMD -Wall -Wextra -std=c11 -mmcu=atmega32u4 -DF_CPU=16000000L -c test_bottone.c && \
+#avr-gcc -g -std=c11 -mmcu=atmega32u4 -DF_CPU=16000000L -o test_bottone.elf test_bottone.o && \
+#avr-objcopy -j .text -j .data -O ihex test_bottone.elf test_bottone.hex && \
+#avr-size -C --mcu=atmega32u4 test_bottone.elf

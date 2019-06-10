@@ -1,6 +1,10 @@
+#ifndef F_CPU
+#define F_CPU 16000000UL
+#endif
 #include "avr_sdk.h"
 #include <vector>
 #include <string>
+//#include <iterator>
 
 int main(){
 
@@ -19,24 +23,22 @@ int main(){
 	if(rdm6300.attachTo(SERIAL3,BAUD_9600)){
 		serial0->printf("Attach ok\r\n");
 	}
-	uint8_t cardNumber[20];
 
 	std::vector<uint8_t> cardNum;
-	std::string ciao("ciuao");
-	//yanujz::vector<uint8_t> _data;
+
 	while(1){
 		//encj2860.send();
-		serial0->printf("Sending %s\r\n",ciao.c_str());
+		//serial0->printf("Sending %s\r\n",ciao.c_str());
+		//serial0->printf("%u\r\n",cardNum.size());
 		if(rdm6300.isNewCard()){
 			serial0->printf("New Card found!\r\n");
-			cardNum = rdm6300.getData(cardNumber);
-			serial0->printf("%s\r\n",cardNumber);
-			serial0->printf("%s\r\n",cardNum.size());
-			//free(_data.begin());
+			cardNum = rdm6300.getData();
+			for(uint8_t i = 0; i < cardNum.size();++i){
+				serial0->printf("%c %x\r\n", cardNum[i], cardNum[i]);
+			}
 
 			_delay_ms(1000);
 		}
-		//_delay_ms(10);
 
 		_delay_ms(10);
 	}

@@ -4,7 +4,7 @@
 #include "vector.h"
 #include "portmanager.h"
 #include "macros.h"
-#include <vector>
+#include "../std/vector"
 #pragma pack(1)
 //struct rdm6300_t
 //{
