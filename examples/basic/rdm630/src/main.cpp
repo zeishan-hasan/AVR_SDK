@@ -29,11 +29,11 @@ int main(){
 
 	vector<uint8_t> cardNum;
 
-	string a("\t\t\tciao");
-	string b = (string)ltrim(a.c_str());
+	//string a("\t\t\tciao");
+	//string b = (string)ltrim(a.c_str());
 
 	while(1){
-		serial0->printf("%s\r\n",a.c_str());
+		//serial0->printf("%s\r\n",a.c_str());
 		//serial0->printf("%s\r\n",ltrim((char*)a.c_str()));
 		//serial0->printf("Sending %s\r\n",ciao.c_str());
 		//serial0->printf("%u\r\n",cardNum.size());

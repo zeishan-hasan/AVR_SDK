@@ -4,18 +4,14 @@ STATICLIB_DIR = static_lib
 FCPU ?= 16000000
 # Select microntroller (default: atmega2560)
 MICROCONTROLLER ?= atmega2560
-# Select SDK Path (default: ~/Documents/GitHub/AVR_SDK)
-SDK_PATH ?= ~/Documents/GitHub/AVR_SDK
-# Select SDK Path (default: ~/Documents/GitHub/AVR_SDK/libs)
-LIBS_DIR ?= $(SDK_PATH)/libs
 # Select SDK Path (default: lib_atmega2560.a)
-LIBNAME ?= libysdk_$(MICROCONTROLLER).a
+LIBNAME ?= libysdk_stl.a
 
 #
 CXX_SRCS := $(shell find ./ -type f -regex ".*\.cpp")
 CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
-INCLUDE_DIR := -I . -I /usr/lib/avr/include -I $(SDK_PATH)/standardCpp -I $(SDK_PATH) \
-	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.h' -exec dirname {} \;)) 
+INCLUDE_DIR := -I .
+
 #
 CXX_FLAGS = -lstdc++ -std=c++14
 #
@@ -32,7 +28,7 @@ lib: $(CXX_OBJS)
 #
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) $(INCLUDE_DIR) -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) $(INCLUDE_DIR) -Os -DF_CPU=$(FCPU) -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
 
 #
