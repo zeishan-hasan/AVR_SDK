@@ -32,7 +32,7 @@ INCLUDE_DIR := -I /usr/lib/avr/include -I $(STL) -I $(SDK_PATH)/libs \
 
 
 CXX_FLAGS = -lstdc++ -std=c++14 $(INCLUDE_DIR)
-LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lstl
+LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
 
 # Select programmer (default: stk500v2)
 PROGRAMMER ?= atmelice_isp 

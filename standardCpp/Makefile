@@ -20,7 +20,7 @@ CXX = avr-g++
 all: createdir $(CXX_OBJS) lib
 
 #
-lib: $(CXX_OBJS)
+lib:
 	@echo "Creating library"
 	@avr-ar rcs $(STATICLIB_DIR)/$(LIBNAME) $(BUILD_DIR)/*.o
 	@echo "Removing $(BUILD_DIR)/*.o"
