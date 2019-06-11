@@ -3,11 +3,14 @@
 #endif
 #include <avr_sdk.h>
 
+
 using namespace std;
+
 #define MISO 50
 #define MOSI 51
 #define SCK 52
 #define SS 53
+
 int main(){
 
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
