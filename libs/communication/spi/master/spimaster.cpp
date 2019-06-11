@@ -176,3 +176,11 @@ bool MasterSPI::slaveIsValid(uint8_t slave)
     }
     return false;
 }
+
+bool MasterSPI::isInitilizedSPI()
+{
+    if (bitRead(SPCR, SPE)){
+        return true;
+    }
+    return false;
+}

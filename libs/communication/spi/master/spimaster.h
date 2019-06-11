@@ -82,10 +82,12 @@ public:
     uint8_t sendReceive(uint8_t data);
     void sendReceive(uint8_t *dst, uint8_t *src, size_t size);
 
-    masterSPI_t self;
+    bool isInitilizedSPI();
+
 private:
     bool slaveIsValid(uint8_t slave);
 
+    masterSPI_t self;
 };
 
 

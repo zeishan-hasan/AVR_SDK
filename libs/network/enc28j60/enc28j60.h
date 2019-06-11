@@ -358,25 +358,46 @@ enum ENC28J60_PHSTAT2 {
 
 // SPI Instruction Set
 enum ENC28J60_SPI_OPCODE{
-    RCR = 0x00,    // Read Control Register
-    RBM = 0x3A,    // Read Buffer Memory
-    WCR = 0x40,    // Write Control Register
-    WBM = 0x7A,    // Write Buffer Memory
-    BFS = 0x80,    // Bit Field Set
-    BFC = 0xA0,    // Bit Field Clear
-    SRC = 0xFF     // System Reset Command (Soft Reset)
+    OPCODE_RCR = 0x00,    // Read Control Register
+    OPCODE_RBM = 0x3A,    // Read Buffer Memory
+    OPCODE_WCR = 0x40,    // Write Control Register
+    OPCODE_WBM = 0x7A,    // Write Buffer Memory
+    OPCODE_BFS = 0x80,    // Bit Field Set
+    OPCODE_BFC = 0xA0,    // Bit Field Clear
+    OPCODE_SRC = 0xFF     // System Reset Command (Soft Reset)
 };
 
-typedef union {
-    struct
-    {
-        uint8_t opcode:3;
-        uint8_t argument:5;
-        uint8_t payload;
-    };
-    uint16_t packet;
 
-} ENC28J60_ISA;
+
+struct ENC28J60_ISA
+{
+    ENC28J60_ISA(uint16_t packet = 0) {
+        this->packet = packet;
+    }
+
+    union {
+        struct
+        {
+            union {
+                struct
+                {
+                    uint8_t opcode:3;
+                    uint8_t argument:5;
+                }fields;
+                uint8_t data;
+            }byte0;
+
+            uint8_t payload;
+        } cmd;
+
+        uint16_t packet;
+
+    };
+};
+
+
+
+
 
 // Control register
 
@@ -1120,19 +1141,61 @@ enum ENC28J60_EBSTCON{
 };
 
 
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#define SPI_MISO 50
+#define SPI_MOSI 51
+#define SPI_SCK 52
+#define SPI_SS 53
+#endif
 
-
-
+struct enc28j60_t
+{
+    enc28j60_t() {}
+    std::vector<uint8_t> MACAddress[6];
+    uint8_t revisionID;
+    bool fullDuplex;
+    uint8_t currentBank;
+    uint16_t nextPacketPtr;
+};
 
 class Enc28j60
 {
 public:
     Enc28j60();
-    bool init(std::string ip);
-    void send();
+    bool init(std::string ip, std::vector<uint8_t> & mac);
+
     void setSPI(uint8_t miso, uint8_t mosi, uint8_t sck, uint8_t ss);
 
+
+    std::vector<uint8_t> getMAC();
+
+    void setMAC(std::vector<uint8_t> & mac);
+
+
+    void send();
+
+    uint8_t _getRevisionID();
 private:
+    //---- Methods ----//
+    uint8_t readReg(uint8_t reg);
+    void writeReg(uint8_t reg, uint8_t data);
+
+    void readBuffMemory(std::vector<uint8_t>&buff, size_t size);
+    void writeBuffMemory(std::vector<uint8_t>&buff);
+
+    void bitFieldSet(uint8_t reg, uint8_t data);
+    void bitFieldClear(uint8_t reg, uint8_t data);
+
+    void writeOP(ENC28J60_ISA cmd);
+    uint8_t readOP(ENC28J60_ISA cmd);
+
+    void selectBank(uint8_t bank);
+
+    void reset();
+
+
+    //---- Variables ----//
+    enc28j60_t self;
     MasterSPI *master;
 
 

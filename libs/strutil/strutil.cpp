@@ -1,6 +1,7 @@
 #include "strutil.h"
 #include <serial.h>
 
+
 std::string to_lower(std::string str)
 {
     for(size_t i = 0; i < str.size();++i){
@@ -43,75 +44,41 @@ bool isNumeric(const std::string &str)
     return false;
 
 }
-
-//inline std::string & ltrim(std::string&  s, const char* blank_spaces) {
-//        s.erase(0, s.find_first_not_of(blank_spaces));
-//        return s;
-//
-//}
-char *ltrim(char *str, const char *blank_spaces)
-{
-    size_t totrim;
-    if (blank_spaces == NULL) {
-        blank_spaces = "\t\n\v\f\r ";
-    }
-    totrim = strspn(str, blank_spaces);
-    if (totrim > 0) {
-        size_t len = strlen(str);
-        if (totrim == len) {
-            str[0] = '\0';
-        }
-        else {
-            memmove(str, str + totrim, len + 1 - totrim);
-        }
+inline std::string & ltrim(std::string & str){
+    size_t i = 0;
+    while (isPrintableChar(str[i]) == false && isBlankChar(str[i])) {
+        str.erase(0,1);
+        ++i;
     }
     return str;
 }
-char *rtrim(char *str, const char *blank_spaces)
-{
-    int i;
-    if (blank_spaces == NULL) {
-        blank_spaces = "\t\n\v\f\r ";
-    }
-    i = strlen(str) - 1;
-    while (i >= 0 && strchr(blank_spaces, str[i]) != NULL) {
-        str[i] = '\0';
-        i--;
+inline std::string & rtrim(std::string & str){
+    size_t i = str.size()-1;
+    while (isPrintableChar(str[i]) == false && isBlankChar(str[i])) {
+        str.pop_back();
+        --i;
     }
     return str;
 }
-/*
-inline std::string& rtrim(std::string& s, const char* blank_spaces) {
-        s.erase(s.find_last_not_of(blank_spaces) + 1);
-        return s;
+
+
+std::string trim(std::string & str){
+        return ltrim(rtrim(str));
 }
 
-std::string& trim(std::string& s, const char* blank_spaces){
-        return ltrim(rtrim(s),blank_spaces);
-}
-*/
-/*
-std::vector<std::string> split(const std::string& text, const std::string& delims)
+std::vector<std::string> split(const std::string& str,char delim)
 {
-        std::vector<std::string> tokens;
-        size_t start = text.find_first_not_of(delims), end = 0;
-
-        while((end = text.find_first_of(delims, start)) != std::string::npos)
-        {
-                tokens.push_back(text.substr(start, end - start));
-                start = text.find_first_not_of(delims, end);
-        }
-        if(start != std::string::npos)
-                tokens.push_back(text.substr(start));
-
-        return tokens;
+    std::vector<std::string> cont;
+    std::size_t current, previous = 0;
+    current = str.find(delim);
+    while (current != std::string::npos) {
+        cont.push_back(str.substr(previous, current - previous));
+        previous = current + 1;
+        current = str.find(delim, previous);
+    }
+    cont.push_back(str.substr(previous, current - previous));
+    return cont;
 }
-/*
-std::string merge(const std::vector<std::string> &parts, std::string delim)
-{
-        return "";
-}
-*/
 
 size_t countOccurrences(const std::string &text, char c)
 {
@@ -120,56 +87,6 @@ size_t countOccurrences(const std::string &text, char c)
 
     return count;
 }
-
-/*
-void filter_to_text(std::string *str)
-{
-        //TODO
-        str = nullptr; // delete me;
-}*/
-
-
-/*std::vector<std::string> rsplit(const std::string &text, const std::string &regex, bool full_match)
-{
-
-        //TODO
-        return std::vector<std::string>();
-}*/
-/*
-bool unescape(const std::string &src, std::string &dst)
-{
-
-        dst = src; // delete me
-        return false;
-}
-*/
-/*
-std::wstring str2ws(const std::string &input)
-{
-
-}
-*/
-
-/*
-std::string fillPlaceholders(const std::string &input, const std::vector<std::string> &args)
-{
-        return "";
-}
-*/
-//std::string removeExtraSpaces(std::string input)
-//{
-//	std::string tmp = trim(input);
-//	std::string out;
-//	try {
-//		std::regex bp = std::regex("\\ \\ +");
-//		out = std::regex_replace(tmp, bp, " ");
-//	} catch (std::exception &e) {
-//		printf("Regex exception: %s", e.what());
-//		return input;
-//	}
-//
-//	return out;
-//}
 
 
 bool isset(const std::string &str)
@@ -180,3 +97,22 @@ bool isset(const std::string &str)
     return false;
 }
 
+
+bool isPrintableChar(char &c)
+{
+    if(c >= 0x20 & c <= 0x7E){
+        return true;
+    }
+    return false;
+}
+
+bool isBlankChar(char &c)
+{
+    char buf[] = " \t\r\n\v";
+    for(uint8_t i = 0; i < ELEMENT_IN_ARRAY(buf); ++i){
+        if(c == buf[i]){
+            return true;
+        }
+    }
+    return false;
+}

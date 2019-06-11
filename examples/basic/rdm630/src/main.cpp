@@ -2,7 +2,7 @@
 #define F_CPU 16000000UL
 #endif
 #include <avr_sdk.h>
-#include <strutil.h>
+
 using namespace std;
 #define MISO 50
 #define MOSI 51
@@ -17,8 +17,16 @@ int main(){
 	serial0->clear();
 
 	Enc28j60 encj2860;
-	encj2860.init("192.168.1.50");
+	//encj2860.init("192.168.1.50");
 	encj2860.setSPI(MISO,MOSI,SCK,SS);
+	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
+	std::vector<uint8_t> a{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
+	encj2860.setMAC(a);
+	vector<uint8_t> mac = encj2860.getMAC();
+	for(uint8_t i = 0; i < mac.size();++i){
+		serial0->printf("0x%02X\r\n", mac[i]);
+	}
+	serial0->printf("0x%02X\r\n", encj2860._getRevisionID());
 	Rdm6300 rdm6300;
 	//if(rdm6300.setBuzzerPin(13)){
 	//	serial0->printf("Buzzer ok!\r\n");
@@ -29,8 +37,7 @@ int main(){
 
 	vector<uint8_t> cardNum;
 
-	//string a("\t\t\tciao");
-	//string b = (string)ltrim(a.c_str());
+
 
 	while(1){
 		//serial0->printf("%s\r\n",a.c_str());
