@@ -14,10 +14,20 @@
 #include <spimaster.h>
 #include <i2cmaster.h>
 #include <i2cslave.h>
-#include <enc28j60.h>
+
 
 #include <rdm630.h>
 #include <strutil.h>
+//---- TCP/IP ----//
+
+//---- APP_LAYER ----//
+
+//---- TRANSPORT_LAYER	----//
+
+//---- INTERNET_LAYER	----//
+#include <ipv4.h>
+//---- PHYSICAL_LAYER	----//
+#include <enc28j60.h>
 
 //----- STL -----//
 #include <vector>

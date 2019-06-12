@@ -23,7 +23,7 @@ bool Enc28j60::init(std::string ip, std::vector<uint8_t> & mac)
     enableAutoPadCrc();
 
     // Sets MACON4 IEEE 802.3 conformance
-    bitFieldSet(ENC28J60_MACON4,DEFER);
+    //bitFieldSet(ENC28J60_MACON4,DEFER);
 
     // Set inter-frame gap (back-to-back)
     writeReg(ENC28J60_MABBIPG,self.fullDuplex ? 0x15 : 0x12);
@@ -189,10 +189,10 @@ void Enc28j60::enableMacReceive()
 
 void Enc28j60::enableAutoPadCrc()
 {
-    if(self.fullDuplex)
-        bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN|FULDPX);
-    else
-        bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN);
+    //if(self.fullDuplex)
+    //    bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN|FULDPX);
+    //else
+    //    bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN);
 }
 
 void Enc28j60::setMaxPacketSize()

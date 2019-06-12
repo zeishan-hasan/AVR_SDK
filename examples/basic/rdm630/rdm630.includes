@@ -9,6 +9,7 @@ libs/communication/uart
 libs/core
 libs/gpio/interrupt
 libs/gpio/portmanager
+libs/network/tcpip/internet_layer/ipv4
 libs/network/tcpip/physical_layer/devices/enc28j60
 libs/sensors/dht11
 libs/sensors/hmc5883
@@ -17,4 +18,7 @@ libs/sensors/rdm630
 libs/strutil
 libs/timer
 libs/utils
+
 ~/Documents/GitHub/AVR_SDK/standardCpp
+libs/network/tcpip/internet_layer/arp
+libs/network/tcpip/transport_layer/tcp
