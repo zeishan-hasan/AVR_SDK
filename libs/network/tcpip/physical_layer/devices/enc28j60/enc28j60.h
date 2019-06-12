@@ -2,6 +2,7 @@
 #define ENC28J60_H
 #include <spimaster.h>
 #include <string>
+#include <macros.h>
 /*Legend:
 +-------------------------------------------------------------------------+
 |R = Readable bit   W = Writable bit    U = Unimplemented bit, read as ‘0’|
@@ -29,7 +30,7 @@ bit 2-0 COCON2:COCON0: Clock Output Configuration bits
     001 = CLKOUT outputs main clock divided by 1 (25 MHz)
     000 = CLKOUT is disabled. The pin is driven low.
 */
-enum ENC28J60_ECOCON {
+enum ENC28J60_ECOCON_REG {
     CLKOUT_DISABLED,
     CLKOUT_DIVIDED_BY_1,
     CLKOUT_DIVIDED_BY_2,
@@ -150,7 +151,7 @@ bit 1-0 BSEL1:BSEL0: Bank Select bits
     01 = SPI accesses registers in Bank 1
     00 = SPI accesses registers in Bank 0
  */
-enum ECON1 {
+enum ECON1_REG {
     SPI_BANK0,
     SPI_BANK1,
     SPI_BANK2,
@@ -197,7 +198,7 @@ bit 2-0 Unimplemented: Read as ‘0’
 Note 1: This bit is automatically cleared once it is set.
 
 */
-enum ENC28J60_ECON2 {
+enum ENC28J60_ECON2_REG {
     VRPS    = (1 << 3),
     PWRSV   = (1 << 5),
     PKTDEC  = (1 << 6),
@@ -222,7 +223,7 @@ bit 0 MIIRD: MII Read Enable bit
     1 = PHY register at MIREGADR is read once and the data
     0 = No MII Management read operation is in progress
 */
-enum ENC28J60_MICMD{
+enum ENC28J60_MICMD_REG {
     MIIRD = 1,
     MIISCAN
 };
@@ -250,7 +251,7 @@ bit 0 BUSY: MII Management Busy bit
     1 = A PHY register is currently being read or written to
     0 = The MII Management interface is Idle
 */
-enum ENC28J60_MISTAT{
+enum ENC28J60_MISTAT_REG {
     BUSY = 1,
     SCAN,
     NVALID
@@ -293,7 +294,7 @@ bit 1 JBSTAT: PHY Latching Jabber Status bit
 
 bit 0 Unimplemented: Read as ‘0’
 */
-enum ENC28J60_PHSTAT1{
+enum ENC28J60_PHSTAT1_REG {
     JBSTAT  = (1 << 1),
     LLSTAT  = (1 << 2),
     PHDPX   = (1 << 11),
@@ -347,7 +348,7 @@ bit 4-0 Unimplemented: Read as ‘0’
 Note 1: reset values of the Duplex mode/status bit depends on the connection of the LED
     to the LEDB pin (see Section 2.6 “LED Configuration” for additional details).
  */
-enum ENC28J60_PHSTAT2 {
+enum ENC28J60_PHSTAT2_REG {
     PLRITY  = (1 << 5),
     DPXSTAT = (1 << 9),
     LSTAT   = (1 << 10),
@@ -531,11 +532,11 @@ bit 0 MARXEN: MAC Receive Enable bit
     1 = Enable packets to be received by the MAC
     0 = Disable packet reception
 */
-enum ENC28J60_MACON1{
+enum ENC28J60_MACON1_REG {
     MARXEN  = (1 << 0),
     PASSALL = (1 << 1),
     RXPAUS  = (1 << 2),
-    TRXPAUS = (1 << 3)
+    TXPAUS  = (1 << 3)
 };
 
 /* MACON3: MAC CONTROL REGISTER 3
@@ -583,7 +584,7 @@ bit 0 FULDPX: MAC Full-Duplex Enable bit
     1 = MAC will operate in Full-Duplex mode. PDPXMD bit must also be set.
     0 = MAC will operate in Half-Duplex mode. PDPXMD bit must also be clear.
 */
-enum ENC28J60_MACON3 {
+enum ENC28J60_MACON3_REG {
     FULDPX  = (1 << 0),
     FRMLNEN = (1 << 1),
     HFRMEN  = (1 << 2),
@@ -628,7 +629,7 @@ bit 3-2 Unimplemented: Read as ‘0’
 
 bit 1-0 Reserved: Maintain as '0'
 */
-enum ENC28J60_MACON4 {
+enum ENC28J60_MACON4_REG {
     NOBKOFF = (1 << 4),
     BPEN    = (1 << 5),
     DEFER   = (1 << 6),
@@ -658,7 +659,7 @@ bit 6-0 BBIPG6:BBIPG0: Back-to-Back Inter-Packet Gap Delay Time bits
     to the desired period in nibble times minus 6. The recommended setting is 12h
     which represents the minimum IEEE specified Inter-Packet Gap (IPG) of 9.6 μs.
 */
-enum ENC28J60_MBBIPG {
+enum ENC28J60_MBBIPG_REG {
     // TODO
 };
 
@@ -706,7 +707,7 @@ bit 8 HDLDIS: PHY Half-Duplex Loopback Disable bit
 
 bit 7-0 Reserved: Write as ‘0’
 */
-enum ENC28J60_PHCON2{
+enum ENC28J60_PHCON2_REG {
     HDLDIS  = (1 << 8),
     JABBER  = (1 << 10),
     TXDIS   = (1 << 13),
@@ -778,7 +779,7 @@ bit 0 BCEN: Broadcast Filter Enable bit
         1 = Packets which have a destination address of FF-FF-FF-FF-FF-FF will be accepted
         0 = Filter disabled
 */
-enum ENC28J60_ERXFCON {
+enum ENC28J60_ERXFCON_REG {
     BCEN    =  (1 << 0),
     MCEN    =  (1 << 1),
     HTEN    =  (1 << 2),
@@ -914,7 +915,7 @@ bit 0 CLKRDY: Clock Ready bit (1)
     0 = OST is still counting; PHY is not ready
 Note 1:CLKRDY resets to ‘0’ on Power-on Reset but is unaffected on all other Resets.
 */
-enum ENC28J60_ESTAT {
+enum ENC28J60_ESTAT_REG {
     CLKRDY  = (1 << 0),
     TXABRT  = (1 << 1),
     RXBUSY  = (1 << 2),
@@ -1139,6 +1140,11 @@ enum ENC28J60_EBSTCON{
     PATTERN_SHIFT_FILL = (2 << 2),
     PSEL               = (1 << 4)
 };
+#define ENC28J60_RX_BUFFER_START 0x0000
+#define ENC28J60_RX_BUFFER_END 0x19FF
+#define ENC28J60_TX_BUFFER_START 0x1A00
+#define ENC28J60_TX_BUFFER_END 0x1FFF
+#define ENC28J60_MAX_FRAMELENGTH 1518
 
 
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -1192,6 +1198,14 @@ private:
     void selectBank(uint8_t bank);
 
     void reset();
+
+
+    void initReceiveBuff();
+    void initTransmitBuff();
+    void enableMacReceive();
+    void enableAutoPadCrc();
+    void setMaxPacketSize();
+
 
 
     //---- Variables ----//

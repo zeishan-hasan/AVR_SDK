@@ -3,12 +3,12 @@
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
+#include <stdint.h>
 
-
-#define u8t uint8_t
-#define u16t uint16_t
-#define u32t uint32_t
-#define u64t uint64_t
+typedef uint8_t u8t;
+typedef uint16_t u16t;
+typedef uint32_t u32t;
+typedef uint64_t u64t;
 
 
 
@@ -26,13 +26,20 @@
 #define ABS(N) ((N<0)?(-N):(N))
 
 
+// Returns low part of 16 bit value
+#define LO(x) (x & 0xFF)
+// Returns high part of 16 bit value
+#define HI(x) ((x >> 8) & 0xFF)
+
+
+
 //-------- Casting types --------//
-#define toU8(x) (static_cast<uint8_t> (x))
-#define toU16(x) (static_cast<uint16_t>(x))
-#define toU32(x) (static_cast<uint32_t>(x))
-#define toU64(x) (static_cast<uint64_t>(x))
-#define toFloat(x) (static_cast<float>   (x))
-#define toDouble(x) (static_cast<double>  (x))
+#define toU8(x) (static_cast<u8t> (x))
+#define toU16(x) (static_cast<u16t>(x))
+#define toU32(x) (static_cast<u32t>(x))
+#define toU64(x) (static_cast<u64>(x))
+#define toFloat(x) (static_cast<float>(x))
+#define toDouble(x) (static_cast<double>(x))
 
 //-------- Bit Manipulation --------//
 #define is_bit_on(var, i) ((var)&(1<<(i)))
@@ -40,5 +47,6 @@
 #define bitSet(value, bit) ((value) |= (1 << (bit)))
 #define bitClear(value, bit) ((value) &= ~(1 << bit) )
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
+
 
 #endif

@@ -13,6 +13,37 @@ bool Enc28j60::init(std::string ip, std::vector<uint8_t> & mac)
     reset();
     setMAC(mac);
     self.revisionID = _getRevisionID();
+    self.fullDuplex =  true;
+    initReceiveBuff();
+    initTransmitBuff();
+
+    // Bring MAC out of reset
+    //writeReg(ENC28J60_MACON2,0x00);
+    enableMacReceive();
+    enableAutoPadCrc();
+
+    // Sets MACON4 IEEE 802.3 conformance
+    bitFieldSet(ENC28J60_MACON4,DEFER);
+
+    // Set inter-frame gap (back-to-back)
+    writeReg(ENC28J60_MABBIPG,self.fullDuplex ? 0x15 : 0x12);
+
+    // Set inter-frame gap (non-back-to-back)
+    writeReg(ENC28J60_MAIPGL,0x12);
+    if(!self.fullDuplex)
+        writeReg(ENC28J60_MAIPGH,0x0C);
+
+    // Disable clock-out pin
+    writeReg(ENC28J60_ECOCON, CLKOUT_DISABLED);
+
+    // if(self.fullDuplex)
+    //     _enc28j60_write_phy(ENC28J60_PHCON1,ENC28J60_PHCON1_PDPXMD);
+    // else
+    //     _enc28j60_write_phy(ENC28J60_PHCON2,ENC28J60_PHCON2_HDLDIS);
+
+    // Switch to bank 0
+    selectBank(0);
+
 }
 
 void Enc28j60::send()
@@ -119,6 +150,7 @@ void Enc28j60::selectBank(uint8_t bank)
     if(bank > 3){
         return;
     }
+
     writeReg(ENC28J60_ECON1, bank);
 }
 
@@ -127,6 +159,48 @@ void Enc28j60::reset()
     writeOP(ENC28J60_ISA((0x00 << 8) | OPCODE_SRC));
     // Wait for the ENC28J60 to finish startup
     while(!(readReg(ENC28J60_COM_BANK_REG::ENC28J60_ESTAT) & CLKRDY));
+}
+
+void Enc28j60::initReceiveBuff()
+{
+
+    self.nextPacketPtr = ENC28J60_RX_BUFFER_START;
+    writeReg(ENC28J60_ERXSTL,LO(ENC28J60_RX_BUFFER_START));
+    writeReg(ENC28J60_ERXSTH,HI(ENC28J60_RX_BUFFER_START));
+    writeReg(ENC28J60_ERXNDL,LO(ENC28J60_RX_BUFFER_END));
+    writeReg(ENC28J60_ERXNDH,HI(ENC28J60_RX_BUFFER_END));
+}
+
+void Enc28j60::initTransmitBuff()
+{
+    writeReg(ENC28J60_ETXSTL,LO(ENC28J60_TX_BUFFER_START));
+    writeReg(ENC28J60_ETXSTH,HI(ENC28J60_TX_BUFFER_START));
+    writeReg(ENC28J60_ETXNDL,LO(ENC28J60_TX_BUFFER_END));
+    writeReg(ENC28J60_ETXNDH,HI(ENC28J60_TX_BUFFER_END));
+}
+
+void Enc28j60::enableMacReceive()
+{
+    if(self.fullDuplex)
+        writeReg(ENC28J60_BANK2_REG::ENC28J60_MACON1,MARXEN|TXPAUS|RXPAUS);
+    else
+        writeReg(ENC28J60_BANK2_REG::ENC28J60_MACON1,MARXEN);
+}
+
+void Enc28j60::enableAutoPadCrc()
+{
+    if(self.fullDuplex)
+        bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN|FULDPX);
+    else
+        bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN);
+}
+
+void Enc28j60::setMaxPacketSize()
+{
+    // Set the maximum packet size which the controller will accept
+    writeReg(ENC28J60_MAMXFLL,LO(ENC28J60_MAX_FRAMELENGTH));
+    writeReg(ENC28J60_MAMXFLH,HI(ENC28J60_MAX_FRAMELENGTH));
+
 }
 
 uint8_t Enc28j60::_getRevisionID()

@@ -31,9 +31,9 @@ int main(){
 	}
 	serial0->printf("0x%02X\r\n", encj2860._getRevisionID());
 	Rdm6300 rdm6300;
-	//if(rdm6300.setBuzzerPin(13)){
-	//	serial0->printf("Buzzer ok!\r\n");
-	//}
+	if(rdm6300.setBuzzerPin(13)){
+		serial0->printf("Buzzer ok!\r\n");
+	}
 	if(rdm6300.attachTo(SERIAL3,BAUD_9600)){
 		serial0->printf("Attach ok\r\n");
 	}
