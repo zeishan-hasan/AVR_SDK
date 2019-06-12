@@ -10,7 +10,10 @@ libs/core
 libs/gpio/interrupt
 libs/gpio/portmanager
 libs/network/tcpip/internet_layer/ipv4
+libs/network/tcpip/internet_layer/arp
+libs/network/tcpip/internet_layer/arp/arp_table
 libs/network/tcpip/physical_layer/devices/enc28j60
+libs/network/tcpip/physical_layer/ethernet
 libs/sensors/dht11
 libs/sensors/hmc5883
 libs/sensors/mpu6050
