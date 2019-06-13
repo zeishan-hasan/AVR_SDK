@@ -18,6 +18,9 @@
 
 #include <rdm630.h>
 #include <strutil.h>
+
+
+
 //---- TCP/IP ----//
 
 //---- APP_LAYER ----//
@@ -26,7 +29,10 @@
 
 //---- INTERNET_LAYER	----//
 #include <ipv4.h>
+#include <arp.h>
+#include <arptable.h>
 //---- PHYSICAL_LAYER	----//
+#include <ethernet.h>
 #include <enc28j60.h>
 
 //----- STL -----//

@@ -1,7 +1,3 @@
 libs/avr_sdk.h
-libs/network/tcpip/internet_layer/arp/arp.cpp
-libs/network/tcpip/internet_layer/arp/arp.h
-libs/network/tcpip/transport_layer/tcp/tcp.cpp
-libs/network/tcpip/transport_layer/tcp/tcp.h
 src/main.cpp
 

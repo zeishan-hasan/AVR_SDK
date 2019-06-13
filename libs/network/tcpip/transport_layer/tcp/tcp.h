@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <macros.h>
 #include <utils.h>
+#include <ipv4.h>
 /* TCP Header
 +---+---+---+---+---+---+---+---+---+---+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 |
@@ -35,6 +36,7 @@ struct tcp_header_t
 		this->crc           = crc;
 		this->urgentPointer = urgentPointer;
 		this->option_pad    = option_pad;
+		reserved = 0; // Do not change this
 	}
 
 	u16t srcPort;
@@ -42,13 +44,14 @@ struct tcp_header_t
 	u32t seqNumber;
 	u32t ackNumber;
 	u8t dataOffset:4;
-	const u8t reserved:3 = 0;
+	u8t reserved:3;
 	u8t ECN:3; // Explicit Congestion Notification. 3 bits.
 	u8t controlBits:6;
 	u16t window; // The number of data bytes beginning with the one indicated in the acknowledgment field which the sender of this segment is willing to accept.
 	u16t crc;
 	u16t urgentPointer; //If the URG bit is set, this field points to the sequence number of the last byte in a sequence of urgent data.
 	u32t option_pad;
+	std::vector<u8t> payload;
 };
 enum class ECN
 {
@@ -72,8 +75,14 @@ class Tcp
 public:
 	Tcp();
 	~Tcp();
+	void encapsulate(std::vector<u8t> & payload);
+	std::vector<u8t> decapsulate(std::vector<u8t> & data);
 
 
+private:
+	u16t genRandomPort();
+	tcp_header_t self;
+	IPv4 ipv4;
 };
 
 #endif // TCP_H

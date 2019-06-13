@@ -11,6 +11,8 @@ using namespace std;
 #define SCK 52
 #define SS 53
 
+bool debug = true;
+
 int main(){
 
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
@@ -24,6 +26,7 @@ int main(){
 	encj2860.setSPI(MISO,MOSI,SCK,SS);
 	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
 	std::vector<uint8_t> a{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
+	std::vector<uint8_t> b{'c','i','a','o',0};
 	encj2860.setMAC(a);
 	vector<uint8_t> mac = encj2860.getMAC();
 	for(uint8_t i = 0; i < mac.size();++i){
@@ -37,6 +40,19 @@ int main(){
 	if(rdm6300.attachTo(SERIAL3,BAUD_9600)){
 		serial0->printf("Attach ok\r\n");
 	}
+
+	IPv4 ip;
+	//addr.fields[3] = 192;
+	//addr.fields[2] = 168;
+	//addr.fields[1] = 1;
+	//addr.fields[0] = 200;
+	//const string pippo("192.168.1.200");
+	ipv4addr_t addr(ip.aton((const char*)"192.168.1.200"));
+	ip.setSrcAddress(addr);
+
+	ip.encapsulate(b);
+
+
 
 	vector<uint8_t> cardNum;
 

@@ -19,8 +19,8 @@ CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
 ASM_SRCS  = $(shell find $(LIBS_DIR)/ -type f -regex ".*\.s") \
 			$(shell find $(SRC_DIR)/ -type f -regex ".*\.s")
 ASM_OBJS  = $(ASM_SRCS:.s=.o)
-#SDK_PATH = $(shell dirname $(shell readlink -f Makefile))
-SDK_PATH = /Users/yanujzyanujz/Documents/GitHub/AVR_SDK
+SDK_PATH = $(shell dirname $(shell readlink -f Makefile))
+#SDK_PATH = /Users/yanujzyanujz/Documents/GitHub/AVR_SDK
 STL= $(SDK_PATH)/standardCpp
 #INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
 #	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
@@ -32,7 +32,7 @@ INCLUDE_DIR := -I /usr/lib/avr/include -I $(STL) -I $(SDK_PATH)/libs \
 	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.inc' -exec dirname {} \; | sort| uniq))
 
 
-CXX_FLAGS = -w -lstdc++ -std=c++11 $(INCLUDE_DIR)
+CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
 
 # Select programmer (default: stk500v2)
@@ -87,7 +87,7 @@ ota:
 	scp $(FIRMW_DIR)/main.hex $(USERNAME)@$(IP):~/firmwareDownload/$(FIRMW_DIR)/
 	ssh $(USERNAME)@$(IP) "cd ~/firmwareDownload && make upload"
 # Local upload
-upload: createdir app
+upload: 
 	@killall hexdump putty 2>/dev/null || true
 	@avrdude -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
 #

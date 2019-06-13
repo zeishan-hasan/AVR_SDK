@@ -11,10 +11,10 @@
 struct arp_table_t
 {
     arp_table_t(u32t ip, u8t *mac){
-	this->ip.ip = ip;
-	memcpy(&this->mac.mac, &mac,6);
-
+        this->ip.ip = ip;
+        memcpy(&this->mac.mac, &mac,6);
     }
+
     ipv4addr_t ip;
     macaddr_t mac;
 };

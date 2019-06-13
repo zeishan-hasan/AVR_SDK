@@ -24,11 +24,13 @@ std::string trim(std::string & str);
 
 // split string by delimeters
 std::vector<std::string> split(const std::string& str,char delim = ' ');
-
+size_t split(char *src, char **dst, char *delim);
 // count occurrence of char in string
 size_t countOccurrences(const std::string& text, char c);
 
 inline bool isset(const std::string &str);
 inline bool isPrintableChar(char &c);
 inline bool isBlankChar(char &c);
+
+void removeChar(char *str, char chr);
 #endif

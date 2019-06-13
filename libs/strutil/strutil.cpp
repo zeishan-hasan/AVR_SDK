@@ -63,7 +63,7 @@ inline std::string & rtrim(std::string & str){
 
 
 std::string trim(std::string & str){
-        return ltrim(rtrim(str));
+    return ltrim(rtrim(str));
 }
 
 std::vector<std::string> split(const std::string& str,char delim)
@@ -115,4 +115,28 @@ bool isBlankChar(char &c)
         }
     }
     return false;
+}
+
+
+void removeChar(char *str, char chr)
+{
+    //for(u8t i = 0; i < strlen(str); ++i){
+    //
+    //}
+}
+
+
+
+size_t split(char *src, char **dst, char *delim)
+{
+    char *ptr = strtok(src, delim);
+    u8t i = 0;
+
+    while(ptr != NULL)
+    {
+        dst[i] = ptr;
+        ptr = strtok(NULL, delim);
+        ++i;
+    }
+    return i;
 }

@@ -9,7 +9,18 @@ typedef uint8_t u8t;
 typedef uint16_t u16t;
 typedef uint32_t u32t;
 typedef uint64_t u64t;
+extern bool debug;
 
+#define dbg_ser(x) do{ \
+    if(debug) { \
+    Serial *serial = SerialManager::getInstance(x); } \
+    } while (0)
+
+#define dbg(x, ... ) do { \
+    if (debug) { \
+    Serial *serial = SerialManager::getInstance(x); \
+    serial->printf(__VA_ARGS__); }\
+    } while (0)
 
 
 
