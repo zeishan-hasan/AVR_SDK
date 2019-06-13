@@ -49,8 +49,22 @@ extern bool debug;
 #define toU16(x) (static_cast<u16t>(x))
 #define toU32(x) (static_cast<u32t>(x))
 #define toU64(x) (static_cast<u64>(x))
+#define toChar(x) (static_cast<char>(x))
+#define toShort(x) (static_cast<short>(x))
+#define toInt(x) (static_cast<int>(x))
 #define toFloat(x) (static_cast<float>(x))
 #define toDouble(x) (static_cast<double>(x))
+
+#define toU8Ptr(x) (reinterpret_cast<u8t*> (x))
+#define toU16Ptr(x) (reinterpret_cast<u16t*>(x))
+#define toU32Ptr(x) (reinterpret_cast<u32t*>(x))
+#define toU64Ptr(x) (reinterpret_cast<u64*>(x))
+#define toCharPtr(x) (reinterpret_cast<char*>(x))
+#define toShortPtr(x) (reinterpret_cast<short*>(x))
+#define toIntPtr(x) (reinterpret_cast<int*>(x))
+#define toFloatPtr(x) (reinterpret_cast<float*>(x))
+#define toDoublePtr(x) (reinterpret_cast<double*>(x))
+
 
 //-------- Bit Manipulation --------//
 #define is_bit_on(var, i) ((var)&(1<<(i)))

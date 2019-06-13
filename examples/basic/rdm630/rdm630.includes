@@ -25,3 +25,4 @@ libs/utils
 ~/Documents/GitHub/AVR_SDK/standardCpp
 libs/network/tcpip/internet_layer/arp
 libs/network/tcpip/transport_layer/tcp
+libs/network/tcpip/global

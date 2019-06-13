@@ -1,6 +1,7 @@
 #ifndef STRUTIL_H
 #define STRUTIL_H
 #include <string>
+#include <string.h>
 #include <vector>
 #include <utils.h>
 #include <macros.h>
@@ -24,7 +25,7 @@ std::string trim(std::string & str);
 
 // split string by delimeters
 std::vector<std::string> split(const std::string& str,char delim = ' ');
-size_t split(char *src, char **dst, char *delim);
+size_t split(const char *src, char **dst, char *delim);
 // count occurrence of char in string
 size_t countOccurrences(const std::string& text, char c);
 

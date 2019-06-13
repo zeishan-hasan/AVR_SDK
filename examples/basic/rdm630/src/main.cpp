@@ -26,7 +26,6 @@ int main(){
 	encj2860.setSPI(MISO,MOSI,SCK,SS);
 	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
 	std::vector<uint8_t> a{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
-	std::vector<uint8_t> b{'c','i','a','o',0};
 	encj2860.setMAC(a);
 	vector<uint8_t> mac = encj2860.getMAC();
 	for(uint8_t i = 0; i < mac.size();++i){
@@ -46,11 +45,10 @@ int main(){
 	//addr.fields[2] = 168;
 	//addr.fields[1] = 1;
 	//addr.fields[0] = 200;
-	//const string pippo("192.168.1.200");
-	ipv4addr_t addr(ip.aton((const char*)"192.168.1.200"));
-	ip.setSrcAddress(addr);
+    ipv4addr_t addr(__inet_ipv4_aton("192.168.1.200"));
+    //ip.setSrcAddress(addr);
 
-	ip.encapsulate(b);
+    //ip.encapsulate(b);
 
 
 

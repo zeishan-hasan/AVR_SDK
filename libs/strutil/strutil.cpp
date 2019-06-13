@@ -127,9 +127,11 @@ void removeChar(char *str, char chr)
 
 
 
-size_t split(char *src, char **dst, char *delim)
+size_t split(const char *src, char **dst, char *delim)
 {
-    char *ptr = strtok(src, delim);
+    char *_src = new char[strlen(src)];
+    strcpy(_src,src);
+    char *ptr = strtok(_src, delim);
     u8t i = 0;
 
     while(ptr != NULL)
@@ -138,5 +140,6 @@ size_t split(char *src, char **dst, char *delim)
         ptr = strtok(NULL, delim);
         ++i;
     }
-    return i;
+    delete[] _src;
+    return i; // Returns number of tokens
 }

@@ -59,3 +59,37 @@ void __fill(uint8_t &buff, uint8_t fill_byte, size_t currentSize,size_t size){
         *(&buff+i) = fill_byte;
     }
 }
+/*
+ipv4addr_u_t __inet_aton(const std::string &ip)
+{
+    std::vector<std::string> octects = split(ip,'.');
+    ipv4addr_u_t tmp;
+    if(octects.size() != 4 ){
+        return tmp;
+    }
+    for(u8t i = 0; i < octects.size(); ++i ){
+        tmp.fields[i] = atoi(octects[i].c_str());
+    }
+    return tmp;
+
+}
+
+ipv4addr_u_t __inet_aton(char *ip)
+{
+    char *octects[4];
+    ipv4addr_u_t tmp;
+
+    //dbg(SERIAL0,"n split %u\r\n", split(ip, octects, "."));
+    if(split(ip, octects, (char*)".") != 4){
+         return tmp;
+     }
+    for(u8t i = 0;  i < 4 ; ++i){
+        tmp.fields[i] = atoi(octects[i]);
+    }
+    return tmp;
+}
+*/
+void __swapNibbles(u8t *src, size_t size)
+{
+
+}

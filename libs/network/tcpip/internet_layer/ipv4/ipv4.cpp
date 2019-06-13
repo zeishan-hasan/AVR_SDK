@@ -50,14 +50,14 @@ void IPv4::setProtocol(const HEAD_IPV4_PROTOCOL &value)
 {
     packet.protocol = (u8t)value;
 }
-
+/*
 ipv4addr_t IPv4::aton(char *ip)
 {
     char *octects[4];
     ipv4addr_t tmp;
 
     //dbg(SERIAL0,"n split %u\r\n", split(ip, octects, "."));
-    if(split(ip, octects, (const char*)".") != 4){
+    if(split(ip, octects, (char*)".") != 4){
          return tmp;
      }
     for(u8t i = 0;  i < 4 ; ++i){
@@ -78,7 +78,7 @@ ipv4addr_t IPv4::aton(const std::string &ip)
     }
     return tmp;
 }
-
+*/
 char *IPv4::ntoa(const u32t ip)
 {
 

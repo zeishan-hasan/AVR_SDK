@@ -7,6 +7,7 @@
 #include <serial.h>
 #include <string>
 #include <strutil.h>
+#include <inet_global.h>
 extern bool debug;
 //#include <vector>
 
@@ -29,6 +30,7 @@ extern bool debug;
 */
 
 #pragma pack(1)
+/*
 struct ipv4_header_t
 {
     ipv4_header_t() {}
@@ -53,6 +55,8 @@ typedef union{
     u8t fields[4];
     u32t ip;
 }ipv4addr_t;
+*/
+//extern  ipv4addr_t ipv4addr_u_t;
 
 enum class HEAD_IPV4_VERSION {
     IPV4 = 4,
@@ -132,8 +136,8 @@ public:
     HEAD_IPV4_PROTOCOL getProtocol() const;
     void setProtocol(const HEAD_IPV4_PROTOCOL &value);
 
-    ipv4addr_t aton(const std::string &ip);
-    ipv4addr_t aton(char *ip);
+    //ipv4addr_t aton(const std::string &ip);
+    //ipv4addr_t aton(char *ip);
     char *ntoa(const u32t ip);
 
     //---- Variables ----//
