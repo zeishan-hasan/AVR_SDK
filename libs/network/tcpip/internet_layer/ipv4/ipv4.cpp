@@ -19,7 +19,7 @@ void IPv4::encapsulate(std::vector<u8t> &payload)
     dbg(SERIAL0, "size after: %u\r\n", sizeof(packet));
     std::vector<u8t> a;
     a.reserve(sizeof(packet));
-    memcpy(a.begin(), &packet, sizeof(packet));
+    memcpy(&a, &packet, sizeof(packet));
     dbg(SERIAL0, "size : %u", packet.payload.size());
     ethernet.encapsulate(a);
 

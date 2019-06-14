@@ -1,5 +1,6 @@
 .
 libs
+/usr/lib/avr/include
 libs/communication/i2c/master
 libs/communication/i2c/slave
 libs/communication/spi
@@ -25,4 +26,5 @@ libs/utils
 ~/Documents/GitHub/AVR_SDK/standardCpp
 libs/network/tcpip/internet_layer/arp
 libs/network/tcpip/transport_layer/tcp
-libs/network/tcpip/global
+libs/network/tcpip/global/inet_global
+libs/network/tcpip/global/net_utils

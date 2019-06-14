@@ -20,7 +20,6 @@
 #include <strutil.h>
 
 
-
 //---- TCP/IP ----//
 
 //---- APP_LAYER ----//
@@ -29,6 +28,7 @@
 
 //---- INTERNET_LAYER	----//
 #include <ipv4.h>
+#include <net_utils.h>
 #include <arp.h>
 #include <arptable.h>
 //---- PHYSICAL_LAYER	----//

@@ -187,7 +187,9 @@ rawMonitor:
 # Remove all build files
 clean:
 	@rm -rf $(BUILD_DIR) $(FIRMW_DIR)
-
+# Create Doxygen Documentation
+doc:
+	doxygen $(SDK_PATH)/doxygen/sample_text.conf
 # Install dependencies
 install_dependencies:
 	bash -c "sudo apt install libftdi1 libusb-0.1-4 binutils-avr gcc-avr avr-libc avrdude putty"

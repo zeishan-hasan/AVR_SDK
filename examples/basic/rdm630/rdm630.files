@@ -1,5 +1,3 @@
 libs/avr_sdk.h
-libs/network/tcpip/global/inet_global.cpp
-libs/network/tcpip/global/inet_global.h
 src/main.cpp
 

@@ -93,3 +93,11 @@ void __swapNibbles(u8t *src, size_t size)
 {
 
 }
+
+bool isInRange(size_t n, size_t first, size_t last)
+{
+    if(n >= first || n <= last){
+        return true;
+    }
+     return false;
+}

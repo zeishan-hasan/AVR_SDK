@@ -127,7 +127,7 @@ void removeChar(char *str, char chr)
 
 
 
-size_t split(const char *src, char **dst, char *delim)
+size_t split(const char *src, char **dst, const char *delim)
 {
     char *_src = new char[strlen(src)];
     strcpy(_src,src);

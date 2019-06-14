@@ -27,6 +27,8 @@ void __swapNibbles(u8t* src, size_t size);
 void __fill(vector<uint8_t> &v, uint8_t fill_byte, size_t size);
 void __fill(uint8_t &buff, uint8_t fill_byte, size_t currentSize, size_t size);
 
+bool isInRange(size_t n, size_t first, size_t last);
+
 //ipv4addr_u_t __inet_aton(const std::string &ip);
 //ipv4addr_u_t __inet_aton(char *ip);
 
