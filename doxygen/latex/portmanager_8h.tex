@@ -1,5 +1,5 @@
 \hypertarget{portmanager_8h}{}\section{portmanager.\+h File Reference}
-\label{portmanager_8h}\index{portmanager.\+h@{portmanager.\+h}}
+\label{portmanager_8h}\index{portmanager.h@{portmanager.h}}
 {\ttfamily \#include $<$avr/io.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include $<$math.\+h$>$}\newline
@@ -9,16 +9,14 @@
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdint.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}macros.\+h\char`\"{}}\newline
-Include dependency graph for portmanager.\+h\+:
-\nopagebreak
+Include dependency graph for portmanager.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{portmanager_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,30 +26,30 @@ This graph shows which files directly or indirectly include this file\+:
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
-struct \hyperlink{structMappedPort}{Mapped\+Port}
-\item 
-struct \hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT}
-\item 
-struct \hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT}
-\item 
-class \hyperlink{classPin}{Pin}
-\end{DoxyCompactItemize}
+struct \mbox{\hyperlink{structMappedPort}{Mapped\+Port}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structMappedPort}{Mapped\+Port}} struct. It\textquotesingle{}s used to manage pins. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT}} struct. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT}} struct. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classPin}{Pin}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{classPin}{Pin}} class. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}\label{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}} 
-enum \hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx} \+: uint8\+\_\+t \{ {\bfseries I\+N\+P\+UT}, 
+enum \mbox{\hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx}} \+: uint8\+\_\+t \{ {\bfseries I\+N\+P\+UT}, 
 {\bfseries O\+U\+T\+P\+UT}, 
 {\bfseries I\+N\+P\+U\+T\+\_\+\+P\+U\+L\+L\+UP}
- \}\begin{DoxyCompactList}\small\item\em The D\+D\+Rx enum. \end{DoxyCompactList}
-\item 
+ \}
+\begin{DoxyCompactList}\small\item\em The D\+D\+Rx enum. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{portmanager_8h_a715771798ec3863c9951177a012c5a9b}\label{portmanager_8h_a715771798ec3863c9951177a012c5a9b}} 
-enum \hyperlink{portmanager_8h_a715771798ec3863c9951177a012c5a9b}{Logic\+States} \+: uint8\+\_\+t \{ {\bfseries L\+OW}, 
+enum \mbox{\hyperlink{portmanager_8h_a715771798ec3863c9951177a012c5a9b}{Logic\+States}} \+: uint8\+\_\+t \{ {\bfseries L\+OW}, 
 {\bfseries H\+I\+GH}
- \}\begin{DoxyCompactList}\small\item\em The Logic\+States enum. \end{DoxyCompactList}
-\item 
+ \}
+\begin{DoxyCompactList}\small\item\em The Logic\+States enum. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{portmanager_8h_a26631f357022ff8f6372e6a9fdbef752}\label{portmanager_8h_a26631f357022ff8f6372e6a9fdbef752}} 
-enum {\bfseries Analogx} \+: uint8\+\_\+t \{ \newline
+enum \mbox{\hyperlink{portmanager_8h_a26631f357022ff8f6372e6a9fdbef752}{Analogx}} \+: uint8\+\_\+t \{ \newline
 {\bfseries A0} =54, 
 {\bfseries A1}, 
 {\bfseries A2}, 
@@ -72,7 +70,7 @@ enum {\bfseries Analogx} \+: uint8\+\_\+t \{ \newline
 {\bfseries A14}, 
 {\bfseries A15}
  \}
-\item 
+\begin{DoxyCompactList}\small\item\em The Analogx enum. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{portmanager_8h_a8d9d23dfe13306b19ea34849030170c0}\label{portmanager_8h_a8d9d23dfe13306b19ea34849030170c0}} 
 enum {\bfseries \+\_\+\+A\+D\+M\+UX} \+: uint8\+\_\+t \{ {\bfseries I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+V\+R\+EF} = (0$<$$<$R\+E\+F\+S1) $\vert$ (0$<$$<$R\+E\+F\+S0), 
 {\bfseries A\+V\+CC} = (0$<$$<$R\+E\+F\+S1) $\vert$ (1$<$$<$R\+E\+F\+S0), 

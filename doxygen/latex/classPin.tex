@@ -2,18 +2,27 @@
 \label{classPin}\index{Pin@{Pin}}
 
 
+The \mbox{\hyperlink{classPin}{Pin}} class.  
+
+
+
+
+{\ttfamily \#include $<$portmanager.\+h$>$}
+
+
+
 Collaboration diagram for Pin\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=250pt]{classPin__coll__graph}
+\includegraphics[width=248pt]{classPin__coll__graph}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{classPin_a5a77b8b0c99771c11582f0a011496e6b}\label{classPin_a5a77b8b0c99771c11582f0a011496e6b}} 
-{\bfseries Pin} (uint8\+\_\+t port\+No, \hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx} direction)
+{\bfseries Pin} (uint8\+\_\+t port\+No, \mbox{\hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx}} direction)
 \item 
 \mbox{\Hypertarget{classPin_ae562d4913700a9af64086bc0bad95a28}\label{classPin_ae562d4913700a9af64086bc0bad95a28}} 
 void {\bfseries on} ()
@@ -28,7 +37,7 @@ void {\bfseries off} ()
 void {\bfseries toggle} ()
 \item 
 \mbox{\Hypertarget{classPin_a49a4bc8df0fad82b4799fa19da708f12}\label{classPin_a49a4bc8df0fad82b4799fa19da708f12}} 
-void {\bfseries set\+Direction} (\hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx} direction)
+void {\bfseries set\+Direction} (\mbox{\hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx}} direction)
 \item 
 \mbox{\Hypertarget{classPin_ae3b0862a7ec9b11f7a8986024669e25a}\label{classPin_ae3b0862a7ec9b11f7a8986024669e25a}} 
 bool {\bfseries set\+P\+WM} (uint32\+\_\+t freq, uint8\+\_\+t duty=50)
@@ -51,18 +60,14 @@ uint16\+\_\+t {\bfseries analog\+Read} (\+\_\+\+A\+D\+M\+UX v\+Ref=A\+V\+CC, \+\
 \mbox{\Hypertarget{classPin_aa81249603376710b26f6e803db46658e}\label{classPin_aa81249603376710b26f6e803db46658e}} 
 void {\bfseries get\+Pin\+Data} ()
 \item 
-\mbox{\Hypertarget{classPin_aaad2c2cc8ccda03ffe9c07e12323cf4d}\label{classPin_aaad2c2cc8ccda03ffe9c07e12323cf4d}} 
-uint8\+\_\+t {\bfseries get\+Pin\+Number} ()
-\item 
-\mbox{\Hypertarget{classPin_a5a9c1d0f1937b7083779ca4afba2a607}\label{classPin_a5a9c1d0f1937b7083779ca4afba2a607}} 
-uint8\+\_\+t {\bfseries get\+P\+WM} ()
-\item 
-\mbox{\Hypertarget{classPin_af7d88df8c24769198ee8e022ce0ed0fd}\label{classPin_af7d88df8c24769198ee8e022ce0ed0fd}} 
-uint8\+\_\+t {\bfseries get\+Register\+Bit} ()
-\item 
-\mbox{\Hypertarget{classPin_ae2d4f832b081cd2d188151a0c4589f8d}\label{classPin_ae2d4f832b081cd2d188151a0c4589f8d}} 
-volatile uint8\+\_\+t $\ast$ {\bfseries get\+P\+I\+Nx\+Addr} ()
-\end{DoxyCompactItemize}
+uint8\+\_\+t \mbox{\hyperlink{classPin_aaad2c2cc8ccda03ffe9c07e12323cf4d}{get\+Pin\+Number}} ()
+\begin{DoxyCompactList}\small\item\em get\+Pin\+Number \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classPin_a5a9c1d0f1937b7083779ca4afba2a607}{get\+P\+WM}} ()
+\begin{DoxyCompactList}\small\item\em get\+P\+WM \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{classPin_af7d88df8c24769198ee8e022ce0ed0fd}{get\+Register\+Bit}} ()
+\begin{DoxyCompactList}\small\item\em get\+Register\+Bit \end{DoxyCompactList}\item 
+volatile uint8\+\_\+t $\ast$ \mbox{\hyperlink{classPin_ae2d4f832b081cd2d188151a0c4589f8d}{get\+P\+I\+Nx\+Addr}} ()
+\begin{DoxyCompactList}\small\item\em get\+P\+I\+Nx\+Addr \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -91,10 +96,10 @@ uint8\+\_\+t {\bfseries \+\_\+register\+Bit}
 uint8\+\_\+t {\bfseries \+\_\+local\+\_\+ctrl\+\_\+bits}
 \item 
 \mbox{\Hypertarget{classPin_a948a3306a825241abc9634e7d477511a}\label{classPin_a948a3306a825241abc9634e7d477511a}} 
-\hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT} {\bfseries \+\_\+pwm\+\_\+16\+B\+IT}
+\mbox{\hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT}} {\bfseries \+\_\+pwm\+\_\+16\+B\+IT}
 \item 
 \mbox{\Hypertarget{classPin_a94fc11a6e7aea0f84844b8b3627c38b6}\label{classPin_a94fc11a6e7aea0f84844b8b3627c38b6}} 
-\hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT} {\bfseries \+\_\+pwm\+\_\+8\+B\+IT}
+\mbox{\hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT}} {\bfseries \+\_\+pwm\+\_\+8\+B\+IT}
 \item 
 \mbox{\Hypertarget{classPin_a8c83fc94d50888134e19fd3c30fc8184}\label{classPin_a8c83fc94d50888134e19fd3c30fc8184}} 
 uint16\+\_\+t {\bfseries \+\_\+freq\+\_\+pwm}
@@ -110,7 +115,65 @@ uint8\+\_\+t {\bfseries \+\_\+pin\+Number}
 \end{DoxyCompactItemize}
 
 
+\subsection{Detailed Description}
+The \mbox{\hyperlink{classPin}{Pin}} class. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classPin_aaad2c2cc8ccda03ffe9c07e12323cf4d}\label{classPin_aaad2c2cc8ccda03ffe9c07e12323cf4d}} 
+\index{Pin@{Pin}!getPinNumber@{getPinNumber}}
+\index{getPinNumber@{getPinNumber}!Pin@{Pin}}
+\subsubsection{\texorpdfstring{getPinNumber()}{getPinNumber()}}
+{\footnotesize\ttfamily uint8\+\_\+t Pin\+::get\+Pin\+Number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get\+Pin\+Number 
+
+\begin{DoxyReturn}{Returns}
+Number of mapped pin into the board 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPin_ae2d4f832b081cd2d188151a0c4589f8d}\label{classPin_ae2d4f832b081cd2d188151a0c4589f8d}} 
+\index{Pin@{Pin}!getPINxAddr@{getPINxAddr}}
+\index{getPINxAddr@{getPINxAddr}!Pin@{Pin}}
+\subsubsection{\texorpdfstring{getPINxAddr()}{getPINxAddr()}}
+{\footnotesize\ttfamily volatile uint8\+\_\+t $\ast$ Pin\+::get\+P\+I\+Nx\+Addr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get\+P\+I\+Nx\+Addr 
+
+\begin{DoxyReturn}{Returns}
+Mapped address of P\+I\+Nx 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPin_a5a9c1d0f1937b7083779ca4afba2a607}\label{classPin_a5a9c1d0f1937b7083779ca4afba2a607}} 
+\index{Pin@{Pin}!getPWM@{getPWM}}
+\index{getPWM@{getPWM}!Pin@{Pin}}
+\subsubsection{\texorpdfstring{getPWM()}{getPWM()}}
+{\footnotesize\ttfamily uint8\+\_\+t Pin\+::get\+P\+WM (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get\+P\+WM 
+
+\begin{DoxyReturn}{Returns}
+Percentage of duty cycle. Range \+: 0\% -\/ 100\% 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classPin_af7d88df8c24769198ee8e022ce0ed0fd}\label{classPin_af7d88df8c24769198ee8e022ce0ed0fd}} 
+\index{Pin@{Pin}!getRegisterBit@{getRegisterBit}}
+\index{getRegisterBit@{getRegisterBit}!Pin@{Pin}}
+\subsubsection{\texorpdfstring{getRegisterBit()}{getRegisterBit()}}
+{\footnotesize\ttfamily uint8\+\_\+t Pin\+::get\+Register\+Bit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+get\+Register\+Bit 
+
+\begin{DoxyReturn}{Returns}
+Bits into own register 
+\end{DoxyReturn}
+
+
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-\hyperlink{portmanager_8h}{portmanager.\+h}\item 
+\mbox{\hyperlink{portmanager_8h}{portmanager.\+h}}\item 
 portmanager.\+cpp\end{DoxyCompactItemize}

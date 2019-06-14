@@ -41,18 +41,30 @@
 
 
 #pragma pack(1)
+/**
+ * @brief The MappedPort struct. It's used to manage pins.
+ */
 struct MappedPort{
+    /**
+     * @brief Is the pointer used to manage a pin
+     */
     volatile uint8_t * pinx;
+    /**
+     * @brief The bit into own register
+     */
     uint8_t registerBit;
+
+    /*! @var controlBits
+	@brief Used to get pin functions mode.
+	@verbatim
+	╔═══════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╦════════╦═════╦════╗
+	║ 13    ║ 12   ║ 11   ║ 10   ║ 9    ║ 8   ║ 7     ║ 6 ║ 5 ║ 4 ║ 3 ║ 2      ║ 1   ║ 0  ║
+	╠═══════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╬════════╬═════╩════╣
+	║ isPWM ║ Output Compare Sel ║ Letter Sel ║ isADC ║ ADC_SEL       ║ isUART ║ UART_SEL ║
+	╚═══════╩════════════════════╩════════════╩═══════╩═══════════════╩════════╩══════════╝
+	@endverbatim
+  */
     uint16_t controlBits;
-    //ControlBits explained
-    /*
-  +-------+--------+------+--------+------+-------+-------+------+-------+------+------+---------+-------+-------+
-    |   13  |	12   |  11  |   10   |   9  |   8   |   7   |   6  |   5   |   4  |   3  |    2	   |   1   |   0   |
-    +-------+--------+------+--------+------+-------+-------+------+-------+------+------+---------+-------+-------+
-    | isPWM |    Output Compare Sel  |  Letter Sel  | isADC |           ADC_SEL          |  isUART |    UART_SEL   |
-    +-------+------------------------+--------------+-------+----------------------------+---------+---------------+
-    */
 
 };
 #pragma pop
@@ -381,6 +393,9 @@ enum LogicStates:uint8_t{
     LOW,HIGH
 };
 
+/*!
+  @brief The Analogx enum
+  */
 enum Analogx:uint8_t{
     A0=54,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15
 };
@@ -411,8 +426,10 @@ enum _ADCSRB_AUTOTRIGGER:uint8_t{
     TNCT1_OVERFLOW		= (1<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
     TNCT1_CAPTURE_EVENT		= (1<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
 };
-
-struct PWM_8BIT{
+/**
+ * @brief The PWM_8BIT struct
+ */
+struct PWM_8BIT {
     volatile uint8_t *TCCRxA = (volatile uint8_t *)0xFF;
     volatile uint8_t *TCCRxB = (volatile uint8_t *)0xFF;
     volatile uint8_t *TCNTx  = (volatile uint8_t *)0xFF;
@@ -420,14 +437,20 @@ struct PWM_8BIT{
     //volatile uint8_t *OCRxA;
     //volatile uint8_t *OCRxB;
 };
-
+/**
+ * @brief The PWM_16BIT struct
+ */
 struct PWM_16BIT : PWM_8BIT {
     volatile uint8_t *TCCRxC = (volatile uint8_t *)0xFF;
     volatile uint8_t *ICRx   = (volatile uint8_t *)0xFF;
 };
+
 enum _LOCAL_CTRL_BITS:uint8_t{
     _PWM_8BIT = 0x2, _PWM_16BIT = 0x3, _ADC = 0x4
 };
+/**
+ * @brief The Pin class
+ */
 class Pin{
 public:
     Pin(){}
@@ -450,11 +473,28 @@ public:
     uint16_t analogRead(_ADMUX vRef = AVCC, _ADCSRA_PRESCALER prescaler = F_CPU_BY_128, _ADCSRB_AUTOTRIGGER autoTrigger = FREE_RUNNING_MODE);
     void getPinData();
 
+    /**
+     * @brief getPinNumber
+     * @return Number of mapped pin into the board
+     */
     uint8_t getPinNumber();
+
+    /**
+     * @brief getPWM
+     * @return Percentage of duty cycle. Range : 0% - 100%
+     */
     uint8_t getPWM();
 
+    /**
+     * @brief getRegisterBit
+     * @return Bits into own register
+     */
     uint8_t getRegisterBit();
 
+    /**
+     * @brief getPINxAddr
+     * @return Mapped address of PINx
+     */
     volatile uint8_t *getPINxAddr();
 
 private:
