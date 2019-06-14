@@ -1,0 +1,113 @@
+\hypertarget{portmanager_8h}{}\section{portmanager.\+h File Reference}
+\label{portmanager_8h}\index{portmanager.\+h@{portmanager.\+h}}
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$util/delay.\+h$>$}\newline
+{\ttfamily \#include $<$avr/iomxx0\+\_\+1.\+h$>$}\newline
+{\ttfamily \#include $<$avr/pgmspace.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}macros.\+h\char`\"{}}\newline
+Include dependency graph for portmanager.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{portmanager_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{portmanager_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structMappedPort}{Mapped\+Port}
+\item 
+struct \hyperlink{structPWM__8BIT}{P\+W\+M\+\_\+8\+B\+IT}
+\item 
+struct \hyperlink{structPWM__16BIT}{P\+W\+M\+\_\+16\+B\+IT}
+\item 
+class \hyperlink{classPin}{Pin}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}\label{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}} 
+enum \hyperlink{portmanager_8h_a63d6a5e91a2b1a4156b6c0466f828554}{D\+D\+Rx} \+: uint8\+\_\+t \{ {\bfseries I\+N\+P\+UT}, 
+{\bfseries O\+U\+T\+P\+UT}, 
+{\bfseries I\+N\+P\+U\+T\+\_\+\+P\+U\+L\+L\+UP}
+ \}\begin{DoxyCompactList}\small\item\em The D\+D\+Rx enum. \end{DoxyCompactList}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a715771798ec3863c9951177a012c5a9b}\label{portmanager_8h_a715771798ec3863c9951177a012c5a9b}} 
+enum \hyperlink{portmanager_8h_a715771798ec3863c9951177a012c5a9b}{Logic\+States} \+: uint8\+\_\+t \{ {\bfseries L\+OW}, 
+{\bfseries H\+I\+GH}
+ \}\begin{DoxyCompactList}\small\item\em The Logic\+States enum. \end{DoxyCompactList}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a26631f357022ff8f6372e6a9fdbef752}\label{portmanager_8h_a26631f357022ff8f6372e6a9fdbef752}} 
+enum {\bfseries Analogx} \+: uint8\+\_\+t \{ \newline
+{\bfseries A0} =54, 
+{\bfseries A1}, 
+{\bfseries A2}, 
+{\bfseries A3}, 
+\newline
+{\bfseries A4}, 
+{\bfseries A5}, 
+{\bfseries A6}, 
+{\bfseries A7}, 
+\newline
+{\bfseries A8}, 
+{\bfseries A9}, 
+{\bfseries A10}, 
+{\bfseries A11}, 
+\newline
+{\bfseries A12}, 
+{\bfseries A13}, 
+{\bfseries A14}, 
+{\bfseries A15}
+ \}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a8d9d23dfe13306b19ea34849030170c0}\label{portmanager_8h_a8d9d23dfe13306b19ea34849030170c0}} 
+enum {\bfseries \+\_\+\+A\+D\+M\+UX} \+: uint8\+\_\+t \{ {\bfseries I\+N\+T\+E\+R\+N\+A\+L\+\_\+\+V\+R\+EF} = (0$<$$<$R\+E\+F\+S1) $\vert$ (0$<$$<$R\+E\+F\+S0), 
+{\bfseries A\+V\+CC} = (0$<$$<$R\+E\+F\+S1) $\vert$ (1$<$$<$R\+E\+F\+S0), 
+{\bfseries I\+N\+T\+E\+R\+N\+A\+L\+\_\+1\+\_\+1V} = (1$<$$<$R\+E\+F\+S1) $\vert$ (0$<$$<$R\+E\+F\+S0), 
+{\bfseries I\+N\+T\+E\+R\+N\+A\+L\+\_\+2\+\_\+56V} = (1$<$$<$R\+E\+F\+S1) $\vert$ (1$<$$<$R\+E\+F\+S0)
+ \}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a5592d933b0785ca2835e48fa1ddeb09c}\label{portmanager_8h_a5592d933b0785ca2835e48fa1ddeb09c}} 
+enum {\bfseries \+\_\+\+A\+D\+C\+S\+R\+A\+\_\+\+P\+R\+E\+S\+C\+A\+L\+ER} \+: uint8\+\_\+t \{ \newline
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+2} = (0$<$$<$A\+D\+P\+S2)$\vert$(0$<$$<$A\+D\+P\+S1)$\vert$(1$<$$<$A\+D\+P\+S0), 
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+4} = (0$<$$<$A\+D\+P\+S2)$\vert$(1$<$$<$A\+D\+P\+S1)$\vert$(0$<$$<$A\+D\+P\+S0), 
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+8} = (0$<$$<$A\+D\+P\+S2)$\vert$(1$<$$<$A\+D\+P\+S1)$\vert$(1$<$$<$A\+D\+P\+S0), 
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+16} = (1$<$$<$A\+D\+P\+S2)$\vert$(0$<$$<$A\+D\+P\+S1)$\vert$(0$<$$<$A\+D\+P\+S0), 
+\newline
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+32} = (1$<$$<$A\+D\+P\+S2)$\vert$(0$<$$<$A\+D\+P\+S1)$\vert$(1$<$$<$A\+D\+P\+S0), 
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+64} = (1$<$$<$A\+D\+P\+S2)$\vert$(1$<$$<$A\+D\+P\+S1)$\vert$(0$<$$<$A\+D\+P\+S0), 
+{\bfseries F\+\_\+\+C\+P\+U\+\_\+\+B\+Y\+\_\+128} = (1$<$$<$A\+D\+P\+S2)$\vert$(1$<$$<$A\+D\+P\+S1)$\vert$(1$<$$<$A\+D\+P\+S0)
+ \}
+\item 
+\mbox{\Hypertarget{portmanager_8h_aa8e8b629c972eb4ba66a0e092953f81d}\label{portmanager_8h_aa8e8b629c972eb4ba66a0e092953f81d}} 
+enum {\bfseries \+\_\+\+A\+D\+C\+S\+R\+B\+\_\+\+A\+U\+T\+O\+T\+R\+I\+G\+G\+ER} \+: uint8\+\_\+t \{ \newline
+{\bfseries F\+R\+E\+E\+\_\+\+R\+U\+N\+N\+I\+N\+G\+\_\+\+M\+O\+DE} = (0$<$$<$A\+D\+T\+S2) $\vert$ (0$<$$<$A\+D\+T\+S1) $\vert$(0$<$$<$A\+D\+T\+S0), 
+{\bfseries A\+N\+A\+L\+O\+G\+\_\+\+C\+O\+M\+P\+A\+R\+A\+T\+OR} = (0$<$$<$A\+D\+T\+S2) $\vert$ (0$<$$<$A\+D\+T\+S1) $\vert$(1$<$$<$A\+D\+T\+S0), 
+{\bfseries E\+X\+T\+E\+R\+N\+A\+L\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+\_\+\+R\+E\+Q\+\_\+0} = (0$<$$<$A\+D\+T\+S2) $\vert$ (1$<$$<$A\+D\+T\+S1) $\vert$(0$<$$<$A\+D\+T\+S0), 
+{\bfseries T\+N\+C\+T0\+\_\+\+C\+O\+M\+P\+\_\+A} = (0$<$$<$A\+D\+T\+S2) $\vert$ (1$<$$<$A\+D\+T\+S1) $\vert$(1$<$$<$A\+D\+T\+S0), 
+\newline
+{\bfseries T\+N\+C\+T0\+\_\+\+O\+V\+E\+R\+F\+L\+OW} = (1$<$$<$A\+D\+T\+S2) $\vert$ (0$<$$<$A\+D\+T\+S1) $\vert$(0$<$$<$A\+D\+T\+S0), 
+{\bfseries T\+N\+C\+T1\+\_\+\+C\+O\+M\+P\+\_\+B} = (1$<$$<$A\+D\+T\+S2) $\vert$ (0$<$$<$A\+D\+T\+S1) $\vert$(1$<$$<$A\+D\+T\+S0), 
+{\bfseries T\+N\+C\+T1\+\_\+\+O\+V\+E\+R\+F\+L\+OW} = (1$<$$<$A\+D\+T\+S2) $\vert$ (1$<$$<$A\+D\+T\+S1) $\vert$(0$<$$<$A\+D\+T\+S0), 
+{\bfseries T\+N\+C\+T1\+\_\+\+C\+A\+P\+T\+U\+R\+E\+\_\+\+E\+V\+E\+NT} = (1$<$$<$A\+D\+T\+S2) $\vert$ (1$<$$<$A\+D\+T\+S1) $\vert$(1$<$$<$A\+D\+T\+S0)
+ \}
+\item 
+\mbox{\Hypertarget{portmanager_8h_a3e088086e1ddaa011371cee7c440bd0f}\label{portmanager_8h_a3e088086e1ddaa011371cee7c440bd0f}} 
+enum {\bfseries \+\_\+\+L\+O\+C\+A\+L\+\_\+\+C\+T\+R\+L\+\_\+\+B\+I\+TS} \+: uint8\+\_\+t \{ {\bfseries \+\_\+\+P\+W\+M\+\_\+8\+B\+IT} = 0x2, 
+{\bfseries \+\_\+\+P\+W\+M\+\_\+16\+B\+IT} = 0x3, 
+{\bfseries \+\_\+\+A\+DC} = 0x4
+ \}
+\end{DoxyCompactItemize}
