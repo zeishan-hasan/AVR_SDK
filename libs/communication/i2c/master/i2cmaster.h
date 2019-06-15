@@ -5,9 +5,7 @@
 #include <avr/io.h>
 #include "vector.h"
 #include <stdint.h>
-#ifndef F_CPU
-#define F_CPU 16000000UL
-#endif
+///@file
 
 
 //#define F_SCL 100000UL // SCL frequency

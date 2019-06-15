@@ -3,6 +3,7 @@
 //#include "../spi.h"
 #include <spi.h>
 #include <vector>
+///@file
 #pragma pack(1)
 struct mSPIsetting_t
 {

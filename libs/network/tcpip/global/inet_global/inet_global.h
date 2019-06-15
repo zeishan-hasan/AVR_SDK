@@ -1,7 +1,7 @@
 #ifndef INET_GLOBAL_H
 #define INET_GLOBAL_H
-#include <macros.h>
-#include <utils.h>
+//#include <macros.h>
+//#include <utils.h>
 #include <strutil.h>
 
 #pragma pack(1)

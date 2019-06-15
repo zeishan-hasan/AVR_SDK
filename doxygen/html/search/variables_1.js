@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pinx',['pinx',['../structMappedPort.html#a504fc8fe2e91d886ed39d36a3c4e40f8',1,'MappedPort']]]
+  ['debug',['debug',['../macros_8h.html#a398527b3e9e358c345c5047b16871957',1,'macros.h']]]
 ];

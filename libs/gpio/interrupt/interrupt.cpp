@@ -295,7 +295,6 @@ ISR(PCINT0_vect){
 //----------DA VERIFICARE PINH----------//
 volatile uint8_t port_j_history = PINJ;
 ISR(PCINT1_vect){
-    //serial2->printf("Interrupt\r\n");
     volatile uint8_t changed_bits_j = PINJ ^ port_j_history;
     port_j_history = PINJ;
     uint8_t pin = 255;
@@ -326,7 +325,6 @@ ISR(PCINT1_vect){
 
 volatile uint8_t port_k_history = PINK; // start whith pulled-up pins ;
 ISR (PCINT2_vect) {
-    //serial2->printf("Interrupt 2\r\n");
     volatile uint8_t changed_bits  = PINK ^ port_k_history;
     port_k_history                 = PINK;
     uint8_t pin                    = 255;

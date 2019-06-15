@@ -11,7 +11,7 @@
 #include <avr/iomxx0_1.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
-#include <stdint.h>
+//#include <stdint.h>
 #include "macros.h"
 
 //#define __AVR_ATmega2560__
@@ -67,6 +67,10 @@ struct MappedPort{
     uint16_t controlBits;
 
 };
+
+/**
+ * @var _flashMappedPort
+ */
 #pragma pop
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #include <avr/iom2560.h>
@@ -400,12 +404,19 @@ enum Analogx:uint8_t{
     A0=54,A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,A11,A12,A13,A14,A15
 };
 
+/**
+ * @brief The _ADMUX enum
+ */
 enum _ADMUX:uint8_t{
     INTERNAL_VREF   = (0<<REFS1) | (0<<REFS0), // AREF,Internal VREF turned OFF
     AVCC            = (0<<REFS1) | (1<<REFS0), // AVCC at AREF Pin with external capacitor
     INTERNAL_1_1V   = (1<<REFS1) | (0<<REFS0), // Internal 1.1Voltage reference with external capacitor at AREF pin
     INTERNAL_2_56V  = (1<<REFS1) | (1<<REFS0), // Internal 2.56Voltage reference with external capacitor at AREF pin
 };
+
+/**
+ * @brief The _ADCSRA_PRESCALER enum
+ */
 enum _ADCSRA_PRESCALER:uint8_t{
     F_CPU_BY_2		= (0<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
     F_CPU_BY_4		= (0<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
@@ -416,6 +427,10 @@ enum _ADCSRA_PRESCALER:uint8_t{
     F_CPU_BY_128	= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
 };
 
+
+/**
+ * @brief The _ADCSRB_AUTOTRIGGER enum
+ */
 enum _ADCSRB_AUTOTRIGGER:uint8_t{
     FREE_RUNNING_MODE           = (0<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
     ANALOG_COMPARATOR           = (0<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
@@ -445,6 +460,9 @@ struct PWM_16BIT : PWM_8BIT {
     volatile uint8_t *ICRx   = (volatile uint8_t *)0xFF;
 };
 
+/**
+ * @brief The _LOCAL_CTRL_BITS enum
+ */
 enum _LOCAL_CTRL_BITS:uint8_t{
     _PWM_8BIT = 0x2, _PWM_16BIT = 0x3, _ADC = 0x4
 };
@@ -456,21 +474,80 @@ public:
     Pin(){}
     Pin(uint8_t portNo, DDRx direction);
     ~Pin();
+
+    /**
+     * @brief on
+     */
     void on();
+
+    /**
+     * @brief setState
+     * @param stat
+     */
     void setState(bool stat = true);
+
+    /**
+     * @brief off
+     */
     void off();
+
+    /**
+     * @brief toggle
+     */
     void toggle();
 
+    /**
+     * @brief setDirection
+     * @param direction
+     */
     void setDirection(DDRx direction);
 
+    /**
+     * @brief setPWM
+     * @param freq
+     * @param duty
+     * @return
+     */
     bool setPWM(uint32_t freq, uint8_t duty = 50);
+
+    /**
+     * @brief setDuty
+     * @param duty
+     * @return
+     */
     bool setDuty(uint8_t duty);
+
+    /**
+     * @brief setFreq
+     * @param freq
+     * @return
+     */
     bool setFreq(uint16_t freq);
+
+    /**
+     * @brief stopPWM
+     * @return
+     */
     bool stopPWM();
 
+    /**
+     * @brief digitalRead
+     * @return
+     */
     bool digitalRead();
 
+    /**
+     * @brief analogRead
+     * @param[in] vRef
+     * @param[in] prescaler
+     * @param[in] autoTrigger
+     * @return
+     */
     uint16_t analogRead(_ADMUX vRef = AVCC, _ADCSRA_PRESCALER prescaler = F_CPU_BY_128, _ADCSRB_AUTOTRIGGER autoTrigger = FREE_RUNNING_MODE);
+
+    /**
+     * @brief getPinData
+     */
     void getPinData();
 
     /**

@@ -1,6 +1,6 @@
 #ifndef I2CSLAVE_H
 #define I2CSLAVE_H
-
+///@file
 #include <avr/interrupt.h>
 #include <stdint.h>
 

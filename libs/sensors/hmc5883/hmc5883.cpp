@@ -1,5 +1,5 @@
 #include "hmc5883.h"
-#define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
+//#define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
 
 Hmc5883::Hmc5883(uint8_t writeAddr, uint8_t readAddr){
     self._addr.writeAddr = writeAddr;

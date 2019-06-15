@@ -1,9 +1,9 @@
 #ifndef HMC5883_H
 #define HMC5883_H
-#include <avr/io.h>
 #include <math.h>
-#include "i2cmaster.h"
-
+#include <i2cmaster.h>
+#include <macros.h>
+///@file
 
 // Register List
 /*

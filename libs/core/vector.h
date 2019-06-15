@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "macros.h"
-#include "initializer_list.h"
-#include "cppfix.h"
-#include "serial.h"
+//#include "macros.h"
+//#include "initializer_list.h"
+//#include "cppfix.h"
+//#include "serial.h"
 //static Serial *serial = SerialManager::getInstance(SERIAL0);
 
 namespace yanujz {

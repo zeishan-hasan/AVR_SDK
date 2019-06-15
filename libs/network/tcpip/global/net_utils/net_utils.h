@@ -1,9 +1,5 @@
 #ifndef NET_UTILS_H
 #define NET_UTILS_H
-#include <macros.h>
-#include <utils.h>
-#include <strutil.h>
-#include <string.h>
 #include <stdlib.h>
 #include <inet_global.h>
 ///@file

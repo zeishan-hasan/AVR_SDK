@@ -1,20 +1,27 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 #include "macros.h"
-#include "cppfix.h"
+//#include "cppfix.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
-#include <avr/iom2560.h>
+//#include <avr/iom2560.h>
 #include <stdio.h>
+///@file
 //#include "vector.h"
 
+/**
+ * @brief Used to handle interrupts
+ */
 typedef void ser_cb_t();
 
 #define _atmega2560 1
 //#define _atmega328p 1
 
 #ifdef _atmega2560
+/**
+ * @brief The UART enum
+ */
 enum UART{
     BAUD_2400    =    2400,
     BAUD_4800    =    4800,
@@ -31,6 +38,10 @@ enum UART{
     BAUD_1000000 = 1000000,
     //BAUD_2000000 = 20000000
 };
+
+/**
+ * @brief The SerialPort enum
+ */
 enum SerialPort: uint8_t{
     SERIAL0 = 0,
     SERIAL1 = 1,
@@ -39,6 +50,9 @@ enum SerialPort: uint8_t{
     MAX_SERIAL
 };
 
+/**
+ * @brief The SerialPriority enum
+ */
 enum SerialPriority: uint8_t{
     _LOW_PRIORITY,
     _MEDIUM_PRIORITY,
@@ -46,8 +60,9 @@ enum SerialPriority: uint8_t{
 };
 
 
-
-
+/**
+ * @brief The serial_t struct
+ */
 struct serial_t
 {
     volatile uint8_t *UCSRxA;

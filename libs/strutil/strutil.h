@@ -2,12 +2,12 @@
 #define STRUTIL_H
 #include <string>
 #include <string.h>
-#include <vector>
+//#include <vector>
 #include <utils.h>
-#include <macros.h>
-#include <stdio.h>
+//#include <macros.h>
+//#include <stdio.h>
 #include <ctype.h>
-
+///@file
 
 // convert case
 std::string to_lower(std::string str);

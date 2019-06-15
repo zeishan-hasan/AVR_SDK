@@ -2,9 +2,9 @@
 #define RDM6300_H
 #include <serial.h>
 #include <portmanager.h>
-#include <macros.h>
+//#include <macros.h>
 #include <vector>
-
+///@file
 class Rdm6300
 {
 public:

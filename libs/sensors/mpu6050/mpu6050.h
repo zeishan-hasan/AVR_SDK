@@ -2,7 +2,7 @@
 #define MPU6050_H
 #include "i2cmaster.h"
 #include "macros.h"
-
+///@file
 
 /* Register GYRO_CONFIG 0x1B
 

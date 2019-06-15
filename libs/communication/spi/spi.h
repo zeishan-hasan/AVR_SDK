@@ -1,11 +1,11 @@
 #ifndef SPI_H
 #define SPI_H
-#include <avr/io.h>
+//#include <avr/io.h>
 #include <avr/interrupt.h>
-#include <avr/iom2560.h>
-#include "vector.h"
+//#include <avr/iom2560.h>
+//#include "vector.h"
 #include "portmanager.h"
-
+///@file
 
 enum SPI_MODE: uint8_t{
     SLAVE,

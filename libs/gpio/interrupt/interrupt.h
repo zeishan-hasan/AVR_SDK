@@ -1,10 +1,19 @@
 #ifndef INTERRUPT_H
 #define INTERRUPT_H
 #include "portmanager.h"
-#include "timer.h"
-#include "macros.h"
+//#include "timer.h"
+#include <avr/interrupt.h>
+///@file
+
+/**
+ * @brief int_cb_t
+ * @param pin
+ */
 typedef void int_cb_t(uint8_t pin);
 
+/**
+ * @brief The INT_EDGE enum
+ */
 enum INT_EDGE:uint8_t{
     LOW_LEVEL,
     RISING,
@@ -13,13 +22,18 @@ enum INT_EDGE:uint8_t{
     NEGATIVE_EDGE,
     ANYEDGE
 };
-
+/**
+ * @brief The PCINTx_vect enum
+ */
 enum PCINTx_vect:uint8_t{
     _PCINT0_vect,
     _PCINT1_vect,
     _PCINT2_vect,
 };
 
+/**
+ * @brief The INTx_vect enum
+ */
 enum INTx_vect:uint8_t{
     _INT0_vect,
     _INT1_vect,
@@ -28,6 +42,10 @@ enum INTx_vect:uint8_t{
     _INT4_vect,
     _INT5_vect,
 };
+
+/**
+ * @brief The ISCx_INT enum
+ */
 enum ISCx_INT:uint8_t{
     INT0_LOW_LEVEL      = 0x00, INT1_LOW_LEVEL          = (0x00<<2),
     INT0_ANY_EDGE       = 0x01, INT1_ANY_EDGE           = (0x01<<2),
@@ -50,6 +68,10 @@ enum ISCx_INT:uint8_t{
     INT6_RISING_EDGE    = (0x03<<4), INT7_RISING_EDGE   = (0x03<<6),
 };
 
+
+/**
+ * @brief The INT_PIN_RES enum
+ */
 enum INT_PIN_RES:uint8_t{
     NOT_FOUND,
     _PCINT,
@@ -79,6 +101,9 @@ enum INT_PIN_RES:uint8_t{
 
 */
 #pragma push(1)
+/**
+ * @brief The INT_REG_CALLBACK struct
+ */
 struct INT_REG_CALLBACK{
     //INT_REG_CALLBACK(uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t
     //								 ,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t){
@@ -145,7 +170,9 @@ struct INT_REG_CALLBACK{
     INT_EDGE pe5_edge;
 };
 
-
+/**
+ * @brief The PCINT_PIN struct
+ */
 struct PCINT_PIN{
     uint8_t mappedPin;
     uint8_t PCINTx_vect;
@@ -153,6 +180,10 @@ struct PCINT_PIN{
     volatile int_cb_t **interruptCallback;
     INT_EDGE *px_edge;
 };
+
+/**
+ * @brief The HW_INT_PIN struct
+ */
 struct HW_INT_PIN{
     uint8_t mappedPin;
     uint8_t EICRx;

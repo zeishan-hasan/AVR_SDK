@@ -3,11 +3,12 @@
 
 #include "macros.h"
 #include <avr/io.h>
-#include <vector.h>
-#include <avr/iom2560.h>
+//#include <vector.h>
+//#include <avr/iom2560.h>
 #include <avr/interrupt.h>
-#include <serial.h>
+//#include <serial.h>
 #include <util/atomic.h>
+///@file
 /*
 typedef void func(void);
 class Scheduler

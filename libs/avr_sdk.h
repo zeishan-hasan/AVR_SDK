@@ -1,5 +1,6 @@
 #ifndef AVR_SDK_H
 #define AVR_SDK_H
+///@file
 #include <portmanager.h>
 #include <interrupt.h>
 #include <vector.h>
@@ -8,7 +9,7 @@
 #include <timer.h>
 #include <spi.h>
 #include <serial.h>
-
+#include <dht11.h>
 
 #include <spislave.h>
 #include <spimaster.h>
@@ -18,7 +19,8 @@
 
 #include <rdm630.h>
 #include <strutil.h>
-
+#include <mpu6050.h>
+#include <hmc5883.h>
 
 //---- TCP/IP ----//
 

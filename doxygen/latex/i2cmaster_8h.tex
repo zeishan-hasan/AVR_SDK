@@ -1,0 +1,55 @@
+\hypertarget{i2cmaster_8h}{}\section{i2cmaster.\+h File Reference}
+\label{i2cmaster_8h}\index{i2cmaster.\+h@{i2cmaster.\+h}}
+{\ttfamily \#include $<$util/twi.\+h$>$}\newline
+{\ttfamily \#include $<$avr/io.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}vector.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for i2cmaster.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{i2cmaster_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{i2cmaster_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structslave__t}{slave\+\_\+t}
+\item 
+class \hyperlink{classI2CMaster}{I2\+C\+Master}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{i2cmaster_8h_a8507c36fb931358ebca2bb6896c0bc09}\label{i2cmaster_8h_a8507c36fb931358ebca2bb6896c0bc09}} 
+\#define {\bfseries Prescaler}~1
+\item 
+\mbox{\Hypertarget{i2cmaster_8h_ae400118034d2dcff3772d90bae70e00d}\label{i2cmaster_8h_ae400118034d2dcff3772d90bae70e00d}} 
+\#define {\bfseries T\+W\+B\+R\+\_\+val}(x)~((((F\+\_\+\+C\+PU / x) / Prescaler) -\/ 16 ) / 2)
+\item 
+\mbox{\Hypertarget{i2cmaster_8h_ab5c0fbe837494c5f9130a5914854250d}\label{i2cmaster_8h_ab5c0fbe837494c5f9130a5914854250d}} 
+\#define {\bfseries I2\+C\+\_\+\+R\+E\+AD}~0x01
+\item 
+\mbox{\Hypertarget{i2cmaster_8h_a9536bf85bced4f4e549a82fb18eb6140}\label{i2cmaster_8h_a9536bf85bced4f4e549a82fb18eb6140}} 
+\#define {\bfseries I2\+C\+\_\+\+W\+R\+I\+TE}~0x00
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{i2cmaster_8h_a2c6690e796cc3e7f785c04affd6b445e}\label{i2cmaster_8h_a2c6690e796cc3e7f785c04affd6b445e}} 
+enum {\bfseries F\+\_\+\+S\+CL} \+: uint8\+\_\+t \{ \newline
+{\bfseries S\+C\+L\+\_\+100\+K\+HZ} = T\+W\+B\+R\+\_\+val(100000), 
+{\bfseries S\+C\+L\+\_\+200\+K\+HZ} = T\+W\+B\+R\+\_\+val(200000), 
+{\bfseries S\+C\+L\+\_\+300\+K\+HZ} = T\+W\+B\+R\+\_\+val(300000), 
+{\bfseries S\+C\+L\+\_\+400\+K\+HZ} = T\+W\+B\+R\+\_\+val(400000), 
+\newline
+{\bfseries S\+C\+L\+\_\+500\+K\+HZ} = T\+W\+B\+R\+\_\+val(500000)
+ \}
+\end{DoxyCompactItemize}

@@ -7,7 +7,7 @@ LIBS_DIR	= libs
 PROGRAMMER 		= stk500v2 
 MPROG 			= m2560
 MICROCONTROLLER = atmega2560
-
+F_CPU = 16000000
 
 CXX = avr-g++
 CC  = avr-gcc
@@ -104,8 +104,8 @@ size:
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -Wdeprecated -nostdlib  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
-	@$(CXX) $(CXX_FLAGS) -nostdlib  -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
+	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib  -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
 
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"
