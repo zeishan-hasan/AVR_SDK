@@ -40,6 +40,7 @@ extern bool debug;
 
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
 
+
 #define MYUBRR(x) (F_CPU/16/(float)x-1)
 
 #define BAUD 9600
@@ -47,13 +48,20 @@ extern bool debug;
 #define MAX_SPI_BUFFER      256
 
 
-
+/**
+  *@return Absolute value
+  */
 #define ABS(N) ((N<0)?(-N):(N))
 
 
-// Returns low part of 16 bit value
+/**
+  * @return LSB of 16 bit value
+  */
 #define LO(x) (x & 0xFF)
-// Returns high part of 16 bit value
+
+/**
+  * @return MSB of 16 bit value
+  */
 #define HI(x) ((x >> 8) & 0xFF)
 
 
@@ -84,31 +92,38 @@ extern bool debug;
 /**
   * @brief Checks if a bit in a var is set to 1
   * @param[in] var The variable to test
-  * @param[in] i The bit you want to test in var
+  * @param[in] bit The bit you want to test in var
   * @return If the bit is on, it return the corresponding bit value into var. If the bit if off it retuns 0
   */
-#define is_bit_on(var, i) ((var)&(1<<(i)))
+#define is_bit_on(var, bit) ((var)&(1<<(bit)))
 
 /**
   * @brief Reads bit value in a var
   * @param[in] var The variable to read
-  * @param[in] i The bit you want read
+  * @param[in] bit The bit you want to read
   * @return If bit is on 1, else 0
   */
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
 
 /**
-  *@brief bitSet
+  *@brief Sets a bit into a var
+  * @param[in] value The input variable
+  * @param[in] bit The bit you want to set
   */
 #define bitSet(value, bit) ((value) |= (1 << (bit)))
 
 /**
-  *@brief bitSet
+  *@brief Clears a bit into a variable
+  * @param[in] value The input variable
+  * @param[in] bit The bit you want to clear
   */
 #define bitClear(value, bit) ((value) &= ~(1 << bit) )
 
 /**
-  *@brief bitSet
+  *@brief Writes a bit value into a variable
+  * @param[in] value The input variable
+  * @param[in] bit The bit you want to write
+  * @param[in] bitvalue The bit value you want to write
   */
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 

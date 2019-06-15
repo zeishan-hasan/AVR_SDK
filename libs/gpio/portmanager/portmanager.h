@@ -8,7 +8,7 @@
 //#include <serial.h>
 #include <math.h>
 #include <util/delay.h>
-#include <avr/iomxx0_1.h>
+//#include <avr/iomxx0_1.h>
 #include <avr/pgmspace.h>
 #include <stdio.h>
 //#include <stdint.h>
@@ -57,20 +57,18 @@ struct MappedPort{
     /*! @var controlBits
 	@brief Used to get pin functions mode.
 	@verbatim
-	╔═══════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╦════════╦═════╦════╗
-	║ 13    ║ 12   ║ 11   ║ 10   ║ 9    ║ 8   ║ 7     ║ 6 ║ 5 ║ 4 ║ 3 ║ 2      ║ 1   ║ 0  ║
-	╠═══════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╬════════╬═════╩════╣
-	║ isPWM ║ Output Compare Sel ║ Letter Sel ║ isADC ║ ADC_SEL       ║ isUART ║ UART_SEL ║
-	╚═══════╩════════════════════╩════════════╩═══════╩═══════════════╩════════╩══════════╝
+        ╔═════╦════╦═══════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╦════════╦═════╦════╗
+        ║ 15  ║ 14 ║ 13    ║ 12   ║ 11   ║ 10   ║ 9    ║ 8   ║ 7     ║ 6 ║ 5 ║ 4 ║ 3 ║ 2      ║ 1   ║ 0  ║
+        ╠═════╩════╬═══════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╬════════╬═════╩════╣
+        ║ NOT USED ║ isPWM ║ Output Compare Sel ║ Letter Sel ║ isADC ║   ADC_SEL     ║ isUART ║ UART_SEL ║
+        ╚══════════╩═══════╩════════════════════╩════════════╩═══════╩═══════════════╩════════╩══════════╝
 	@endverbatim
   */
     uint16_t controlBits;
 
 };
 
-/**
- * @var _flashMappedPort
- */
+
 #pragma pop
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #include <avr/iom2560.h>
@@ -418,13 +416,13 @@ enum _ADMUX:uint8_t{
  * @brief The _ADCSRA_PRESCALER enum
  */
 enum _ADCSRA_PRESCALER:uint8_t{
-    F_CPU_BY_2		= (0<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
-    F_CPU_BY_4		= (0<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
-    F_CPU_BY_8		= (0<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
-    F_CPU_BY_16		= (1<<ADPS2)|(0<<ADPS1)|(0<<ADPS0),
-    F_CPU_BY_32		= (1<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
-    F_CPU_BY_64		= (1<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
-    F_CPU_BY_128	= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
+    F_CPU_BY_2	 = (0<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
+    F_CPU_BY_4	 = (0<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
+    F_CPU_BY_8	 = (0<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
+    F_CPU_BY_16	 = (1<<ADPS2)|(0<<ADPS1)|(0<<ADPS0),
+    F_CPU_BY_32	 = (1<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
+    F_CPU_BY_64	 = (1<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
+    F_CPU_BY_128 = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
 };
 
 
@@ -472,83 +470,85 @@ enum _LOCAL_CTRL_BITS:uint8_t{
 class Pin{
 public:
     Pin(){}
+
+    /**
+     * @brief Pin Constructor
+     * @param[in] portNo Is the physical pin of the board
+     * @param[in] direction Check DDRx enum
+     */
     Pin(uint8_t portNo, DDRx direction);
+
     ~Pin();
 
     /**
-     * @brief on
+     * @brief Sets state on of a pin
      */
     void on();
 
     /**
-     * @brief setState
-     * @param stat
+     * @brief Set state of a pin
+     * @param[in] stat  True = on, False = off
      */
     void setState(bool stat = true);
 
     /**
-     * @brief off
+     * @brief Sets state off of a pin
      */
     void off();
 
     /**
-     * @brief toggle
+     * @brief Toggle a pin state
      */
     void toggle();
 
     /**
      * @brief setDirection
-     * @param direction
+     * @param[in] direction
      */
     void setDirection(DDRx direction);
 
     /**
-     * @brief setPWM
-     * @param freq
-     * @param duty
-     * @return
+     * @brief Set hardware PWM
+     * @param[in] freq In hertz
+     * @param[in] duty In range 0 - 100
+     * @return True if pin has hardware PWM, else  false
      */
     bool setPWM(uint32_t freq, uint8_t duty = 50);
 
     /**
-     * @brief setDuty
-     * @param duty
-     * @return
+     * @brief Set duty of hardware PWM
+     * @param[in] duty Range 0 - 100
+     * @return True if pin has hardware PWM, else  false
      */
     bool setDuty(uint8_t duty);
 
     /**
-     * @brief setFreq
-     * @param freq
-     * @return
+     * @brief Set Frequency of hardware PWM
+     * @param[in] freq In hertz
+     * @return True if pin has hardware PWM, else  false
      */
     bool setFreq(uint16_t freq);
 
     /**
-     * @brief stopPWM
-     * @return
+     * @brief Stop PWM
+     * @return True if pin has hardware PWM, else  false
      */
     bool stopPWM();
 
     /**
      * @brief digitalRead
-     * @return
+     * @return True if pin TTL high, else False
      */
     bool digitalRead();
 
     /**
      * @brief analogRead
-     * @param[in] vRef
-     * @param[in] prescaler
-     * @param[in] autoTrigger
+     * @param[in] vRef Check _ADMUX enum
+     * @param[in] prescaler Check _ADCSRA_PRESCALER enum
+     * @param[in] autoTrigger Check _ADCSRB_AUTOTRIGGER enum
      * @return
      */
     uint16_t analogRead(_ADMUX vRef = AVCC, _ADCSRA_PRESCALER prescaler = F_CPU_BY_128, _ADCSRB_AUTOTRIGGER autoTrigger = FREE_RUNNING_MODE);
-
-    /**
-     * @brief getPinData
-     */
-    void getPinData();
 
     /**
      * @brief getPinNumber
@@ -557,13 +557,13 @@ public:
     uint8_t getPinNumber();
 
     /**
-     * @brief getPWM
+     * @brief Get PWM Duty Cycle
      * @return Percentage of duty cycle. Range : 0% - 100%
      */
     uint8_t getPWM();
 
     /**
-     * @brief getRegisterBit
+     * @brief Get register bit
      * @return Bits into own register
      */
     uint8_t getRegisterBit();
@@ -575,6 +575,10 @@ public:
     volatile uint8_t *getPINxAddr();
 
 private:
+    //---- Methods ----//
+    uint16_t calculateTicks(uint32_t freq);
+
+    //---- Variables ----//
     volatile uint8_t *_ddrx;
     volatile uint8_t *_portx;
     volatile uint8_t *_pinx;
@@ -588,8 +592,6 @@ private:
     uint16_t _freq_pwm;
     uint16_t _duty_pwm;
     uint16_t _controlBits;
-
-    uint16_t calculateTicks(uint32_t freq);
 
     uint8_t _pinNumber;
 };
