@@ -103,41 +103,41 @@ bool Interrupt::deatchInterrupt(uint8_t pin)
 
 //---------PCINT DATABASE---------//
 PCINT_PIN pcint_vect[]{
-    /*00*/{ 0,1, PCINT8,&Interrupt::interruptCallback.pe0,&Interrupt::interruptCallback.pe0_edge},// Not working
-    /*01*/{ 1,0, PCINT3,&Interrupt::interruptCallback.pe1,&Interrupt::interruptCallback.pe1_edge},// Not working
-    /*02*/{ 6,1, PCINT8,&Interrupt::interruptCallback.ph3,&Interrupt::interruptCallback.ph3_edge},// Not working
-    /*03*/{10,0, PCINT4,&Interrupt::interruptCallback.pb4,&Interrupt::interruptCallback.pb4_edge},
-    /*04*/{11,0, PCINT5,&Interrupt::interruptCallback.pb5,&Interrupt::interruptCallback.pb5_edge},
-    /*05*/{12,0, PCINT6,&Interrupt::interruptCallback.pb6,&Interrupt::interruptCallback.pb6_edge},
-    /*06*/{13,0, PCINT7,&Interrupt::interruptCallback.pb7,&Interrupt::interruptCallback.pb7_edge},
-    /*07*/{14,1,PCINT10,&Interrupt::interruptCallback.pj1,&Interrupt::interruptCallback.pj1_edge},
-    /*08*/{15,1, PCINT9,&Interrupt::interruptCallback.pj0,&Interrupt::interruptCallback.pj0_edge},
-    /*09*/{50,0, PCINT3,&Interrupt::interruptCallback.pb3,&Interrupt::interruptCallback.pb3_edge},
-    /*10*/{51,0, PCINT2,&Interrupt::interruptCallback.pb2,&Interrupt::interruptCallback.pb2_edge},
-    /*11*/{52,0, PCINT1,&Interrupt::interruptCallback.pb1,&Interrupt::interruptCallback.pb1_edge},
-    /*12*/{53,0, PCINT0,&Interrupt::interruptCallback.pb0,&Interrupt::interruptCallback.pb0_edge},
-    /*13*/{62,2,PCINT16,&Interrupt::interruptCallback.pk0,&Interrupt::interruptCallback.pk0_edge},
-    /*14*/{63,2,PCINT17,&Interrupt::interruptCallback.pk1,&Interrupt::interruptCallback.pk1_edge},
-    /*15*/{64,2,PCINT18,&Interrupt::interruptCallback.pk2,&Interrupt::interruptCallback.pk2_edge},
-    /*16*/{65,2,PCINT19,&Interrupt::interruptCallback.pk3,&Interrupt::interruptCallback.pk3_edge},
-    /*17*/{66,2,PCINT20,&Interrupt::interruptCallback.pk4,&Interrupt::interruptCallback.pk4_edge},
-    /*18*/{67,2,PCINT21,&Interrupt::interruptCallback.pk5,&Interrupt::interruptCallback.pk5_edge},
-    /*19*/{68,2,PCINT22,&Interrupt::interruptCallback.pk6,&Interrupt::interruptCallback.pk6_edge},
-    /*20*/{69,2,PCINT23,&Interrupt::interruptCallback.pk7,&Interrupt::interruptCallback.pk7_edge}
+    /*00*/{ 0, 1,  PCINT8, &Interrupt::interruptCallback.pe0, &Interrupt::interruptCallback.pe0_edge},// Not working
+    /*01*/{ 1, 0,  PCINT3, &Interrupt::interruptCallback.pe1, &Interrupt::interruptCallback.pe1_edge},// Not working
+    /*02*/{ 6, 1,  PCINT8, &Interrupt::interruptCallback.ph3, &Interrupt::interruptCallback.ph3_edge},// Not working
+    /*03*/{10, 0,  PCINT4, &Interrupt::interruptCallback.pb4, &Interrupt::interruptCallback.pb4_edge},
+    /*04*/{11, 0,  PCINT5, &Interrupt::interruptCallback.pb5, &Interrupt::interruptCallback.pb5_edge},
+    /*05*/{12, 0,  PCINT6, &Interrupt::interruptCallback.pb6, &Interrupt::interruptCallback.pb6_edge},
+    /*06*/{13, 0,  PCINT7, &Interrupt::interruptCallback.pb7, &Interrupt::interruptCallback.pb7_edge},
+    /*07*/{14, 1, PCINT10, &Interrupt::interruptCallback.pj1, &Interrupt::interruptCallback.pj1_edge},
+    /*08*/{15, 1,  PCINT9, &Interrupt::interruptCallback.pj0, &Interrupt::interruptCallback.pj0_edge},
+    /*09*/{50, 0,  PCINT3, &Interrupt::interruptCallback.pb3, &Interrupt::interruptCallback.pb3_edge},
+    /*10*/{51, 0,  PCINT2, &Interrupt::interruptCallback.pb2, &Interrupt::interruptCallback.pb2_edge},
+    /*11*/{52, 0,  PCINT1, &Interrupt::interruptCallback.pb1, &Interrupt::interruptCallback.pb1_edge},
+    /*12*/{53, 0,  PCINT0, &Interrupt::interruptCallback.pb0, &Interrupt::interruptCallback.pb0_edge},
+    /*13*/{62, 2, PCINT16, &Interrupt::interruptCallback.pk0, &Interrupt::interruptCallback.pk0_edge},
+    /*14*/{63, 2, PCINT17, &Interrupt::interruptCallback.pk1, &Interrupt::interruptCallback.pk1_edge},
+    /*15*/{64, 2, PCINT18, &Interrupt::interruptCallback.pk2, &Interrupt::interruptCallback.pk2_edge},
+    /*16*/{65, 2, PCINT19, &Interrupt::interruptCallback.pk3, &Interrupt::interruptCallback.pk3_edge},
+    /*17*/{66, 2, PCINT20, &Interrupt::interruptCallback.pk4, &Interrupt::interruptCallback.pk4_edge},
+    /*18*/{67, 2, PCINT21, &Interrupt::interruptCallback.pk5, &Interrupt::interruptCallback.pk5_edge},
+    /*19*/{68, 2, PCINT22, &Interrupt::interruptCallback.pk6, &Interrupt::interruptCallback.pk6_edge},
+    /*20*/{69, 2, PCINT23, &Interrupt::interruptCallback.pk7, &Interrupt::interruptCallback.pk7_edge}
 
 };
-PCINT_PIN vectB[]={pcint_vect[12],pcint_vect[11],pcint_vect[10],pcint_vect[9],pcint_vect[3],pcint_vect[4],pcint_vect[5],pcint_vect[6]};
-PCINT_PIN vectK[]={pcint_vect[13],pcint_vect[14],pcint_vect[15],pcint_vect[16],pcint_vect[17],pcint_vect[18],pcint_vect[19],pcint_vect[20]};
-PCINT_PIN vectJ[]={pcint_vect[8],pcint_vect[7]};
+PCINT_PIN vectB[] = {pcint_vect[12], pcint_vect[11], pcint_vect[10], pcint_vect[9], pcint_vect[3], pcint_vect[4], pcint_vect[5], pcint_vect[6]};
+PCINT_PIN vectK[] = {pcint_vect[13], pcint_vect[14], pcint_vect[15], pcint_vect[16], pcint_vect[17], pcint_vect[18], pcint_vect[19], pcint_vect[20]};
+PCINT_PIN vectJ[] = {pcint_vect[8], pcint_vect[7]};
 //---------END PCINT DATABASE---------//
 
-HW_INT_PIN int_vect[]={
-    { 2, 1, &Interrupt::interruptCallback.pe4, &Interrupt::interruptCallback.pe4_edge,INT4_LOW_LEVEL,INT4_ANY_EDGE,INT4_FALLING_EDGE,INT4_RISING_EDGE,4},
-    { 3, 1, &Interrupt::interruptCallback.pe5, &Interrupt::interruptCallback.pe5_edge,INT5_LOW_LEVEL,INT5_ANY_EDGE,INT5_FALLING_EDGE,INT5_RISING_EDGE,5},
-    {18, 0, &Interrupt::interruptCallback.pd3, &Interrupt::interruptCallback.pd3_edge,INT3_LOW_LEVEL,INT3_ANY_EDGE,INT3_FALLING_EDGE,INT3_RISING_EDGE,3},
-    {19, 0, &Interrupt::interruptCallback.pd2, &Interrupt::interruptCallback.pd2_edge,INT2_LOW_LEVEL,INT2_ANY_EDGE,INT2_FALLING_EDGE,INT2_RISING_EDGE,2},
-    {20, 0, &Interrupt::interruptCallback.pd1, &Interrupt::interruptCallback.pd1_edge,INT1_LOW_LEVEL,INT1_ANY_EDGE,INT1_FALLING_EDGE,INT1_RISING_EDGE,1},
-    {21, 0, &Interrupt::interruptCallback.pd0, &Interrupt::interruptCallback.pd0_edge,INT0_LOW_LEVEL,INT0_ANY_EDGE,INT0_FALLING_EDGE,INT0_RISING_EDGE,0},
+HW_INT_PIN int_vect[] = {
+    { 2, 1, &Interrupt::interruptCallback.pe4, &Interrupt::interruptCallback.pe4_edge, INT4_LOW_LEVEL, INT4_ANY_EDGE, INT4_FALLING_EDGE, INT4_RISING_EDGE, 4},
+    { 3, 1, &Interrupt::interruptCallback.pe5, &Interrupt::interruptCallback.pe5_edge, INT5_LOW_LEVEL, INT5_ANY_EDGE, INT5_FALLING_EDGE, INT5_RISING_EDGE, 5},
+    {18, 0, &Interrupt::interruptCallback.pd3, &Interrupt::interruptCallback.pd3_edge, INT3_LOW_LEVEL, INT3_ANY_EDGE, INT3_FALLING_EDGE, INT3_RISING_EDGE, 3},
+    {19, 0, &Interrupt::interruptCallback.pd2, &Interrupt::interruptCallback.pd2_edge, INT2_LOW_LEVEL, INT2_ANY_EDGE, INT2_FALLING_EDGE, INT2_RISING_EDGE, 2},
+    {20, 0, &Interrupt::interruptCallback.pd1, &Interrupt::interruptCallback.pd1_edge, INT1_LOW_LEVEL, INT1_ANY_EDGE, INT1_FALLING_EDGE, INT1_RISING_EDGE, 1},
+    {21, 0, &Interrupt::interruptCallback.pd0, &Interrupt::interruptCallback.pd0_edge, INT0_LOW_LEVEL, INT0_ANY_EDGE, INT0_FALLING_EDGE, INT0_RISING_EDGE, 0}
 };
 
 

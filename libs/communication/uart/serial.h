@@ -1,6 +1,6 @@
 #ifndef SERIAL_H
 #define SERIAL_H
-#include "macros.h"
+#include <macros.h>
 //#include "cppfix.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -77,42 +77,143 @@ struct serial_t
 class Serial
 {
 
+
 public:
     //-----------------METHODS-----------------//
-    void	init(UART baud, SerialPriority priority = _LOW_PRIORITY);
-    void	printf(const char *fmt,...);
-    void	readUntil(char *buffer, char chr);
-    void	flush();
-    void	setRxISRCallBack (bool state);
-    void	setEchoServer(bool state = false);
-    void	insertData(uint8_t data);
-    void	incReadData(uint8_t value = 1);
-    void	enableShell(bool value = false);
-    void	registerCallback(ser_cb_t *cb = nullptr);
-    void	rxCallBack();
-    bool	shellIsEnabled();
-    bool	bufferIsReadable();
-    bool	isAvailable();
-    bool	echoIsEnabled();
-    uint8_t	receive();
-    uint8_t	readData();
+    /**
+     * @brief Initialize serial
+     * @param[in] baud Check UART enum
+     * @param[in] priority Check SerialPriority enum
+     */
+    void init(UART baud, SerialPriority _priority = _LOW_PRIORITY);
+
+    /**
+     * @brief printf
+     * @param fmt
+     */
+    void printf(const char *fmt,...);
+
+    /**
+     * @brief Reads from UDRx
+     * @param[out] buffer
+     * @param[in] chr
+     * @attention NOT TESTED WELL
+     */
+    void readUntil(char *buffer, char chr);
+
+    /**
+     * @brief Empties UDRx buffer
+     */
+    void flush();
+
+    /**
+     * @brief Enables interrupt on receive
+     * @param[in] state
+     */
+    void setRxISRCallBack (bool state);
+
+    /**
+     * @brief Enables echo server
+     * @param[i] state
+     */
+    void setEchoServer(bool state = false);
+
+    /**
+     * @brief Pushes data into \ref USART_BUFF[MAX_SERIAL_BUFFER]
+     * @param[in] data
+     */
+    void insertData(uint8_t data);
+
+    /**
+     * @brief Moves \ref *_read pointer forward
+     * @param[in] value Number of steps
+     * @bug NOT WORKING ATM
+     */
+    void incReadData(uint8_t value = 1);
+
+    /**
+     * @brief enableShell
+     * @param[in] value
+     */
+    void enableShell(bool value = false);
+
+    /**
+     * @brief registerCallback
+     * @param[in] cb
+     */
+    void registerCallback(ser_cb_t *cb = nullptr);
+
+    /**
+     * @brief Used to call registered callback function
+     */
+    void rxCallBack();
+
+    /**
+     * @brief
+     * @return
+     */
+    bool shellIsEnabled();
+
+    /**
+     * @brief bufferIsReadable
+     * @return
+     */
+    bool bufferIsReadable();
+
+    /**
+     * @brief isAvailable
+     * @return
+     */
+    bool isAvailable();
+
+    /**
+     * @brief echoIsEnabled
+     * @return
+     */
+    bool echoIsEnabled();
+
+    /**
+     * @brief receive
+     * @return
+     */
+    uint8_t receive();
+
+    /**
+     * @brief readData
+     * @return
+     */
+    uint8_t readData();
+
+    /**
+     * @brief getPriority
+     * @return
+     */
     SerialPriority getPriority();
+
+    /**
+     * @brief clear
+     */
     void clear();
     //-----------------VARIABLES---------------//
+
+    /**
+     * @brief A FIFO Rotating buffer
+     */
     uint8_t USART_BUFF[MAX_SERIAL_BUFFER];
 protected:
-    Serial(void) {}
     //-----------------METHODS-----------------//
-    void print(const char *str);
+    Serial(void) {}
+    void _print(const char *str);
+
     //-----------------VARIABLES---------------//
-    bool	echoServer;
-    bool	shellEnabled;
-    bool	bufferReadable;
-    uint8_t	*_read;
-    uint8_t	*_write;
-    serial_t self;
-    SerialPriority priority;
-    ser_cb_t *callback;
+    bool _echoServer;
+    bool _shellEnabled;
+    bool _bufferReadable;
+    uint8_t *_read;
+    uint8_t *_write;
+    serial_t _self;
+    SerialPriority _priority;
+    ser_cb_t *_callback;
 };
 
 
@@ -123,12 +224,12 @@ class Serial0 : public Serial {
     friend class SerialManager;
 private:
     Serial0(): Serial() {
-        self.UCSRxA = (volatile uint8_t*)&UCSR0A;
-        self.UCSRxB = (volatile uint8_t*)&UCSR0B;
-        self.UCSRxC = (volatile uint8_t*)&UCSR0C;
-        self.UBRRxH = (volatile uint8_t*)&UBRR0H;
-        self.UBRRxL = (volatile uint8_t*)&UBRR0L;
-        self.UDRx   = (volatile uint8_t*)&UDR0;
+        _self.UCSRxA = (volatile uint8_t*)&UCSR0A;
+        _self.UCSRxB = (volatile uint8_t*)&UCSR0B;
+        _self.UCSRxC = (volatile uint8_t*)&UCSR0C;
+        _self.UBRRxH = (volatile uint8_t*)&UBRR0H;
+        _self.UBRRxL = (volatile uint8_t*)&UBRR0L;
+        _self.UDRx   = (volatile uint8_t*)&UDR0;
     }
 
 };
@@ -137,12 +238,12 @@ class Serial1 : public Serial {
     friend class SerialManager;
 private:
     Serial1(): Serial() {
-        self.UCSRxA = (volatile uint8_t*)&UCSR1A;
-        self.UCSRxB = (volatile uint8_t*)&UCSR1B;
-        self.UCSRxC = (volatile uint8_t*)&UCSR1C;
-        self.UBRRxH = (volatile uint8_t*)&UBRR1H;
-        self.UBRRxL = (volatile uint8_t*)&UBRR1L;
-        self.UDRx   = (volatile uint8_t*)&UDR1;
+        _self.UCSRxA = (volatile uint8_t*)&UCSR1A;
+        _self.UCSRxB = (volatile uint8_t*)&UCSR1B;
+        _self.UCSRxC = (volatile uint8_t*)&UCSR1C;
+        _self.UBRRxH = (volatile uint8_t*)&UBRR1H;
+        _self.UBRRxL = (volatile uint8_t*)&UBRR1L;
+        _self.UDRx   = (volatile uint8_t*)&UDR1;
     }
 
 };
@@ -152,12 +253,12 @@ class Serial2 : public Serial {
     friend class SerialManager;
 private:
     Serial2(): Serial() {
-        self.UCSRxA = (volatile uint8_t*)&UCSR2A;
-        self.UCSRxB = (volatile uint8_t*)&UCSR2B;
-        self.UCSRxC = (volatile uint8_t*)&UCSR2C;
-        self.UBRRxH = (volatile uint8_t*)&UBRR2H;
-        self.UBRRxL = (volatile uint8_t*)&UBRR2L;
-        self.UDRx   = (volatile uint8_t*)&UDR2;
+        _self.UCSRxA = (volatile uint8_t*)&UCSR2A;
+        _self.UCSRxB = (volatile uint8_t*)&UCSR2B;
+        _self.UCSRxC = (volatile uint8_t*)&UCSR2C;
+        _self.UBRRxH = (volatile uint8_t*)&UBRR2H;
+        _self.UBRRxL = (volatile uint8_t*)&UBRR2L;
+        _self.UDRx   = (volatile uint8_t*)&UDR2;
     }
 
 };
@@ -166,12 +267,12 @@ class Serial3 : public Serial {
     friend class SerialManager;
 private:
     Serial3(): Serial() {
-        self.UCSRxA = (volatile uint8_t*)&UCSR3A;
-        self.UCSRxB = (volatile uint8_t*)&UCSR3B;
-        self.UCSRxC = (volatile uint8_t*)&UCSR3C;
-        self.UBRRxH = (volatile uint8_t*)&UBRR3H;
-        self.UBRRxL = (volatile uint8_t*)&UBRR3L;
-        self.UDRx   = (volatile uint8_t*)&UDR3;
+        _self.UCSRxA = (volatile uint8_t*)&UCSR3A;
+        _self.UCSRxB = (volatile uint8_t*)&UCSR3B;
+        _self.UCSRxC = (volatile uint8_t*)&UCSR3C;
+        _self.UBRRxH = (volatile uint8_t*)&UBRR3H;
+        _self.UBRRxL = (volatile uint8_t*)&UBRR3L;
+        _self.UDRx   = (volatile uint8_t*)&UDR3;
     }
 
 
@@ -185,18 +286,18 @@ public:
         if (instance[port] == nullptr)
         {
             switch (port) {
-            case SERIAL0:
-                instance[port] = new Serial0;
-                break;
-            case SERIAL1:
-                instance[port] = new Serial1;
-                break;
-            case SERIAL2:
-                instance[port] = new Serial2;
-                break;
-            case SERIAL3:
-                instance[port] = new Serial3;
-                break;
+                case SERIAL0:
+                    instance[port] = new Serial0;
+                    break;
+                case SERIAL1:
+                    instance[port] = new Serial1;
+                    break;
+                case SERIAL2:
+                    instance[port] = new Serial2;
+                    break;
+                case SERIAL3:
+                    instance[port] = new Serial3;
+                    break;
             }
 
         }

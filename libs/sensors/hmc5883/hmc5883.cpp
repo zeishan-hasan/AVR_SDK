@@ -10,7 +10,6 @@ void Hmc5883::init()
 {
     uint8_t valueRegA = (self._sample << 5) | (self._outRate << 2) | self._measureMode;
 
-
     master.start(self._addr.writeAddr);
     master.send(REG_A);     // set pointer to CRA
     master.send(valueRegA); // write 0x70 to CRA

@@ -4,18 +4,24 @@
 
 void Serial::init(UART baud, SerialPriority priority)
 {
-    *self.UBRRxH = (uint8_t)MYUBRR(baud)>>8;
-    *self.UBRRxL = (uint8_t)round((MYUBRR(baud)));
+    *_self.UBRRxH = (u8t)MYUBRR(baud) >> 8;
+    *_self.UBRRxL = (u8t)round((MYUBRR(baud)));
+
     // Enable receiver and transmitter //
-    *self.UCSRxB = (1<<RXEN0)|(1<<TXEN0);
+    *_self.UCSRxB = (1<<RXEN0)|(1<<TXEN0);
+
     // Set frame format: 8data, 1stop bit //
-    *self.UCSRxC = (1<<UCSZ01)|(1<<UCSZ00);
-    //UCSR0A = (1<<U2X0);						/// moltiplicatore
-    this->priority =  priority;
+    *_self.UCSRxC = (1<<UCSZ01)|(1<<UCSZ00);
+    //UCSR0A = (1<<U2X0); // Clock multiplier
+
+    this->_priority =  priority;
+
     memset(USART_BUFF,0xFF,MAX_SERIAL_BUFFER);
     _read  = USART_BUFF;
     _write = USART_BUFF;
-    bufferReadable = true;
+
+    _bufferReadable = true;
+
     registerCallback();
 }
 
@@ -26,50 +32,43 @@ void Serial::printf(const char *fmt,...)
     va_start(arg,fmt);
     vsprintf(buff,fmt,arg);
     va_end(arg);
-    print(buff);
+    _print(buff);
 }
 
 void Serial::readUntil(char *buffer, char chr)
 {
-    Serial *serial0 = SerialManager::getInstance(SERIAL0);
-    uint8_t i = 0;
-    while (char temp = receive()) {
-        serial0->printf("pushing %c %x\r\n",temp);
-
+    u8t i = 0;
+    while (1) {
+        char temp = receive();
         if(temp == chr){
-            serial0->printf("terminator ok\r\n");
-            buffer[i] ='\n';
-            ++i;
-            buffer[i] ='\r';
-            ++i;
-            buffer[i] ='\0';
+            buffer[++i] ='\0';
             break;
         }
-        buffer[i] = temp;
-        ++i;
+        buffer[i++] = temp;
+        //++i;
     }
 }
 
 void Serial::flush()
 {
     uint8_t dummy;
-    while(*self.UCSRxA & (1<<RXC0))
-        dummy = *self.UDRx;
+    while(*_self.UCSRxA & (1<<RXC0))
+        dummy = *_self.UDRx;
 }
 
 void Serial::setRxISRCallBack(bool state)
 {
-    if(state == true){
-        *self.UCSRxB |= (1 << RXCIE0);
+    if(state) {
+        *_self.UCSRxB |= (1 << RXCIE0);
         sei();
         return;
     }
-    *self.UCSRxB &= ~(1 << RXCIE0);
+    *_self.UCSRxB &= ~(1 << RXCIE0);
 }
 
 void Serial::setEchoServer(bool state)
 {
-    echoServer = state;
+    _echoServer = state;
 }
 
 void Serial::insertData(uint8_t data)
@@ -99,25 +98,25 @@ void Serial::incReadData(uint8_t value)
 
 void Serial::enableShell(bool value)
 {
-    shellEnabled = value;
+    _shellEnabled = value;
     setRxISRCallBack(true);
 }
 
 void Serial::registerCallback(ser_cb_t *cb)
 {
-    callback = cb;
+    _callback = cb;
 }
 
 void Serial::rxCallBack()
 {
-    if(callback != nullptr){
-        callback();
+    if(_callback != nullptr){
+        _callback();
     }
 }
 
 bool Serial::shellIsEnabled()
 {
-    return shellEnabled;
+    return _shellEnabled;
 }
 
 bool Serial::bufferIsReadable()
@@ -132,12 +131,12 @@ bool Serial::bufferIsReadable()
 
 bool Serial::isAvailable()
 {
-    return (*self.UCSRxA & (1<<RXC0))>>RXC0; // Return true means is available
+    return (*_self.UCSRxA & (1<<RXC0))>>RXC0; // Return true means is available
 }
 
 bool Serial::echoIsEnabled()
 {
-    if(echoServer){
+    if(_echoServer){
         return true;
     }
     return false;
@@ -145,19 +144,19 @@ bool Serial::echoIsEnabled()
 
 uint8_t Serial::receive()
 {
-    while (!(*self.UCSRxA & (1<<RXC0)));
-    return *self.UDRx;
+    while (!(*_self.UCSRxA & (1<<RXC0)));
+    return *_self.UDRx;
 }
 
 uint8_t Serial::readData()
 {
-    bufferReadable = false;
+    _bufferReadable = false;
 
     if( ++_read > (uint8_t*)(&USART_BUFF+1)-1){
         _read = USART_BUFF;
     }
     if(_read != _write){
-        bufferReadable = true;
+        _bufferReadable = true;
     }
     uint8_t temp = *_read;
     return temp;
@@ -165,20 +164,20 @@ uint8_t Serial::readData()
 
 SerialPriority Serial::getPriority()
 {
-    return priority;
+    return _priority;
 }
 
 void Serial::clear()
 {
     printf("\e[1;1H\e[2J");
 }
-void Serial::print(const char *str)
+void Serial::_print(const char *str)
 {
     register uint8_t i=0;
     while (str[i]!=0) {
         // Wait for empty transmit buffer
-        while ( !( *self.UCSRxA & (1<<UDRE0)) );
-        *self.UDRx = str[i];
+        while ( !( *_self.UCSRxA & (1<<UDRE0)) );
+        *_self.UDRx = str[i];
         ++i;
     }
 }

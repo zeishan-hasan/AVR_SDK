@@ -274,33 +274,13 @@ struct compass_t
     float headingDegrees;
 };
 
-
-struct hmc5883_t
-{
-    hmc5883_t(slave_t addr = 0, SAMPLE_MEASURE sample = AVG_1,
-              OUTPUT_RATE outRate = RATE_15Hz, GAIN gain = RANGE_1_30Ga,
-              OP_MODE opMode = CONTINUOUS_MODE,
-              MEASURE_MODE measureMode = DEF_BIAS){
-        _addr        = addr       ;
-        _sample      = sample     ;
-        _outRate     = outRate    ;
-        _gain        = gain       ;
-        _opMode      = opMode     ;
-        _measureMode = measureMode;
-    }
-    slave_t         _addr;
-    SAMPLE_MEASURE  _sample;
-    OUTPUT_RATE     _outRate;
-    GAIN            _gain;
-    OP_MODE         _opMode;
-    MEASURE_MODE    _measureMode;
-};
-
-
-
-
 class Hmc5883
 {
+
+
+
+
+
 public:
     Hmc5883(uint8_t writeAddr = 0x3c, uint8_t readAddr = 0x3d);
     void init();
@@ -327,9 +307,30 @@ private:
     void getHeading();
 
     //-------- VARIABLES --------//
-    hmc5883_t self;
+   // hmc5883_t ;
     I2CMaster master;
     compass_t compass;
+
+    struct hmc5883_t
+    {
+        hmc5883_t(slave_t addr = 0, SAMPLE_MEASURE sample = AVG_1,
+                  OUTPUT_RATE outRate = RATE_15Hz, GAIN gain = RANGE_1_30Ga,
+                  OP_MODE opMode = CONTINUOUS_MODE,
+                  MEASURE_MODE measureMode = DEF_BIAS){
+            _addr        = addr       ;
+            _sample      = sample     ;
+            _outRate     = outRate    ;
+            _gain        = gain       ;
+            _opMode      = opMode     ;
+            _measureMode = measureMode;
+        }
+        slave_t         _addr;
+        SAMPLE_MEASURE  _sample;
+        OUTPUT_RATE     _outRate;
+        GAIN            _gain;
+        OP_MODE         _opMode;
+        MEASURE_MODE    _measureMode;
+    }self;
 };
 
 #endif

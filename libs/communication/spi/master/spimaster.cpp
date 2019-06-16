@@ -5,8 +5,9 @@ MasterSPI::MasterSPI(masterSPI_t data, mSPIsetting_t settings)
 {
     uint8_t i;
     self = data;
-    //self.SS = data.SS;
+
     SPCR = 0;
+
     // Set MOSI and SCK output SS output, all others input
     *self.DDRx |=  (1 << self.bitMOSI) | (1 << self.bitSCK);
 
@@ -52,7 +53,6 @@ void MasterSPI::setClock(SPI_CLKSEL clock)
 
     SPSR |= ((self.settings._clock & 4) >> 2) << SPI2X;
     SPCR |= (((self.settings._clock & 2) >> 1) << SPR1) | ((self.settings._clock & 1) << SPR0);
-
 
 }
 

@@ -78,39 +78,43 @@ enum INT_PIN_RES:uint8_t{
     _INT
 };
 
+/**
+ *@brief Qualkcosa
+ *@verbatim
+╔══════════════╦═══════════════╦═══════════════╗
+║ PCINT0_vect  ║ PCINT1_vect   ║ PCINT2_vect   ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT0 - P53 ║ PCINT08 - P06 ║ PCINT16 - P62 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT1 - P52 ║ PCINT09 - P15 ║ PCINT17 - P63 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT2 - P51 ║ PCINT10 - P14 ║ PCINT18 - P64 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT3 - P50 ║ PCINT11 - P-- ║ PCINT19 - P65 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT4 - P10 ║ PCINT12 - P-- ║ PCINT20 - P66 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT5 - P11 ║ PCINT13 - P-- ║ PCINT21 - P67 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT6 - P12 ║ PCINT14 - P-- ║ PCINT22 - P68 ║
+╠══════════════╬═══════════════╬═══════════════╣
+║ PCINT7 - P13 ║ PCINT15 - P-- ║ PCINT23 - P69 ║
+╚══════════════╩═══════════════╩═══════════════╝
 
-/*
-  +--------------+---------------+---------------+
-  | PCINT0_vect  | PCINT1_vect	  | PC_INT2_vect |
-  +--------------+---------------+---------------+
-  | PCINT0 - P53 | PCINT08 - P06 | PCINT16 - P62 |
-  | PCINT1 - P52 | PCINT09 - P15 | PCINT17 - P63 |
-  | PCINT2 - P51 | PCINT10 - P14 | PCINT18 - P64 |
-  | PCINT3 - P50 | PCINT11 - P-- | PCINT19 - P65 |
-  | PCINT4 - P10 | PCINT12 - P-- | PCINT20 - P66 |
-  | PCINT5 - P11 | PCINT13 - P-- | PCINT21 - P67 |
-  | PCINT6 - P12 | PCINT14 - P-- | PCINT22 - P68 |
-  | PCINT7 - P13 | PCINT15 - P-- | PCINT23 - P69 |
-  +--------------+---------------+---------------+
-  +-----------------+-----------------+------------------+------------------+-----------------+----------------+
-  |      INT0       |      INT1       |      INT2        |      INT3        |      INT4       |      INT5      |
-  +-----------------+-----------------+------------------+------------------+-----------------+----------------+
-  | INT0_vect - P21 | INT1_vect - P20 | INT2_vect - P19  | INT3_vect - P18  | INT4_vect - P2  | INT5_vect - P3 |
-  +-----------------+-----------------+------------------+------------------+-----------------+----------------+
-
+╔═════════════════╦═════════════════╦═════════════════╦═════════════════╦════════════════╦════════════════╗
+║ INT0            ║ INT1            ║ INT2            ║ INT3            ║ INT4           ║ INT5           ║
+╠═════════════════╬═════════════════╬═════════════════╬═════════════════╬════════════════╬════════════════╣
+║ INT0_vect - P21 ║ INT1_vect - P20 ║ INT2_vect - P19 ║ INT3_vect - P18 ║ INT4_vect - P2 ║ INT5_vect - P3 ║
+╚═════════════════╩═════════════════╩═════════════════╩═════════════════╩════════════════╩════════════════╝
+@endverbatim
 
 */
 #pragma push(1)
 /**
- * @brief The INT_REG_CALLBACK struct
+ * @brief The INT_REG_CALLBACK struct is a jump table
  */
-struct INT_REG_CALLBACK{
-    //INT_REG_CALLBACK(uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t
-    //								 ,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t,uint8_t){
-    //	*pe0 = 0;*pe1 = 0;*ph3 = 0;*pj0 = 0;*pj1 = 0;*pb0 = 0;*pb1 = 0;*pb2 = 0;*pb3 = 0;*pb4 = 0;
-    //	*pb5 = 0;*pb6 = 0;*pb7 = 0;*pk0 = 0;*pk1 = 0;*pk2 = 0;*pk3 = 0;*pk4 = 0;*pk5 = 0;*pk6 = 0;
-    //	*pk7 = 0;
-    //}
+struct INT_REG_CALLBACK {
+
     volatile int_cb_t *pe0 = nullptr;
     volatile int_cb_t *pe1 = nullptr;
     volatile int_cb_t *ph3 = nullptr;
@@ -173,7 +177,7 @@ struct INT_REG_CALLBACK{
 /**
  * @brief The PCINT_PIN struct
  */
-struct PCINT_PIN{
+struct PCINT_PIN {
     uint8_t mappedPin;
     uint8_t PCINTx_vect;
     uint8_t PCINTx;
@@ -201,7 +205,20 @@ struct HW_INT_PIN{
 class Interrupt
 {
 public:
+    /**
+     * @brief attachInterrupt
+     * @param[in] pin
+     * @param[in] edge
+     * @param[in] func
+     * @return
+     */
     static bool attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func);
+
+    /**
+     * @brief deatchInterrupt
+     * @param[in] pin
+     * @return
+     */
     static bool deatchInterrupt(uint8_t pin);
     static INT_REG_CALLBACK interruptCallback;
 private:
