@@ -81,7 +81,7 @@ void Enc28j60::_spi_writeBuffMemory(std::vector<uint8_t> &buff)
 u16t Enc28j60::_spi_readPhy(ENC28J60_PHY_REG address)
 {
     _spi_selectBank(2);
-    _spi_writeReg(ENC28J60_MIREGADR, address);
+    _spi_writeReg(ENC28J60_MIREGADR, toU8(address));
     _spi_writeReg(ENC28J60_MICMD,MIIRD);
     _delay_us(15);
     _spi_selectBank(3);
@@ -94,10 +94,10 @@ u16t Enc28j60::_spi_readPhy(ENC28J60_PHY_REG address)
 void Enc28j60::_spi_writePhy(ENC28J60_PHY_REG address, u16t data)
 {
     _spi_selectBank(2);
-    _spi_writeReg(ENC28J60_MIREGADR, address);
+    _spi_writeReg(ENC28J60_MIREGADR, toU8(address));
     _spi_writeReg(ENC28J60_MIRDL, LO(data));
     _spi_writeReg(ENC28J60_MIRDH, HI(data));
-     while(ENC28J60_Read(ENC28J60_MISTAT) & BUSY) _delay_us(15);
+    while(_spi_readReg(ENC28J60_MISTAT) & BUSY) _delay_us(15);
 }
 
 void Enc28j60::setSPI(u8t miso, u8t mosi, u8t sck, u8t ss)

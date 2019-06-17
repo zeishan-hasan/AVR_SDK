@@ -507,15 +507,15 @@ enum ENC28J60_BANK3_REG {
 
 enum class ENC28J60_PHY_REG
 {
-    ENC28J60_PHCON1,
-    ENC28J60_PHSTAT1,
-    ENC28J60_PHID1,
-    ENC28J60_PHID2,
-    ENC28J60_PHCON2,
-    ENC28J60_PHSTAT2,
-    ENC28J60_PHIE,
-    ENC28J60_PHIR,
-    ENC28J60_PHLCON,
+    ENC28J60_PHCON1  = 0x00,
+    ENC28J60_PHSTAT1 = 0x01,
+    ENC28J60_PHID1   = 0x02,
+    ENC28J60_PHID2   = 0x03,
+    ENC28J60_PHCON2  = 0x10,
+    ENC28J60_PHSTAT2 = 0x11,
+    ENC28J60_PHIE    = 0x12,
+    ENC28J60_PHIR    = 0x13,
+    ENC28J60_PHLCON  = 0x14,
 };
 
 /* MACON1: MAC CONTROL REGISTER 1
@@ -1203,7 +1203,7 @@ private:
     void _spi_bitFieldClear(uint8_t reg, uint8_t data);
 
     u16t _spi_readPhy(ENC28J60_PHY_REG address);
-    void _spi_writePhy(u8t address, u16t data);
+    void _spi_writePhy(ENC28J60_PHY_REG address, u16t data);
 
     void _spi_writeOP(ENC28J60_ISA cmd);
     uint8_t _spi_readOP(ENC28J60_ISA cmd);
