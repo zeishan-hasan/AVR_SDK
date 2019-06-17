@@ -44,7 +44,7 @@
 /**
  * @brief The MappedPort struct. It's used to manage pins.
  */
-struct MappedPort{
+struct MappedPort {
     /**
      * @brief Is the pointer used to manage a pin
      */

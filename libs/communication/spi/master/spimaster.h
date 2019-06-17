@@ -5,6 +5,7 @@
 #include <vector>
 ///@file
 #pragma pack(1)
+/*
 struct mSPIsetting_t
 {
 
@@ -20,7 +21,6 @@ struct mSPIsetting_t
     SPI_CPOL    _clockPolarity;
     SPI_CPHA    _clockPhase;
 };
-
 
 struct masterSPI_t
 {
@@ -48,13 +48,19 @@ struct masterSPI_t
     std::vector<Pin> SS;
     mSPIsetting_t settings;
 };
+*/
+
+
+
 
 #pragma pop
 
 class MasterSPI
 {
 public:
-    MasterSPI(masterSPI_t data, mSPIsetting_t settings);
+    //MasterSPI(masterSPI_t data, mSPIsetting_t settings);
+    MasterSPI();
+    MasterSPI(u8t miso, u8t mosi, u8t sck, u8t ss);
 
     void enable();
     void disable();
@@ -83,12 +89,46 @@ public:
     uint8_t sendReceive(uint8_t data);
     void sendReceive(uint8_t *dst, uint8_t *src, size_t size);
 
+    u8t transfer(u8t data);
+
+
+    //void flush();
+
     bool isInitilizedSPI();
 
 private:
     bool slaveIsValid(uint8_t slave);
 
-    masterSPI_t self;
+    struct _masterSPI_t
+    {
+        _masterSPI_t(u8t miso = 255, u8t mosi = 255, u8t sck = 255, u8t ss = 255){
+
+            this->miso = Pin(miso, INPUT);
+            this->mosi = Pin(mosi, OUTPUT);
+            this->sck = Pin(sck, OUTPUT);
+            SS.push_back(Pin(ss,OUTPUT));
+            SS.end()->on(); // disabling slave
+        }
+        Pin miso;
+        Pin mosi;
+        Pin sck;
+        std::vector<Pin> SS;
+        struct _mSPIsetting_t
+        {
+
+            _mSPIsetting_t(SPI_CLKSEL clockSel = FOSC_BY_8, SPI_DORD dataOrder = MSB_FIRST,
+                          SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP){
+                _clock          = clockSel;
+                _dataOrder      = dataOrder;
+                _clockPolarity	= clockPolarity;
+                _clockPhase     = clockPhase;
+            }
+            SPI_CLKSEL	_clock;
+            SPI_DORD    _dataOrder;
+            SPI_CPOL    _clockPolarity;
+            SPI_CPHA    _clockPhase;
+        }_settings;
+    }_self;
 };
 
 

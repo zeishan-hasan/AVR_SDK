@@ -3,6 +3,9 @@
 
 Pin::Pin(uint8_t portNo, DDRx direction)
 {
+    if(portNo > ELEMENT_IN_ARRAY(_flashMappedPort)){
+                return;
+    }
     uint16_t timers[] = {0x24,0x80,0xB0,0x90,0xA0,0x120};
 
     uint16_t _ADC_CHANNELS[16] = {
@@ -49,7 +52,7 @@ Pin::Pin(uint8_t portNo, DDRx direction)
             _pwm_16BIT.TCCRxB = (volatile uint8_t*)_pwm_16BIT.TCCRxA + 1;
             _pwm_16BIT.TCCRxC = (volatile uint8_t*)_pwm_16BIT.TCCRxB + 1;
             _pwm_16BIT.TCNTx  = (volatile uint8_t*)_pwm_16BIT.TCCRxC + 2;
-            _pwm_16BIT.ICRx	  = (volatile uint8_t*)_pwm_16BIT.TCNTx  + 2;
+            _pwm_16BIT.ICRx   = (volatile uint8_t*)_pwm_16BIT.TCNTx  + 2;
 
         }
         //}
@@ -264,7 +267,7 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 
     ADMUX = (_adcsrb_adxmux_reg & 0xFF);
 
-    ADCSRA	|= (1<<ADSC);
+    ADCSRA |= (1<<ADSC);
 
     while(ADCSRA & (1<<ADSC));
 

@@ -22,11 +22,13 @@
 #include <mpu6050.h>
 #include <hmc5883.h>
 
+#include <networkmanager.h>
 //---- TCP/IP ----//
 
 //---- APP_LAYER ----//
 
 //---- TRANSPORT_LAYER	----//
+#include <tcp.h>
 
 //---- INTERNET_LAYER	----//
 #include <ipv4.h>

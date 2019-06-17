@@ -66,7 +66,6 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
     u8t interpacket_gap[12];
 
 };
-
 */
 #pragma pop
 

@@ -25,7 +25,7 @@ std::string trim(std::string & str);
 
 // split string by delimeters
 std::vector<std::string> split(const std::string& str,char delim = ' ');
-size_t split(const char *src, char **dst, const char *delim);
+size_t split(const char *src, char **&dst, const char *delim);
 // count occurrence of char in string
 size_t countOccurrences(const std::string& text, char c);
 
@@ -34,4 +34,6 @@ inline bool isPrintableChar(char &c);
 inline bool isBlankChar(char &c);
 
 void removeChar(char *str, char chr);
+
+u8t hexByteStrToByte(const char* byteStr);
 #endif

@@ -25,32 +25,23 @@ int main(){
 	//encj2860.init("192.168.1.50");
 	encj2860.setSPI(MISO,MOSI,SCK,SS);
 	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
-	std::vector<uint8_t> a{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF};
-	std::vector<u8t> b{'c','i','a','o',0};
-	encj2860.setMAC(a);
-	vector<uint8_t> mac = encj2860.getMAC();
-	for(uint8_t i = 0; i < mac.size();++i){
-		serial0->printf("0x%02X\r\n", mac[i]);
+	//std::vector<uint8_t> a{0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
+	u8t c[] = {0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
+
+	if(encj2860._spi_setMAC(c)){
+		serial0->printf("Set mac ok\r\n");
 	}
-	serial0->printf("0x%02X\r\n", encj2860._getRevisionID());
 	Rdm6300 rdm6300;
 	if(rdm6300.setBuzzerPin(13)){
 		serial0->printf("Buzzer ok!\r\n");
 	}
-	if(rdm6300.attachTo(SERIAL3,BAUD_9600)){
+	if(rdm6300.attachTo(SERIAL3, BAUD_9600)){
 		serial0->printf("Attach ok\r\n");
 	}
 
-	IPv4 ip;
-	//addr.fields[3] = 192;
-	//addr.fields[2] = 168;
-	//addr.fields[1] = 1;
-	//addr.fields[0] = 200;
-	ipv4addr_t addr(__inet_ipv4_aton("192.168.1.200"));
-	ip.setSrcAddress(addr);
-
-	ip.encapsulate(b);
-
+	//NetworkManager networkManager;
+	//networkManager.setupNetwork(INTERFACE::ENC28J60, "192.168.1.200", "AA:BB:CC:DD:EE:FF");
+	//networkManager.send("sucone", PROTOCOL_TYPE::TCP, "192.168.1.250", 8080);
 
 
 	vector<uint8_t> cardNum;

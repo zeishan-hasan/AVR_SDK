@@ -3,7 +3,7 @@
 //#include <macros.h>
 //#include <utils.h>
 #include <strutil.h>
-
+#define MACADDR_N_OCTECTS 6
 #pragma pack(1)
 //---- IPV4 ----//
 struct ipv4_header_t
@@ -31,22 +31,18 @@ typedef union{
     u32t ip;
 }ipv4addr_t;
 
-//ipv4addr_t __inet_ipv4_aton(const std::string &ip);
-//ipv4addr_t __inet_ipv4_aton(const char *ip);
-//void __inet_ipv4_ntoa(char *dst, ipv4addr_t ip);
-//std::string  __inet_ipv4_ntoa(ipv4addr_t ip);
-
 //---- End IPV4 ----//
 
 //---- Ethernet ----//
 struct macaddr_t
 {
-    macaddr_t(u8t* mac = nullptr) {
+   // macaddr_t(){}
+    macaddr_t(char* mac = nullptr) {
         if(mac != nullptr){
-            memcpy(&this->mac,mac,6);
+            memcpy(&_mac,mac,6);
         }
     }
-    uint8_t mac[6];
+    uint8_t _mac[6];
 
 };
 
@@ -101,11 +97,6 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
 
 };
 
-
-macaddr_t __inet_eth_aton(const std::string &mac);
-macaddr_t __inet_eth_aton(const char *mac);
-void __inet_eth_ntoa(char *dst, macaddr_t mac);
-std::string  __inet_eth_ntoa(macaddr_t mac);
 //---- End Ethernet ----//
 
 #pragma pop

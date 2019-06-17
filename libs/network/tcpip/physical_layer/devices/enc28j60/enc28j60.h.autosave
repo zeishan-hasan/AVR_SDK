@@ -1203,7 +1203,7 @@ private:
     void _spi_bitFieldClear(uint8_t reg, uint8_t data);
 
     u16t _spi_readPhy(ENC28J60_PHY_REG address);
-    void _spi_writePhy(u8t address, u16t data);
+    void _spi_writePhy(ENC28J60_PHY_REG address, u16t data);
 
     void _spi_writeOP(ENC28J60_ISA cmd);
     uint8_t _spi_readOP(ENC28J60_ISA cmd);

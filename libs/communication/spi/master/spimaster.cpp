@@ -1,6 +1,6 @@
 #include "spimaster.h"
 
-
+/*
 MasterSPI::MasterSPI(masterSPI_t data, mSPIsetting_t settings)
 {
     uint8_t i;
@@ -33,6 +33,25 @@ MasterSPI::MasterSPI(masterSPI_t data, mSPIsetting_t settings)
 
     enable();
 
+}*/
+
+MasterSPI::MasterSPI()
+{
+
+}
+
+MasterSPI::MasterSPI(u8t miso, u8t mosi, u8t sck, u8t ss)
+{
+    _self = _masterSPI_t(miso, mosi, sck, ss);
+    //self.SS[0].on();
+
+    setClockPhase(_self._settings._clockPhase);
+    setClockPolarity(_self._settings._clockPolarity);
+    setClock(_self._settings._clock);
+    setDataOrder(_self._settings._dataOrder);
+
+    SPCR |= (1 << MSTR);
+    enable();
 }
 
 void MasterSPI::enable()
@@ -47,59 +66,59 @@ void MasterSPI::disable()
 
 void MasterSPI::setClock(SPI_CLKSEL clock)
 {
-    self.settings._clock = clock;
+    _self._settings._clock = clock;
     SPCR &= ~((1 << SPR1) | (1 << SPR0));
     SPSR &= ~(1 << SPI2X);
 
-    SPSR |= ((self.settings._clock & 4) >> 2) << SPI2X;
-    SPCR |= (((self.settings._clock & 2) >> 1) << SPR1) | ((self.settings._clock & 1) << SPR0);
+    SPSR |= ((_self._settings._clock & 4) >> 2) << SPI2X;
+    SPCR |= (((_self._settings._clock & 2) >> 1) << SPR1) | ((_self._settings._clock & 1) << SPR0);
 
 }
 
 SPI_CLKSEL MasterSPI::getClock()
 {
-    return self.settings._clock;
+    return _self._settings._clock;
 }
 
 void MasterSPI::setDataOrder(SPI_DORD dataOrder)
 {
-    self.settings._dataOrder = dataOrder;
+    _self._settings._dataOrder = dataOrder;
     SPCR &= ~(1 << DORD);
 
-    SPCR |= (self.settings._dataOrder << DORD );
+    SPCR |= (_self._settings._dataOrder << DORD );
 }
 
 SPI_DORD MasterSPI::getDataOrder()
 {
-    return self.settings._dataOrder;
+    return _self._settings._dataOrder;
 }
 
 void MasterSPI::setClockPolarity(SPI_CPOL clockPolarity)
 {
-    self.settings._clockPolarity = clockPolarity;
+    _self._settings._clockPolarity = clockPolarity;
     SPCR &= ~(1 << CPOL);
 
-    SPCR |= (self.settings._clockPolarity << CPOL);
+    SPCR |= (_self._settings._clockPolarity << CPOL);
 }
 
 SPI_CPOL MasterSPI::getClockPolarity()
 {
-    return self.settings._clockPolarity;
+    return _self._settings._clockPolarity;
 }
 
 void MasterSPI::setClockPhase(SPI_CPHA clockPhase)
 {
-    self.settings._clockPhase = clockPhase;
+    _self._settings._clockPhase = clockPhase;
     SPCR &= ~(1 << CPHA);
 
 
-    SPCR |= (self.settings._clockPhase << CPHA);
+    SPCR |= (_self._settings._clockPhase << CPHA);
 
 }
 
 SPI_CPHA MasterSPI::getClockPhase()
 {
-    return self.settings._clockPhase;
+    return _self._settings._clockPhase;
 }
 
 void MasterSPI::enableSlave(uint8_t slave)
@@ -107,7 +126,7 @@ void MasterSPI::enableSlave(uint8_t slave)
     if(slaveIsValid(slave) == false){
         return;
     }
-    self.SS[slave].off();
+    _self.SS[slave].off();
 }
 
 void MasterSPI::disableSlave(uint8_t slave)
@@ -115,7 +134,7 @@ void MasterSPI::disableSlave(uint8_t slave)
     if(slaveIsValid(slave) == false){
         return;
     }
-    self.SS[slave].on();
+    _self.SS[slave].on();
 }
 
 
@@ -138,9 +157,10 @@ void MasterSPI::send(uint8_t *buff, size_t size)
 uint8_t MasterSPI::receive()
 {
     // Wait for reception complete
-    while(!(SPSR & (1<<SPIF)));
-    // Return Data Register
-    return SPDR;
+    //while(!(SPSR & (1<<SPIF)));
+    //// Return Data Register
+    //return SPDR;
+    return sendReceive(0);
 }
 
 void MasterSPI::receive(uint8_t *buff, size_t size)
@@ -162,16 +182,25 @@ uint8_t MasterSPI::sendReceive(uint8_t data)
 
 void MasterSPI::sendReceive(uint8_t *dst, uint8_t *src, size_t size)
 {
-    uint8_t i;
+    u8t i;
     for(i = 0; i < size; ++i){
         dst[i] = sendReceive(src[i]);
     }
 
 }
 
+u8t MasterSPI::transfer(u8t data)
+{
+    SPDR = data;                       //Load data into the buffer
+    while(!(SPSR & (1<<SPIF) ));       //Wait until transmission complete
+    return(SPDR);
+
+}
+
+
 bool MasterSPI::slaveIsValid(uint8_t slave)
 {
-    if((slave+1) <= self.SS.size()){
+    if((slave+1) <= _self.SS.size()){
         return true;
     }
     return false;

@@ -127,19 +127,60 @@ void removeChar(char *str, char chr)
 
 
 
-size_t split(const char *src, char **dst, const char *delim)
+size_t split(const char *src, char **&dst, const char *delim)
 {
-    char *_src = new char[strlen(src)];
+    char *_src = new char[strlen(src)+1];
     strcpy(_src,src);
+    dst = (char**) malloc(sizeof(char*));
     char *ptr = strtok(_src, delim);
     u8t i = 0;
-
     while(ptr != NULL)
     {
-        dst[i] = ptr;
+        dst[i] = (char*) malloc(strlen(ptr)+1);
+        strcpy(dst[i], ptr);
         ptr = strtok(NULL, delim);
+        dst = (char**)realloc(dst, (i + 2) * sizeof(char*));
+        if(dst == nullptr){
+            return 0xDEAD;
+        }
         ++i;
     }
     delete[] _src;
+
     return i; // Returns number of tokens
 }
+
+
+u8t hexByteStrToByte(const char *byteStr)
+{
+    u8t size = strlen(byteStr);
+    if(size != 2){
+        return 0;
+    }
+
+    u8t data;
+    if(toupper(byteStr[0]) >= 'A'){
+        data = ((byteStr[0] - 0x37) << 4);
+    }
+    else {
+        data = byteStr[0] & 0xF;
+    }
+
+    if(toupper(byteStr[1]) >= 'A'){
+        data |= byteStr[1] - 0x37;
+    }
+    else {
+        data |= byteStr[1] & 0xF;
+    }
+    return data;
+}
+
+
+
+
+
+
+
+
+
+

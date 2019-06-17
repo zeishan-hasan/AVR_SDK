@@ -26,5 +26,7 @@ libs/utils
 ~/Documents/GitHub/AVR_SDK/standardCpp
 libs/network/tcpip/internet_layer/arp
 libs/network/tcpip/transport_layer/tcp
+libs/network/tcpip/transport_layer/socket
 libs/network/tcpip/global/inet_global
 libs/network/tcpip/global/net_utils
+libs/network/tcpip/global/network_manager

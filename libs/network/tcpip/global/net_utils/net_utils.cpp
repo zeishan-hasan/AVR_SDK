@@ -89,8 +89,9 @@ void __inet_ipv4_netmask_split(u8t *dst, const char *ip)
         dst = nullptr;
         return;
     }
-    char *_ip[5]; // 4 Octects 1 netmask
-    if(split(ip,_ip,"./") != 5) { // 0.0.0.0/0
+    char **_ip; // 4 Octects 1 netmask
+    size_t n = split(ip,_ip,"./");
+    if(n != 5) { // 0.0.0.0/0
         return;
     }
     for(u8t i = 0; i < 4; ++i){
@@ -103,8 +104,9 @@ void __inet_ipv4_netmask_split(u8t *dst, const char *ip)
 
 u8t __inet_ipv4_netmask_split(const char *ip)
 {
-    char *_ip[2];
-    if(split(ip,_ip,"/") != 2) { // 0.0.0.0/0
+    char **_ip;
+    size_t n = split(ip,_ip,"/");
+    if(n != 2) { // 0.0.0.0/0
         return 0;
     }
     u8t netmask = atoi(_ip[1]);
@@ -124,11 +126,11 @@ bool __inet_ipv4_isValidIP(const char *ip)
     u8t _ip[5];
     __inet_ipv4_netmask_split(_ip, ip);
     for(u8t i = 0; i < IPV4_N_OCTECTS; ++i){
-        if(isInRange(atoi((const char*)_ip[i]),0,255) == false){
+        if(isInRange(atoi(toCharPtr(_ip[i]) ),0,255) == false){
             return false;
         }
     }
-    if(isInRange(atoi((const char*)_ip[4]), 1, 32) == false ){
+    if(isInRange(atoi(toCharPtr(_ip[4])), 1, 32) == false ){
         return false;
     }
     return true;
@@ -149,23 +151,23 @@ ipv4addr_t __inet_ipv4_aton(const string &ip)
     }
     return tmp;
 }
-
-ipv4addr_t __inet_ipv4_aton(char *ip)
+ipv4addr_t __inet_ipv4_aton(const char *ip)
 {
     ipv4addr_t tmp;
     if(__inet_ipv4_isValidIP(ip) == false){
         return tmp;
     }
-    char *octects[4];
+    char **octects;
 
-    if(split(ip, octects, (char*)".") != 4){
+    size_t  n = split(ip, octects, (char*)".");
+    if(n != IPV4_N_OCTECTS){
         return tmp;
     }
-    for(u8t i = 0;  i < 4 ; ++i){
+    for(u8t i = 0;  i < n ; ++i){
         tmp.fields[i] = atoi(octects[i]);
     }
+    delete[] octects;
     return tmp;
-
 }
 
 void __inet_ipv4_ntoa(char *dst, ipv4addr_t ip)
@@ -184,3 +186,48 @@ string __inet_ipv4_ntoa(ipv4addr_t ip)
 
 
 //---- End IPV4 ----//
+
+//---- Ethernet ----//
+
+
+macaddr_t __inet_eth_aton(const string &mac)
+{
+    std::vector<std::string> octects = split(mac,'.');
+    macaddr_t tmp;
+    if(octects.size() != MACADDR_N_OCTECTS){
+        return tmp;
+    }
+    for(u8t i = 0; i < octects.size(); ++i ){
+        tmp._mac[i] = atoi(octects[i].c_str());
+    }
+    return tmp;
+}
+
+macaddr_t __inet_eth_aton(const char *mac)
+{
+    char **octects;
+    macaddr_t tmp;
+    size_t n = split(mac, octects, (char*)":-");
+    if(n != MACADDR_N_OCTECTS){
+        return tmp;
+     }
+    for(u8t i = 0;  i < n ; ++i){
+        tmp._mac[i] = hexByteStrToByte(octects[i]);
+    }
+    delete[] octects;
+    return tmp;
+}
+
+void __inet_eth_ntoa(char *dst, macaddr_t mac)
+{
+    sprintf(dst,"%u:%u:%u:%u:%u:%u", mac._mac[0], mac._mac[1], mac._mac[2], mac._mac[3], mac._mac[4], mac._mac[5]);
+}
+
+string __inet_eth_ntoa(macaddr_t mac)
+{
+    std::string _mac;
+    _mac.reserve(sizeof(mac._mac));
+    sprintf(_mac.begin(),"%u:%u:%u:%u:%u:%u", mac._mac[0], mac._mac[1], mac._mac[2], mac._mac[3], mac._mac[4], mac._mac[5]);
+    return _mac;
+}
+//---- End Ethernet ----//
