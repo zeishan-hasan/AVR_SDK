@@ -5,7 +5,7 @@ Enc28j60::Enc28j60(){
 
 }
 
-bool Enc28j60::init(std::string ip, std::vector<uint8_t> & mac)
+bool Enc28j60::init()
 {
     if (master->isInitilizedSPI() == false){
         setSPI(SPI_MISO, SPI_MOSI, SPI_SCK, SPI_SS);
@@ -24,9 +24,11 @@ bool Enc28j60::init(std::string ip, std::vector<uint8_t> & mac)
 
     // Sets MACON4 IEEE 802.3 conformance
     //bitFieldSet(ENC28J60_MACON4,DEFER);
+    _spi_selectBank(2);
+    _spi_writeReg(ENC28J60_MACON4, ENC28J60_MACON4_REG::DEFER);
 
     // Set inter-frame gap (back-to-back)
-    _spi_writeReg(ENC28J60_MABBIPG,self.fullDuplex ? 0x15 : 0x12);
+    _spi_writeReg(ENC28J60_MABBIPG, self.fullDuplex ? 0x15 : 0x12);
 
     // Set inter-frame gap (non-back-to-back)
     _spi_writeReg(ENC28J60_MAIPGL,0x12);
@@ -34,24 +36,40 @@ bool Enc28j60::init(std::string ip, std::vector<uint8_t> & mac)
         _spi_writeReg(ENC28J60_MAIPGH,0x0C);
 
     // Disable clock-out pin
+    _spi_selectBank(3);
     _spi_writeReg(ENC28J60_ECOCON, CLKOUT_DISABLED);
 
-    // if(self.fullDuplex)
-    //     _enc28j60_write_phy(ENC28J60_PHCON1,ENC28J60_PHCON1_PDPXMD);
-    // else
-    //     _enc28j60_write_phy(ENC28J60_PHCON2,ENC28J60_PHCON2_HDLDIS);
+    if(self.fullDuplex)
+        _spi_writePhy(ENC28J60_PHY_REG::ENC28J60_PHCON1, ENC28J60_PHCON1_REG::PDPXMD);
+    else
+        _spi_writePhy(ENC28J60_PHY_REG::ENC28J60_PHCON2,ENC28J60_PHCON2_REG::HDLDIS);
 
     // Switch to bank 0
     _spi_selectBank(0);
 
 }
-
-void Enc28j60::send()
+#define TXSTART_INIT (0x1FFF-0x0600)
+void Enc28j60::send(u8t *ptr, u16t len)
 {
-    //master->enableSlave(0);
-    //master->send(0x3A);
-    //_delay_ms(1);
-    //master->disableSlave(0);
+    while (_spi_readReg(ENC28J60_COM_BANK_REG::ENC28J60_ECON1) & TXRTS) {
+        if(_spi_readReg(ENC28J60_COM_BANK_REG::ENC28J60_EIR) & TXERIF) {
+            _spi_bitFieldSet(ENC28J60_COM_BANK_REG::ENC28J60_ECON1, TXRST);
+            _spi_bitFieldClear(ENC28J60_COM_BANK_REG::ENC28J60_ECON1, TXRST);
+        }
+    }
+    _spi_selectBank(0);
+    _spi_writeReg(ENC28J60_EWRPTL, LO(TXSTART_INIT));
+    _spi_writeReg(ENC28J60_EWRPTH, HI(TXSTART_INIT));
+    _spi_writeReg(ENC28J60_ETXNDL,(TXSTART_INIT+len)&0xFF);
+    _spi_writeReg(ENC28J60_ETXNDH,(TXSTART_INIT+len)>>8);
+
+    _spi_writeBuffMemory(ptr, len);
+    _spi_bitFieldSet(ENC28J60_COM_BANK_REG::ENC28J60_ECON1, TXRST);
+}
+
+u16t Enc28j60::readPhy(ENC28J60_PHY_REG address)
+{
+    return _spi_readPhy(address);
 }
 
 u8t Enc28j60::_spi_readReg(u8t reg)
@@ -66,16 +84,22 @@ void Enc28j60::_spi_writeReg(uint8_t reg, uint8_t data)
 
 void Enc28j60::_spi_readBuffMemory(std::vector<uint8_t> &buff, size_t size)
 {
+    master->enableSlave(0);
+    u8t dummy = master->transfer(OPCODE_RBM);
     for(size_t i = 0; i < size; ++i){
-        buff.push_back(_spi_readOP(ENC28J60_ISA(OPCODE_RBM)));
+        buff.push_back(master->transfer(0));
     }
+    master->disableSlave(0);
 }
 
 void Enc28j60::_spi_writeBuffMemory(std::vector<uint8_t> &buff)
 {
+    master->enableSlave(0);
+    u8t dummy = master->transfer(OPCODE_WBM);
     for(size_t i = 0; i < buff.size(); ++i){
-        _spi_writeOP(ENC28J60_ISA((buff[i] << 8) | OPCODE_WBM));
+        dummy = master->transfer(buff[i]);
     }
+    master->disableSlave(0);
 }
 
 u16t Enc28j60::_spi_readPhy(ENC28J60_PHY_REG address)
@@ -100,9 +124,82 @@ void Enc28j60::_spi_writePhy(ENC28J60_PHY_REG address, u16t data)
     while(_spi_readReg(ENC28J60_MISTAT) & BUSY) _delay_us(15);
 }
 
+void Enc28j60::_spi_writeBuffMemory(u8t *buff, u16t len)
+{
+    master->enableSlave(0);
+    u8t dummy = master->transfer(OPCODE_WBM);
+    for(size_t i = 0; i < len; ++i){
+        dummy = master->transfer(buff[i]);
+    }
+    master->disableSlave(0);
+}
+
+void Enc28j60::_spi_bitFieldSet(uint8_t reg, uint8_t bit)
+{
+    _spi_writeOP(ENC28J60_ISA(bit << 8 | (OPCODE_BFS | reg)));
+}
+
+void Enc28j60::_spi_bitFieldClear(uint8_t reg, uint8_t bit)
+{
+    _spi_writeOP(ENC28J60_ISA(bit << 8 | (OPCODE_BFC | reg)));
+}
+
 void Enc28j60::setSPI(u8t miso, u8t mosi, u8t sck, u8t ss)
 {
     master = new MasterSPI(miso, mosi, sck, ss);
+}
+
+bool Enc28j60::isLinkUp()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::LSTAT){
+        return true;
+    }
+    return false;
+}
+
+bool Enc28j60::getDuplexStatus()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::DPXSTAT){
+        return true;
+    }
+    return false;
+}
+
+bool Enc28j60::getPolarityStatus()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::PLRITY){
+        return true;
+    }
+    return false;
+}
+
+bool Enc28j60::setMAC(u8t *mac)
+{
+    return _spi_setMAC(mac);
+}
+
+bool Enc28j60::isReceivingData()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::RXSTAT){
+        return true;
+    }
+    return false;
+}
+
+bool Enc28j60::isTrasmittingData()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::TXSTAT){
+        return true;
+    }
+    return false;
+}
+
+bool Enc28j60::getCollisionStatus()
+{
+    if(_spi_readPhy(ENC28J60_PHY_REG::ENC28J60_PHSTAT2) & ENC28J60_PHSTAT2_REG::COLSTAT){
+        return true;
+    }
+    return false;
 }
 
 void Enc28j60::_spi_getMAC(u8t *arr){
@@ -115,7 +212,7 @@ void Enc28j60::_spi_getMAC(u8t *arr){
     arr[5] = _spi_readReg(ENC28J60_MAADR1);
 }
 
-bool Enc28j60::_spi_setMAC(std::vector<uint8_t> &mac)
+bool Enc28j60::setMAC(std::vector<uint8_t> &mac)
 {
     return _spi_setMAC(mac.begin());
 }
@@ -137,13 +234,34 @@ bool Enc28j60::_spi_setMAC(u8t *mac)
     return false;
 }
 
-bool Enc28j60::_spi_setMAC(const char *mac)
+bool Enc28j60::setMAC(const char *mac)
 {
     macaddr_t temp = __inet_eth_aton(mac);
     return _spi_setMAC(temp._mac);
 }
+/*
+std::vector<u8t> Enc28j60::getMAC()
+{
+    u8t arr[6];
+    _spi_getMAC(arr);
+    std::vector<u8t> vect;
+    vect.insert(vect.begin(), arr, (arr + SIZE_OF_ARRAY(arr)));
+    return vect;
+}
+*/
+void Enc28j60::getMAC(u8t *arr)
+{
+    _spi_getMAC(arr);
+}
 
-bool Enc28j60::_spi_setMAC(macaddr_t mac)
+macaddr_t Enc28j60::getMAC()
+{
+    macaddr_t mac;
+    _spi_getMAC(mac._mac);
+    return mac;
+}
+
+bool Enc28j60::setMAC(macaddr_t mac)
 {
     return _spi_setMAC(mac._mac);
 }
@@ -213,10 +331,10 @@ void Enc28j60::_spi_enableMacReceive()
 
 void Enc28j60::_spi_enableAutoPadCrc()
 {
-    //if(self.fullDuplex)
-    //    _spi_bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN|FULDPX);
-    //else
-    //    _spi_bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN);
+    if(self.fullDuplex)
+        _spi_bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN|FULDPX);
+    else
+        _spi_bitFieldSet(ENC28J60_MACON3, PAD_FRAME_TO60B|TXCRCEN|FRMLNEN);
 }
 
 void Enc28j60::_spi_setMaxPacketSize()
@@ -229,6 +347,10 @@ void Enc28j60::_spi_setMaxPacketSize()
 
 u8t Enc28j60::_spi_getRevisionID()
 {
-
     return _spi_readReg(ENC28J60_EREVID);
+}
+
+void Enc28j60::receive(std::vector<u8t> &buff)
+{
+    _spi_readBuffMemory(buff,buff.size());
 }
