@@ -255,7 +255,7 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 
     uint16_t _adcsrb_adxmux_reg = (autoTrigger<<8) | vRef | channel;
 
-    if(ADCSRA==0){
+    if(ADCSRA == 0){
 
         ADCSRA |= (1<<ADEN) | (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)
 

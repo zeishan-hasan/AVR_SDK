@@ -1,6 +1,6 @@
 #include "enc28j60.h"
 
-
+/*
 Enc28j60::Enc28j60(){
 
 }
@@ -249,6 +249,8 @@ std::vector<u8t> Enc28j60::getMAC()
     return vect;
 }
 */
+
+/*
 void Enc28j60::getMAC(u8t *arr)
 {
     _spi_getMAC(arr);
@@ -354,3 +356,4 @@ void Enc28j60::receive(std::vector<u8t> &buff)
 {
     _spi_readBuffMemory(buff,buff.size());
 }
+*/

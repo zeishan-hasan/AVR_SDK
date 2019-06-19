@@ -10,7 +10,8 @@
 #include <spi.h>
 #include <serial.h>
 #include <dht11.h>
-
+#include <adccomparator.h>
+#include <utils/utils.h>
 #include <spislave.h>
 #include <spimaster.h>
 #include <i2cmaster.h>

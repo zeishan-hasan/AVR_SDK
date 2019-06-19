@@ -29,7 +29,6 @@ void __fill(uint8_t &buff, uint8_t fill_byte, size_t currentSize, size_t size);
 
 bool isInRange(size_t n, size_t first, size_t last);
 
-//ipv4addr_u_t __inet_aton(const std::string &ip);
-//ipv4addr_u_t __inet_aton(char *ip);
+//size_t __dicotomicSearch(void * );
 
 #endif
