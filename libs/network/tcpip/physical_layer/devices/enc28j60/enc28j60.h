@@ -50,6 +50,42 @@ enum class ENC28J60_PHLCON_REG_BIT {
 };
 
 /**
+ * @brief The ENC28J60_PHLCON_REG_CFG enum
+ * See <a href='datasheets/enc28j60_datasheet.pdf#page=11'>Enc28j60 Datasheet</a>
+ */
+enum class ENC28J60_PHLCON_REG_CFG {
+    STRETCH_LED_EVENTS_BY_TNSTRCH                       = (0x00 << 2),
+    STRETCH_LED_EVENTS_BY_TMSTRCH                       = (0x01 << 2),
+    STRETCH_LED_EVENTS_BY_TLSTRCH                       = (0x10 << 2),
+    LEDB_DISPLAY_TRANSMIT_ACTIVITY                      = (0x01 << 4),
+    LEDB_DISPLAY_RECEIVE_ACTIVITY                       = (0x02 << 4),
+    LEDB_DISPLAY_COLLISION_ACTIVITY                     = (0x03 << 4),
+    LEDB_DISPLAY_LINK_STATUS                            = (0x04 << 4),
+    LEDB_DISPLAY_DUPLEX_STATUS                          = (0x05 << 4),
+    LEDB_DISPLAY_TRANSMIT_RECEIVE_ACTIVITY              = (0x07 << 4),
+    LEDB_ON                                             = (0x08 << 4),
+    LEDB_OFF                                            = (0x09 << 4),
+    LEDB_BLINK_FAST                                     = (0x0A << 4),
+    LEDB_BLINK_SLOW                                     = (0x0B << 4),
+    LEDB_DISPLAY_LINK_STATUS_RECEIVE_ACTIVITY           = (0x0C << 4),
+    LEDB_DISPLAY_LINK_STATUS_TRANSMIT_RECEIVE_ACTIVITY  = (0x0D << 4),
+    LEDB_DISPLAY_DUPLEX_STATUS_COLLISION_ACTIVITY       = (0x0E << 4),
+    LEDA_DISPLAY_TRANSMIT_ACTIVITY                      = (0x01 << 8),
+    LEDA_DISPLAY_RECEIVE_ACTIVITY                       = (0x02 << 8),
+    LEDA_DISPLAY_COLLISION_ACTIVITY                     = (0x03 << 8),
+    LEDA_DISPLAY_LINK_STATUS                            = (0x04 << 8),
+    LEDA_DISPLAY_DUPLEX_STATUS                          = (0x05 << 8),
+    LEDA_DISPLAY_TRANSMIT_RECEIVE_ACTIVITY              = (0x07 << 8),
+    LEDA_ON                                             = (0x08 << 8),
+    LEDA_OFF                                            = (0x09 << 8),
+    LEDA_BLINK_FAST                                     = (0x0A << 8),
+    LEDA_BLINK_SLOW                                     = (0x0B << 8),
+    LEDA_DISPLAY_LINK_STATUS_RECEIVE_ACTIVITY           = (0x0C << 8),
+    LEDA_DISPLAY_LINK_STATUS_TRANSMIT_RECEIVE_ACTIVITY  = (0x0D << 8),
+    LEDA_DISPLAY_DUPLEX_STATUS_COLLISION_ACTIVITY       = (0x0E << 8)
+};
+
+/**
  * @brief The ENC28J60_ECON1_REG_BIT enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=17'>Enc28j60 Datasheet</a>
  */
@@ -85,7 +121,7 @@ enum class ENC28J60_ECON1_REG_CFG {
  * @brief The ENC28J60_ECON2_REG_BIT enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=18'>Enc28j60 Datasheet</a>
  */
-enum class ENC28J60_ECON2_REG_BIT{
+enum class ENC28J60_ECON2_REG_BIT {
     VRPS    = 3, /*!< Read & Write | Default  = 0 */
     PWRSV   = 5, /*!< Read & Write | Default  = 0 */
     PKTDEC  = 6, /*!< Read & Write | Default  = 0 */
@@ -153,14 +189,14 @@ enum class ENC28J60_PHSTAT2_REG_BIT {
  * @brief The ENC28J60_SPI_OPCODE enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=28'>Enc28j60 Datasheet</a>
  */
-enum class ENC28J60_SPI_OPCODE{
-    OPCODE_RCR = 0x00,    /*!< Read Control Register*/
-    OPCODE_RBM = 0x3A,    /*!< Read Buffer Memory*/
-    OPCODE_WCR = 0x40,    /*!< Write Control Register */
-    OPCODE_WBM = 0x7A,    /*!< Write Buffer Memory */
-    OPCODE_BFS = 0x80,    /*!< Bit Field Set */
-    OPCODE_BFC = 0xA0,    /*!< Bit Field Clear */
-    OPCODE_SRC = 0xFF     /*!< System Reset Command (Soft Reset) */
+enum class ENC28J60_SPI_OPCODE {
+    RCR = 0x00,    /*!< Read Control Register*/
+    RBM = 0x3A,    /*!< Read Buffer Memory*/
+    WCR = 0x40,    /*!< Write Control Register */
+    WBM = 0x7A,    /*!< Write Buffer Memory */
+    BFS = 0x80,    /*!< Bit Field Set */
+    BFC = 0xA0,    /*!< Bit Field Clear */
+    SRC = 0xFF     /*!< System Reset Command (Soft Reset) */
 };
 
 
@@ -182,9 +218,9 @@ struct ENC28J60_ISA
                 {
                     uint8_t opcode:3;
                     uint8_t argument:5;
-                }fields;
+                } fields;
                 uint8_t data;
-            }byte0;
+            } byte0;
 
             uint8_t payload;
         } cmd;
@@ -202,12 +238,12 @@ struct ENC28J60_ISA
  * @brief The ENC28J60_COM_BANK_REG enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=14'>Enc28j60 Datasheet</a>
  */
-enum class ENC28J60_COM_BANK_REG{
-    ENC28J60_EIE     = 0x1B,
-    ENC28J60_EIR     = 0x1C,
-    ENC28J60_ESTAT   = 0x1D,
-    ENC28J60_ECON2   = 0x1E,
-    ENC28J60_ECON1   = 0x1F
+enum class ENC28J60_COM_BANK_REG {
+    EIE     = 0x1B,
+    EIR     = 0x1C,
+    ESTAT   = 0x1D,
+    ECON2   = 0x1E,
+    ECON1   = 0x1F
 };
 
 
@@ -216,30 +252,30 @@ enum class ENC28J60_COM_BANK_REG{
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=14'>Enc28j60 Datasheet</a>
  */
 enum class ENC28J60_BANK0_REG {
-    ENC28J60_ERDPTL    = 0x00,
-    ENC28J60_ERDPTH    = 0x01,
-    ENC28J60_EWRPTL    = 0x02,
-    ENC28J60_EWRPTH    = 0x03,
-    ENC28J60_ETXSTL    = 0x04,
-    ENC28J60_ETXSTH    = 0x05,
-    ENC28J60_ETXNDL    = 0x06,
-    ENC28J60_ETXNDH    = 0x07,
-    ENC28J60_ERXSTL    = 0x08,
-    ENC28J60_ERXSTH    = 0x09,
-    ENC28J60_ERXNDL    = 0x0A,
-    ENC28J60_ERXNDH    = 0x0B,
-    ENC28J60_ERXRDPTL  = 0x0C,
-    ENC28J60_ERXRDPTH  = 0x0D,
-    ENC28J60_ERXWRPTL  = 0x0E,
-    ENC28J60_ERXWRPTH  = 0x0F,
-    ENC28J60_EDMASTL   = 0x10,
-    ENC28J60_EDMASTH   = 0x11,
-    ENC28J60_EDMANDL   = 0x12,
-    ENC28J60_EDMANDH   = 0x13,
-    ENC28J60_EDMADSTL  = 0x14,
-    ENC28J60_EDMADSTH  = 0x15,
-    ENC28J60_EDMACSL   = 0x16,
-    ENC28J60_EDMACSH   = 0x17
+    ERDPTL    = 0x00,
+    ERDPTH    = 0x01,
+    EWRPTL    = 0x02,
+    EWRPTH    = 0x03,
+    ETXSTL    = 0x04,
+    ETXSTH    = 0x05,
+    ETXNDL    = 0x06,
+    ETXNDH    = 0x07,
+    ERXSTL    = 0x08,
+    ERXSTH    = 0x09,
+    ERXNDL    = 0x0A,
+    ERXNDH    = 0x0B,
+    ERXRDPTL  = 0x0C,
+    ERXRDPTH  = 0x0D,
+    ERXWRPTL  = 0x0E,
+    ERXWRPTH  = 0x0F,
+    EDMASTL   = 0x10,
+    EDMASTH   = 0x11,
+    EDMANDL   = 0x12,
+    EDMANDH   = 0x13,
+    EDMADSTL  = 0x14,
+    EDMADSTH  = 0x15,
+    EDMACSL   = 0x16,
+    EDMACSH   = 0x17
 };
 
 /**
@@ -247,30 +283,30 @@ enum class ENC28J60_BANK0_REG {
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=14'>Enc28j60 Datasheet</a>
  */
 enum class ENC28J60_BANK1_REG {
-    ENC28J60_EHT0    = 0x00,
-    ENC28J60_EHT1    = 0x01,
-    ENC28J60_EHT2    = 0x02,
-    ENC28J60_EHT3    = 0x03,
-    ENC28J60_EHT4    = 0x04,
-    ENC28J60_EHT5    = 0x05,
-    ENC28J60_EHT6    = 0x06,
-    ENC28J60_EHT7    = 0x07,
-    ENC28J60_EPMM0   = 0x08,
-    ENC28J60_EPMM1   = 0x09,
-    ENC28J60_EPMM2   = 0x0A,
-    ENC28J60_EPMM3   = 0x0B,
-    ENC28J60_EPMM4   = 0x0C,
-    ENC28J60_EPMM5   = 0x0D,
-    ENC28J60_EPMM6   = 0x0E,
-    ENC28J60_EPMM7   = 0x0F,
-    ENC28J60_EPMCSL  = 0x10,
-    ENC28J60_EPMCSH  = 0x11,
-    ENC28J60_EPMOL   = 0x12,
-    ENC28J60_EPMOH   = 0x13,
-    ENC28J60_EWOLIE  = 0x14,
-    ENC28J60_EWOLIR  = 0x15,
-    ENC28J60_ERXFCON = 0x16,
-    ENC28J60_EPKTCNT = 0x17
+    EHT0    = 0x00,
+    EHT1    = 0x01,
+    EHT2    = 0x02,
+    EHT3    = 0x03,
+    EHT4    = 0x04,
+    EHT5    = 0x05,
+    EHT6    = 0x06,
+    EHT7    = 0x07,
+    EPMM0   = 0x08,
+    EPMM1   = 0x09,
+    EPMM2   = 0x0A,
+    EPMM3   = 0x0B,
+    EPMM4   = 0x0C,
+    EPMM5   = 0x0D,
+    EPMM6   = 0x0E,
+    EPMM7   = 0x0F,
+    EPMCSL  = 0x10,
+    EPMCSH  = 0x11,
+    EPMOL   = 0x12,
+    EPMOH   = 0x13,
+    EWOLIE  = 0x14,
+    EWOLIR  = 0x15,
+    ERXFCON = 0x16,
+    EPKTCNT = 0x17
 };
 
 /**
@@ -278,22 +314,22 @@ enum class ENC28J60_BANK1_REG {
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=14'>Enc28j60 Datasheet</a>
  */
 enum class ENC28J60_BANK2_REG {
-    ENC28J60_MACON1     = 0x00,
-    ENC28J60_MACON3     = 0x02,
-    ENC28J60_MACON4     = 0x03,
-    ENC28J60_MABBIPG    = 0x04,
-    ENC28J60_MAIPGL     = 0x06,
-    ENC28J60_MAIPGH     = 0x07,
-    ENC28J60_MACLCON1   = 0x08,
-    ENC28J60_MACLCON2   = 0x09,
-    ENC28J60_MAMXFLL    = 0x0A,
-    ENC28J60_MAMXFLH    = 0x0B,
-    ENC28J60_MICMD      = 0x12,
-    ENC28J60_MIREGADR   = 0x14,
-    ENC28J60_MIWRL      = 0x16,
-    ENC28J60_MIWRH      = 0x17,
-    ENC28J60_MIRDL      = 0x18,
-    ENC28J60_MIRDH      = 0x19,
+    MACON1     = 0x00,
+    MACON3     = 0x02,
+    MACON4     = 0x03,
+    MABBIPG    = 0x04,
+    MAIPGL     = 0x06,
+    MAIPGH     = 0x07,
+    MACLCON1   = 0x08,
+    MACLCON2   = 0x09,
+    MAMXFLL    = 0x0A,
+    MAMXFLH    = 0x0B,
+    MICMD      = 0x12,
+    MIREGADR   = 0x14,
+    MIWRL      = 0x16,
+    MIWRH      = 0x17,
+    MIRDL      = 0x18,
+    MIRDH      = 0x19,
 };
 
 
@@ -302,22 +338,22 @@ enum class ENC28J60_BANK2_REG {
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=14'>Enc28j60 Datasheet</a>
  */
 enum class ENC28J60_BANK3_REG {
-    ENC28J60_MAADR5  = 0x00,
-    ENC28J60_MAADR6  = 0x01,
-    ENC28J60_MAADR3  = 0x02,
-    ENC28J60_MAADR4  = 0x03,
-    ENC28J60_MAADR1  = 0x04,
-    ENC28J60_MAADR2  = 0x05,
-    ENC28J60_EBSTSD  = 0x06,
-    ENC28J60_EBSTCON = 0x07,
-    ENC28J60_EBSTCSL = 0x08,
-    ENC28J60_EBSTCSH = 0x09,
-    ENC28J60_MISTAT  = 0x0A,
-    ENC28J60_EREVID  = 0x12,
-    ENC28J60_ECOCON  = 0x15,
-    ENC28J60_EFLOCON = 0x17,
-    ENC28J60_EPAUSL  = 0x18,
-    ENC28J60_EPAUSH  = 0x19
+    MAADR5  = 0x00,
+    MAADR6  = 0x01,
+    MAADR3  = 0x02,
+    MAADR4  = 0x03,
+    MAADR1  = 0x04,
+    MAADR2  = 0x05,
+    EBSTSD  = 0x06,
+    EBSTCON = 0x07,
+    EBSTCSL = 0x08,
+    EBSTCSH = 0x09,
+    MISTAT  = 0x0A,
+    EREVID  = 0x12,
+    ECOCON  = 0x15,
+    EFLOCON = 0x17,
+    EPAUSL  = 0x18,
+    EPAUSH  = 0x19
 };
 
 
@@ -325,17 +361,16 @@ enum class ENC28J60_BANK3_REG {
  * @brief The ENC28J60_PHY_REG enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=22'>Enc28j60 Datasheet</a>
  */
-enum class ENC28J60_PHY_REG
-{
-    ENC28J60_PHCON1  = 0x00,
-    ENC28J60_PHSTAT1 = 0x01,
-    ENC28J60_PHID1   = 0x02,
-    ENC28J60_PHID2   = 0x03,
-    ENC28J60_PHCON2  = 0x10,
-    ENC28J60_PHSTAT2 = 0x11,
-    ENC28J60_PHIE    = 0x12,
-    ENC28J60_PHIR    = 0x13,
-    ENC28J60_PHLCON  = 0x14,
+enum class ENC28J60_PHY_REG {
+    PHCON1  = 0x00,
+    PHSTAT1 = 0x01,
+    PHID1   = 0x02,
+    PHID2   = 0x03,
+    PHCON2  = 0x10,
+    PHSTAT2 = 0x11,
+    PHIE    = 0x12,
+    PHIR    = 0x13,
+    PHLCON  = 0x14,
 };
 
 /**
@@ -527,6 +562,7 @@ enum class ENC28J60_EBSTCON_REG_BIT{
     PSV1,  /*!< Read & Write | Default = 0 */
     PSV2,  /*!< Read & Write | Default = 0 */
 };
+
 /**
  * @brief The ENC28J60_EBSTCON enum
  * See <a href='datasheets/enc28j60_datasheet.pdf#page=77'>Enc28j60 Datasheet</a>
@@ -576,11 +612,8 @@ public:
 
 
 
+    void configureLeds(u16t cfg = toU16(ENC28J60_PHLCON_REG_CFG::LEDB_DISPLAY_RECEIVE_ACTIVITY) | toU16(ENC28J60_PHLCON_REG_CFG::LEDA_DISPLAY_LINK_STATUS));
 
-    //---- PHCON1 ----//
-
-
-    //---- End PHCON1 ----//
 
     //---- PHSTAT2 ----//
     /**

@@ -67,20 +67,7 @@ void Enc28j60::send(u8t *ptr, u16t len)
     _spi_bitFieldSet(ENC28J60_COM_BANK_REG::ENC28J60_ECON1, TXRST);
 }
 
-u16t Enc28j60::readPhy(ENC28J60_PHY_REG address)
-{
-    return _spi_readPhy(address);
-}
 
-u8t Enc28j60::_spi_readReg(u8t reg)
-{
-    return _spi_readOP(ENC28J60_ISA(OPCODE_RCR | reg));
-}
-
-void Enc28j60::_spi_writeReg(uint8_t reg, uint8_t data)
-{
-    _spi_writeOP(ENC28J60_ISA(data << 8 | (OPCODE_WCR | reg)));
-}
 
 void Enc28j60::_spi_readBuffMemory(std::vector<uint8_t> &buff, size_t size)
 {
@@ -115,14 +102,6 @@ u16t Enc28j60::_spi_readPhy(ENC28J60_PHY_REG address)
     return( (_spi_readReg(ENC28J60_MIRDH) << 8) | _spi_readReg(ENC28J60_MIRDL));
 }
 
-void Enc28j60::_spi_writePhy(ENC28J60_PHY_REG address, u16t data)
-{
-    _spi_selectBank(2);
-    _spi_writeReg(ENC28J60_MIREGADR, toU8(address));
-    _spi_writeReg(ENC28J60_MIRDL, LO(data));
-    _spi_writeReg(ENC28J60_MIRDH, HI(data));
-    while(_spi_readReg(ENC28J60_MISTAT) & BUSY) _delay_us(15);
-}
 
 void Enc28j60::_spi_writeBuffMemory(u8t *buff, u16t len)
 {
@@ -267,36 +246,7 @@ bool Enc28j60::setMAC(macaddr_t mac)
 {
     return _spi_setMAC(mac._mac);
 }
-void Enc28j60::_spi_writeOP(ENC28J60_ISA cmd)
-{
-    master->enableSlave(0);
-    u8t dummy = master->transfer(cmd.cmd.byte0.data);
-    dummy = master->transfer(cmd.cmd.payload);
-    master->disableSlave(0);
-}
 
-uint8_t Enc28j60::_spi_readOP(ENC28J60_ISA cmd)
-{
-    master->enableSlave(0);
-    u8t dummy = master->transfer(cmd.cmd.byte0.data);
-
-    uint8_t data = master->sendReceive(0);
-    if(cmd.cmd.byte0.data & 0x80){
-        data = master->sendReceive(0);
-    }
-
-    master->disableSlave(0);
-    return data;
-}
-
-void Enc28j60::_spi_selectBank(uint8_t bank)
-{
-    if(bank > 3){
-        return;
-    }
-
-    _spi_writeReg(ENC28J60_ECON1, bank);
-}
 
 void Enc28j60::_spi_reset()
 {
@@ -357,3 +307,62 @@ void Enc28j60::receive(std::vector<u8t> &buff)
     _spi_readBuffMemory(buff,buff.size());
 }
 */
+
+void Enc28j60::configureLeds(u16t cfg)
+{
+    _spi_writePhy(ENC28J60_PHY_REG::PHLCON, cfg);
+}
+
+void Enc28j60::_spi_writePhy(ENC28J60_PHY_REG address, u16t data)
+{
+    _spi_selectBank(2);
+    _spi_writeReg(toU8(ENC28J60_BANK2_REG::MIREGADR), toU8(address));
+    _spi_writeReg(toU8(ENC28J60_BANK2_REG::MIRDL), LO(data));
+    _spi_writeReg(toU8(ENC28J60_BANK2_REG::MIRDH), HI(data));
+    _spi_selectBank(3);
+    while(_spi_readReg(toU8(ENC28J60_BANK3_REG::MISTAT)) & toU8(ENC28J60_MISTAT_REG_BIT::BUSY)) _delay_us(15);
+}
+u16t Enc28j60::readPhy(ENC28J60_PHY_REG address)
+{
+    return _spi_readPhy(address);
+}
+
+u8t Enc28j60::_spi_readReg(u8t reg)
+{
+    return _spi_readOP(ENC28J60_ISA(toU8(ENC28J60_SPI_OPCODE::RCR) | reg));
+}
+
+void Enc28j60::_spi_writeReg(uint8_t reg, uint8_t data)
+{
+    _spi_writeOP(ENC28J60_ISA(data << 8 | (toU8(ENC28J60_SPI_OPCODE::WCR) | reg)));
+}
+void Enc28j60::_spi_writeOP(ENC28J60_ISA cmd)
+{
+    master->enableSlave(0);
+    u8t dummy = master->transfer(cmd.cmd.byte0.data);
+    dummy = master->transfer(cmd.cmd.payload);
+    master->disableSlave(0);
+}
+
+uint8_t Enc28j60::_spi_readOP(ENC28J60_ISA cmd)
+{
+    master->enableSlave(0);
+    u8t dummy = master->transfer(cmd.cmd.byte0.data);
+
+    uint8_t data = master->sendReceive(0);
+    if(cmd.cmd.byte0.data & 0x80){
+        data = master->sendReceive(0);
+    }
+
+    master->disableSlave(0);
+    return data;
+}
+
+void Enc28j60::_spi_selectBank(uint8_t bank)
+{
+    if(bank > 3){
+        return;
+    }
+
+    _spi_writeReg(toU8(ENC28J60_COM_BANK_REG::ECON1), bank);
+}
