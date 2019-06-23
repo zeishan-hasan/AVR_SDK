@@ -128,4 +128,7 @@ extern bool debug;
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
 
+#define regBitToValue(x) (1 << toU8(x))
+#define bitValue(x) (1 << x)
+
 #endif

@@ -748,6 +748,8 @@ private:
 
     void _spi_setTxBufferSize(u16t size);
     u16t _spi_getTxBufferSize();
+    
+    void _spi_setMAC(u8t* mac);
 };
 #endif
 
