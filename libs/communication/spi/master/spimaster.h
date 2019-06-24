@@ -116,7 +116,7 @@ private:
         struct _mSPIsetting_t
         {
 
-            _mSPIsetting_t(SPI_CLKSEL clockSel = FOSC_BY_8, SPI_DORD dataOrder = MSB_FIRST,
+												_mSPIsetting_t(SPI_CLKSEL clockSel = FOSC_BY_8, SPI_DORD dataOrder = MSB_FIRST,
                           SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP){
                 _clock          = clockSel;
                 _dataOrder      = dataOrder;

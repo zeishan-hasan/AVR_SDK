@@ -51,7 +51,6 @@ libs/sensors/mpu6050/mpu6050.cpp
 libs/sensors/mpu6050/mpu6050.h
 libs/sensors/rdm630/rdm630.cpp
 libs/sensors/rdm630/rdm630.h
-libs/static_lib/libysdk_atmega2560.a
 libs/strutil/strutil.cpp
 libs/strutil/strutil.h
 libs/timer/isr.s

@@ -131,4 +131,5 @@ extern bool debug;
 #define regBitToValue(x) (1 << toU8(x))
 #define bitValue(x) (1 << x)
 
+#define valueFromMask(var, mask) (var & mask)
 #endif
