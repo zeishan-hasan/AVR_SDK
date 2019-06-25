@@ -11,7 +11,7 @@ bool Ethernet::encapsulate(std::vector<u8t> & payload)
         return false;
     }
     Serial *serial = SerialManager::getInstance(SERIAL0);
-    frame.payload = payload;
+				//frame.payload = payload;
     std::vector<u8t> a;
     a.reserve(sizeof(frame));
     memcpy(a.begin(), &frame, sizeof(frame));

@@ -71,8 +71,8 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
 
 
 enum class EtherType : u16t {
-    IPV4                                      = 0x0800,
-    ARP                                       = 0x0806,
+				IPV4 = 0x0800,
+				ARP  = 0x0806,
     WAKE_ON_LAN				      = 0x0842,
     IETF_TRILL				      = 0x22F3,
     STREAM_RESERVATION_PROTOCOL	              = 0x22EA,

@@ -50,24 +50,26 @@ struct eth_frame_t
 {
     eth_frame_t(macaddr_t dstMAC = macaddr_t(), macaddr_t srcMAC = macaddr_t(), u16t etherType = 0,
                 u32t crc = 0, u8t* interpacket_gap = nullptr) {
-        this->dstMAC = dstMAC;
-        this->srcMAC = srcMAC;
+								//this->dstMAC = dstMAC;
+								//this->srcMAC = srcMAC;
+						memcpy(this->dstMAC._mac, dstMAC._mac, MACADDR_N_OCTECTS);
+						memcpy(this->srcMAC._mac, srcMAC._mac, MACADDR_N_OCTECTS);
         this->etherType = etherType;
         //this->payload = payload;
-        this->crc = crc;
-        if(interpacket_gap != nullptr){
-            memcpy(interpacket_gap, interpacket_gap, 12);
-        }
+								//this->crc = crc;
+								//if(interpacket_gap != nullptr){
+								//    memcpy(interpacket_gap, interpacket_gap, 12);
+								//}
     }
 
-				u8t preamble[7] = {0x55 , 0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
-    u8t SFD = 0xD5;
+				//u8t preamble[7] = {0x55 , 0x55, 0x55, 0x55, 0x55, 0x55, 0x55};
+				//u8t SFD = 0xD5;
     macaddr_t dstMAC;
     macaddr_t srcMAC;
     u16t etherType;
-    std::vector<u8t> payload;
-    u32t crc;
-    u8t interpacket_gap[12];
+				//std::vector<u8t> payload;
+				//u32t crc;
+				//u8t interpacket_gap[12];
 
 };
 
