@@ -28,11 +28,10 @@ typedef uint64_t u64t;
  */
 extern bool debug;
 
-#define dbg(x, ... ) do { \
+#define dbg( ... ) do{ \
     if (debug) { \
-    Serial *serial = SerialManager::getInstance(x); \
-    serial->printf(__VA_ARGS__); }\
-    } while (0)
+				serial->printf(__VA_ARGS__); } \
+				} while (0)
 
 
 

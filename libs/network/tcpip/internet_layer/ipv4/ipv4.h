@@ -151,6 +151,10 @@ private:
     ipv4addr_t self;
     ipv4_header_t packet;
     Ethernet ethernet;
+
+
+				// REMOVE ME
+				Serial *serial;
 };
 
 #endif

@@ -617,7 +617,7 @@ enum ENC28J60_EBSTCON_REG_CFG {
 #define ENC28J60_READ_KoR(x) ((x & ENC28J60_KoR_MASK) >> 10)
 #define ENC28J60_READ_BANK(x) ((x & ENC28J60_BANK_MASK) >> 8)
 #define ENC28J60_READ_ADDRESS(x) (x & 0xFF)
-
+#pragma pack(1)
 enum ENC28J60_REGS {
 	REG_ERDPTL    = 0x0000,
 	REG_ERDPTH    = 0x0001,
@@ -683,7 +683,7 @@ enum ENC28J60_REGS {
 	REG_MAMXFLL   = 0x060A,
 	REG_MAMXFLH   = 0x060B,
 	REG_MICMD     = 0x0A12,
-	REG_MIREGADR  = 0x0A14,
+	REG_MIREGADR  = 0x0A14, // 0000 1010
 	REG_MIWRL     = 0x0A16,
 	REG_MIWRH     = 0x0A17,
 	REG_MIRDL     = 0x0A18,
@@ -705,7 +705,7 @@ enum ENC28J60_REGS {
 	REG_EPAUSL    = 0x0318,
 	REG_EPAUSH    = 0x0319
 };
-
+#pragma pop
 class Enc28j60
 {
 
@@ -719,6 +719,8 @@ public:
 	u16t receivePacket(u8t* buff, u16t size);
 	bool isReceivingData();
 	bool isLinkUp();
+	bool newPacket();
+
 
 
 
@@ -755,6 +757,7 @@ public:
 		u16t txBuffStart;
 		u16t txBuffEnd;
 	} _self;
+	bool _confirmRegisters = true;
 
 	//---- Raw methods ----//
 	u8t _spi_readControlReg(ENC28J60_REGS reg);
@@ -785,6 +788,14 @@ public:
 
 	void _spi_setMAC();
 	void _spi_getMAC(u8t *arr);
+
+	void _spi_setRxFilter();
+
+	bool _spi_setBuffers();
+
+
+	Serial *serial = SerialManager::getInstance(SERIAL0);
+
 };
 #endif
 

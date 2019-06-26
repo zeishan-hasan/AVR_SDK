@@ -2,7 +2,7 @@
 #define DHT11_H
 #include "portmanager.h"
 #include "timer.h"
-#include <serial.h>
+//#include <serial.h>
 //#include "macros.h"
 ///@file
 struct dht11_t

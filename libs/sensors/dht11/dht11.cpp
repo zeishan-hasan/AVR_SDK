@@ -28,7 +28,7 @@ uint8_t Dht11::getHumidity()
 
 void Dht11::getData()
 {
-    Serial *serial1 = SerialManager::getInstance(SERIAL1);
+				//Serial *serial1 = SerialManager::getInstance(SERIAL1);
     uint8_t buffer[5] = {0, 0, 0, 0, 0};
     uint8_t retries = 0;
     uint32_t prev, now;
@@ -54,7 +54,7 @@ void Dht11::getData()
                 //retries+=2;
                 now = Timer::now() - prev;
                 if (now - prev >= 90){
-                    serial1->printf("Alluppatoo LOW\r\n");
+																			// serial1->dbg("Alluppatoo LOW\r\n");
                     return;
                 }
             }
@@ -69,11 +69,11 @@ void Dht11::getData()
                 //retries+=2;
                 now = Timer::now() - prev;
                 if (now >= 90){
-                    serial1->printf("Alluppatoo\r\n");
+																				//serial1->dbg("Alluppatoo\r\n");
                     return;
                 }
             }
-            serial1->printf("T high %d\r\n",now);
+												//serial1->dbg("T high %d\r\n",now);
             /* Store the value now so that the whole checking doesn't
                 move the TCNT0 forward by too much to make the data look
                 bad */
@@ -87,7 +87,7 @@ void Dht11::getData()
             }
 
         }
-        serial1->printf("%d\r\n",buffer[i]);
+								//serial1->dbg("%d\r\n",buffer[i]);
     }
 
 

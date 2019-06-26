@@ -1,6 +1,6 @@
 #include "avr_sdk.h"
 
-bool debug = false;
+bool debug = true;
 #define MISO 50
 #define MOSI 51
 #define SCK 52
@@ -11,16 +11,23 @@ int main(){
 	serial0->setRxISRCallBack(false);
 	serial0->setEchoServer(false);
 	serial0->clear();
+
+	_delay_ms(2000);
 	Enc28j60 encj2860;
 	encj2860.setSPI(MISO,MOSI,SCK,SS);
 	encj2860.init();
 
 	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
 	//std::vector<uint8_t> a{0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
-	//u8t c[] = {0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
-	//encj2860.setMAC(c);
-	//macaddr_t mac = encj2860.getMAC();
-	//if(memcmp(c, mac._mac, MACADDR_N_OCTECTS) == 0){
+	u8t c[] = {0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
+	//u8t c[] = {0xF5,0xE4,0xD3,0xC2,0xB1,0xA0};
+
+	//u8t mac[6];
+	//encj2860._spi_getMAC(mac);
+	//for(size_t i = 0; i < 6; ++i){
+	//	serial0->printf("Data[%u] 0x%02X\r\n", i, mac[i]);
+	//}
+	//if(memcmp(c, mac, MACADDR_N_OCTECTS) == 0){
 	//	serial0->printf("Mac set ok\r\n");
 	//}
 
@@ -57,6 +64,8 @@ ff ff ff ff ff ff
 */
 	u8t _dst[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 	u8t _src[] = {0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5};
+	//u8t _src[] = {0xF5, 0xE4, 0xD3, 0xC2, 0xB1, 0xA0};
+
 	macaddr_t dst((char*)_dst);
 	macaddr_t src((char*)_src);
 
@@ -69,7 +78,8 @@ ff ff ff ff ff ff
 	arp.hw_addr_length = 6;
 	arp.proto_addr_length = 4;
 	arp.opcode = 0x0100;
-	arp.src_hw_addr = (u64t)__inet_eth_aton("A0:B1:C2:D3:E4:F5")._mac;//0xF5E4D3C2B1A0;
+	arp.src_hw_addr = 0xF5E4D3C2B1A0;
+
 	//arp.src_proto_addr = 0xC0A802C8;
 	arp.src_proto_addr = __inet_ipv4_aton("192.168.2.200").ip;//0xC802A8C0;
 	arp.dst_hw_addr = 0;
@@ -82,12 +92,6 @@ ff ff ff ff ff ff
 	ptr.insert(ptr.end(), (u8t*)&arp, (u8t*)&arp+sizeof(arp));
 
 
-
-	//u8t mac[6];
-	//encj2860._spi_getMAC(mac);
-	//for(size_t i = 0; i < 6; ++i){
-	//	serial0->printf("Data[%u] 0x%02X\r\n", i, mac[i]);
-	//}
 
 
 	//	for(size_t i = 0; i < SIZE_OF_ARRAY(frame); ++i){
@@ -115,49 +119,33 @@ ff ff ff ff ff ff
 	//}
 
 	//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
-	while(1){
-	encj2860.sendPacket(ptr.begin(), ptr.size());
-		//if(encj2860.isLinkUp()) {
-			//serial0->printf("Sending...\r\n");
-			//encj2860.sendPacket(frameBig, SIZE_OF_ARRAY(frameBig));
-			//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
-			//if(encj2860.isReceivingData()){
-			//	u16t size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
-			//	//encj2860._spi_readBuffer(buff, SIZE_OF_ARRAY(buff));
-			//	arp_header_t _arp;
-			//	//__swapEndian(buff, 42, 4);
-			//	//__swapEndian(buff, 42, 2);
-			//	//memcpy((u8t*)&arp, buff, sizeof(arp));
-			//	//serial0->printf("IP src %ld", _arp.dst_hw_addr);
-			//	//serial0->printf("IP dst %ld", _arp.src_hw_addr);
-			//	for(u16t i = 0; i < size; ++i){
-			//		if(i % 15 == 0){
-			//			serial0->printf("\r\n");
-			//		}
-			//		serial0->printf("[%02u] 0x%02X ",i , buff[i]);
-			//	}
-			//}
-		//}
-		//else {
-		//	//serial0->printf("Link is down\r\n");
-		//}
 
-		//encj2860._spi_readBuffer(buff, SIZE_OF_ARRAY(buff));
-		////
-		//for(u8t i = 0; i < SIZE_OF_ARRAY(buff); ++i){
-		//	if(i % 15 == 0){
-		//		serial0->printf("\r\n");
-		//	}
-		//	serial0->printf("[%02u] 0x%02X ",i , buff[i]);
-		//}
-		//serial0->printf("\r\n");
-		//serial0->printf("Check for link 0x%04X\r\n", encj2860._spi_readPhy(REG_PHSTAT2));
-		//encj2860.isLinkUp();
-		//serial0->printf("read op %02X\r\n",encj2860._spi_readOP(ENC28J60_ISA(0x0A)));
-		//serial0->printf("Link is down\r\n");
-		//if(encj2860.isLinkUp()){
-		//	//serial0->printf("Link is up\r\n");
-		//	encj2860.send(ptr.begin(), ptr.size());
+	u16t size = 0;
+	//serial0->printf("\r\n");
+	//if(encj2860.isLinkUp()) {
+	//serial0->printf("Link is up\r\n");
+	//}
+	//serial0->printf("\r\n");
+	while(1){
+
+
+		serial0->printf("PHCON1 : 0x%04x\r\n", encj2860._spi_readPhy(REG_PHCON1));
+		//if(encj2860.isLinkUp()) {
+
+			serial0->printf("Sending...\r\n");
+			//encj2860.sendPacket(ptr.begin(), ptr.size());
+			//	//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
+				//if(encj2860.newPacket()){
+			serial0->printf("Receiving packet\r\n");
+			serial0->printf("Size : %u\r\n", size);
+			size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
+			serial0->printf("\r\n");
+			for(u16t i = 0; i < size; ++i){
+
+				serial0->printf("[%03u] %02X ", i, buff[i]);
+			//}
+			//serial0->printf("\r\n");
+		}
 		//}
 		_delay_ms(500);
 	}

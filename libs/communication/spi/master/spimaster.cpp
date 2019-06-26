@@ -192,7 +192,7 @@ void MasterSPI::sendReceive(uint8_t *dst, uint8_t *src, size_t size)
 u8t MasterSPI::transfer(u8t data)
 {
 	SPDR = data;                       //Load data into the buffer
-	while(!(SPSR & (1<<SPIF) ));       //Wait until transmission complete
+	while( !(SPSR & (1<<SPIF) ));       //Wait until transmission complete
 	return SPDR;
 
 }

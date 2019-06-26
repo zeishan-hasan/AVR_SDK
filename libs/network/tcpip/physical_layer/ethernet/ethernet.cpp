@@ -15,7 +15,7 @@ bool Ethernet::encapsulate(std::vector<u8t> & payload)
     std::vector<u8t> a;
     a.reserve(sizeof(frame));
     memcpy(a.begin(), &frame, sizeof(frame));
-    serial->printf("Size : %u\r\n", a.size());
+				dbg("Size : %u\r\n", a.size());
     return true;
 }
 

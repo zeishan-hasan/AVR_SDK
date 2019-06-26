@@ -169,7 +169,7 @@ SerialPriority Serial::getPriority()
 
 void Serial::clear()
 {
-    printf("\e[1;1H\e[2J");
+				printf("\e[1;1H\e[2J");
 }
 void Serial::_print(const char *str)
 {
