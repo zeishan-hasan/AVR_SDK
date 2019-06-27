@@ -5,6 +5,14 @@ bool debug = true;
 #define MOSI 51
 #define SCK 52
 #define SS 53
+#pragma pack(1)
+struct  eth_header_t
+{
+	u8t dst_addr[6];
+	u8t src_addr[6];
+	u8t etherType[2];
+};
+#pragma pop
 int main(){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000);
@@ -60,8 +68,8 @@ ff ff ff ff ff ff
 02 01 00 00 00 00
 00 00 c0 a8 02 c8
 
-
 */
+/*
 	u8t _dst[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 	u8t _src[] = {0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5};
 	//u8t _src[] = {0xF5, 0xE4, 0xD3, 0xC2, 0xB1, 0xA0};
@@ -91,7 +99,7 @@ ff ff ff ff ff ff
 	ptr.insert(ptr.begin(), (u8t*)&eth, (u8t*)&eth+sizeof(eth));
 	ptr.insert(ptr.end(), (u8t*)&arp, (u8t*)&arp+sizeof(arp));
 
-
+*/
 
 
 	//	for(size_t i = 0; i < SIZE_OF_ARRAY(frame); ++i){
@@ -109,7 +117,7 @@ ff ff ff ff ff ff
 	//		serial0->printf("[%02u] 0x%02X ", i, frame[i]);
 	//	}
 	//encj2860._spi_selectBank(3);
-	u8t buff[128];
+	u8t buff[512];
 
 	//for(size_t i = 0; i < SIZE_OF_ARRAY(frameLittle); ++i){
 	//	if(i % 15 == 0){
@@ -126,29 +134,74 @@ ff ff ff ff ff ff
 	//serial0->printf("Link is up\r\n");
 	//}
 	//serial0->printf("\r\n");
+
+	eth_header_t _eth;
+	arp_header_t _arp;
 	while(1){
+		//serial0->clear();
+		//serial0->printf("\r\n");
+		//serial0->printf("REG_EIE      : 0x%02X\r\n", encj2860._spi_readControlReg(REG_EIE));
+		//serial0->printf("REG_EIR      : 0x%02X\r\n", encj2860._spi_readControlReg(REG_EIR));
+		//serial0->printf("REG_ESTAT    : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ESTAT));
+		//serial0->printf("REG_ECON2    : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ECON2));
+		//serial0->printf("REG_ECON1    : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ECON1));
+		//serial0->printf("REG_ERXSTL   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXSTL));
+		//serial0->printf("REG_ERXSTH   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXSTH));
+		//serial0->printf("REG_ERXNDL   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXNDL));
+		//serial0->printf("REG_ERXNDH   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXNDH));
+		//serial0->printf("REG_ERXRDPTL : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXRDPTL));
+		//serial0->printf("REG_ERXRDPTH : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXRDPTH));
+		//serial0->printf("REG_ERXWRPTL : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXWRPTL));
+		//serial0->printf("REG_ERXWRPTH : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXWRPTH));
+		//serial0->printf("REG_ERXFCON  : 0x%02X\r\n", encj2860._spi_readControlReg(REG_ERXFCON));
+		//serial0->printf("REG_EPKTCNT  : 0x%02X\r\n", encj2860._spi_readControlReg(REG_EPKTCNT));
+		//serial0->printf("REG_MACON1   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_MACON1));
+		//serial0->printf("REG_MACON3   : 0x%02X\r\n", encj2860._spi_readControlReg(REG_MACON3));
+		//serial0->printf("REG_MAMXFLL  : 0x%02X\r\n", encj2860._spi_readControlReg(REG_MAMXFLL));
+		//serial0->printf("REG_MAMXFLH  : 0x%02X\r\n", encj2860._spi_readControlReg(REG_MAMXFLH));
+		//serial0->printf("\r\n");
 
-
-		serial0->printf("PHCON1 : 0x%04x\r\n", encj2860._spi_readPhy(REG_PHCON1));
+		//serial0->printf("PHSTAT1 : 0x%04x\r\n", encj2860._spi_readPhy(REG_PHSTAT1));
+		//serial0->printf("PHSTAT2 : 0x%04x\r\n", encj2860._spi_readPhy(REG_PHSTAT2));
 		//if(encj2860.isLinkUp()) {
 
-			serial0->printf("Sending...\r\n");
-			//encj2860.sendPacket(ptr.begin(), ptr.size());
-			//	//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
-				//if(encj2860.newPacket()){
-			serial0->printf("Receiving packet\r\n");
-			serial0->printf("Size : %u\r\n", size);
-			size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
-			serial0->printf("\r\n");
-			for(u16t i = 0; i < size; ++i){
+		//serial0->printf("Sending...\r\n");
+		//encj2860.sendPacket(ptr.begin(), ptr.size());
+		//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
+		///	//if(encj2860.newPacket()){
+		///serial0->printf("Receiving packet\r\n");
+		///serial0->printf("Size : %u\r\n", size);
+		size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
+		if(size){
+			serial0->printf("\r\nPacket size: %u\r\n",size);
+			memcpy(&_eth, buff, sizeof(eth_header_t));
+			serial0->printf("Ethernet:\r\n");
+			serial0->printf("\tDestination : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.dst_addr[0], _eth.dst_addr[1], _eth.dst_addr[2], _eth.dst_addr[3], _eth.dst_addr[4], _eth.dst_addr[5]);
+			serial0->printf("\tSource      : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.src_addr[0], _eth.src_addr[1], _eth.src_addr[2], _eth.src_addr[3], _eth.src_addr[4], _eth.src_addr[5]);
+			__swapEndian(_eth.etherType,2,2);
+			serial0->printf("\tEtherType   : 0x%04X\r\n", *(toU16Ptr(_eth.etherType)));
+			if(*(toU16Ptr(_eth.etherType)) == toU16(EtherType::ARP)){
+				serial0->printf("ARP:\r\n");
+				memcpy(&_arp, buff+sizeof(eth_header_t), sizeof(arp_header_t));
+				serial0->printf("\tHardware Type  : 0x%04X\r\n", *(toU16Ptr(_arp.hardwareType)));
+				serial0->printf("\tProtocol Type  : 0x%04X\r\n", *(toU16Ptr(_arp.protocolType)));
+				serial0->printf("\tHardware len   : 0x%02X\r\n", _arp.hw_addr_length);
+				serial0->printf("\tProtocol len   : 0x%02x\r\n", _arp.proto_addr_length);
+				serial0->printf("\tOpcode         : 0x%04x\r\n", *(toU16Ptr(_arp.opcode)));
+				serial0->printf("\tSrc hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.src_hw_addr[0], _arp.src_hw_addr[1], _arp.src_hw_addr[2], _arp.src_hw_addr[3], _arp.src_hw_addr[4], _arp.src_hw_addr[5]);
+				serial0->printf("\tSrc proto addr : %d.%d.%d.%d\r\n", _arp.src_proto_addr[0], _arp.src_proto_addr[1], _arp.src_proto_addr[2], _arp.src_proto_addr[3] );
+				serial0->printf("\tDst hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.dst_hw_addr[0], _arp.dst_hw_addr[1], _arp.dst_hw_addr[2], _arp.dst_hw_addr[3], _arp.dst_hw_addr[4], _arp.dst_hw_addr[5]);
+				serial0->printf("\tDst proto addr : %d.%d.%d.%d\r\n", _arp.dst_proto_addr[0], _arp.dst_proto_addr[1], _arp.dst_proto_addr[2], _arp.dst_proto_addr[3]);
 
-				serial0->printf("[%03u] %02X ", i, buff[i]);
+			}
+			//serial0->printf("\r\n");
+			//for(u16t i = 0; i < size; ++i){
+			//
+			//	serial0->printf(" %02X ", buff[i]);
 			//}
 			//serial0->printf("\r\n");
 		}
-		//}
 		_delay_ms(500);
 	}
-
-
 }
+

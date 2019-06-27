@@ -579,8 +579,8 @@ enum ENC28J60_EBSTCON_REG_CFG {
 	//PSEL               = (1 << 4)
 };
 #define ENC28J60_RX_BUFFER_START 0x0000
-#define ENC28J60_RX_BUFFER_END 0x19FF
-#define ENC28J60_TX_BUFFER_START 0x1A00
+#define ENC28J60_RX_BUFFER_END 0x17FF
+#define ENC28J60_TX_BUFFER_START 0x1800
 #define ENC28J60_TX_BUFFER_END 0x1FFF
 #define ENC28J60_MAX_FRAMELENGTH 1518
 
@@ -611,99 +611,93 @@ enum ENC28J60_EBSTCON_REG_CFG {
 	2 = MII group
 
 	*/
+#define ETH 0
+#define MAC 1
+#define MII 2
 #define ENC28J60_KoR_MASK (0x3 << 10)
 #define ENC28J60_BANK_MASK (0x3 << 8)
 
 #define ENC28J60_READ_KoR(x) ((x & ENC28J60_KoR_MASK) >> 10)
 #define ENC28J60_READ_BANK(x) ((x & ENC28J60_BANK_MASK) >> 8)
 #define ENC28J60_READ_ADDRESS(x) (x & 0xFF)
+
+#define ENC28J60_BANK(x) (x << 8)
+#define ENC28J60_KoR(x) (x << 10)
 #pragma pack(1)
 enum ENC28J60_REGS {
-	REG_ERDPTL    = 0x0000,
-	REG_ERDPTH    = 0x0001,
-	REG_EWRPTL    = 0x0002,
-	REG_EWRPTH    = 0x0003,
-	REG_ETXSTL    = 0x0004,
-	REG_ETXSTH    = 0x0005,
-	REG_ETXNDL    = 0x0006,
-	REG_ETXNDH    = 0x0007,
-	REG_ERXSTL    = 0x0008,
-	REG_ERXSTH    = 0x0009,
-	REG_ERXNDL    = 0x000A,
-	REG_ERXNDH    = 0x000B,
-	REG_ERXRDPTL  = 0x000C,
-	REG_ERXRDPTH  = 0x000D,
-	REG_ERXWRPTL  = 0x000E,
-	REG_ERXWRPTH  = 0x000F,
-	REG_EDMASTL   = 0x0010,
-	REG_EDMASTH   = 0x0011,
-	REG_EDMANDL   = 0x0012,
-	REG_EDMANDH   = 0x0013,
-	REG_EDMADSTL  = 0x0014,
-	REG_EDMADSTH  = 0x0015,
-	REG_EDMACSL   = 0x0016,
-	REG_EDMACSH   = 0x0017,
-	REG_EIE       = 0x001B,
-	REG_EIR       = 0x001C,
-	REG_ESTAT     = 0x001D,
-	REG_ECON2     = 0x001E,
-	REG_ECON1     = 0x001F,
-	REG_EHT0      = 0x0100,
-	REG_EHT1      = 0x0101,
-	REG_EHT2      = 0x0102,
-	REG_EHT3      = 0x0103,
-	REG_EHT4      = 0x0104,
-	REG_EHT5      = 0x0105,
-	REG_EHT6      = 0x0106,
-	REG_EHT7      = 0x0107,
-	REG_EPMM0     = 0x0108,
-	REG_EPMM1     = 0x0109,
-	REG_EPMM2     = 0x010A,
-	REG_EPMM3     = 0x010B,
-	REG_EPMM4     = 0x010C,
-	REG_EPMM5     = 0x010D,
-	REG_EPMM6     = 0x010E,
-	REG_EPMM7     = 0x010F,
-	REG_EPMCSL    = 0x0110,
-	REG_EPMCSH    = 0x0111,
-	REG_EPMOL     = 0x0112,
-	REG_EPMOH     = 0x0113,
-	REG_EWOLIE    = 0x0114,
-	REG_EWOLIR    = 0x0115,
-	REG_ERXFCON   = 0x0116,
-	REG_EPKTCNT   = 0x0117,
-	REG_MACON1    = 0x0600,
-	REG_MACON3    = 0x0602,
-	REG_MACON4    = 0x0603,
-	REG_MABBIPG   = 0x0604,
-	REG_MAIPGL    = 0x0606,
-	REG_MAIPGH    = 0x0607,
-	REG_MACLCON1  = 0x0608,
-	REG_MACLCON2  = 0x0609,
-	REG_MAMXFLL   = 0x060A,
-	REG_MAMXFLH   = 0x060B,
-	REG_MICMD     = 0x0A12,
-	REG_MIREGADR  = 0x0A14, // 0000 1010
-	REG_MIWRL     = 0x0A16,
-	REG_MIWRH     = 0x0A17,
-	REG_MIRDL     = 0x0A18,
-	REG_MIRDH     = 0x0A19,
-	REG_MAADR5    = 0x0700,
-	REG_MAADR6    = 0x0701,
-	REG_MAADR3    = 0x0702,
-	REG_MAADR4    = 0x0703,
-	REG_MAADR1    = 0x0704,
-	REG_MAADR2    = 0x0705,
-	REG_EBSTSD    = 0x0306,
-	REG_EBSTCON   = 0x0307,
-	REG_EBSTCSL   = 0x0308,
-	REG_EBSTCSH   = 0x0309,
-	REG_MISTAT    = 0x0B0A,
-	REG_EREVID    = 0x0312,
-	REG_ECOCON    = 0x0315,
-	REG_EFLOCON   = 0x0317,
-	REG_EPAUSL    = 0x0318,
-	REG_EPAUSH    = 0x0319
+
+//----------------------------- BANK0 -----------------------------//	 //------------------------- BANK1 -------------------------//
+/*00*/	REG_ERDPTL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x00),  REG_EHT0     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x00),
+/*01*/ REG_ERDPTH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x01),  REG_EHT1     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x01),
+/*02*/ REG_EWRPTL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x02),  REG_EHT2     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x02),
+/*03*/ REG_EWRPTH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x03),  REG_EHT3     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x03),
+/*04*/ REG_ETXSTL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x04),  REG_EHT4     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x04),
+/*05*/ REG_ETXSTH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x05),  REG_EHT5     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x05),
+/*06*/ REG_ETXNDL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x06),  REG_EHT6     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x06),
+/*07*/ REG_ETXNDH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x07),  REG_EHT7     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x07),
+/*08*/ REG_ERXSTL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x08),  REG_EPMM0    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x08),
+/*09*/ REG_ERXSTH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x09),  REG_EPMM1    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x09),
+/*0A*/ REG_ERXNDL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0A),  REG_EPMM2    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0A),
+/*0B*/ REG_ERXNDH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0B),  REG_EPMM3    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0B),
+/*0C*/ REG_ERXRDPTL  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0C),  REG_EPMM4    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0C),
+/*0D*/ REG_ERXRDPTH  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0D),  REG_EPMM5    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0D),
+/*0E*/ REG_ERXWRPTL  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0E),  REG_EPMM6    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0E),
+/*0F*/ REG_ERXWRPTH  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x0F),  REG_EPMM7    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x0F),
+/*10*/ REG_EDMASTL   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x10),  REG_EPMCSL   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x10),
+/*11*/ REG_EDMASTH   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x11),  REG_EPMCSH   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x11),
+/*12*/ REG_EDMANDL   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x12),  /* ------------------------------------------------------- */
+/*13*/ REG_EDMANDH   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x13),  /* ------------------------------------------------------- */
+/*14*/ REG_EDMADSTL  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x14),  REG_EPMOL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x14),
+/*15*/ REG_EDMADSTH  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x15),  REG_EPMOH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x15),
+/*16*/ REG_EDMACSL   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x16),	 /*                         Reserved                        */
+/*17*/ REG_EDMACSH   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) | 0x17),  /*                         Reserved                        */
+/*18*/ /* ------------------------------------------------------ */    REG_ERXFCON  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x18),
+/*19*/ /* ------------------------------------------------------ */    REG_EPKTCNT  = (ENC28J60_KoR(ETH) | ENC28J60_BANK(1) | 0x19),
+/*1A*/ /*                         Reserved                       */    /*                         Reserved                        */
+/*1B*/ REG_EIE       = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) |  0x1B), /*                          Common                         */
+/*1C*/ REG_EIR       = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) |  0x1C), /*                          Common                         */
+/*1D*/ REG_ESTAT     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) |  0x1D), /*                          Common                         */
+/*1E*/ REG_ECON2     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) |  0x1E), /*                          Common                         */
+/*1F*/ REG_ECON1     = (ENC28J60_KoR(ETH) | ENC28J60_BANK(0) |  0x1F), /*                          Common                         */
+
+//----------------------------- BANK2 -----------------------------// //-------------------------- BANK3 -------------------------//
+/*00*/ REG_MACON1    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x00), REG_MAADR5    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x00),
+/*01*/ /*                         Reserved                        */ 	REG_MAADR6    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x01),
+/*02*/ REG_MACON3    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x02), REG_MAADR3    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x02),
+/*03*/ REG_MACON4    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x03), REG_MAADR4    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x03),
+/*04*/ REG_MABBIPG   = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x04), REG_MAADR1    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x04),
+/*05*/ /* ------------------------------------------------------ */ 	 REG_MAADR2    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(3) | 0x05),
+/*06*/ REG_MAIPGL    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x06), REG_EBSTSD    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x06),
+/*07*/ REG_MAIPGH    = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x07), REG_EBSTCON   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x07),
+/*08*/ REG_MACLCON1  = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x08), REG_EBSTCSL   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x08),
+/*09*/	REG_MACLCON2  = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x09), REG_EBSTCSH   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x09),
+/*0A*/ REG_MAMXFLL   = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x0A), REG_MISTAT    = (ENC28J60_KoR(MII) | ENC28J60_BANK(3) | 0x0A),
+/*0B*/ REG_MAMXFLH   = (ENC28J60_KoR(MAC) | ENC28J60_BANK(2) | 0x0B), /* ------------------------------------------------------ */
+/*0C*/ /*                         Reserved                        */		/* ------------------------------------------------------ */
+/*0D*/ /*                         Reserved                        */		/* ------------------------------------------------------ */
+/*0E*/ /*                         Reserved                        */		/* ------------------------------------------------------ */
+/*0F*/ /* ------------------------------------------------------ */			/* ------------------------------------------------------ */
+/*10*/ /*                         Reserved                        */		/* ------------------------------------------------------ */
+/*11*/ /*                         Reserved                        */		/* ------------------------------------------------------ */
+/*12*/ REG_MICMD     = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x12), REG_EREVID    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x12),
+/*13*/ /* ------------------------------------------------------ */   /* ------------------------------------------------------ */
+/*14*/ REG_MIREGADR  = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x14),	/* ------------------------------------------------------ */
+/*15*/ /*                         Reserved                        */  REG_ECOCON    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x15),
+/*16*/ REG_MIWRL     = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x16), /*                         Reserved                        */
+/*17*/ REG_MIWRH     = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x17), REG_EFLOCON   = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x17),
+/*18*/ REG_MIRDL     = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x18), REG_EPAUSL    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x18),
+/*19*/ REG_MIRDH     = (ENC28J60_KoR(MII) | ENC28J60_BANK(2) | 0x19), REG_EPAUSH    = (ENC28J60_KoR(ETH) | ENC28J60_BANK(3) | 0x19)
+/*1A*/ /*                         Reserved                        */  /*                         Reserved                        */
+/*1B*/ /*                          Common                         */	 /*                          Common                         */
+/*1C*/	/*                          Common                         */	 /*                          Common                         */
+/*1D*/	/*                          Common                         */	 /*                          Common                         */
+/*1E*/	/*                          Common                         */	 /*                          Common                         */
+/*1F*/	/*                          Common                         */  /*                          Common                         */
+
+
+
+
+
 };
 #pragma pop
 class Enc28j60
@@ -794,7 +788,10 @@ public:
 	bool _spi_setBuffers();
 
 
+
+	//---- Remove me ----//
 	Serial *serial = SerialManager::getInstance(SERIAL0);
+	void  dumpBank();
 
 };
 #endif

@@ -117,7 +117,7 @@ private:
         {
 
 												_mSPIsetting_t(SPI_CLKSEL clockSel = FOSC_BY_128, SPI_DORD dataOrder = MSB_FIRST,
-                          SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP){
+																										SPI_CPOL clockPolarity = LR_TF, SPI_CPHA clockPhase = LS_TP){
                 _clock          = clockSel;
                 _dataOrder      = dataOrder;
                 _clockPolarity	= clockPolarity;

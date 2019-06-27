@@ -22,15 +22,15 @@
 */
 #pragma pack(1)
 struct arp_header_t{
-    u16t hardwareType;
-    u16t protocolType;
+				u8t hardwareType[2];
+				u8t protocolType[2];
     u8t hw_addr_length;
     u8t proto_addr_length;
-    u16t opcode;
-    u64t src_hw_addr:48;
-    u32t src_proto_addr;
-    u64t dst_hw_addr:48;
-    u32t dst_proto_addr;
+				u8t opcode[2];
+				u8t src_hw_addr[6];
+				u8t src_proto_addr[4];
+				u8t dst_hw_addr[6];
+				u8t dst_proto_addr[4];
 };
 
 enum class HARDWARE_TYPE {
