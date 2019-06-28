@@ -41,7 +41,7 @@ Pin::Pin(uint8_t portNo, DDRx direction)
         //	_local_ctrl_bits = _PWM_8BIT;
         //	_pwm_8BIT.TCCRxA = (volatile uint8_t*)*(timers+temp);
         //	_pwm_8BIT.TCCRxB = (volatile uint8_t*)_pwm_8BIT.TCCRxA + 1;
-        //	_pwm_8BIT.TCNTx	 = (volatile uint8_t*)_pwm_8BIT.TCCRxB + 1;
+								//	_pwm_8BIT.TCNTx	 = (volatile uint8_t*)_pwm_8BIT.TCCRxB + 1;
         //}
 
         //else{

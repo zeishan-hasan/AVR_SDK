@@ -10,6 +10,7 @@
  * @param pin
  */
 typedef void int_cb_t(uint8_t pin);
+typedef void int_cb_t(uint8_t pin, void * context);
 
 /**
  * @brief The INT_EDGE enum
@@ -211,8 +212,8 @@ public:
      * @param[in] edge
      * @param[in] func
      * @return
-     */
-    static bool attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func);
+					*/
+				static bool attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void * ptr = nullptr);
 
     /**
      * @brief deatchInterrupt

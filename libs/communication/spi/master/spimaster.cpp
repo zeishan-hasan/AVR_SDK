@@ -213,3 +213,8 @@ bool MasterSPI::isInitilizedSPI()
 	}
 	return false;
 }
+
+u8t MasterSPI::getSlavePin(u8t index)
+{
+	return _self.SS[index].getPinNumber();
+}

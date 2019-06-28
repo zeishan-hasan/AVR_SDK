@@ -15,9 +15,9 @@ struct  eth_header_t
 #pragma pop
 
 
-void func(){
+void func(uint8_t pin){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
-	serial0->printf("Interrupt\r\n");
+	serial0->printf("Interrupt dal pin %u\r\n", pin);
 }
 int main(){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
@@ -142,9 +142,14 @@ ff ff ff ff ff ff
 	//serial0->printf("\r\n");
 
 
-	if(Interrupt::attachInterrupt(13, FALLING, (int_cb_t*)func)){
-		serial0->printf("Attach ok\r\n");
-	}
+	encj2860.enableInterrupt(regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE));
+	encj2860.registerCallback((enc_cb_t*)func);
+
+	//Interrupt::attachInterrupt(13, FALLING, (int_cb_t*)&([&](){
+	//																																																								Serial *serial0 = SerialManager::getInstance(SERIAL0);
+	//																																																								serial0->printf("Interrupt dal pin\r\n");
+	//																																																									}
+	//																																																								) );
 	//int_cb_t *ptr =  (int_cb_t*)func;
 	//ptr(0);
 
@@ -185,36 +190,37 @@ ff ff ff ff ff ff
 		///	//if(encj2860.newPacket()){
 		///serial0->printf("Receiving packet\r\n");
 		///serial0->printf("Size : %u\r\n", size);
-		size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
-		if(size){
-			serial0->printf("\r\nPacket size: %u\r\n",size);
-			memcpy(&_eth, buff, sizeof(eth_header_t));
-			serial0->printf("Ethernet:\r\n");
-			serial0->printf("\tDestination : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.dst_addr[0], _eth.dst_addr[1], _eth.dst_addr[2], _eth.dst_addr[3], _eth.dst_addr[4], _eth.dst_addr[5]);
-			serial0->printf("\tSource      : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.src_addr[0], _eth.src_addr[1], _eth.src_addr[2], _eth.src_addr[3], _eth.src_addr[4], _eth.src_addr[5]);
-			__swapEndian(_eth.etherType,2,2);
-			serial0->printf("\tEtherType   : 0x%04X\r\n", *(toU16Ptr(_eth.etherType)));
-			if(*(toU16Ptr(_eth.etherType)) == toU16(EtherType::ARP)){
-				serial0->printf("ARP:\r\n");
-				memcpy(&_arp, buff+sizeof(eth_header_t), sizeof(arp_header_t));
-				serial0->printf("\tHardware Type  : 0x%04X\r\n", *(toU16Ptr(_arp.hardwareType)));
-				serial0->printf("\tProtocol Type  : 0x%04X\r\n", *(toU16Ptr(_arp.protocolType)));
-				serial0->printf("\tHardware len   : 0x%02X\r\n", _arp.hw_addr_length);
-				serial0->printf("\tProtocol len   : 0x%02x\r\n", _arp.proto_addr_length);
-				serial0->printf("\tOpcode         : 0x%04x\r\n", *(toU16Ptr(_arp.opcode)));
-				serial0->printf("\tSrc hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.src_hw_addr[0], _arp.src_hw_addr[1], _arp.src_hw_addr[2], _arp.src_hw_addr[3], _arp.src_hw_addr[4], _arp.src_hw_addr[5]);
-				serial0->printf("\tSrc proto addr : %d.%d.%d.%d\r\n", _arp.src_proto_addr[0], _arp.src_proto_addr[1], _arp.src_proto_addr[2], _arp.src_proto_addr[3] );
-				serial0->printf("\tDst hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.dst_hw_addr[0], _arp.dst_hw_addr[1], _arp.dst_hw_addr[2], _arp.dst_hw_addr[3], _arp.dst_hw_addr[4], _arp.dst_hw_addr[5]);
-				serial0->printf("\tDst proto addr : %d.%d.%d.%d\r\n", _arp.dst_proto_addr[0], _arp.dst_proto_addr[1], _arp.dst_proto_addr[2], _arp.dst_proto_addr[3]);
-
-			}
+		///
+		//size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
+		//if(size){
+		//	serial0->printf("\r\nPacket size: %u\r\n",size);
+		//	memcpy(&_eth, buff, sizeof(eth_header_t));
+		//	serial0->printf("Ethernet:\r\n");
+		//	serial0->printf("\tDestination : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.dst_addr[0], _eth.dst_addr[1], _eth.dst_addr[2], _eth.dst_addr[3], _eth.dst_addr[4], _eth.dst_addr[5]);
+		//	serial0->printf("\tSource      : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _eth.src_addr[0], _eth.src_addr[1], _eth.src_addr[2], _eth.src_addr[3], _eth.src_addr[4], _eth.src_addr[5]);
+		//	__swapEndian(_eth.etherType,2,2);
+		//	serial0->printf("\tEtherType   : 0x%04X\r\n", *(toU16Ptr(_eth.etherType)));
+		//	if(*(toU16Ptr(_eth.etherType)) == toU16(EtherType::ARP)){
+		//		serial0->printf("ARP:\r\n");
+		//		memcpy(&_arp, buff+sizeof(eth_header_t), sizeof(arp_header_t));
+		//		serial0->printf("\tHardware Type  : 0x%04X\r\n", *(toU16Ptr(_arp.hardwareType)));
+		//		serial0->printf("\tProtocol Type  : 0x%04X\r\n", *(toU16Ptr(_arp.protocolType)));
+		//		serial0->printf("\tHardware len   : 0x%02X\r\n", _arp.hw_addr_length);
+		//		serial0->printf("\tProtocol len   : 0x%02x\r\n", _arp.proto_addr_length);
+		//		serial0->printf("\tOpcode         : 0x%04x\r\n", *(toU16Ptr(_arp.opcode)));
+		//		serial0->printf("\tSrc hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.src_hw_addr[0], _arp.src_hw_addr[1], _arp.src_hw_addr[2], _arp.src_hw_addr[3], _arp.src_hw_addr[4], _arp.src_hw_addr[5]);
+		//		serial0->printf("\tSrc proto addr : %d.%d.%d.%d\r\n", _arp.src_proto_addr[0], _arp.src_proto_addr[1], _arp.src_proto_addr[2], _arp.src_proto_addr[3] );
+		//		serial0->printf("\tDst hw addr    : %02X:%02X:%02X:%02X:%02X:%02X\r\n", _arp.dst_hw_addr[0], _arp.dst_hw_addr[1], _arp.dst_hw_addr[2], _arp.dst_hw_addr[3], _arp.dst_hw_addr[4], _arp.dst_hw_addr[5]);
+		//		serial0->printf("\tDst proto addr : %d.%d.%d.%d\r\n", _arp.dst_proto_addr[0], _arp.dst_proto_addr[1], _arp.dst_proto_addr[2], _arp.dst_proto_addr[3]);
+		//
+		//	}
 			//serial0->printf("\r\n");
 			//for(u16t i = 0; i < size; ++i){
 			//
 			//	serial0->printf(" %02X ", buff[i]);
 			//}
 			//serial0->printf("\r\n");
-	}
+	//}
 		_delay_ms(500);
 	}
 }

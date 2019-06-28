@@ -5,6 +5,8 @@
 #include <macros.h>
 #include <net_utils.h>
 #include <serial.h>
+#include <interrupt.h>
+#include <functional>
 ///@file
 
 
@@ -693,13 +695,18 @@ enum ENC28J60_REGS {
 	/*1D*/	/*                          Common                         */	 /*                          Common                         */
 	/*1E*/	/*                          Common                         */	 /*                          Common                         */
 	/*1F*/	/*                          Common                         */  /*                          Common                         */
-
-
-
-
-
 };
-typedef void enc_cb_t();
+
+enum ENC28J60_INT: u8t{
+	RXERIF,
+	TXERIF,
+	TXIF,
+	LINKIF,
+	DMAIF,
+	PKTIF
+};
+
+typedef void enc_cb_t(ENC28J60_INT type);
 #pragma pop
 class Enc28j60
 {
@@ -757,6 +764,7 @@ public:
 		u16t txBuffEnd;
 	} _self;
 	bool _confirmRegisters = true;
+	enc_cb_t *_cb;
 
 	//---- Raw methods ----//
 	u8t _spi_readControlReg(ENC28J60_REGS reg);
@@ -792,7 +800,8 @@ public:
 
 	bool _spi_setBuffers();
 
-
+	//---- Others ----//
+static void _callback(u8t pin, void *context);
 
 	//---- Remove me ----//
 	Serial *serial = SerialManager::getInstance(SERIAL0);

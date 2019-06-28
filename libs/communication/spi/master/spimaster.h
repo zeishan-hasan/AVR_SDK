@@ -96,6 +96,8 @@ public:
 
     bool isInitilizedSPI();
 
+				u8t getSlavePin(u8t index);
+
 private:
     bool slaveIsValid(uint8_t slave);
 

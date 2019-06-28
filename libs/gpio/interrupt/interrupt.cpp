@@ -1,6 +1,6 @@
 #include "interrupt.h"
 INT_REG_CALLBACK Interrupt::interruptCallback;//(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func)
+bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void *ptr)
 {
 
 
