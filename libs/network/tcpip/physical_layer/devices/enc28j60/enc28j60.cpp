@@ -64,12 +64,12 @@ void Enc28j60::init()
 
 	_spi_writeControlReg(REG_EIR, 0x00);
 	//Configure interrupts as desired
-	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE) |
-	//																					regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXERIE));
+	_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::RXERIE) |
+																					regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXERIE));
 	//_spi_writeControlReg(REG_EIE,0xC1);
 
 	//Configure PHY interrupts as desired
-	//	_spi_writePhy(REG_PHIE,regBitToValue(ENC28J60_PHIE_REG_BIT::PLNKIE) | regBitToValue(ENC28J60_PHIE_REG_BIT::PGEIE));
+	_spi_writePhy(REG_PHIE,regBitToValue(ENC28J60_PHIE_REG_BIT::PLNKIE) | regBitToValue(ENC28J60_PHIE_REG_BIT::PGEIE));
 	//_spi_writePhy(REG_PHCON2, regBitToValue(ENC28J60_PHCON2_REG_BIT::TXDIS));
 
 	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE));
@@ -77,7 +77,7 @@ void Enc28j60::init()
 
 
 
-	//_spi_writeControlReg(REG_ECON2, regBitToValue(ENC28J60_ECON2_REG_BIT::AUTOINC));
+	_spi_writeControlReg(REG_ECON2, regBitToValue(ENC28J60_ECON2_REG_BIT::AUTOINC));
 	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE));
 	//_spi_writeControlReg(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::RXEN));
 
@@ -89,6 +89,7 @@ void Enc28j60::init()
 void Enc28j60::setSPI(u8t miso, u8t mosi, u8t sck, u8t ss)
 {
 	_spi = new MasterSPI(miso, mosi, sck, ss);
+	_spi->setClock(FOSC_BY_4);
 }
 
 void Enc28j60::sendPacket(u8t *buff, u16t size)
@@ -182,12 +183,24 @@ bool Enc28j60::isLinkUp()
 	return false;
 }
 
-bool Enc28j60::newPacket()
+u8t Enc28j60::getUnreadPacket()
 {
-	if(_spi_readControlReg(REG_EPKTCNT)){
-		return true;
-	}
-	return false;
+	return _spi_readControlReg(REG_EPKTCNT);
+}
+
+void Enc28j60::enableInterrupt(u8t value)
+{
+
+}
+
+void Enc28j60::disableInterrupt()
+{
+
+}
+
+void Enc28j60::registerCallback(enc_cb_t *cb)
+{
+
 }
 
 

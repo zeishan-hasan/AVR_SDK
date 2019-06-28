@@ -50,22 +50,22 @@ enum ISCx_INT:uint8_t{
     INT0_LOW_LEVEL      = 0x00, INT1_LOW_LEVEL          = (0x00<<2),
     INT0_ANY_EDGE       = 0x01, INT1_ANY_EDGE           = (0x01<<2),
     INT0_FALLING_EDGE   = 0x02, INT1_FALLING_EDGE       = (0x02<<2),
-    INT0_RISING_EDGE	= 0x03, INT1_RISING_EDGE        = (0x03<<2),
+				INT0_RISING_EDGE	   = 0x03, INT1_RISING_EDGE        = (0x03<<2),
 
     INT2_LOW_LEVEL      = (0x00<<4), INT3_LOW_LEVEL     = (0x00<<6),
     INT2_ANY_EDGE       = (0x01<<4), INT3_ANY_EDGE      = (0x01<<6),
     INT2_FALLING_EDGE   = (0x02<<4), INT3_FALLING_EDGE  = (0x02<<6),
     INT2_RISING_EDGE    = (0x03<<4), INT3_RISING_EDGE   = (0x03<<6),
 
-    INT4_LOW_LEVEL      = 0x00, INT5_LOW_LEVEL          = (0x00<<2),
-    INT4_ANY_EDGE	= 0x01, INT5_ANY_EDGE           = (0x01<<2),
-    INT4_FALLING_EDGE   = 0x02, INT5_FALLING_EDGE       = (0x02<<2),
-    INT4_RISING_EDGE	= 0x03, INT5_RISING_EDGE        = (0x03<<2),
+				INT4_LOW_LEVEL    = 0x00, INT5_LOW_LEVEL    = (0x00<<2),
+				INT4_ANY_EDGE	    = 0x01, INT5_ANY_EDGE     = (0x01<<2),
+				INT4_FALLING_EDGE = 0x02, INT5_FALLING_EDGE = (0x02<<2),
+				INT4_RISING_EDGE	 = 0x03, INT5_RISING_EDGE  = (0x03<<2),
 
-    INT6_LOW_LEVEL	= (0x00<<4), INT7_LOW_LEVEL     = (0x00<<6),
-    INT6_ANY_EDGE	= (0x01<<4), INT7_ANY_EDGE      = (0x01<<6),
-    INT6_FALLING_EDGE   = (0x02<<4), INT7_FALLING_EDGE  = (0x02<<6),
-    INT6_RISING_EDGE    = (0x03<<4), INT7_RISING_EDGE   = (0x03<<6),
+				INT6_LOW_LEVEL	    = (0x00<<4), INT7_LOW_LEVEL     = (0x00<<6),
+				INT6_ANY_EDGE	     = (0x01<<4), INT7_ANY_EDGE      = (0x01<<6),
+				INT6_FALLING_EDGE  = (0x02<<4), INT7_FALLING_EDGE  = (0x02<<6),
+				INT6_RISING_EDGE   = (0x03<<4), INT7_RISING_EDGE   = (0x03<<6),
 };
 
 
@@ -222,8 +222,9 @@ public:
     static bool deatchInterrupt(uint8_t pin);
     static INT_REG_CALLBACK interruptCallback;
 private:
-    static void initInterrupt();
     static INT_PIN_RES searchPin(uint8_t pin, PCINT_PIN *_pin, HW_INT_PIN *_pinHW);
+
+
 };
 
 

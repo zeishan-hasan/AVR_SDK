@@ -13,6 +13,12 @@ struct  eth_header_t
 	u8t etherType[2];
 };
 #pragma pop
+
+
+void func(){
+	Serial *serial0 = SerialManager::getInstance(SERIAL0);
+	serial0->printf("Interrupt\r\n");
+}
 int main(){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000);
@@ -135,9 +141,17 @@ ff ff ff ff ff ff
 	//}
 	//serial0->printf("\r\n");
 
+
+	if(Interrupt::attachInterrupt(13, FALLING, (int_cb_t*)func)){
+		serial0->printf("Attach ok\r\n");
+	}
+	//int_cb_t *ptr =  (int_cb_t*)func;
+	//ptr(0);
+
 	eth_header_t _eth;
 	arp_header_t _arp;
 	while(1){
+		//encj2860._spi_writeControlReg(REG_EIR, 0x00);
 		//serial0->clear();
 		//serial0->printf("\r\n");
 		//serial0->printf("REG_EIE      : 0x%02X\r\n", encj2860._spi_readControlReg(REG_EIE));
@@ -200,7 +214,7 @@ ff ff ff ff ff ff
 			//	serial0->printf(" %02X ", buff[i]);
 			//}
 			//serial0->printf("\r\n");
-		}
+	}
 		_delay_ms(500);
 	}
 }

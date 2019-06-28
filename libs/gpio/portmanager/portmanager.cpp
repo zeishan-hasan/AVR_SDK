@@ -27,8 +27,8 @@ Pin::Pin(uint8_t portNo, DDRx direction)
         /*CHANNEL_15*/	 (1<<11) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0),
     };
 
-    _pinx	 = (volatile uint8_t*)pgm_read_word(&_flashMappedPort[portNo].pinx);
-    _ddrx	 = (volatile uint8_t*)( _pinx + 1);
+				_pinx	       = (volatile uint8_t*)pgm_read_word(&_flashMappedPort[portNo].pinx);
+				_ddrx	       = (volatile uint8_t*)( _pinx + 1);
     _portx       = (volatile uint8_t*)( _pinx + 2);
     _registerBit = pgm_read_byte( &_flashMappedPort[portNo].registerBit );
     _controlBits = pgm_read_word( &_flashMappedPort[portNo].controlBits );
