@@ -55,76 +55,34 @@ _ZNSt6vectorIhSaIhEE7reserveEj.part.7:
 	pop r16
 	jmp _ZdlPv
 	.size	_ZNSt6vectorIhSaIhEE7reserveEj.part.7, .-_ZNSt6vectorIhSaIhEE7reserveEj.part.7
-	.section	.text._ZN13SerialManager11getInstanceE10SerialPort,"axG",@progbits,_ZN13SerialManager11getInstanceE10SerialPort,comdat
-	.weak	_ZN13SerialManager11getInstanceE10SerialPort
-	.type	_ZN13SerialManager11getInstanceE10SerialPort, @function
-_ZN13SerialManager11getInstanceE10SerialPort:
-	push r16
-	push r17
+.global	_ZN4IPv4C2Ev
+	.type	_ZN4IPv4C2Ev, @function
+_ZN4IPv4C2Ev:
 	push r28
 	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 4 */
-.L__stack_usage = 4
-	mov r28,r24
-	ldi r29,0
-	lsl r28
-	rol r29
-	movw r16,r28
-	subi r16,lo8(-(_ZZN13SerialManager11getInstanceE10SerialPortE8instance))
-	sbci r17,hi8(-(_ZZN13SerialManager11getInstanceE10SerialPortE8instance))
-	movw r30,r16
-	ld r18,Z
-	ldd r19,Z+1
-	or r18,r19
-	breq .+2
-	rjmp .L10
-	cpi r24,lo8(1)
-	brne .+2
-	rjmp .L11
-	brlo .L12
-	cpi r24,lo8(2)
-	brne .+2
-	rjmp .L13
-	cpi r24,lo8(3)
-	breq .+2
-	rjmp .L10
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
+/* stack size = 2 */
+.L__stack_usage = 2
+	movw r28,r24
+	std Y+33,__zero_reg__
+	std Y+32,__zero_reg__
+	ldi r24,lo8(8)
+	ldi r25,0
+	std Y+35,r25
+	std Y+34,r24
+	std Y+37,__zero_reg__
+	std Y+36,__zero_reg__
 	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(48)
-	ldi r19,lo8(1)
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(49)
-	ldi r19,lo8(1)
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(50)
-	ldi r19,lo8(1)
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(53)
-	ldi r19,lo8(1)
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(52)
-	ldi r19,lo8(1)
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(54)
-	ldi r19,lo8(1)
-	rjmp .L15
-.L12:
+	std Y+33,r25
+	std Y+32,r24
+	movw r24,r28
+	adiw r24,39
+	call _ZN8EthernetC1Ev
+	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
+	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
+	or r24,r25
+	brne .L10
 	ldi r24,lo8(22)
 	ldi r25,lo8(1)
 	call _Znwj
@@ -158,122 +116,21 @@ _ZN13SerialManager11getInstanceE10SerialPort:
 	adiw r30,2
 	ldi r18,lo8(-58)
 	ldi r19,0
-	rjmp .L15
-.L11:
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-56)
-	ldi r19,0
 	std Z+1,r19
 	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-55)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-54)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-51)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-52)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-50)
-	ldi r19,0
-	rjmp .L15
-.L13:
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-48)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-47)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-46)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-43)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-44)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-42)
-	ldi r19,0
-.L15:
-	std Z+1,r19
-	st Z,r18
-	movw r30,r16
-	std Z+1,r25
-	st Z,r24
+	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
+	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
 .L10:
-	subi r28,lo8(-(_ZZN13SerialManager11getInstanceE10SerialPortE8instance))
-	sbci r29,hi8(-(_ZZN13SerialManager11getInstanceE10SerialPortE8instance))
-	ld r24,Y
-	ldd r25,Y+1
+	subi r28,-102
+	sbci r29,-1
+	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
+	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
+	std Y+1,r25
+	st Y,r24
 /* epilogue start */
 	pop r29
 	pop r28
-	pop r17
-	pop r16
 	ret
-	.size	_ZN13SerialManager11getInstanceE10SerialPort, .-_ZN13SerialManager11getInstanceE10SerialPort
-	.text
-.global	_ZN4IPv4C2Ev
-	.type	_ZN4IPv4C2Ev, @function
-_ZN4IPv4C2Ev:
-	push r28
-	push r29
-/* prologue: function */
-/* frame size = 0 */
-/* stack size = 2 */
-.L__stack_usage = 2
-	movw r28,r24
-	std Y+33,__zero_reg__
-	std Y+32,__zero_reg__
-	ldi r24,lo8(8)
-	ldi r25,0
-	std Y+35,r25
-	std Y+34,r24
-	std Y+37,__zero_reg__
-	std Y+36,__zero_reg__
-	call _Znwj
-	std Y+33,r25
-	std Y+32,r24
-	movw r24,r28
-	adiw r24,39
-/* epilogue start */
-	pop r29
-	pop r28
-	jmp _ZN8EthernetC1Ev
 	.size	_ZN4IPv4C2Ev, .-_ZN4IPv4C2Ev
 .global	_ZN4IPv4C1Ev
 	.set	_ZN4IPv4C1Ev,_ZN4IPv4C2Ev
@@ -293,41 +150,41 @@ _ZN4IPv411decapsulateERSt6vectorIhSaIhEE:
 .global	_ZN4IPv413setSrcAddressER10ipv4addr_t
 	.type	_ZN4IPv413setSrcAddressER10ipv4addr_t, @function
 _ZN4IPv413setSrcAddressER10ipv4addr_t:
-	push r28
-	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 2 */
-.L__stack_usage = 2
-	movw r30,r22
-	ld r20,Z
-	ldd r21,Z+1
-	ldd r22,Z+2
-	ldd r23,Z+3
+/* stack size = 0 */
+.L__stack_usage = 0
 	movw r30,r24
-	std Z+20,r20
-	std Z+21,r21
-	std Z+22,r22
-	std Z+23,r23
-	lds r18,debug
-	tst r18
-	breq .L18
-	movw r28,r24
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
-	ldd r18,Y+23
-	push r18
-	ldd r18,Y+22
-	push r18
-	ldd r18,Y+21
-	push r18
-	ldd r18,Y+20
-	push r18
-	ldi r18,lo8(.LC0)
-	ldi r19,hi8(.LC0)
+	movw r26,r22
+	ld r24,X
+	adiw r26,1
+	ld r25,X
+	sbiw r26,1
+	adiw r26,2
+	ld r18,X
+	sbiw r26,2
+	adiw r26,3
+	ld r19,X
+	std Z+20,r24
+	std Z+21,r25
+	std Z+22,r18
+	std Z+23,r19
+	lds r20,debug
+	tst r20
+	breq .L12
 	push r19
 	push r18
 	push r25
+	push r24
+	ldi r24,lo8(.LC0)
+	ldi r25,hi8(.LC0)
+	push r25
+	push r24
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	in r24,__SP_L__
@@ -338,10 +195,7 @@ _ZN4IPv413setSrcAddressER10ipv4addr_t:
 	out __SP_H__,r25
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r24
-.L18:
-/* epilogue start */
-	pop r29
-	pop r28
+.L12:
 	ret
 	.size	_ZN4IPv413setSrcAddressER10ipv4addr_t, .-_ZN4IPv413setSrcAddressER10ipv4addr_t
 .global	_ZN4IPv413setDstAddressER10ipv4addr_t
@@ -423,11 +277,8 @@ _ZN4IPv4D2Ev:
 /* stack size = 2 */
 .L__stack_usage = 2
 	movw r28,r24
-	subi r24,-110
+	subi r24,-79
 	sbci r25,-1
-	call _ZNSt6vectorIhSaIhEED1Ev
-	movw r24,r28
-	adiw r24,61
 	call _ZNSt6vectorIhSaIhEED1Ev
 	movw r24,r28
 	adiw r24,32
@@ -460,11 +311,11 @@ _ZNSt6vectorIhSaIhEE21_insert_from_iteratorIPhEEvS3_T_S4_:
 	movw r28,r24
 	movw r14,r18
 	movw r12,r20
-.L39:
+.L33:
 	cp r14,r12
 	cpc r15,r13
 	brne .+2
-	rjmp .L29
+	rjmp .L23
 	movw r30,r12
 	ld r11,Z+
 	movw r12,r30
@@ -481,55 +332,55 @@ _ZNSt6vectorIhSaIhEE21_insert_from_iteratorIPhEEvS3_T_S4_:
 	sbc r9,r31
 	cp r22,r8
 	cpc r23,r9
-	brsh .L31
+	brsh .L25
 	ldd r24,Y+2
 	ldd r25,Y+3
 	cp r24,r8
 	cpc r25,r9
-	brsh .L32
+	brsh .L26
 	subi r22,-9
 	sbci r23,-1
 	cp r24,r22
 	cpc r25,r23
-	brsh .L32
+	brsh .L26
 	movw r24,r28
 	call _ZNSt6vectorIhSaIhEE7reserveEj.part.7
-.L32:
+.L26:
 	ldd r24,Y+4
 	ldd r25,Y+5
-.L35:
+.L29:
 	cp r24,r8
 	cpc r25,r9
-	brsh .L43
+	brsh .L37
 	ld r30,Y
 	ldd r31,Y+1
 	add r30,r24
 	adc r31,r25
 	sbiw r30,0
-	breq .L34
+	breq .L28
 	st Z,r11
-.L34:
+.L28:
 	adiw r24,1
-	rjmp .L35
-.L31:
+	rjmp .L29
+.L25:
 	cp r8,r22
 	cpc r9,r23
-	brsh .L36
-.L43:
+	brsh .L30
+.L37:
 	std Y+5,r9
 	std Y+4,r8
-.L36:
+.L30:
 	ldd r18,Y+4
 	ldd r19,Y+5
 	subi r18,1
 	sbc r19,__zero_reg__
-.L38:
+.L32:
 	ld r24,Y
 	ldd r25,Y+1
 	movw r30,r24
 	cp r16,r18
 	cpc r17,r19
-	brsh .L37
+	brsh .L31
 	add r30,r18
 	adc r31,r19
 	subi r18,1
@@ -539,8 +390,8 @@ _ZNSt6vectorIhSaIhEE21_insert_from_iteratorIPhEEvS3_T_S4_:
 	adc r27,r19
 	ld r24,X
 	st Z,r24
-	rjmp .L38
-.L37:
+	rjmp .L32
+.L31:
 	add r30,r16
 	adc r31,r17
 	st Z,r11
@@ -550,8 +401,8 @@ _ZNSt6vectorIhSaIhEE21_insert_from_iteratorIPhEEvS3_T_S4_:
 	ldd r23,Y+1
 	add r22,r16
 	adc r23,r17
-	rjmp .L39
-.L29:
+	rjmp .L33
+.L23:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -603,17 +454,20 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	movw r14,r22
 	lds r24,debug
 	tst r24
-	breq .L45
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
+	breq .L39
 	push __zero_reg__
-	ldi r18,lo8(35)
-	push r18
-	ldi r18,lo8(.LC1)
-	ldi r19,hi8(.LC1)
-	push r19
-	push r18
+	ldi r24,lo8(35)
+	push r24
+	ldi r24,lo8(.LC1)
+	ldi r25,hi8(.LC1)
 	push r25
+	push r24
+	movw r30,r16
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	pop __tmp_reg__
@@ -622,20 +476,23 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
-.L45:
+.L39:
 	lds r24,debug
 	tst r24
-	breq .L46
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
+	breq .L40
 	push __zero_reg__
-	ldi r18,lo8(35)
-	push r18
-	ldi r18,lo8(.LC2)
-	ldi r19,hi8(.LC2)
-	push r19
-	push r18
+	ldi r24,lo8(35)
+	push r24
+	ldi r24,lo8(.LC2)
+	ldi r25,hi8(.LC2)
 	push r25
+	push r24
+	movw r30,r16
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	pop __tmp_reg__
@@ -644,22 +501,25 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
-.L46:
+.L40:
 	lds r24,debug
 	tst r24
-	breq .L47
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
+	breq .L41
 	movw r30,r14
-	ldd r18,Z+1
-	push r18
-	ld r18,Z
-	push r18
-	ldi r18,lo8(.LC3)
-	ldi r19,hi8(.LC3)
-	push r19
-	push r18
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
+	push r24
+	ldi r24,lo8(.LC3)
+	ldi r25,hi8(.LC3)
 	push r25
+	push r24
+	movw r30,r16
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	pop __tmp_reg__
@@ -668,7 +528,7 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
-.L47:
+.L41:
 	movw r30,r14
 	ld r20,Z
 	ldd r21,Z+1
@@ -684,17 +544,20 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	call _ZNSt6vectorIhSaIhEE21_insert_from_iteratorIPhEEvS3_T_S4_
 	lds r24,debug
 	tst r24
-	breq .L48
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
+	breq .L42
 	push __zero_reg__
-	ldi r18,lo8(35)
-	push r18
-	ldi r18,lo8(.LC4)
-	ldi r19,hi8(.LC4)
-	push r19
-	push r18
+	ldi r24,lo8(35)
+	push r24
+	ldi r24,lo8(.LC4)
+	ldi r25,hi8(.LC4)
 	push r25
+	push r24
+	movw r30,r16
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	pop __tmp_reg__
@@ -703,7 +566,7 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
-.L48:
+.L42:
 	std Y+2,__zero_reg__
 	std Y+1,__zero_reg__
 	ldi r24,lo8(8)
@@ -718,13 +581,13 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	ldd r24,Y+3
 	ldd r25,Y+4
 	sbiw r24,35
-	brsh .L49
+	brsh .L43
 	ldi r22,lo8(35)
 	ldi r23,0
 	movw r24,r28
 	adiw r24,1
 	call _ZNSt6vectorIhSaIhEE7reserveEj.part.7
-.L49:
+.L43:
 	ldi r24,lo8(35)
 	movw r30,r16
 	adiw r30,4
@@ -737,19 +600,21 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	brne 0b
 	lds r24,debug
 	tst r24
-	breq .L50
-	ldi r24,0
-	call _ZN13SerialManager11getInstanceE10SerialPort
+	breq .L44
 	movw r30,r16
-	ldd r18,Z+37
-	push r18
-	ldd r18,Z+36
-	push r18
-	ldi r18,lo8(.LC5)
-	ldi r19,hi8(.LC5)
-	push r19
-	push r18
+	ldd r24,Z+37
+	push r24
+	ldd r24,Z+36
+	push r24
+	ldi r24,lo8(.LC5)
+	ldi r25,hi8(.LC5)
 	push r25
+	push r24
+	subi r30,-102
+	sbci r31,-1
+	ldd r24,Z+1
+	push r24
+	ld r24,Z
 	push r24
 	call _ZN6Serial6printfEPKcz
 	pop __tmp_reg__
@@ -758,7 +623,7 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	pop __tmp_reg__
 	pop __tmp_reg__
 	pop __tmp_reg__
-.L50:
+.L44:
 	movw r22,r28
 	subi r22,-1
 	sbci r23,-1

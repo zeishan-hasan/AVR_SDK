@@ -1,3 +1,4 @@
+#pragma once
 #include <gpiodef.h>
 
 static const PROGMEM MappedPort _flashMappedPort[] ={
@@ -217,3 +218,5 @@ static const PROGMEM MappedPort _flashMappedPort[] ={
 					(0<<isUART)|(0x00<<UART_SEL)},	//A15	69	| ADC15/PCINT23
 
 };
+
+

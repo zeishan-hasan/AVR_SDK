@@ -190,9 +190,9 @@ _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
 	pop r28
 	ret
 	.size	_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN, .-_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN
-.global	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE
-	.type	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE, @function
-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
+.global	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv
+	.type	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv, @function
+_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	push r12
 	push r13
 	push r15
@@ -298,7 +298,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	rjmp .L59
 .L41:
 /* #APP */
- ;  33 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  41 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -352,12 +352,12 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	ldd r30,Y+5
 	ldd r31,Y+6
 	st Z,r15
+.L59:
 /* #APP */
- ;  58 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  66 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
-.L59:
 	ldi r24,lo8(1)
 	rjmp .L46
 .L60:
@@ -371,7 +371,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	subi r30,lo8(-(_ZL16_flashMappedPort+2))
 	sbci r31,hi8(-(_ZL16_flashMappedPort+2))
 /* #APP */
- ;  64 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  72 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r18, Z
 	
  ;  0 "" 2
@@ -380,7 +380,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	subi r30,lo8(-(_ZL16_flashMappedPort))
 	sbci r31,hi8(-(_ZL16_flashMappedPort))
 /* #APP */
- ;  63 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  71 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r26, Z+
 	lpm r27, Z
 	
@@ -418,7 +418,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	pop r13
 	pop r12
 	ret
-	.size	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE, .-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE
+	.size	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv, .-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv
 .global	_ZN9Interrupt15deatchInterruptEh
 	.type	_ZN9Interrupt15deatchInterruptEh, @function
 _ZN9Interrupt15deatchInterruptEh:
@@ -772,7 +772,7 @@ __vector_9:
 	subi r30,lo8(-(_ZL16_flashMappedPort))
 	sbci r31,hi8(-(_ZL16_flashMappedPort))
 /* #APP */
- ;  281 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  289 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
@@ -912,7 +912,7 @@ __vector_10:
 	subi r30,lo8(-(_ZL16_flashMappedPort))
 	sbci r31,hi8(-(_ZL16_flashMappedPort))
 /* #APP */
- ;  311 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  319 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
@@ -1049,7 +1049,7 @@ __vector_11:
 	subi r30,lo8(-(_ZL16_flashMappedPort))
 	sbci r31,hi8(-(_ZL16_flashMappedPort))
 /* #APP */
- ;  341 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  349 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
@@ -1136,7 +1136,7 @@ __vector_1:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  361 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  369 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1153,7 +1153,7 @@ __vector_1:
 	ld r24,X
 	eicall
 /* #APP */
- ;  364 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  372 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1205,7 +1205,7 @@ __vector_2:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  367 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  375 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1222,7 +1222,7 @@ __vector_2:
 	ld r24,X
 	eicall
 /* #APP */
- ;  370 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  378 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1274,7 +1274,7 @@ __vector_3:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  373 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  381 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1291,7 +1291,7 @@ __vector_3:
 	ld r24,X
 	eicall
 /* #APP */
- ;  376 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  384 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1343,7 +1343,7 @@ __vector_4:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  380 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  388 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1360,7 +1360,7 @@ __vector_4:
 	ld r24,X
 	eicall
 /* #APP */
- ;  383 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  391 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1412,7 +1412,7 @@ __vector_5:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  386 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  394 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1428,7 +1428,7 @@ __vector_5:
 	ld r24,X
 	eicall
 /* #APP */
- ;  389 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  397 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1480,7 +1480,7 @@ __vector_6:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  392 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  400 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1497,7 +1497,7 @@ __vector_6:
 	ld r24,X
 	eicall
 /* #APP */
- ;  395 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  403 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */

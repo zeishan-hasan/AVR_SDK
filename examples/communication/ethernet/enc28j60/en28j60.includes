@@ -39,7 +39,7 @@ libs/communication/spi/master
 libs/communication/spi/slave
 libs/communication/uart
 libs/core
-libs/core/micro/
+libs/core/micro
 libs/gpio/interrupt
 libs/gpio/portmanager
 libs/network/tcpip/internet_layer/ipv4
