@@ -26,10 +26,10 @@ int main(){
 	serial0->setEchoServer(false);
 	serial0->clear();
 
-	_delay_ms(2000);
-	Enc28j60 encj2860;
-	encj2860.setSPI(MISO,MOSI,SCK,SS);
-	encj2860.init();
+	//_delay_ms(2000);
+	//Enc28j60 encj2860;
+	//encj2860.setSPI(MISO,MOSI,SCK,SS);
+	//encj2860.init();
 
 	//encj2860.setMAC(std::vector<uint8_t>{0xAA,0xBB,0xCC,0xDD,0xEE,0xFF});
 	//std::vector<uint8_t> a{0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
@@ -142,8 +142,8 @@ ff ff ff ff ff ff
 	//serial0->printf("\r\n");
 
 
-	encj2860.enableInterrupt(regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE));
-	encj2860.registerCallback((enc_cb_t*)func);
+	//encj2860.enableInterrupt(regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE));
+	//encj2860.registerCallback((enc_cb_t*)func);
 
 	//Interrupt::attachInterrupt(13, FALLING, (int_cb_t*)&([&](){
 	//																																																								Serial *serial0 = SerialManager::getInstance(SERIAL0);
@@ -152,10 +152,10 @@ ff ff ff ff ff ff
 	//																																																								) );
 	//int_cb_t *ptr =  (int_cb_t*)func;
 	//ptr(0);
-
 	eth_header_t _eth;
 	arp_header_t _arp;
 	while(1){
+		serial0->printf("Ciao dal mega\r\n");
 		//encj2860._spi_writeControlReg(REG_EIR, 0x00);
 		//serial0->clear();
 		//serial0->printf("\r\n");

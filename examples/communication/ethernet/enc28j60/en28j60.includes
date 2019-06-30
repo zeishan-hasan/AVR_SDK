@@ -28,7 +28,7 @@ libs/strutil
 libs/timer
 libs/utils
 
-
+/usr/lib/avr/include/avr
 .
 libs
 /usr/lib/avr/include

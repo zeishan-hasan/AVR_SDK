@@ -186,307 +186,227 @@ _ZN3Pin12setDirectionE4DDRx:
 .L10:
 	ret
 	.size	_ZN3Pin12setDirectionE4DDRx, .-_ZN3Pin12setDirectionE4DDRx
-	.section	.rodata
-.LC0:
-	.word	36
-	.word	128
-	.word	176
-	.word	144
-	.word	160
-	.word	288
-.LC1:
-	.word	0
-	.word	1
-	.word	2
-	.word	3
-	.word	4
-	.word	5
-	.word	6
-	.word	7
-	.word	2048
-	.word	2049
-	.word	2050
-	.word	2051
-	.word	2052
-	.word	2053
-	.word	2054
-	.word	2055
-	.text
 .global	_ZN3PinC2Eh4DDRx
 	.type	_ZN3PinC2Eh4DDRx, @function
 _ZN3PinC2Eh4DDRx:
-	push r16
-	push r17
-	push r28
-	push r29
-	in r28,__SP_L__
-	in r29,__SP_H__
-	sbiw r28,44
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 44 */
-/* stack size = 48 */
-.L__stack_usage = 48
-	ldi r18,lo8(-1)
-	ldi r19,lo8(-1)
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
 	movw r26,r24
+	ldi r24,lo8(-1)
+	ldi r25,lo8(-1)
 	adiw r26,6+1
-	st X,r19
-	st -X,r18
+	st X,r25
+	st -X,r24
 	sbiw r26,6
-	ldi r18,lo8(-1)
-	ldi r19,0
 	adiw r26,10+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,10
 	adiw r26,12+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,12
 	adiw r26,14+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,14
 	adiw r26,16+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,16
 	adiw r26,18+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,18
 	adiw r26,20+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,20
 	adiw r26,22+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,22
 	adiw r26,24+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,24
 	adiw r26,26+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,26
 	adiw r26,28+1
-	st X,r19
-	st -X,r18
+	st X,__zero_reg__
+	st -X,__zero_reg__
 	sbiw r26,28
 	cpi r22,lo8(71)
 	brlo .+2
 	rjmp .L13
-	ldi r18,lo8(12)
-	ldi r30,lo8(.LC0)
-	ldi r31,hi8(.LC0)
-	movw r26,r28
-	adiw r26,33
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r18
-	brne 0b
-	ldi r18,lo8(32)
-	ldi r30,lo8(.LC1)
-	ldi r31,hi8(.LC1)
-	movw r26,r28
-	adiw r26,1
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r18
-	brne 0b
-	ldi r27,lo8(5)
-	mul r22,r27
-	movw r18,r0
+	ldi r18,lo8(5)
+	mul r22,r18
+	movw r24,r0
 	clr __zero_reg__
-	movw r30,r18
+	movw r30,r24
 	subi r30,lo8(-(_ZL16_flashMappedPort))
 	sbci r31,hi8(-(_ZL16_flashMappedPort))
 /* #APP */
- ;  30 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r26, Z+
-	lpm r27, Z
+ ;  9 "libs/gpio/portmanager/portmanager.cpp" 1
+	lpm r18, Z+
+	lpm r19, Z
 	
  ;  0 "" 2
 /* #NOAPP */
-	movw r30,r24
-	std Z+5,r27
-	std Z+4,r26
-	movw r16,r26
-	subi r16,-1
-	sbci r17,-1
-	std Z+1,r17
-	st Z,r16
-	adiw r26,2
-	std Z+3,r27
-	std Z+2,r26
+	adiw r26,4+1
+	st X,r19
+	st -X,r18
+	sbiw r26,4
 	movw r30,r18
+	adiw r30,1
+	adiw r26,1
+	st X,r31
+	st -X,r30
+	subi r18,-2
+	sbci r19,-1
+	adiw r26,2+1
+	st X,r19
+	st -X,r18
+	sbiw r26,2
+	movw r30,r24
 	subi r30,lo8(-(_ZL16_flashMappedPort+2))
 	sbci r31,hi8(-(_ZL16_flashMappedPort+2))
 /* #APP */
- ;  33 "libs/gpio/portmanager/portmanager.cpp" 1
+ ;  12 "libs/gpio/portmanager/portmanager.cpp" 1
 	lpm r30, Z
 	
  ;  0 "" 2
 /* #NOAPP */
-	movw r26,r24
 	adiw r26,8
 	st X,r30
-	subi r18,lo8(-(_ZL16_flashMappedPort+3))
-	sbci r19,hi8(-(_ZL16_flashMappedPort+3))
-	movw r30,r18
-/* #APP */
- ;  34 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r26, Z+
-	lpm r27, Z
-	
- ;  0 "" 2
-/* #NOAPP */
+	sbiw r26,8
 	movw r30,r24
-	std Z+35,r27
-	std Z+34,r26
-	std Z+36,r22
-	movw r30,r18
+	subi r30,lo8(-(_ZL16_flashMappedPort+3))
+	sbci r31,hi8(-(_ZL16_flashMappedPort+3))
 /* #APP */
- ;  36 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r22, Z+
-	lpm r23, Z
+ ;  13 "libs/gpio/portmanager/portmanager.cpp" 1
+	lpm r24, Z+
+	lpm r25, Z
 	
  ;  0 "" 2
 /* #NOAPP */
-	movw r30,r18
-	sbrs r23,5
+	adiw r26,34+1
+	st X,r25
+	st -X,r24
+	sbiw r26,34
+	adiw r26,36
+	st X,r22
+	sbiw r26,36
+	sbrs r25,4
 	rjmp .L15
-/* #APP */
- ;  37 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r18, Z+
-	lpm r19, Z
-	
- ;  0 "" 2
-/* #NOAPP */
-	ldi r21,lo8(3)
-	movw r26,r24
+	andi r24,128
+	andi r25,3
+	lsl r24
+	mov r24,r25
+	rol r24
+	sbc r25,r25
+	neg r25
+	cpi r24,lo8(2)
+	brne .L16
 	adiw r26,9
-	st X,r21
+	st X,r24
 	sbiw r26,9
-	movw r30,r18
-	clr r30
-	andi r31,28
-	mov r30,r31
-	clr r31
-	lsr r30
-	ldi r18,lo8(1)
-	ldi r19,0
-	add r18,r28
-	adc r19,r29
-	add r30,r18
-	adc r31,r19
-	ldd r18,Z+32
-	ldd r19,Z+33
-	adiw r26,10+1
-	st X,r19
-	st -X,r18
-	sbiw r26,10
-	movw r22,r18
-	subi r22,-1
-	sbci r23,-1
-	adiw r26,12+1
-	st X,r23
-	st -X,r22
-	sbiw r26,12
-	subi r22,-1
-	sbci r23,-1
-	adiw r26,18+1
-	st X,r23
-	st -X,r22
-	sbiw r26,18
-	subi r22,-2
-	sbci r23,-1
-	adiw r26,14+1
-	st X,r23
-	st -X,r22
-	sbiw r26,14
-	subi r18,-6
+	lsl r24
+	rol r25
+	movw r30,r24
+	subi r30,lo8(-(_ZL6timers))
+	sbci r31,hi8(-(_ZL6timers))
+	ld r24,Z
+	ldd r25,Z+1
+	adiw r26,22+1
+	st X,r25
+	st -X,r24
+	sbiw r26,22
+	movw r18,r24
+	subi r18,-1
 	sbci r19,-1
-	adiw r26,20+1
+	adiw r26,24+1
 	st X,r19
 	st -X,r18
-	sbiw r26,20
-	rjmp .L16
-.L15:
-/* #APP */
- ;  60 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r21, Z
-	
- ;  0 "" 2
-/* #NOAPP */
-	sbrs r21,7
-	rjmp .L16
-	ldi r21,lo8(4)
-	movw r26,r24
-	adiw r26,9
-	st X,r21
-	sbiw r26,9
-/* #APP */
- ;  62 "libs/gpio/portmanager/portmanager.cpp" 1
-	lpm r18, Z+
-	lpm r19, Z
-	
- ;  0 "" 2
-/* #NOAPP */
-	movw r30,r18
-	andi r30,120
-	clr r31
-	lsr r31
-	ror r30
-	lsr r31
-	ror r30
-	ldi r18,lo8(1)
-	ldi r19,0
-	add r18,r28
-	adc r19,r29
-	add r30,r18
-	adc r31,r19
-	ld r18,Z
-	ldd r19,Z+1
-	adiw r26,6+1
-	st X,r19
-	st -X,r18
-	sbiw r26,6
+	sbiw r26,24
+	adiw r24,2
+	adiw r26,26+1
+	st X,r25
+	st -X,r24
+	sbiw r26,26
+	rjmp .L17
 .L16:
+	tst r24
+	breq .L17
+	ldi r18,lo8(3)
+	adiw r26,9
+	st X,r18
+	sbiw r26,9
+	lsl r24
+	rol r25
+	movw r30,r24
+	subi r30,lo8(-(_ZL6timers))
+	sbci r31,hi8(-(_ZL6timers))
+	ld r24,Z
+	ldd r25,Z+1
+	adiw r26,10+1
+	st X,r25
+	st -X,r24
+	sbiw r26,10
+	movw r18,r24
+	subi r18,-1
+	sbci r19,-1
+	adiw r26,12+1
+	st X,r19
+	st -X,r18
+	sbiw r26,12
+	subi r18,-1
+	sbci r19,-1
+	adiw r26,18+1
+	st X,r19
+	st -X,r18
+	sbiw r26,18
+	subi r18,-2
+	sbci r19,-1
+	adiw r26,14+1
+	st X,r19
+	st -X,r18
+	sbiw r26,14
+	adiw r24,6
+	adiw r26,20+1
+	st X,r25
+	st -X,r24
+	sbiw r26,20
+	rjmp .L17
+.L15:
+	sbrs r24,4
+	rjmp .L17
+	ldi r18,lo8(4)
+	adiw r26,9
+	st X,r18
+	sbiw r26,9
+	movw r30,r24
+	andi r30,15
+	clr r31
+	lsl r30
+	rol r31
+	subi r30,lo8(-(_ZL13_ADC_CHANNELS))
+	sbci r31,hi8(-(_ZL13_ADC_CHANNELS))
+	ld r24,Z
+	ldd r25,Z+1
+	adiw r26,6+1
+	st X,r25
+	st -X,r24
+	sbiw r26,6
+.L17:
 	mov r22,r20
-/* epilogue start */
-	adiw r28,44
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
-	pop r29
-	pop r28
-	pop r17
-	pop r16
+	movw r24,r26
 	jmp _ZN3Pin12setDirectionE4DDRx
 .L13:
-/* epilogue start */
-	adiw r28,44
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
-	pop r29
-	pop r28
-	pop r17
-	pop r16
 	ret
 	.size	_ZN3PinC2Eh4DDRx, .-_ZN3PinC2Eh4DDRx
 .global	_ZN3PinC1Eh4DDRx
@@ -518,7 +438,7 @@ _ZN3Pin6setPWMEmh:
 	ldd r24,Y+9
 	cpi r24,lo8(3)
 	breq .+2
-	rjmp .L23
+	rjmp .L30
 	mov r17,r18
 	movw r24,r22
 	movw r22,r20
@@ -572,40 +492,44 @@ _ZN3Pin6setPWMEmh:
 	st Z,r12
 	ldd r24,Y+34
 	ldd r25,Y+35
-	clr r24
-	andi r25,3
-	mov r24,r25
+	andi r24,96
 	clr r25
+	ldi r18,5
+	1:
+	lsr r25
+	ror r24
+	dec r18
+	brne 1b
 	ldd r26,Y+10
 	ldd r27,Y+11
 	cpi r24,1
 	cpc r25,__zero_reg__
-	breq .L20
-	brlo .L21
+	breq .L27
+	brlo .L28
 	sbiw r24,2
-	brne .L19
+	brne .L26
 	adiw r30,6
 	std Y+17,r31
 	std Y+16,r30
 	ld r24,X
 	ori r24,lo8(12)
-	rjmp .L24
-.L21:
+	rjmp .L31
+.L28:
 	adiw r30,2
 	std Y+17,r31
 	std Y+16,r30
 	ld r24,X
 	ori r24,lo8(-64)
-	rjmp .L24
-.L20:
+	rjmp .L31
+.L27:
 	adiw r30,4
 	std Y+17,r31
 	std Y+16,r30
 	ld r24,X
 	ori r24,lo8(48)
-.L24:
+.L31:
 	st X,r24
-.L19:
+.L26:
 	ldd r30,Y+16
 	ldd r31,Y+17
 	ldd r24,Y+32
@@ -628,10 +552,10 @@ _ZN3Pin6setPWMEmh:
 	ori r24,lo8(1)
 	st Z,r24
 	ldi r24,lo8(1)
-	rjmp .L18
-.L23:
+	rjmp .L25
+.L30:
 	ldi r24,0
-.L18:
+.L25:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -663,7 +587,7 @@ _ZN3Pin7setDutyEh:
 	movw r30,r24
 	ldd r18,Z+9
 	cpi r18,lo8(3)
-	brne .L27
+	brne .L34
 	mov r17,r22
 	movw r28,r24
 	ldd r22,Z+30
@@ -699,10 +623,10 @@ _ZN3Pin7setDutyEh:
 	std Z+1,r23
 	st Z,r22
 	ldi r24,lo8(1)
-	rjmp .L26
-.L27:
+	rjmp .L33
+.L34:
 	ldi r24,0
-.L26:
+.L33:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -734,7 +658,7 @@ _ZN3Pin7setFreqEj:
 	ldd r18,Z+9
 	cpi r18,lo8(3)
 	breq .+2
-	rjmp .L30
+	rjmp .L37
 	movw r14,r22
 	movw r28,r24
 	ldd r24,Z+30
@@ -788,10 +712,10 @@ _ZN3Pin7setFreqEj:
 	std Z+1,r25
 	st Z,r24
 	ldi r24,lo8(1)
-	rjmp .L29
-.L30:
+	rjmp .L36
+.L37:
 	ldi r24,0
-.L29:
+.L36:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -843,42 +767,42 @@ _ZN3Pin10analogReadE6_ADMUX17_ADCSRA_PRESCALER19_ADCSRB_AUTOTRIGGER:
 	movw r30,r24
 	ldd r19,Z+9
 	tst r19
-	breq .L36
+	breq .L43
 	ldd r24,Z+6
 	ldd r25,Z+7
 	cpi r24,-1
 	ldi r31,-1
 	cpc r25,r31
-	breq .L33
+	breq .L40
 	ldi r23,0
 	or r23,r18
 	or r24,r22
 	or r25,r23
 	lds r18,122
 	cpse r18,__zero_reg__
-	rjmp .L34
+	rjmp .L41
 	lds r18,122
 	ori r18,lo8(-128)
 	or r20,r18
 	sts 122,r20
-.L34:
+.L41:
 	lds r18,122
 	sts 123,r25
 	sts 124,r24
 	lds r24,122
 	ori r24,lo8(64)
 	sts 122,r24
-.L35:
+.L42:
 	lds r24,122
 	sbrc r24,6
-	rjmp .L35
+	rjmp .L42
 	lds r24,120
 	lds r25,120+1
 	ret
-.L36:
+.L43:
 	ldi r24,lo8(-1)
 	ldi r25,lo8(-1)
-.L33:
+.L40:
 	ret
 	.size	_ZN3Pin10analogReadE6_ADMUX17_ADCSRA_PRESCALER19_ADCSRB_AUTOTRIGGER, .-_ZN3Pin10analogReadE6_ADMUX17_ADCSRA_PRESCALER19_ADCSRB_AUTOTRIGGER
 .global	_ZN3Pin12getPinNumberEv
@@ -991,70 +915,100 @@ _ZN3Pin14calculateTicksEm:
 	movw r24,r22
 	ret
 	.size	_ZN3Pin14calculateTicksEm, .-_ZN3Pin14calculateTicksEm
+	.section	.rodata
+	.type	_ZL13_ADC_CHANNELS, @object
+	.size	_ZL13_ADC_CHANNELS, 32
+_ZL13_ADC_CHANNELS:
+	.word	0
+	.word	1
+	.word	2
+	.word	3
+	.word	4
+	.word	5
+	.word	6
+	.word	7
+	.word	8
+	.word	9
+	.word	10
+	.word	11
+	.word	12
+	.word	13
+	.word	14
+	.word	15
+	.data
+	.type	_ZL6timers, @object
+	.size	_ZL6timers, 12
+_ZL6timers:
+	.word	36
+	.word	128
+	.word	176
+	.word	144
+	.word	160
+	.word	288
 	.section	.progmem.data,"a",@progbits
 	.type	_ZL16_flashMappedPort, @object
 	.size	_ZL16_flashMappedPort, 350
 _ZL16_flashMappedPort:
 	.word	44
 	.byte	0
-	.word	4
+	.word	0
 	.word	44
 	.byte	1
-	.word	4
+	.word	0
 	.word	44
 	.byte	4
-	.word	11520
+	.word	4512
 	.word	44
 	.byte	5
-	.word	11776
+	.word	4544
 	.word	50
 	.byte	5
-	.word	8448
+	.word	4128
 	.word	44
 	.byte	3
-	.word	11264
+	.word	4480
 	.word	256
 	.byte	3
-	.word	12288
+	.word	4608
 	.word	256
 	.byte	4
-	.word	12544
+	.word	4640
 	.word	256
 	.byte	5
-	.word	12800
+	.word	4672
 	.word	256
 	.byte	6
-	.word	10496
+	.word	4384
 	.word	35
 	.byte	4
-	.word	10240
+	.word	4352
 	.word	35
 	.byte	5
-	.word	9216
+	.word	4224
 	.word	35
 	.byte	6
-	.word	9472
+	.word	4256
 	.word	35
 	.byte	7
-	.word	9728
+	.word	4288
 	.word	259
 	.byte	1
-	.word	7
+	.word	0
 	.word	259
 	.byte	0
-	.word	7
+	.word	0
 	.word	256
 	.byte	1
-	.word	6
+	.word	0
 	.word	256
 	.byte	0
-	.word	6
+	.word	0
 	.word	41
 	.byte	3
-	.word	5
+	.word	0
 	.word	41
 	.byte	2
-	.word	5
+	.word	0
 	.word	41
 	.byte	1
 	.word	0
@@ -1129,13 +1083,13 @@ _ZL16_flashMappedPort:
 	.word	0
 	.word	265
 	.byte	5
-	.word	13824
+	.word	4800
 	.word	265
 	.byte	4
-	.word	13568
+	.word	4768
 	.word	265
 	.byte	3
-	.word	13312
+	.word	4736
 	.word	265
 	.byte	2
 	.word	0
@@ -1159,51 +1113,51 @@ _ZL16_flashMappedPort:
 	.word	0
 	.word	47
 	.byte	0
-	.word	128
+	.word	16
 	.word	47
 	.byte	1
-	.word	136
+	.word	17
 	.word	47
 	.byte	2
-	.word	144
+	.word	18
 	.word	47
 	.byte	3
-	.word	152
+	.word	19
 	.word	47
 	.byte	4
-	.word	160
+	.word	20
 	.word	47
 	.byte	5
-	.word	168
+	.word	21
 	.word	47
 	.byte	6
-	.word	176
+	.word	22
 	.word	47
 	.byte	7
-	.word	184
+	.word	23
 	.word	262
 	.byte	0
-	.word	192
+	.word	24
 	.word	262
 	.byte	1
-	.word	200
+	.word	25
 	.word	262
 	.byte	2
-	.word	208
+	.word	26
 	.word	262
 	.byte	3
-	.word	216
+	.word	27
 	.word	262
 	.byte	4
-	.word	224
+	.word	28
 	.word	262
 	.byte	5
-	.word	232
+	.word	29
 	.word	262
 	.byte	6
-	.word	240
+	.word	30
 	.word	262
 	.byte	7
-	.word	248
+	.word	31
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data

@@ -65,3 +65,27 @@ static const PROGMEM MappedPort _flashMappedPort[] ={
 					(0<<isUART)|(0<<UART_SEL)}, //19 PCINT13
 
 };
+
+enum Analogx:uint8_t{
+				A0 = 14,
+				A1,
+				A2,
+				A3,
+				A4,
+				A5,
+				A6,
+				A7,
+};
+
+static uint16_t timers[] = {0x24,0x80,0xB0};
+
+static uint16_t _ADC_CHANNELS[16] = {
+			/*CHANNEL_00*/	 (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (0<<MUX0),
+			/*CHANNEL_01*/	 (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (1<<MUX0),
+			/*CHANNEL_02*/	 (0<<MUX3) | (0<<MUX2) | (1<<MUX1) | (0<<MUX0),
+			/*CHANNEL_03*/	 (0<<MUX3) | (0<<MUX2) | (1<<MUX1) | (1<<MUX0),
+			/*CHANNEL_04*/	 (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (0<<MUX0),
+			/*CHANNEL_05*/	 (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (1<<MUX0),
+			/*CHANNEL_06*/	 (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (0<<MUX0),
+			/*CHANNEL_07*/	 (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0),
+};

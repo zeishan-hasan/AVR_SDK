@@ -2028,64 +2028,64 @@ _ZN9Interrupt17interruptCallbackE:
 _ZL16_flashMappedPort:
 	.word	44
 	.byte	0
-	.word	4
+	.word	0
 	.word	44
 	.byte	1
-	.word	4
+	.word	0
 	.word	44
 	.byte	4
-	.word	11520
+	.word	4512
 	.word	44
 	.byte	5
-	.word	11776
+	.word	4544
 	.word	50
 	.byte	5
-	.word	8448
+	.word	4128
 	.word	44
 	.byte	3
-	.word	11264
+	.word	4480
 	.word	256
 	.byte	3
-	.word	12288
+	.word	4608
 	.word	256
 	.byte	4
-	.word	12544
+	.word	4640
 	.word	256
 	.byte	5
-	.word	12800
+	.word	4672
 	.word	256
 	.byte	6
-	.word	10496
+	.word	4384
 	.word	35
 	.byte	4
-	.word	10240
+	.word	4352
 	.word	35
 	.byte	5
-	.word	9216
+	.word	4224
 	.word	35
 	.byte	6
-	.word	9472
+	.word	4256
 	.word	35
 	.byte	7
-	.word	9728
+	.word	4288
 	.word	259
 	.byte	1
-	.word	7
+	.word	0
 	.word	259
 	.byte	0
-	.word	7
+	.word	0
 	.word	256
 	.byte	1
-	.word	6
+	.word	0
 	.word	256
 	.byte	0
-	.word	6
+	.word	0
 	.word	41
 	.byte	3
-	.word	5
+	.word	0
 	.word	41
 	.byte	2
-	.word	5
+	.word	0
 	.word	41
 	.byte	1
 	.word	0
@@ -2160,13 +2160,13 @@ _ZL16_flashMappedPort:
 	.word	0
 	.word	265
 	.byte	5
-	.word	13824
+	.word	4800
 	.word	265
 	.byte	4
-	.word	13568
+	.word	4768
 	.word	265
 	.byte	3
-	.word	13312
+	.word	4736
 	.word	265
 	.byte	2
 	.word	0
@@ -2190,52 +2190,52 @@ _ZL16_flashMappedPort:
 	.word	0
 	.word	47
 	.byte	0
-	.word	128
+	.word	16
 	.word	47
 	.byte	1
-	.word	136
+	.word	17
 	.word	47
 	.byte	2
-	.word	144
+	.word	18
 	.word	47
 	.byte	3
-	.word	152
+	.word	19
 	.word	47
 	.byte	4
-	.word	160
+	.word	20
 	.word	47
 	.byte	5
-	.word	168
+	.word	21
 	.word	47
 	.byte	6
-	.word	176
+	.word	22
 	.word	47
 	.byte	7
-	.word	184
+	.word	23
 	.word	262
 	.byte	0
-	.word	192
+	.word	24
 	.word	262
 	.byte	1
-	.word	200
+	.word	25
 	.word	262
 	.byte	2
-	.word	208
+	.word	26
 	.word	262
 	.byte	3
-	.word	216
+	.word	27
 	.word	262
 	.byte	4
-	.word	224
+	.word	28
 	.word	262
 	.byte	5
-	.word	232
+	.word	29
 	.word	262
 	.byte	6
-	.word	240
+	.word	30
 	.word	262
 	.byte	7
-	.word	248
+	.word	31
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data
 .global __do_clear_bss

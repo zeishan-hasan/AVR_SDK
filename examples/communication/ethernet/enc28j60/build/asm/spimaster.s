@@ -97,28 +97,26 @@ _ZN3PinC2Ev:
 	ldi r25,lo8(-1)
 	std Z+7,r25
 	std Z+6,r24
-	ldi r24,lo8(-1)
-	ldi r25,0
-	std Z+11,r25
-	std Z+10,r24
-	std Z+13,r25
-	std Z+12,r24
-	std Z+15,r25
-	std Z+14,r24
-	std Z+17,r25
-	std Z+16,r24
-	std Z+19,r25
-	std Z+18,r24
-	std Z+21,r25
-	std Z+20,r24
-	std Z+23,r25
-	std Z+22,r24
-	std Z+25,r25
-	std Z+24,r24
-	std Z+27,r25
-	std Z+26,r24
-	std Z+29,r25
-	std Z+28,r24
+	std Z+11,__zero_reg__
+	std Z+10,__zero_reg__
+	std Z+13,__zero_reg__
+	std Z+12,__zero_reg__
+	std Z+15,__zero_reg__
+	std Z+14,__zero_reg__
+	std Z+17,__zero_reg__
+	std Z+16,__zero_reg__
+	std Z+19,__zero_reg__
+	std Z+18,__zero_reg__
+	std Z+21,__zero_reg__
+	std Z+20,__zero_reg__
+	std Z+23,__zero_reg__
+	std Z+22,__zero_reg__
+	std Z+25,__zero_reg__
+	std Z+24,__zero_reg__
+	std Z+27,__zero_reg__
+	std Z+26,__zero_reg__
+	std Z+29,__zero_reg__
+	std Z+28,__zero_reg__
 	ret
 	.size	_ZN3PinC2Ev, .-_ZN3PinC2Ev
 	.weak	_ZN3PinC1Ev
