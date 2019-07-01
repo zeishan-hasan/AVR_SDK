@@ -26,6 +26,10 @@ int main(){
 	serial0->setEchoServer(false);
 	serial0->clear();
 
+
+
+	//asd.setPWM(2000,50);
+
 	//_delay_ms(2000);
 	//Enc28j60 encj2860;
 	//encj2860.setSPI(MISO,MOSI,SCK,SS);
@@ -154,8 +158,10 @@ ff ff ff ff ff ff
 	//ptr(0);
 	eth_header_t _eth;
 	arp_header_t _arp;
+	//DDRB = 0x80;
+
 	while(1){
-		serial0->printf("Ciao dal mega\r\n");
+		//serial0->printf("Ciao dal mega\r\n");
 		//encj2860._spi_writeControlReg(REG_EIR, 0x00);
 		//serial0->clear();
 		//serial0->printf("\r\n");
@@ -220,6 +226,7 @@ ff ff ff ff ff ff
 			//	serial0->printf(" %02X ", buff[i]);
 			//}
 			//serial0->printf("\r\n");
+
 	//}
 		_delay_ms(500);
 	}

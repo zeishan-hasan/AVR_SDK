@@ -7,6 +7,7 @@ Enc28j60::Enc28j60()
 
 void Enc28j60::init()
 {
+
 	if (_spi->isInitilizedSPI() == false){
 		setSPI(DEF_SPI_MISO, DEF_SPI_MOSI, DEF_SPI_SCK, DEF_SPI_SS);
 	}
@@ -14,7 +15,7 @@ void Enc28j60::init()
 
 	_self.nextPacketPtr = ENC28J60_RX_BUFFER_START;
 	if(_spi_setBuffers()){
-		dbg("Buffers set ok\r\n");
+	//	dbg("Buffers set ok\r\n");
 	}
 
 
@@ -473,7 +474,7 @@ void Enc28j60::dumpBank()
 {
 	_spi_selectBank(0);
 	for(u8t i = 0; i <= 0x1F; ++i){
-		serial->printf(" 0x%02x 0x%02x\r\n", i, _spi_readControlReg((ENC28J60_REGS)i));
+	//	serial->printf(" 0x%02x 0x%02x\r\n", i, _spi_readControlReg((ENC28J60_REGS)i));
 	}
 }
 

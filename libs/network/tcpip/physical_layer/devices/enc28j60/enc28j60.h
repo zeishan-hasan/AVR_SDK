@@ -4,7 +4,7 @@
 #include <string>
 #include <macros.h>
 #include <net_utils.h>
-#include <serial.h>
+//#include <serial.h>
 #include <interrupt.h>
 #include <functional>
 ///@file
@@ -592,8 +592,13 @@ enum ENC28J60_EBSTCON_REG_CFG {
 #define DEF_SPI_MOSI 51
 #define DEF_SPI_SCK 52
 #define DEF_SPI_SS 53
-#endif
 
+#elif (__AVR_ATmega328P__)
+#define DEF_SPI_SS 10
+#define DEF_SPI_MOSI 11
+#define DEF_SPI_MISO 12
+#define DEF_SPI_SCK 13
+#endif
 /**
 	* @brief The ENC28J60_REGS enum
 	*
@@ -804,7 +809,7 @@ public:
 static void _callback(u8t pin, void *context);
 
 	//---- Remove me ----//
-	Serial *serial = SerialManager::getInstance(SERIAL0);
+	//Serial *serial;
 	void  dumpBank();
 
 };

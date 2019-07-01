@@ -4,9 +4,9 @@ ASM_DIR 	= $(BUILD_DIR)/asm
 FIRMW_DIR 	= firmware
 LIBS_DIR	= libs
 
-PROGRAMMER 		= stk500v2 
-MPROG 			= m2560
-MICROCONTROLLER = atmega2560
+#PROGRAMMER 		= stk500v2 
+#MPROG 			= m2560
+#MICROCONTROLLER = atmega2560
 F_CPU = 16000000
 
 CXX = avr-g++
@@ -36,17 +36,17 @@ CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)
 LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
 
 # Select programmer (default: stk500v2)
-PROGRAMMER ?= atmelice_isp 
+PROGRAMMER ?= stk500v1 
 # Select mprog (default: m2560)
-MPROG ?= m2560
+MPROG ?= m328p
 # Select microntroller (default: atmega2560)
-MICROCONTROLLER ?= atmega2560
+MICROCONTROLLER ?= atmega328p
 
 
 # Flash port (default: /dev/ttyUSB0)
 FLASH_PORT ?= /dev/ttyUSB0
 # Flash Baudrate (default: 115200)
-FLASH_BAUDRATE ?= 115200
+FLASH_BAUDRATE ?= 57600
 # Com Port (default: /dev/ttyUSB0)
 COM_PORT ?= /dev/ttyUSB0
 # Com Baudrate (default: 1000000)

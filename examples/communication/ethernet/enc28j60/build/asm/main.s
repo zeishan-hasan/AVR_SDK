@@ -81,17 +81,24 @@ _Z4funch:
 	pop r28
 	ret
 	.size	_Z4funch, .-_Z4funch
-	.section	.rodata.str1.1
-.LC4:
-	.string	"Ciao dal mega\r\n"
 	.section	.text.startup,"ax",@progbits
 .global	main
 	.type	main, @function
 main:
+	push r28
+	push r29
+	in r28,__SP_L__
+	in r29,__SP_H__
+	sbiw r28,37
+	in __tmp_reg__,__SREG__
+	cli
+	out __SP_H__,r29
+	out __SREG__,__tmp_reg__
+	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 0 */
-/* stack size = 0 */
-.L__stack_usage = 0
+/* frame size = 37 */
+/* stack size = 39 */
+.L__stack_usage = 39
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	or r24,r25
@@ -134,31 +141,32 @@ main:
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
 	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
 .L5:
-	lds r28,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r29,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
+	lds r16,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
+	lds r17,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	ldi r18,0
 	ldi r20,lo8(64)
 	ldi r21,lo8(66)
 	ldi r22,lo8(15)
 	ldi r23,0
-	movw r24,r28
+	movw r24,r16
 	call _ZN6Serial4initE4UART14SerialPriority
 	ldi r22,0
-	movw r24,r28
+	movw r24,r16
 	call _ZN6Serial16setRxISRCallBackEb
 	ldi r22,0
-	movw r24,r28
+	movw r24,r16
 	call _ZN6Serial13setEchoServerEb
-	movw r24,r28
+	movw r24,r16
 	call _ZN6Serial5clearEv
-	ldi r16,lo8(.LC4)
-	ldi r17,hi8(.LC4)
+	ldi r20,lo8(1)
+	ldi r22,lo8(13)
+	movw r24,r28
+	adiw r24,1
+	call _ZN3PinC1Eh4DDRx
 .L6:
-	push r17
-	push r16
-	push r29
-	push r28
-	call _ZN6Serial6printfEPKcz
+	movw r24,r28
+	adiw r24,1
+	call _ZN3Pin6toggleEv
 	ldi r18,lo8(1599999)
 	ldi r24,hi8(1599999)
 	ldi r25,hlo8(1599999)
@@ -168,10 +176,6 @@ main:
 	brne 1b
 	rjmp .
 	nop
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
 	rjmp .L6
 	.size	main, .-main
 .global	debug

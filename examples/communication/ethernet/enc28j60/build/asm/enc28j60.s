@@ -9,93 +9,42 @@ __zero_reg__ = 1
 .global	_ZN8Enc28j60C2Ev
 	.type	_ZN8Enc28j60C2Ev, @function
 _ZN8Enc28j60C2Ev:
-	push r28
-	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 2 */
-.L__stack_usage = 2
-	movw r28,r24
+/* stack size = 0 */
+.L__stack_usage = 0
+	movw r30,r24
 	ldi r24,lo8(-96)
-	std Y+2,r24
+	std Z+2,r24
 	ldi r24,lo8(-79)
-	std Y+3,r24
+	std Z+3,r24
 	ldi r24,lo8(-62)
-	std Y+4,r24
+	std Z+4,r24
 	ldi r24,lo8(-45)
-	std Y+5,r24
+	std Z+5,r24
 	ldi r24,lo8(-28)
-	std Y+6,r24
+	std Z+6,r24
 	ldi r24,lo8(-11)
-	std Y+7,r24
-	std Y+8,__zero_reg__
+	std Z+7,r24
+	std Z+8,__zero_reg__
 	ldi r24,lo8(1)
-	std Y+9,r24
-	std Y+10,__zero_reg__
-	std Y+14,__zero_reg__
-	std Y+13,__zero_reg__
+	std Z+9,r24
+	std Z+10,__zero_reg__
+	std Z+14,__zero_reg__
+	std Z+13,__zero_reg__
 	ldi r18,lo8(-1)
 	ldi r19,lo8(23)
-	std Y+16,r19
-	std Y+15,r18
+	std Z+16,r19
+	std Z+15,r18
 	ldi r18,0
 	ldi r19,lo8(24)
-	std Y+18,r19
-	std Y+17,r18
+	std Z+18,r19
+	std Z+17,r18
 	ldi r18,lo8(-1)
 	ldi r19,lo8(31)
-	std Y+20,r19
-	std Y+19,r18
-	std Y+21,r24
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	or r24,r25
-	brne .L2
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-64)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-63)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-62)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-59)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-60)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-58)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
-.L2:
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	std Y+25,r25
-	std Y+24,r24
-/* epilogue start */
-	pop r29
-	pop r28
+	std Z+20,r19
+	std Z+19,r18
+	std Z+21,r24
 	ret
 	.size	_ZN8Enc28j60C2Ev, .-_ZN8Enc28j60C2Ev
 .global	_ZN8Enc28j60C1Ev
@@ -184,20 +133,20 @@ _ZN8Enc28j6016_spi_writeOpCodeEhPhj:
 	ldd r25,Z+1
 	call _ZN9MasterSPI8transferEh
 	sbiw r28,0
-	breq .L7
+	breq .L5
 	add r14,r28
 	adc r15,r29
-.L8:
+.L6:
 	cp r28,r14
 	cpc r29,r15
-	breq .L7
+	breq .L5
 	ld r22,Y+
 	movw r30,r16
 	ld r24,Z
 	ldd r25,Z+1
 	call _ZN9MasterSPI8transferEh
-	rjmp .L8
-.L7:
+	rjmp .L6
+.L5:
 	ldi r22,0
 	movw r30,r16
 	ld r24,Z
@@ -242,13 +191,13 @@ _ZN8Enc28j6015_spi_readOpcodeEj:
 	clr r16
 	andi r17,12
 	or r16,r17
-	breq .L13
+	breq .L12
 	ldi r22,0
 	ld r24,Y
 	ldd r25,Y+1
 	call _ZN9MasterSPI8transferEh
 	mov r15,r24
-.L13:
+.L12:
 	ldi r22,0
 	ld r24,Y
 	ldd r25,Y+1
@@ -278,11 +227,11 @@ _ZN8Enc28j6015_spi_selectBankEh:
 /* stack size = 6 */
 .L__stack_usage = 6
 	cpi r22,lo8(4)
-	brsh .L17
+	brsh .L16
 	movw r30,r24
 	ldd r18,Z+10
 	cp r22,r18
-	breq .L17
+	breq .L16
 	mov r17,r22
 	movw r14,r24
 	std Z+10,r22
@@ -301,7 +250,7 @@ _ZN8Enc28j6015_spi_selectBankEh:
 	ldi r22,lo8(95)
 	movw r24,r14
 	call _ZN8Enc28j6016_spi_writeOpCodeEhPhj
-.L17:
+.L16:
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -403,7 +352,7 @@ _ZN8Enc28j609_callbackEhPv:
 .L__stack_usage = 2
 	cp r22,__zero_reg__
 	cpc r23,__zero_reg__
-	breq .L22
+	breq .L21
 	movw r28,r22
 	ldi r20,0
 	ldi r22,lo8(28)
@@ -413,13 +362,13 @@ _ZN8Enc28j609_callbackEhPv:
 	ldd r30,Y+22
 	ldd r31,Y+23
 	sbiw r30,0
-	breq .L22
+	breq .L21
 	ldi r24,lo8(3)
 /* epilogue start */
 	pop r29
 	pop r28
 	eijmp
-.L22:
+.L21:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -507,13 +456,13 @@ _ZN8Enc28j6013_spi_writePhyE16ENC28J60_PHY_REGj:
 	ldi r23,lo8(10)
 	movw r24,r28
 	call _ZN8Enc28j6020_spi_writeControlRegE13ENC28J60_REGSh
-.L33:
+.L32:
 	ldi r22,lo8(10)
 	ldi r23,lo8(11)
 	movw r24,r28
 	call _ZN8Enc28j6019_spi_readControlRegE13ENC28J60_REGS
 	sbrc r24,0
-	rjmp .L33
+	rjmp .L32
 /* epilogue start */
 	pop r29
 	pop r28
@@ -632,13 +581,13 @@ _ZN8Enc28j6012_spi_readPhyE16ENC28J60_PHY_REG:
 	ldi r20,lo8(80)
 1:	dec r20
 	brne 1b
-.L38:
+.L37:
 	ldi r22,lo8(10)
 	ldi r23,lo8(11)
 	movw r24,r28
 	call _ZN8Enc28j6019_spi_readControlRegE13ENC28J60_REGS
 	sbrc r24,0
-	rjmp .L38
+	rjmp .L37
 	ldi r20,lo8(1)
 	ldi r22,lo8(18)
 	ldi r23,lo8(10)
@@ -697,13 +646,13 @@ _ZN8Enc28j6010_spi_resetEv:
 	ldi r21,0
 	ldi r22,lo8(-1)
 	call _ZN8Enc28j6016_spi_writeOpCodeEhPhj
-.L42:
+.L41:
 	ldi r22,lo8(29)
 	ldi r23,0
 	movw r24,r28
 	call _ZN8Enc28j6019_spi_readControlRegE13ENC28J60_REGS
 	tst r24
-	breq .L42
+	breq .L41
 /* epilogue start */
 	pop r29
 	pop r28
@@ -740,18 +689,18 @@ _ZN8Enc28j6015_spi_readBufferEPhj:
 	movw r28,r12
 	add r16,r12
 	adc r17,r13
-.L47:
+.L46:
 	movw r30,r14
 	ld r24,Z
 	ldd r25,Z+1
 	ldi r22,0
 	cp r28,r16
 	cpc r29,r17
-	breq .L46
+	breq .L45
 	call _ZN9MasterSPI8transferEh
 	st Y+,r24
-	rjmp .L47
-.L46:
+	rjmp .L46
+.L45:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -789,7 +738,7 @@ _ZN8Enc28j6013receivePacketEPhj:
 	call _ZN8Enc28j6019_spi_readControlRegE13ENC28J60_REGS
 	tst r24
 	brne .+2
-	rjmp .L54
+	rjmp .L53
 	ldd r20,Y+11
 	ldi r22,0
 	ldi r23,0
@@ -836,7 +785,7 @@ _ZN8Enc28j6013receivePacketEPhj:
 	movw r24,r28
 	call _ZN8Enc28j6015_spi_readOpcodeEj
 	sbrs r10,7
-	rjmp .L55
+	rjmp .L54
 	movw r24,r14
 	sbiw r24,1
 	ldi r17,0
@@ -845,31 +794,31 @@ _ZN8Enc28j6013receivePacketEPhj:
 	sbc r17,__zero_reg__
 	cp r24,r16
 	cpc r25,r17
-	brsh .L51
+	brsh .L50
 	movw r16,r24
-.L51:
+.L50:
 	movw r20,r14
 	movw r22,r12
 	movw r24,r28
 	call _ZN8Enc28j6015_spi_readBufferEPhj
-	rjmp .L50
-.L55:
+	rjmp .L49
+.L54:
 	ldi r16,0
 	ldi r17,0
-.L50:
+.L49:
 	ldd r20,Y+11
 	ldd r21,Y+12
 	cp r20,__zero_reg__
 	cpc r21,__zero_reg__
-	brne .L52
+	brne .L51
 	ldi r20,lo8(-1)
 	ldi r22,lo8(12)
 	ldi r23,0
 	movw r24,r28
 	call _ZN8Enc28j6020_spi_writeControlRegE13ENC28J60_REGSh
 	ldi r20,lo8(23)
-	rjmp .L56
-.L52:
+	rjmp .L55
+.L51:
 	subi r20,lo8(-(-1))
 	ldi r22,lo8(12)
 	ldi r23,0
@@ -879,7 +828,7 @@ _ZN8Enc28j6013receivePacketEPhj:
 	ldd r25,Y+12
 	sbiw r24,1
 	mov r20,r25
-.L56:
+.L55:
 	ldi r22,lo8(13)
 	ldi r23,0
 	movw r24,r28
@@ -890,11 +839,11 @@ _ZN8Enc28j6013receivePacketEPhj:
 	movw r24,r28
 	call _ZN8Enc28j6016_spi_bitFieldSetE13ENC28J60_REGSh
 	movw r24,r16
-	rjmp .L49
-.L54:
+	rjmp .L48
+.L53:
 	ldi r24,0
 	ldi r25,0
-.L49:
+.L48:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -945,17 +894,17 @@ _ZN8Enc28j6016_spi_writeBufferEPhj:
 	movw r28,r12
 	add r14,r12
 	adc r15,r13
-.L59:
+.L58:
 	movw r30,r16
 	ld r24,Z
 	ldd r25,Z+1
 	cp r28,r14
 	cpc r29,r15
-	breq .L58
+	breq .L57
 	ld r22,Y+
 	call _ZN9MasterSPI8transferEh
-	rjmp .L59
-.L58:
+	rjmp .L58
+.L57:
 	ldi r22,0
 /* epilogue start */
 	pop r29
@@ -1049,10 +998,10 @@ _ZN8Enc28j6020_spi_setRxBufferSizeEj:
 	movw r28,r24
 	cp r22,__zero_reg__
 	cpc r23,__zero_reg__
-	breq .L62
+	breq .L61
 	std Y+16,r23
 	std Y+15,r22
-.L62:
+.L61:
 	ldd r20,Y+14
 	ldi r22,lo8(9)
 	ldi r23,0
@@ -1126,20 +1075,20 @@ _ZN8Enc28j6020_spi_setTxBufferSizeEj:
 	std Y+17,r24
 	cp r22,__zero_reg__
 	cpc r23,__zero_reg__
-	breq .L68
+	breq .L67
 	add r22,r24
 	adc r23,r25
 	std Y+20,r23
 	std Y+19,r22
 	cp r22,__zero_reg__
 	sbci r23,32
-	brlo .L69
-.L68:
+	brlo .L68
+.L67:
 	ldi r18,lo8(-1)
 	ldi r19,lo8(31)
 	std Y+20,r19
 	std Y+19,r18
-.L69:
+.L68:
 	mov r20,r25
 	ldi r22,lo8(5)
 	ldi r23,0
@@ -1364,7 +1313,7 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	ldd r24,Y+21
 	tst r24
 	brne .+2
-	rjmp .L78
+	rjmp .L77
 	ldi r22,lo8(5)
 	ldi r23,0
 	movw r24,r28
@@ -1382,9 +1331,9 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	ldi r16,lo8(1)
 	cp r18,__zero_reg__
 	sbci r19,24
-	breq .L79
+	breq .L78
 	ldi r16,0
-.L79:
+.L78:
 	ldi r22,lo8(9)
 	ldi r23,0
 	movw r24,r28
@@ -1400,9 +1349,9 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	clr r18
 	or r18,r24
 	or r18,r19
-	brne .L80
+	brne .L79
 	subi r16,lo8(-(1))
-.L80:
+.L79:
 	ldi r22,lo8(13)
 	ldi r23,0
 	movw r24,r28
@@ -1418,9 +1367,9 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	clr r18
 	or r18,r24
 	or r18,r19
-	brne .L81
+	brne .L80
 	subi r16,lo8(-(1))
-.L81:
+.L80:
 	ldi r22,lo8(11)
 	ldi r23,0
 	movw r24,r28
@@ -1437,13 +1386,13 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	or r18,r24
 	cpi r18,-1
 	sbci r19,23
-	brne .L78
+	brne .L77
 	ldi r24,lo8(1)
 	cpi r16,lo8(3)
-	breq .L87
-.L78:
+	breq .L86
+.L77:
 	ldi r24,0
-.L87:
+.L86:
 /* epilogue start */
 	pop r29
 	pop r28
@@ -1466,6 +1415,52 @@ _ZN8Enc28j604initEv:
 /* stack size = 3 */
 .L__stack_usage = 3
 	movw r28,r24
+	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
+	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
+	or r24,r25
+	brne .L94
+	ldi r24,lo8(22)
+	ldi r25,lo8(1)
+	call _Znwj
+	movw r30,r24
+	subi r30,-7
+	sbci r31,-2
+	ldi r18,lo8(-64)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	adiw r30,2
+	ldi r18,lo8(-63)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	adiw r30,2
+	ldi r18,lo8(-62)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	adiw r30,2
+	ldi r18,lo8(-59)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	adiw r30,2
+	ldi r18,lo8(-60)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	adiw r30,2
+	ldi r18,lo8(-58)
+	ldi r19,0
+	std Z+1,r19
+	st Z,r18
+	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
+	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
+.L94:
+	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
+	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
+	std Y+25,r25
+	std Y+24,r24
 	ld r24,Y
 	ldd r25,Y+1
 	call _ZN9MasterSPI15isInitilizedSPIEv

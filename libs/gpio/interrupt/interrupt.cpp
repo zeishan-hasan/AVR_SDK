@@ -53,12 +53,16 @@ bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void
 			break;
 		}
 		switch (_pinHW.EICRx) {
+#if defined (__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		case 0:
 			EICRA |= _hw_edge;
 			break;
+#endif
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 		case 1:
 			EICRB |= _hw_edge;
 			break;
+#endif
 		}
 		EIMSK |= (1<<_pinHW.bitField);
 		*_pinHW.interruptCallback = func;
@@ -68,8 +72,8 @@ bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void
 
 	}
 	if( edge == NEGATIVE_EDGE){
-		*((volatile uint8_t*)pgm_read_word(&_flashMappedPort[pin].pinx) + 2 ) |=
-				(1 << (pgm_read_byte( &_flashMappedPort[pin].registerBit)));
+		*((volatile uint8_t*)pgm_read_word(&__flashMappedPort[pin].pinx) + 2 ) |=
+				(1 << (pgm_read_byte( &__flashMappedPort[pin].registerBit)));
 	}
 
 	return false;
@@ -286,7 +290,7 @@ ISR(PCINT0_vect){
 		if(is_bit_on(changed_bits,i)){
 			f	 	  = *vectB[i].interruptCallback;
 			pin	 	= pcint_vect[ vectB[i].interruptCallback-pcint_vect[0].interruptCallback ].mappedPin;
-			PINx 	= (volatile uint8_t*)pgm_read_word(&_flashMappedPort[pin].pinx);
+			PINx 	= (volatile uint8_t*)pgm_read_word(&__flashMappedPort[pin].pinx);
 			edgeMode		= *vectB[i].px_edge;
 			registerBit = i;
 			break;
@@ -301,6 +305,7 @@ ISR(PCINT0_vect){
 
 
 //----------DA VERIFICARE PINH----------//
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 volatile uint8_t port_j_history = PINJ;
 ISR(PCINT1_vect){
 	volatile uint8_t changed_bits_j = PINJ ^ port_j_history;
@@ -316,7 +321,7 @@ ISR(PCINT1_vect){
 		if(is_bit_on(changed_bits_j,i)){
 			f			= *vectJ[i].interruptCallback;
 			pin			= pcint_vect[ vectJ[i].interruptCallback-pcint_vect[0].interruptCallback ].mappedPin;
-			PINx		= (volatile uint8_t*)pgm_read_word(&_flashMappedPort[pin].pinx);
+			PINx		= (volatile uint8_t*)pgm_read_word(&__flashMappedPort[pin].pinx);
 			edgeMode		= *vectJ[i].px_edge;
 			registerBit = i;
 			break;
@@ -346,7 +351,7 @@ ISR (PCINT2_vect) {
 		if(is_bit_on(changed_bits,i)){
 			f           = *vectK[i].interruptCallback;
 			pin         = pcint_vect[ vectK[i].interruptCallback-pcint_vect[0].interruptCallback ].mappedPin;
-			PINx        = (volatile uint8_t*)pgm_read_word(&_flashMappedPort[pin].pinx);
+			PINx        = (volatile uint8_t*)pgm_read_word(&__flashMappedPort[pin].pinx);
 			edgeMode    = *vectK[i].px_edge;
 			registerBit = i;
 			if(f!=nullptr){
@@ -355,7 +360,7 @@ ISR (PCINT2_vect) {
 		}
 	}
 }
-
+#endif
 
 
 
@@ -403,10 +408,10 @@ ISR(INT5_vect){
 	sei();
 }
 
-
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 ISR(INT6_vect){}// Not working with arduino merda
 ISR(INT7_vect){}// Not working with arduino merda
-
+#endif
 
 
 

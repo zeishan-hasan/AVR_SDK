@@ -368,8 +368,8 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	movw r24,r0
 	clr __zero_reg__
 	movw r30,r24
-	subi r30,lo8(-(_ZL16_flashMappedPort+2))
-	sbci r31,hi8(-(_ZL16_flashMappedPort+2))
+	subi r30,lo8(-(_ZL17__flashMappedPort+2))
+	sbci r31,hi8(-(_ZL17__flashMappedPort+2))
 /* #APP */
  ;  72 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r18, Z
@@ -377,8 +377,8 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
  ;  0 "" 2
 /* #NOAPP */
 	movw r30,r24
-	subi r30,lo8(-(_ZL16_flashMappedPort))
-	sbci r31,hi8(-(_ZL16_flashMappedPort))
+	subi r30,lo8(-(_ZL17__flashMappedPort))
+	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
  ;  71 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r26, Z+
@@ -769,8 +769,8 @@ __vector_9:
 	mul r16,r20
 	movw r30,r0
 	clr __zero_reg__
-	subi r30,lo8(-(_ZL16_flashMappedPort))
-	sbci r31,hi8(-(_ZL16_flashMappedPort))
+	subi r30,lo8(-(_ZL17__flashMappedPort))
+	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
  ;  289 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
@@ -909,8 +909,8 @@ __vector_10:
 	mul r16,r19
 	movw r30,r0
 	clr __zero_reg__
-	subi r30,lo8(-(_ZL16_flashMappedPort))
-	sbci r31,hi8(-(_ZL16_flashMappedPort))
+	subi r30,lo8(-(_ZL17__flashMappedPort))
+	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
  ;  319 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
@@ -1046,8 +1046,8 @@ __vector_11:
 	mul r15,r16
 	movw r30,r0
 	clr __zero_reg__
-	subi r30,lo8(-(_ZL16_flashMappedPort))
-	sbci r31,hi8(-(_ZL16_flashMappedPort))
+	subi r30,lo8(-(_ZL17__flashMappedPort))
+	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
  ;  349 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
@@ -2023,9 +2023,9 @@ pcint_vect:
 _ZN9Interrupt17interruptCallbackE:
 	.zero	81
 	.section	.progmem.data,"a",@progbits
-	.type	_ZL16_flashMappedPort, @object
-	.size	_ZL16_flashMappedPort, 350
-_ZL16_flashMappedPort:
+	.type	_ZL17__flashMappedPort, @object
+	.size	_ZL17__flashMappedPort, 350
+_ZL17__flashMappedPort:
 	.word	44
 	.byte	0
 	.word	0
@@ -2067,7 +2067,7 @@ _ZL16_flashMappedPort:
 	.word	4256
 	.word	35
 	.byte	7
-	.word	4288
+	.word	5312
 	.word	259
 	.byte	1
 	.word	0
