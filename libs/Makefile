@@ -24,7 +24,7 @@ lib: $(CXX_OBJS)
 	@echo "Creating library"
 	@avr-ar rcs $(STATICLIB_DIR)/$(LIBNAME) $(BUILD_DIR)/*.o
 	@echo "Removing $(BUILD_DIR)/*.o"
-	@rm -rf $(BUILD_DIR)
+	#@rm -rf $(BUILD_DIR)
 #
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"

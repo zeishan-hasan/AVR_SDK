@@ -550,7 +550,7 @@ _ZN7Rdm630012setBuzzerPinEh:
 .L__stack_usage = 5
 	movw r16,r24
 	mov r15,r22
-	ldi r24,lo8(37)
+	ldi r24,lo8(36)
 	ldi r25,0
 	call _Znwj
 	movw r28,r24

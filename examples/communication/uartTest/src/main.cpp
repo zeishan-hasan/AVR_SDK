@@ -1,6 +1,6 @@
 #include "avr_sdk.h"
 
-
+bool debug = false;
 
 int main(){
 
@@ -9,13 +9,13 @@ int main(){
 	serial0->setRxISRCallBack(false);
 	serial0->setEchoServer(false);
 
-	Serial *serial3 = SerialManager::getInstance(SERIAL3);
-	serial3->init(BAUD_115200,_LOW_PRIORITY);
-	serial3->setRxISRCallBack(true);
-	serial3->setEchoServer(false);
+	//Serial *serial3 = SerialManager::getInstance(SERIAL3);
+	//serial3->init(BAUD_115200,_LOW_PRIORITY);
+	//serial3->setRxISRCallBack(true);
+	//serial3->setEchoServer(false);
 
 	while (1) {
-		serial0->printf("Ciao dal firmware");
+		serial0->printf("Ciao dal firmware\r\n");
 		_delay_ms(500);
 	}
 

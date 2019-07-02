@@ -12,37 +12,36 @@ F_CPU = 16000000
 CXX = avr-g++
 CC  = avr-gcc
 
-CXX_SRCS := $(shell find $(LIBS_DIR)/ -type f -regex ".*\.cpp") \
-			$(shell find $(SRC_DIR)/ -type f -regex ".*\.cpp") 
+CXX_SRCS := $(shell find $(SRC_DIR)/ -type f -regex ".*\.cpp") 
 CXX_OBJS  = $(CXX_SRCS:.cpp=.o)
 
-ASM_SRCS  = $(shell find $(LIBS_DIR)/ -type f -regex ".*\.s") \
-			$(shell find $(SRC_DIR)/ -type f -regex ".*\.s")
-ASM_OBJS  = $(ASM_SRCS:.s=.o)
-SDK_PATH = $(shell dirname $(shell readlink -f Makefile))
-#SDK_PATH = /Users/yanujzyanujz/Documents/GitHub/AVR_SDK
+#ASM_SRCS  = $(shell find $(LIBS_DIR)/ -type f -regex ".*\.s") \
+#			$(shell find $(SRC_DIR)/ -type f -regex ".*\.s")
+#ASM_OBJS  = $(ASM_SRCS:.s=.o)
+#SDK_PATH = $(shell dirname $(shell readlink -f Makefile))
+SDK_PATH = /home/zetes/Documents/GitHub/AVR_SDK
 STL= $(SDK_PATH)/standardCpp
-#INCLUDE_DIR := -I include -I /usr/lib/avr/include -I libs \
-#	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
+
+#INCLUDE_DIR := -I /usr/lib/avr/include -I libs \
 #	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  *.h -exec dirname {} \;)) \
+#	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  *.h -exec dirname {} \;)) \
 #
-INCLUDE_DIR := -I /usr/lib/avr/include -I $(STL) -I $(SDK_PATH)/libs \
-	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.h' -exec dirname {} \; | sort| uniq)) \
+INCLUDE_DIR := -I /usr/lib/avr/include  \
 	$(addprefix -I ,$(shell find $(SRC_DIR)/ -name  '*.h' -exec dirname {} \; | sort| uniq)) \
-	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.inc' -exec dirname {} \; | sort| uniq))
+	#$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.h' -exec dirname {} \; | sort| uniq)) \
+	#$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.inc' -exec dirname {} \; | sort| uniq))
 
 
 CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)
-#LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
-LD_FLAGS  = -Wl,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk$(MICROCONTROLLER)_stl -L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_$(MICROCONTROLLER)
-
+LD_FLAGS  = -Wl,-gc-sections -ffunction-sections #-Wl,-L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_atmega328p
+#LD_FLAGS  = -Wl,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_atmega328p
 
 # Select programmer (default: stk500v2)
-PROGRAMMER ?= stk500v2 
+PROGRAMMER ?= arduino
 # Select mprog (default: m2560)
-MPROG ?= m2560
+MPROG ?= m328p
 # Select microntroller (default: atmega2560)
-MICROCONTROLLER ?= atmega2560
+MICROCONTROLLER ?= atmega328p
 
 
 # Flash port (default: /dev/ttyUSB0)
@@ -81,7 +80,7 @@ USERNAME = pi
 
 
 
-
+#avrdude -C/home/zetes/Downloads/arduino-1.8.9-linux64/arduino-1.8.9/hardware/tools/avr/etc/avrdude.conf -v -patmega328p -carduino -P/dev/ttyUSB0 -b115200 -D -Uflash:w:/tmp/arduino_build_366857/Blink.ino.hex:i 
 #
 all:createdir $(CXX_OBJS) $(ASM_OBJS) main.elf app size
 # Remote upload
@@ -91,14 +90,14 @@ ota:
 # Local upload
 upload: 
 	@killall hexdump putty 2>/dev/null || true
-	@avrdude -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
+	@avrdude -F -q -V -p $(MPROG) -D -c $(PROGRAMMER) -b $(FLASH_BAUDRATE) -P $(FLASH_PORT) -U flash:w:$(FIRMW_DIR)/main.hex:i
 #
 app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
 #
 main.elf: $(CXX_OBJS) $(ASM_OBJS)
-	@$(CXX) -mmcu=$(MICROCONTROLLER) -o $(BUILD_DIR)/$@ $(BUILD_DIR)/*.o $(LD_FLAGS) -Wl,-gc-sections
-#@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
+	@$(CXX) -mmcu=$(MICROCONTROLLER) -s -o $(BUILD_DIR)/$@ $(BUILD_DIR)/*.o  $(LD_FLAGS)
+#@$(CXX) -mmcu=$(MICROCONTROLLER) -s  -Wl,-Ma-o $(BUILD_DIR)/main.elf build/*.o $(LD_FLAGS)
 # Show Memory Usage
 size:
 	@echo ''
@@ -106,8 +105,8 @@ size:
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib  -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
-	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib  -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
+	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib -s -Os -mmcu=$(MICROCONTROLLER)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -DF_CPU=$(F_CPU) -nostdlib -s -Os -mmcu=$(MICROCONTROLLER) -S -o $(ASM_DIR)/$(notdir $(basename $@)).s $<
 
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"
@@ -215,3 +214,4 @@ help:
 	@ echo '    make upload FLASH_PORT=/dev/ttyACM0 FLASH_BAUDRATE=115200'
 	@ echo '    make monitor COM_PORT=/dev/ttyACM0 COM_BAUDRATE=1000000'
 	@ echo ''
+

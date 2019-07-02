@@ -18,26 +18,26 @@ _ZN3PinC2Ev:
 	ldi r25,lo8(-1)
 	std Z+7,r25
 	std Z+6,r24
-	std Z+11,__zero_reg__
 	std Z+10,__zero_reg__
-	std Z+13,__zero_reg__
+	std Z+9,__zero_reg__
 	std Z+12,__zero_reg__
-	std Z+15,__zero_reg__
+	std Z+11,__zero_reg__
 	std Z+14,__zero_reg__
-	std Z+17,__zero_reg__
+	std Z+13,__zero_reg__
 	std Z+16,__zero_reg__
-	std Z+19,__zero_reg__
+	std Z+15,__zero_reg__
 	std Z+18,__zero_reg__
-	std Z+21,__zero_reg__
+	std Z+17,__zero_reg__
 	std Z+20,__zero_reg__
-	std Z+23,__zero_reg__
+	std Z+19,__zero_reg__
 	std Z+22,__zero_reg__
-	std Z+25,__zero_reg__
+	std Z+21,__zero_reg__
 	std Z+24,__zero_reg__
-	std Z+27,__zero_reg__
+	std Z+23,__zero_reg__
 	std Z+26,__zero_reg__
-	std Z+29,__zero_reg__
+	std Z+25,__zero_reg__
 	std Z+28,__zero_reg__
+	std Z+27,__zero_reg__
 	ret
 	.size	_ZN3PinC2Ev, .-_ZN3PinC2Ev
 	.weak	_ZN3PinC1Ev
@@ -57,7 +57,7 @@ _ZN5Dht11C2E3Pin:
 	movw r28,r24
 	movw r16,r22
 	call _ZN3PinC1Ev
-	ldi r24,lo8(37)
+	ldi r24,lo8(36)
 	movw r30,r16
 	movw r26,r28
 	0:
@@ -84,16 +84,16 @@ _ZN5Dht11C2Eh:
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,37
+	sbiw r28,36
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 37 */
-/* stack size = 42 */
-.L__stack_usage = 42
+/* frame size = 36 */
+/* stack size = 41 */
+.L__stack_usage = 41
 	movw r16,r24
 	mov r15,r22
 	call _ZN3PinC1Ev
@@ -102,7 +102,7 @@ _ZN5Dht11C2Eh:
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
-	ldi r24,lo8(37)
+	ldi r24,lo8(36)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r16
@@ -115,7 +115,7 @@ _ZN5Dht11C2Eh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 /* epilogue start */
-	adiw r28,37
+	adiw r28,36
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
@@ -144,7 +144,7 @@ _ZN5Dht11C2E7dht11_t:
 	movw r28,r24
 	movw r16,r22
 	call _ZN3PinC1Ev
-	ldi r24,lo8(42)
+	ldi r24,lo8(41)
 	movw r30,r16
 	movw r26,r28
 	0:
@@ -169,7 +169,7 @@ _ZN5Dht1114getTemperatureEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+39
+	ldd r24,Z+38
 	ret
 	.size	_ZN5Dht1114getTemperatureEv, .-_ZN5Dht1114getTemperatureEv
 .global	_ZN5Dht1111getHumidityEv
@@ -180,7 +180,7 @@ _ZN5Dht1111getHumidityEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+37
+	ldd r24,Z+36
 	ret
 	.size	_ZN5Dht1111getHumidityEv, .-_ZN5Dht1111getHumidityEv
 .global	_ZN5Dht1114startContitionEv
@@ -420,15 +420,15 @@ _ZN5Dht117getDataEv:
 	rjmp .L36
 	ldd r24,Y+1
 	movw r30,r16
-	std Z+37,r24
+	std Z+36,r24
 	ldd r24,Y+2
-	std Z+38,r24
+	std Z+37,r24
 	ldd r24,Y+3
-	std Z+39,r24
+	std Z+38,r24
 	ldd r24,Y+4
-	std Z+40,r24
+	std Z+39,r24
 	ldd r24,Y+5
-	std Z+41,r24
+	std Z+40,r24
 .L26:
 /* epilogue start */
 	pop __tmp_reg__
@@ -464,15 +464,15 @@ _ZN5Dht118checkCrcEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r25,Z+37
+	ldd r25,Z+36
+	ldd r24,Z+37
+	add r25,r24
 	ldd r24,Z+38
 	add r25,r24
 	ldd r24,Z+39
 	add r25,r24
-	ldd r24,Z+40
-	add r25,r24
 	ldi r24,lo8(1)
-	ldd r18,Z+41
+	ldd r18,Z+40
 	cpse r25,r18
 	ldi r24,0
 .L41:

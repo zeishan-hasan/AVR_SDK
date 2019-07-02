@@ -68,7 +68,7 @@ _ZN8Enc28j606setSPIEhhhh:
 	mov r17,r22
 	mov r13,r20
 	mov r12,r18
-	ldi r24,lo8(122)
+	ldi r24,lo8(119)
 	ldi r25,0
 	call _Znwj
 	movw r28,r24
@@ -1400,10 +1400,6 @@ _ZN8Enc28j6015_spi_setBuffersEv:
 	pop r16
 	ret
 	.size	_ZN8Enc28j6015_spi_setBuffersEv, .-_ZN8Enc28j6015_spi_setBuffersEv
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC0:
-	.string	"Buffers set ok\r\n"
-	.text
 .global	_ZN8Enc28j604initEv
 	.type	_ZN8Enc28j604initEv, @function
 _ZN8Enc28j604initEv:
@@ -1415,89 +1411,24 @@ _ZN8Enc28j604initEv:
 /* stack size = 3 */
 .L__stack_usage = 3
 	movw r28,r24
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	or r24,r25
-	brne .L94
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-64)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-63)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-62)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-59)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-60)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-58)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
-.L94:
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	std Y+25,r25
-	std Y+24,r24
 	ld r24,Y
 	ldd r25,Y+1
 	call _ZN9MasterSPI15isInitilizedSPIEv
 	cpse r24,__zero_reg__
-	rjmp .L95
+	rjmp .L94
 	ldi r16,lo8(53)
 	ldi r18,lo8(52)
 	ldi r20,lo8(51)
 	ldi r22,lo8(50)
 	movw r24,r28
 	call _ZN8Enc28j606setSPIEhhhh
-.L95:
+.L94:
 	movw r24,r28
 	call _ZN8Enc28j6010_spi_resetEv
 	std Y+12,__zero_reg__
 	std Y+11,__zero_reg__
 	movw r24,r28
 	call _ZN8Enc28j6015_spi_setBuffersEv
-	tst r24
-	breq .L96
-	lds r24,debug
-	tst r24
-	breq .L96
-	ldi r24,lo8(.LC0)
-	ldi r25,hi8(.LC0)
-	push r25
-	push r24
-	ldd r24,Y+25
-	push r24
-	ldd r24,Y+24
-	push r24
-	call _ZN6Serial6printfEPKcz
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-.L96:
 	movw r24,r28
 	call _ZN8Enc28j6016_spi_setRxFilterEv
 	movw r24,r28
@@ -1614,75 +1545,14 @@ _ZN8Enc28j604initEv:
 	pop r16
 	jmp _ZN8Enc28j6016_spi_bitFieldSetE13ENC28J60_REGSh
 	.size	_ZN8Enc28j604initEv, .-_ZN8Enc28j604initEv
-	.section	.rodata.str1.1
-.LC1:
-	.string	" 0x%02x 0x%02x\r\n"
-	.text
 .global	_ZN8Enc28j608dumpBankEv
 	.type	_ZN8Enc28j608dumpBankEv, @function
 _ZN8Enc28j608dumpBankEv:
-	push r14
-	push r15
-	push r16
-	push r17
-	push r28
-	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 6 */
-.L__stack_usage = 6
-	movw r16,r24
+/* stack size = 0 */
+.L__stack_usage = 0
 	ldi r22,0
-	call _ZN8Enc28j6015_spi_selectBankEh
-	ldi r28,0
-	ldi r29,0
-	ldi r24,lo8(.LC1)
-	mov r14,r24
-	ldi r24,hi8(.LC1)
-	mov r15,r24
-.L104:
-	movw r22,r28
-	movw r24,r16
-	call _ZN8Enc28j6019_spi_readControlRegE13ENC28J60_REGS
-	push __zero_reg__
-	push r24
-	push r29
-	push r28
-	push r15
-	push r14
-	movw r30,r16
-	ldd r24,Z+25
-	push r24
-	ldd r24,Z+24
-	push r24
-	call _ZN6Serial6printfEPKcz
-	adiw r28,1
-	in r24,__SP_L__
-	in r25,__SP_H__
-	adiw r24,8
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r25
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r24
-	cpi r28,32
-	cpc r29,__zero_reg__
-	brne .L104
-/* epilogue start */
-	pop r29
-	pop r28
-	pop r17
-	pop r16
-	pop r15
-	pop r14
-	ret
+	jmp _ZN8Enc28j6015_spi_selectBankEh
 	.size	_ZN8Enc28j608dumpBankEv, .-_ZN8Enc28j608dumpBankEv
-	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
-	.type	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, @object
-	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
-_ZZN13SerialManager11getInstanceE10SerialPortE8instance:
-	.zero	8
 	.ident	"GCC: (GNU) 5.4.0"
-.global __do_copy_data
-.global __do_clear_bss

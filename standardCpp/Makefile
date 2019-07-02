@@ -5,7 +5,7 @@ FCPU ?= 16000000
 # Select microntroller (default: atmega2560)
 MICROCONTROLLER ?= atmega2560
 # Select SDK Path (default: lib_atmega2560.a)
-LIBNAME ?= libysdk_stl.a
+LIBNAME ?= libysdk$(MICROCONTROLLER)_stl.a
 
 #
 CXX_SRCS := $(shell find ./ -type f -regex ".*\.cpp")

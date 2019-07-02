@@ -22,3 +22,10 @@ doxygen/html/A0_A0_GAIN10-example.html doxygen/html/adccomparator_8h_source.html
 *.sty
 *.css
 doxygen/latex/Makefile
+*.a
+*.a
+examples/communication/ethernet/enc28j60/fuses/high_fuse
+examples/communication/ethernet/enc28j60/fuses/ext_fuse
+examples/communication/ethernet/enc28j60/fuses/low_fuse
+examples/communication/ethernet/enc28j60/lock/lock_bits
+*.o
