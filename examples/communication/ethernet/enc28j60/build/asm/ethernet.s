@@ -18,89 +18,31 @@ __zero_reg__ = 1
 .global	_ZN8EthernetC2Ev
 	.type	_ZN8EthernetC2Ev, @function
 _ZN8EthernetC2Ev:
-	push r16
-	push r17
 	push r28
 	push r29
-	in r28,__SP_L__
-	in r29,__SP_H__
-	sbiw r28,36
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 36 */
-/* stack size = 40 */
-.L__stack_usage = 40
-	movw r16,r24
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,7
-	movw r26,r28
-	adiw r26,19
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,1
-	movw r26,r28
-	adiw r26,13
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,19
-	movw r26,r16
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,13
-	movw r26,r16
-	adiw r26,6
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	movw r30,r16
-	std Z+13,__zero_reg__
-	std Z+12,__zero_reg__
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,31
-	movw r26,r28
-	adiw r26,7
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,25
-	movw r26,r28
-	adiw r26,1
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
+/* frame size = 0 */
+/* stack size = 2 */
+.L__stack_usage = 2
+	movw r28,r24
+	st Y,__zero_reg__
+	std Y+1,__zero_reg__
+	std Y+2,__zero_reg__
+	std Y+3,__zero_reg__
+	std Y+4,__zero_reg__
+	std Y+5,__zero_reg__
+	std Y+6,__zero_reg__
+	std Y+7,__zero_reg__
+	std Y+8,__zero_reg__
+	std Y+9,__zero_reg__
+	std Y+10,__zero_reg__
+	std Y+11,__zero_reg__
+	std Y+13,__zero_reg__
+	std Y+12,__zero_reg__
 	ldi r24,lo8(7)
 	ldi r30,lo8(.LC0)
 	ldi r31,hi8(.LC0)
-	movw r26,r16
+	movw r26,r28
 	adiw r26,14
 	0:
 	ld r0,Z+
@@ -108,62 +50,55 @@ _ZN8EthernetC2Ev:
 	dec r24
 	brne 0b
 	ldi r24,lo8(-43)
-	movw r30,r16
-	std Z+21,r24
-	std Z+41,__zero_reg__
-	std Z+40,__zero_reg__
+	std Y+21,r24
+	std Y+22,__zero_reg__
+	std Y+23,__zero_reg__
+	std Y+24,__zero_reg__
+	std Y+25,__zero_reg__
+	std Y+26,__zero_reg__
+	std Y+27,__zero_reg__
+	std Y+28,__zero_reg__
+	std Y+29,__zero_reg__
+	std Y+30,__zero_reg__
+	std Y+31,__zero_reg__
+	std Y+32,__zero_reg__
+	std Y+33,__zero_reg__
+	std Y+41,__zero_reg__
+	std Y+40,__zero_reg__
 	ldi r24,lo8(8)
 	ldi r25,0
-	std Z+43,r25
-	std Z+42,r24
-	std Z+45,__zero_reg__
-	std Z+44,__zero_reg__
+	std Y+43,r25
+	std Y+42,r24
+	std Y+45,__zero_reg__
+	std Y+44,__zero_reg__
 	call _Znwj
-	movw r30,r16
-	std Z+41,r25
-	std Z+40,r24
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,7
-	movw r26,r16
-	adiw r26,22
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	ldi r24,lo8(6)
-	movw r30,r28
-	adiw r30,1
-	movw r26,r16
-	adiw r26,28
-	0:
-	ld r0,Z+
-	st X+,r0
-	dec r24
-	brne 0b
-	movw r30,r16
-	std Z+34,__zero_reg__
-	std Z+35,__zero_reg__
-	std Z+36,__zero_reg__
-	std Z+37,__zero_reg__
-	std Z+39,__zero_reg__
-	std Z+38,__zero_reg__
-	std Z+47,__zero_reg__
-	std Z+48,__zero_reg__
-	std Z+49,__zero_reg__
-	std Z+50,__zero_reg__
+	std Y+41,r25
+	std Y+40,r24
+	std Y+22,__zero_reg__
+	std Y+23,__zero_reg__
+	std Y+24,__zero_reg__
+	std Y+25,__zero_reg__
+	std Y+26,__zero_reg__
+	std Y+27,__zero_reg__
+	std Y+28,__zero_reg__
+	std Y+29,__zero_reg__
+	std Y+30,__zero_reg__
+	std Y+31,__zero_reg__
+	std Y+32,__zero_reg__
+	std Y+33,__zero_reg__
+	std Y+34,__zero_reg__
+	std Y+35,__zero_reg__
+	std Y+36,__zero_reg__
+	std Y+37,__zero_reg__
+	std Y+39,__zero_reg__
+	std Y+38,__zero_reg__
+	std Y+47,__zero_reg__
+	std Y+48,__zero_reg__
+	std Y+49,__zero_reg__
+	std Y+50,__zero_reg__
 /* epilogue start */
-	adiw r28,36
-	in __tmp_reg__,__SREG__
-	cli
-	out __SP_H__,r29
-	out __SREG__,__tmp_reg__
-	out __SP_L__,r28
 	pop r29
 	pop r28
-	pop r17
-	pop r16
 	ret
 	.size	_ZN8EthernetC2Ev, .-_ZN8EthernetC2Ev
 .global	_ZN8EthernetC1Ev

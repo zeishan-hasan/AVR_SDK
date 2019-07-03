@@ -718,8 +718,7 @@ class Enc28j60
 
 public:
 
-	Enc28j60();
-	void init();
+	Enc28j60(macaddr_t & mac);
 	void setSPI(u8t miso = DEF_SPI_MISO, u8t mosi = DEF_SPI_MOSI, u8t sck = DEF_SPI_SCK, u8t ss = DEF_SPI_SS);
 
 	void sendPacket(u8t* buff, u16t size);
@@ -735,22 +734,18 @@ public:
 
 
 
-	//private:
+private:
 	MasterSPI *_spi;
 
 	struct enc28j60_t
 	{
 		enc28j60_t() {
-			macAddress._mac[0] = 0xA0;
-			macAddress._mac[1] = 0xB1;
-			macAddress._mac[2] = 0xC2;
-			macAddress._mac[3] = 0xD3;
-			macAddress._mac[4] = 0xE4;
-			macAddress._mac[5] = 0xF5;
+			macAddress = macaddr_t (0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5);
 			revisionID = 0;
 			fullDuplex = true;
 			currentBank = 0;
 
+			nextPacketPtr = ENC28J60_RX_BUFFER_START;
 			rxBuffStart = ENC28J60_RX_BUFFER_START;
 			rxBuffEnd   = ENC28J60_RX_BUFFER_END;
 			txBuffStart = ENC28J60_TX_BUFFER_START;
@@ -768,7 +763,7 @@ public:
 		u16t txBuffStart;
 		u16t txBuffEnd;
 	} _self;
-	bool _confirmRegisters = true;
+	//bool _confirmRegisters = true;
 	enc_cb_t *_cb;
 
 	//---- Raw methods ----//
@@ -801,16 +796,15 @@ public:
 	void _spi_setMAC();
 	void _spi_getMAC(u8t *arr);
 
-	void _spi_setRxFilter();
+	//void _spi_setRxFilter();
 
-	bool _spi_setBuffers();
+	//bool _spi_setBuffers();
 
 	//---- Others ----//
-static void _callback(u8t pin, void *context);
+	static void _callback(u8t pin, void *context);
 
 	//---- Remove me ----//
 	//Serial *serial;
-	void  dumpBank();
 
 };
 #endif

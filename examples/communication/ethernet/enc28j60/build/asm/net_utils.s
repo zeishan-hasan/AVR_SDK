@@ -622,6 +622,12 @@ _Z15__inet_eth_atonPKc:
 /* frame size = 14 */
 /* stack size = 20 */
 .L__stack_usage = 20
+	std Y+7,__zero_reg__
+	std Y+8,__zero_reg__
+	std Y+9,__zero_reg__
+	std Y+10,__zero_reg__
+	std Y+11,__zero_reg__
+	std Y+12,__zero_reg__
 	ldi r20,lo8(.LC4)
 	ldi r21,hi8(.LC4)
 	movw r22,r28
@@ -1021,6 +1027,12 @@ _Z15__inet_eth_atonRKSs:
 	movw r24,r28
 	adiw r24,1
 	call _Z5splitRKSsc
+	std Y+14,__zero_reg__
+	std Y+15,__zero_reg__
+	std Y+16,__zero_reg__
+	std Y+17,__zero_reg__
+	std Y+18,__zero_reg__
+	std Y+19,__zero_reg__
 	ldd r24,Y+5
 	ldd r25,Y+6
 	sbiw r24,6

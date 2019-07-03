@@ -1,11 +1,6 @@
 #include "enc28j60.h"
 
-Enc28j60::Enc28j60()
-{
-
-}
-
-void Enc28j60::init()
+Enc28j60::Enc28j60(macaddr_t &mac)
 {
 
 	if (_spi->isInitilizedSPI() == false){
@@ -13,18 +8,35 @@ void Enc28j60::init()
 	}
 	_spi_reset();
 
-	_self.nextPacketPtr = ENC28J60_RX_BUFFER_START;
-	if(_spi_setBuffers()){
-	//	dbg("Buffers set ok\r\n");
-	}
+
+	//---- Setting buffers ----//
+	// TX Start Address
+	_spi_writeControlReg(REG_ETXSTL, LO(ENC28J60_TX_BUFFER_START));
+	_spi_writeControlReg(REG_ETXSTH, HI(ENC28J60_TX_BUFFER_START));
+
+	_spi_writeControlReg(REG_ETXNDH, HI(ENC28J60_TX_BUFFER_END));
+	_spi_writeControlReg(REG_ETXNDH, HI(ENC28J60_TX_BUFFER_END));
+
+	// RX Start Address
+	_spi_writeControlReg(REG_ERXSTL, LO(ENC28J60_RX_BUFFER_START));
+	_spi_writeControlReg(REG_ERXSTH, HI(ENC28J60_RX_BUFFER_START));
+
+	// RX Data Pointer
+	_spi_writeControlReg(REG_ERXRDPTL, LO(ENC28J60_RX_BUFFER_START));
+	_spi_writeControlReg(REG_ERXRDPTH, HI(ENC28J60_RX_BUFFER_START));
+
+	// RX End Address
+	_spi_writeControlReg(REG_ERXNDL, LO(ENC28J60_RX_BUFFER_END));
+	_spi_writeControlReg(REG_ERXNDH, HI(ENC28J60_RX_BUFFER_END));
 
 
-
-	_spi_setRxFilter();
-
+	//---- Setting Filters ----//
+	_spi_writeControlReg(REG_ERXFCON, regBitToValue(ENC28J60_ERXFCON_REG_BIT::UCEN) | regBitToValue(ENC28J60_ERXFCON_REG_BIT::CRCEN) |
+																						regBitToValue(ENC28J60_ERXFCON_REG_BIT::MCEN)  | regBitToValue(ENC28J60_ERXFCON_REG_BIT::BCEN));
 
 	_spi_setMAC();
 
+	//---- Setting Hash Table ----//
 	_spi_writeControlReg(REG_EHT0, 0x00);
 	_spi_writeControlReg(REG_EHT1, 0x00);
 	_spi_writeControlReg(REG_EHT2, 0x00);
@@ -34,85 +46,92 @@ void Enc28j60::init()
 	_spi_writeControlReg(REG_EHT6, 0x00);
 	_spi_writeControlReg(REG_EHT7, 0x00);
 
-	_spi_writeControlReg(REG_ECOCON,0x00);
 
+	//---- Setting Magic Packet ----//
 	//_spi_writeControlReg(REG_EPMM0, 0x3f);
 	//_spi_writeControlReg(REG_EPMM1, 0x30);
 	//_spi_writeControlReg(REG_EPMCSL, 0xf9);
 	//_spi_writeControlReg(REG_EPMCSH, 0xf7);
-	//_spi_writeControlReg((ENC28J60_REGS)(ENC28J60_KoR(MAC)| ENC28J60_BANK(2)|0x01), 0x00);
-	//_spi_writeControlReg(REG_MACLCON2, 63);
 
+
+
+	_spi_writeControlReg(REG_ECOCON, regBitToValue(ENC28J60_ECOCON_REG_CFG::CLKOUT_DISABLED));
+
+
+	//Enable the MAC to receive frames
 	_spi_writeControlReg(REG_MACON1, regBitToValue(ENC28J60_MACON1_REG_BIT::MARXEN) | regBitToValue(ENC28J60_MACON1_REG_BIT::TXPAUS) | regBitToValue(ENC28J60_MACON1_REG_BIT::RXPAUS));
 
-	_spi_writeControlReg(REG_MACON3, regBitToValue(ENC28J60_MACON3_REG_BIT::PADCFG0) | regBitToValue(ENC28J60_MACON3_REG_BIT::TXCRCEN) |
-																						regBitToValue(ENC28J60_MACON3_REG_BIT::FRMLNEN) | regBitToValue(ENC28J60_MACON3_REG_BIT::FULDPX));
 
-	//_spi_bitFieldSet(REG_MACON4, regBitToValue(ENC28J60_MACON4_REG_BIT::DEFER));
+	//Enable automatic padding to at least 60 bytes, always append a valid CRC
+	//and check frame length. MAC can operate in half-duplex or full-duplex mode
+	if(_self.fullDuplex){
+		_spi_writeControlReg(REG_MACON3, regBitToValue(ENC28J60_MACON3_REG_BIT::PADCFG0) | regBitToValue(ENC28J60_MACON3_REG_BIT::TXCRCEN) |
+																							regBitToValue(ENC28J60_MACON3_REG_BIT::FRMLNEN) | regBitToValue(ENC28J60_MACON3_REG_BIT::FULDPX));
+		_spi_writePhy(REG_PHCON1, regBitToValue(ENC28J60_PHCON1_REG_BIT::PDPXMD));
+	}
+	else {
+		_spi_writeControlReg(REG_MACON3, regBitToValue(ENC28J60_MACON3_REG_BIT::PADCFG0) | regBitToValue(ENC28J60_MACON3_REG_BIT::TXCRCEN) |
+																							regBitToValue(ENC28J60_MACON3_REG_BIT::FRMLNEN));
+		_spi_writePhy(REG_PHCON1, 0);
+
+		//Disable half-duplex loopback in PHY
+		_spi_writePhy(REG_PHCON2, regBitToValue(ENC28J60_PHCON2_REG_BIT::HDLDIS));
+	}
+
+	_spi_bitFieldSet(REG_MACON4, regBitToValue(ENC28J60_MACON4_REG_BIT::DEFER));
+
 	_spi_writeControlReg(REG_MAIPGL, 0x12);
 	_spi_writeControlReg(REG_MAIPGH, 0x0C);
-	_spi_writeControlReg(REG_MABBIPG,0x15);
+
+	_spi_writeControlReg(REG_MABBIPG, _self.fullDuplex ? 0x15: 0x12);
+
 	_spi_writeControlReg(REG_MAMXFLL, LO(ENC28J60_MAX_FRAMELENGTH));
 	_spi_writeControlReg(REG_MAMXFLH, HI(ENC28J60_MAX_FRAMELENGTH));
 
 
+	_spi_writeControlReg(REG_MACLCON2, 63);
 
 	//_spi_writePhy(REG_PHCON1, regBitToValue(ENC28J60_PHCON1_REG_BIT::PRST));
-	//while (_spi_readPhy(REG_PHCON1) & regBitToValue(ENC28J60_PHCON1_REG_BIT::PRST));
 
-	_spi_writePhy(REG_PHCON1, regBitToValue(ENC28J60_PHCON1_REG_BIT::PDPXMD));
-	//_spi_writePhy(REG_PHCON2, regBitToValue(ENC28J60_PHCON2_REG_BIT::HDLDIS));
 
+	//---- Clear interrupt flags ----//
 	_spi_writeControlReg(REG_EIR, 0x00);
 	//Configure interrupts as desired
 
-	//_spi_writeControlReg(REG_EIE,0xC1);
+	enableInterrupt(regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::RXERIE) |	regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE)
+																	| regBitToValue(ENC28J60_EIE_REG_BIT::TXIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXERIE));
+
 
 	//Configure PHY interrupts as desired
 	_spi_writePhy(REG_PHIE,regBitToValue(ENC28J60_PHIE_REG_BIT::PLNKIE) | regBitToValue(ENC28J60_PHIE_REG_BIT::PGEIE));
-	//_spi_writePhy(REG_PHCON2, regBitToValue(ENC28J60_PHCON2_REG_BIT::TXDIS));
-
-	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE));
-
-
-
 
 	_spi_writeControlReg(REG_ECON2, regBitToValue(ENC28J60_ECON2_REG_BIT::AUTOINC));
-	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE));
-	//_spi_writeControlReg(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::RXEN));
 
 	_spi_bitFieldSet(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::RXEN));
 
-
 }
+
 
 void Enc28j60::setSPI(u8t miso, u8t mosi, u8t sck, u8t ss)
 {
 	_spi = new MasterSPI(miso, mosi, sck, ss);
-	_spi->setClock(FOSC_BY_4);
+	_spi->setClock(FOSC_BY_2);
 }
 
 void Enc28j60::sendPacket(u8t *buff, u16t size)
 {
-	_spi_writeControlReg(REG_EWRPTL, LO(ENC28J60_TX_BUFFER_START));
-	_spi_writeControlReg(REG_EWRPTH, HI(ENC28J60_TX_BUFFER_START));
+	_spi_writeControlReg(REG_EWRPTL, LO(_self.txBuffStart));
+	_spi_writeControlReg(REG_EWRPTH, HI(_self.txBuffStart));
 
-	_spi_writeControlReg(REG_ETXNDL, LO(ENC28J60_TX_BUFFER_START+size));
-	_spi_writeControlReg(REG_ETXNDH, HI(ENC28J60_TX_BUFFER_START+size));
+	_spi_writeControlReg(REG_ETXNDL, LO(_self.txBuffStart+size));
+	_spi_writeControlReg(REG_ETXNDH, HI(_self.txBuffStart+size));
 
 	_spi_writeBuffer(buff, size);
 
-	//if(_spi_readControlReg(REG_EIR) & regBitToValue(ENC28J60_EIR_REG_BIT::TXERIF)) {
-	//	while (_spi_readControlReg(REG_ECON1) & regBitToValue(ENC28J60_ECON1_REG_BIT::TXRTS));
 	_spi_bitFieldSet(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::TXRTS));
 	_spi_bitFieldClear(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::TXRTS));
 	_spi_bitFieldClear(REG_EIR, regBitToValue(ENC28J60_EIR_REG_BIT::TXIF) | regBitToValue(ENC28J60_EIR_REG_BIT::TXERIF));
-	//}
 
-
-	//_spi_bitFieldClear(REG_EIR, regBitToValue(ENC28J60_EIR_REG_BIT::TXIF));
-	//_spi_bitFieldClear(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::TXIE));
-	//_spi_bitFieldClear(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INT IE));
 
 	_spi_bitFieldSet(REG_ECON1, regBitToValue(ENC28J60_ECON1_REG_BIT::TXRTS));
 }
@@ -121,8 +140,7 @@ u16t Enc28j60::receivePacket(u8t *buff, u16t size)
 {
 	uint16_t rxstat;
 	uint16_t len;
-	if(_spi_readControlReg(REG_EPKTCNT)==0){
-		//dbg("No packet received\r\n");
+	if(_spi_readControlReg(REG_EPKTCNT) == 0){
 		return 0;
 	}
 
@@ -131,7 +149,7 @@ u16t Enc28j60::receivePacket(u8t *buff, u16t size)
 
 	_self.nextPacketPtr  = _spi_readOpcode(SPI_OPCODE_RBM);
 	_self.nextPacketPtr |= _spi_readOpcode(SPI_OPCODE_RBM)<<8;
-	//dbg("next packet 0x%04x\r\n", _self.nextPacketPtr);
+
 
 	len  = _spi_readOpcode(SPI_OPCODE_RBM);
 	len |= _spi_readOpcode(SPI_OPCODE_RBM)<<8;
@@ -140,13 +158,15 @@ u16t Enc28j60::receivePacket(u8t *buff, u16t size)
 	rxstat  = _spi_readOpcode(SPI_OPCODE_RBM);
 	rxstat |= _spi_readOpcode(SPI_OPCODE_RBM)<<8;
 
-	if (len>size-1)
-		len=size-1;
-	if ((rxstat & 0x80)==0)
-		len=0;
-	else {
-		_spi_readBuffer(buff, size);
+	if(len > size-1) {
+		len = size-1;
 	}
+	if ((rxstat & 0x80) == 0){
+		//len=0;
+		return 0;
+	}
+
+	_spi_readBuffer(buff, size);
 
 	if(_self.nextPacketPtr == ENC28J60_RX_BUFFER_START)
 	{
@@ -166,9 +186,9 @@ u16t Enc28j60::receivePacket(u8t *buff, u16t size)
 
 bool Enc28j60::Enc28j60::isReceivingData()
 {
-	//if(_spi_readPhy(REG_PHSTAT2) & regBitToValue(ENC28J60_PHSTAT2_REG_BIT::RXSTAT)){
-	//	return true;
-	//}
+	if(_spi_readPhy(REG_PHSTAT2) & regBitToValue(ENC28J60_PHSTAT2_REG_BIT::RXSTAT)){
+		return true;
+	}
 	if(_spi_readControlReg(REG_ESTAT) & regBitToValue(ENC28J60_ESTAT_REG_BIT::RXBUSY)){
 		return true;
 	}
@@ -190,8 +210,7 @@ u8t Enc28j60::getUnreadPacket()
 
 void Enc28j60::enableInterrupt(u8t value)
 {
-	//_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) //| regBitToValue(ENC28J60_EIE_REG_BIT::PKTIE) | regBitToValue(ENC28J60_EIE_REG_BIT::RXERIE) |
-	//																					regBitToValue(ENC28J60_EIE_REG_BIT::LINKIE)// | regBitToValue(ENC28J60_EIE_REG_BIT::TXIE) | regBitToValue(ENC28J60_EIE_REG_BIT::TXERIE));
+
 	_spi_writeControlReg(REG_EIE, regBitToValue(ENC28J60_EIE_REG_BIT::INTIE) | value);
 
 	//int_cb_t *callback = (int_cb_t*)&([&](){	this->_callback(this);	});
@@ -224,9 +243,6 @@ u8t Enc28j60::_spi_readControlReg(ENC28J60_REGS reg)
 
 void Enc28j60::_spi_writeControlReg(ENC28J60_REGS reg, u8t data)
 {
-	//dbg("Selecting bank %u\r\n", ENC28J60_READ_BANK(reg));
-	//dbg("Sending opcode|reg 0x%02X\r\n", SPI_OPCODE_WCR | LO(reg));
-	//dbg("Data               0x%02X\r\n", data);
 	_spi_selectBank(ENC28J60_READ_BANK(reg));
 	_spi_writeOpCode(SPI_OPCODE_WCR | LO(reg), &data, 1);
 }
@@ -396,17 +412,17 @@ void Enc28j60::_spi_getMAC(u8t *arr)
 	arr[4] = _spi_readControlReg(REG_MAADR2);
 	arr[5] = _spi_readControlReg(REG_MAADR1);
 }
-
+/*
 void Enc28j60::_spi_setRxFilter()
 {
 
-	_spi_writeControlReg(REG_ERXFCON, regBitToValue(ENC28J60_ERXFCON_REG_BIT::UCEN) | regBitToValue(ENC28J60_ERXFCON_REG_BIT::CRCEN) |
-																						regBitToValue(ENC28J60_ERXFCON_REG_BIT::MCEN)  | regBitToValue(ENC28J60_ERXFCON_REG_BIT::BCEN));
+
 	//_spi_writeControlReg(REG_ERXFCON, 0);
 	//_spi_bitFieldClear(REG_ERXFCON, regBitToValue(ENC28J60_ERXFCON_REG_BIT::ANDOR));
 }
-
-bool Enc28j60::_spi_setBuffers()
+*/
+/*
+void Enc28j60::_spi_setBuffers()
 {
 	u8t res = 0;
 
@@ -456,7 +472,7 @@ bool Enc28j60::_spi_setBuffers()
 
 
 }
-
+*/
 void Enc28j60::_callback(u8t pin, void *context)
 {
 	if(context == nullptr) {
@@ -469,13 +485,4 @@ void Enc28j60::_callback(u8t pin, void *context)
 		_context->_cb(LINKIF);
 	}
 }
-
-void Enc28j60::dumpBank()
-{
-	_spi_selectBank(0);
-	for(u8t i = 0; i <= 0x1F; ++i){
-	//	serial->printf(" 0x%02x 0x%02x\r\n", i, _spi_readControlReg((ENC28J60_REGS)i));
-	}
-}
-
 
