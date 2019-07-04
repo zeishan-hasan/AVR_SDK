@@ -713,7 +713,7 @@ enum ENC28J60_INT: u8t{
 
 typedef void enc_cb_t(ENC28J60_INT type);
 #pragma pop
-class Enc28j60
+class Enc28j60 : public SystemEventHandler
 {
 
 public:
@@ -801,7 +801,9 @@ private:
 	//bool _spi_setBuffers();
 
 	//---- Others ----//
-	static void _callback(u8t pin, void *context);
+	void _callback(u8t pin, void *context);
+
+	void callback(u8t pin);
 
 	//---- Remove me ----//
 	//Serial *serial;

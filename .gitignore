@@ -30,3 +30,4 @@ examples/communication/ethernet/enc28j60/fuses/low_fuse
 examples/communication/ethernet/enc28j60/lock/lock_bits
 *.o
 *.s
+*.o

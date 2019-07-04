@@ -19,6 +19,8 @@ void func(uint8_t pin){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->printf("Interrupt dal pin %u\r\n", pin);
 }
+
+
 int main(){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
 	serial0->init(BAUD_1000000);
@@ -27,8 +29,10 @@ int main(){
 	serial0->clear();
 
 
-	NetworkManager networkmanager;
-	networkmanager.send("CIAO", tcp, XX..X..X, 1565);
+	//NetworkManager networkmanager;
+	//networkmanager.send("CIAO", tcp, XX..X..X, 1565);
+
+
 	//asd.setPWM(2000,50);
 
 	//_delay_ms(2000);
@@ -71,16 +75,8 @@ int main(){
 		0x00,	0x00, 0x01, 0x02, 0xA8, 0xC0
 	};
 
-	/*
-ff ff ff ff ff ff
-40 62 31 02 f8 51
-08 06 00 01 08 00
-06 04 00 01 40 62
-31 02 f8 51 c0 a8
-02 01 00 00 00 00
-00 00 c0 a8 02 c8
 
-*/
+	
 	/*
 	u8t _dst[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 	u8t _src[] = {0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5};

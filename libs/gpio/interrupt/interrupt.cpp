@@ -1,6 +1,7 @@
 #include "interrupt.h"
+#include <avr/iom2560.h>
 INT_REG_CALLBACK Interrupt::interruptCallback;//(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void *ptr)
+bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func)
 {
 
 
@@ -14,7 +15,7 @@ bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void
 
 		switch (_pin.PCINTx_vect) {
 		case _PCINT0_vect:
-			//PCICR  |= _BV(PCIE0);
+			//PCICR  |= _BV(PCIE0);+
 			//PCMSK0 |= _BV(_pin.PCINTx);
 			bitSet(PCICR, PCIE0);
 			bitSet(PCMSK0, _pin.PCINTx);
@@ -42,6 +43,7 @@ bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void
 		switch (edge) {
 		case INT_EDGE::LOW_LEVEL:
 			_hw_edge = (uint8_t)_pinHW.lowLevel;
+			break;
 		case INT_EDGE::ANYEDGE:
 			_hw_edge = (uint8_t)_pinHW.anyEdge;
 			break;
@@ -79,12 +81,17 @@ bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, int_cb_t *func, void
 	return false;
 }
 
+bool Interrupt::attachInterrupt(uint8_t pin, INT_EDGE edge, SystemEventHandler* ptr)
+{
+
+}
+
 bool Interrupt::deatchInterrupt(uint8_t pin)
 {
 	PCINT_PIN _pin;
 	HW_INT_PIN _pinHW;
 	bool result = false;
-	switch (Interrupt::searchPin(pin,&_pin,&_pinHW)) {
+	switch (Interrupt::searchPin(pin, &_pin, &_pinHW)) {
 
 	case INT_PIN_RES::_PCINT:
 		switch (_pin.PCINTx_vect) {
@@ -236,7 +243,7 @@ INT_PIN_RES Interrupt::searchPin(uint8_t pin,PCINT_PIN *_pin,HW_INT_PIN *_pinHW)
 	return INT_PIN_RES::NOT_FOUND;
 }
 
-void call_int_callback(int_cb_t *f,INT_EDGE edgeMode, volatile uint8_t *PINx,uint8_t registerBit,
+inline void call_int_callback(int_cb_t *f,INT_EDGE  edgeMode, volatile uint8_t *PINx,uint8_t registerBit,
 																							uint8_t pin,volatile uint8_t port_x_history){
 	switch (edgeMode) {
 	case RISING:
@@ -370,6 +377,7 @@ ISR (PCINT2_vect) {
 
 
 //-----------HW INTERRUPT------------//
+#if defined(__AVR_ATmega328p__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 ISR(INT0_vect){
 	cli();
 	int_cb_t *f = *int_vect[5].interruptCallback;
@@ -382,6 +390,8 @@ ISR(INT1_vect){
 	f(int_vect[4].mappedPin);
 	sei();
 }
+#endif
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 ISR(INT2_vect){
 	cli();
 	int_cb_t *f = *int_vect[3].interruptCallback;
@@ -408,7 +418,6 @@ ISR(INT5_vect){
 	sei();
 }
 
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 ISR(INT6_vect){}// Not working with arduino merda
 ISR(INT7_vect){}// Not working with arduino merda
 #endif

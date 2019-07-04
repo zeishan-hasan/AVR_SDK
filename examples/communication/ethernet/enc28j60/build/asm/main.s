@@ -140,7 +140,7 @@ main:
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	subi r28,71
+	subi r28,73
 	sbc r29,__zero_reg__
 	in __tmp_reg__,__SREG__
 	cli
@@ -148,9 +148,9 @@ main:
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 71 */
-/* stack size = 73 */
-.L__stack_usage = 73
+/* frame size = 73 */
+/* stack size = 75 */
+.L__stack_usage = 75
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	or r24,r25
@@ -215,31 +215,31 @@ main:
 	mov r25,r16
 	call _ZN6Serial5clearEv
 	ldi r24,lo8(-96)
-	adiw r28,66-63
-	std Y+63,r24
-	sbiw r28,66-63
-	ldi r24,lo8(-79)
-	adiw r28,67-63
-	std Y+63,r24
-	sbiw r28,67-63
-	ldi r24,lo8(-62)
 	adiw r28,68-63
 	std Y+63,r24
 	sbiw r28,68-63
-	ldi r24,lo8(-45)
+	ldi r24,lo8(-79)
 	adiw r28,69-63
 	std Y+63,r24
 	sbiw r28,69-63
-	ldi r24,lo8(-28)
+	ldi r24,lo8(-62)
 	adiw r28,70-63
 	std Y+63,r24
 	sbiw r28,70-63
-	ldi r24,lo8(-11)
+	ldi r24,lo8(-45)
 	adiw r28,71-63
 	std Y+63,r24
 	sbiw r28,71-63
+	ldi r24,lo8(-28)
+	adiw r28,72-63
+	std Y+63,r24
+	sbiw r28,72-63
+	ldi r24,lo8(-11)
+	adiw r28,73-63
+	std Y+63,r24
+	sbiw r28,73-63
 	movw r22,r28
-	subi r22,-66
+	subi r22,-68
 	sbci r23,-1
 	movw r24,r28
 	adiw r24,43

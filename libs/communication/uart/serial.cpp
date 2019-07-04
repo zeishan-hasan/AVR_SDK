@@ -185,18 +185,27 @@ void Serial::_print(const char *str)
 
 
 
-#if defined (__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-ISR(USART0_RX_vect){
-    Serial *serial0 = SerialManager::getInstance(SERIAL0);
-    char temp = UDR0;
-    serial0->insertData(temp);
-    if(serial0->echoIsEnabled()){
-        UDR0 = temp;
-    }
-    serial0->rxCallBack();
+#if defined (__AVR_ATmega328P__)
+ISR(USART_RX_vect){
+				Serial *serial0 = SerialManager::getInstance(SERIAL0);
+				char temp = UDR0;
+				serial0->insertData(temp);
+				if(serial0->echoIsEnabled()){
+								UDR0 = temp;
+				}
+				serial0->rxCallBack();
 }
-#endif
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+
+#elif defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+ISR(USART0_RX_vect){
+				Serial *serial0 = SerialManager::getInstance(SERIAL0);
+				char temp = UDR0;
+				serial0->insertData(temp);
+				if(serial0->echoIsEnabled()){
+								UDR0 = temp;
+				}
+				serial0->rxCallBack();
+}
 ISR(USART1_RX_vect){
     Serial *serial1 = SerialManager::getInstance(SERIAL1);
     char temp = UDR1;

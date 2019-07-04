@@ -62,3 +62,4 @@ libs/network/tcpip/transport_layer/socket
 libs/network/tcpip/global/inet_global
 libs/network/tcpip/global/net_utils
 libs/network/tcpip/global/network_manager
+libs/core/system_event

@@ -6,6 +6,15 @@ __RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
+.global	_ZN9Interrupt15attachInterruptEh8INT_EDGEP18SystemEventHandler
+	.type	_ZN9Interrupt15attachInterruptEh8INT_EDGEP18SystemEventHandler, @function
+_ZN9Interrupt15attachInterruptEh8INT_EDGEP18SystemEventHandler:
+/* prologue: function */
+/* frame size = 0 */
+/* stack size = 0 */
+.L__stack_usage = 0
+	ret
+	.size	_ZN9Interrupt15attachInterruptEh8INT_EDGEP18SystemEventHandler, .-_ZN9Interrupt15attachInterruptEh8INT_EDGEP18SystemEventHandler
 .global	_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN
 	.type	_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN, @function
 _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
@@ -20,46 +29,46 @@ _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
 	lds r25,int_vect+33
 	cp r25,r24
 	brne .+2
-	rjmp .L18
+	rjmp .L19
 	cp r24,r25
-	brlo .L3
+	brlo .L4
 	lds r25,int_vect+44
 	cpse r24,r25
-	rjmp .L19
+	rjmp .L20
 	ldi r30,lo8(4)
-	rjmp .L4
-.L19:
+	rjmp .L5
+.L20:
 	ldi r30,lo8(-1)
-.L4:
+.L5:
 	lds r25,int_vect+55
 	cpse r24,r25
-	rjmp .L6
-	rjmp .L33
-.L3:
+	rjmp .L7
+	rjmp .L34
+.L4:
 	lds r25,int_vect+22
 	cpse r24,r25
-	rjmp .L21
+	rjmp .L22
 	ldi r30,lo8(2)
-	rjmp .L7
-.L21:
+	rjmp .L8
+.L22:
 	ldi r30,lo8(-1)
-.L7:
+.L8:
 	lds r25,int_vect+11
 	cpse r24,r25
-	rjmp .L8
+	rjmp .L9
 	ldi r30,lo8(1)
-.L8:
+.L9:
 	lds r25,int_vect
 	cp r24,r25
 	brne .+2
-	rjmp .L22
-.L6:
+	rjmp .L23
+.L7:
 	cpi r30,lo8(-1)
-	brne .L5
-	rjmp .L34
-.L33:
+	brne .L6
+	rjmp .L35
+.L34:
 	ldi r30,lo8(5)
-.L5:
+.L6:
 	ldi r24,lo8(11)
 	mul r30,r24
 	movw r30,r0
@@ -103,23 +112,23 @@ _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
 	st -X,r24
 	sbiw r26,2
 	ldi r24,lo8(2)
-	rjmp .L31
-.L34:
+	rjmp .L32
+.L35:
 	lds r25,pcint_vect+70
 	cp r24,r25
-	breq .L23
+	breq .L24
 	cp r24,r25
-	brlo .L12
+	brlo .L13
 	ldi r26,lo8(pcint_vect+77)
 	ldi r27,hi8(pcint_vect+77)
 	ldi r30,lo8(-1)
 	ldi r25,lo8(10)
-	rjmp .L13
-.L12:
+	rjmp .L14
+.L13:
 	ldi r30,lo8(-1)
 	ldi r25,lo8(10)
 	ldi r18,lo8(7)
-.L16:
+.L17:
 	subi r25,lo8(-(-1))
 	mul r18,r25
 	movw r26,r0
@@ -128,33 +137,33 @@ _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
 	sbci r27,hi8(-(pcint_vect))
 	ld r19,X
 	cpse r24,r19
-	rjmp .L14
-	mov r30,r25
-.L14:
-	cpse r25,__zero_reg__
-	rjmp .L16
 	rjmp .L15
-.L36:
+	mov r30,r25
+.L15:
+	cpse r25,__zero_reg__
+	rjmp .L17
+	rjmp .L16
+.L37:
 	ld r18,X
 	cp r24,r18
-	breq .L35
-.L17:
+	breq .L36
+.L18:
 	adiw r26,7
-.L13:
+.L14:
 	subi r25,lo8(-(1))
 	cpi r25,lo8(21)
-	brne .L36
-	rjmp .L15
-.L35:
+	brne .L37
+	rjmp .L16
+.L36:
 	mov r30,r25
-	rjmp .L17
-.L15:
+	rjmp .L18
+.L16:
 	cpi r30,lo8(-1)
-	brne .L11
-	rjmp .L37
-.L23:
+	brne .L12
+	rjmp .L38
+.L24:
 	ldi r30,lo8(10)
-.L11:
+.L12:
 	ldi r24,lo8(7)
 	mul r30,r24
 	movw r30,r0
@@ -174,25 +183,25 @@ _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN:
 	std Y+4,r25
 	std Y+3,r24
 	ldi r24,lo8(1)
-	rjmp .L31
-.L37:
+	rjmp .L32
+.L38:
 	ldi r24,0
-	rjmp .L31
-.L18:
+	rjmp .L32
+.L19:
 	ldi r30,lo8(3)
-	rjmp .L5
-.L22:
+	rjmp .L6
+.L23:
 	ldi r30,0
-	rjmp .L5
-.L31:
+	rjmp .L6
+.L32:
 /* epilogue start */
 	pop r29
 	pop r28
 	ret
 	.size	_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN, .-_ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN
-.global	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv
-	.type	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv, @function
-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
+.global	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE
+	.type	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE, @function
+_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE:
 	push r12
 	push r13
 	push r15
@@ -223,18 +232,18 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	sbci r23,-1
 	call _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN
 	cpi r24,lo8(1)
-	breq .L40
+	breq .L41
 	cpi r24,lo8(2)
 	brne .+2
-	rjmp .L41
-	rjmp .L60
-.L40:
+	rjmp .L42
+	rjmp .L59
+.L41:
 	ldd r24,Y+13
 	cpi r24,lo8(1)
-	breq .L43
-	brlo .L44
+	breq .L44
+	brlo .L45
 	cpi r24,lo8(2)
-	brne .L42
+	brne .L43
 	lds r24,104
 	ori r24,lo8(4)
 	sts 104,r24
@@ -251,8 +260,8 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	brpl 1b
 	or r24,r18
 	sts 109,r24
-	rjmp .L42
-.L44:
+	rjmp .L43
+.L45:
 	lds r24,104
 	ori r24,lo8(1)
 	sts 104,r24
@@ -269,8 +278,8 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	brpl 1b
 	or r24,r18
 	sts 107,r24
-	rjmp .L42
-.L43:
+	rjmp .L43
+.L44:
 	lds r24,104
 	ori r24,lo8(2)
 	sts 104,r24
@@ -287,7 +296,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	brpl 1b
 	or r24,r18
 	sts 108,r24
-.L42:
+.L43:
 	ldd r30,Y+15
 	ldd r31,Y+16
 	std Z+1,r13
@@ -295,43 +304,45 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	ldd r30,Y+17
 	ldd r31,Y+18
 	st Z,r16
-	rjmp .L59
-.L41:
+	rjmp .L58
+.L42:
 /* #APP */
- ;  41 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  42 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
 	cpi r16,lo8(1)
-	breq .L48
-	brlo .L49
+	breq .L49
+	brlo .L50
 	cpi r16,lo8(2)
-	breq .L50
+	breq .L51
 	cpi r16,lo8(5)
-	brne .L47
-.L49:
+	brne .L48
 	ldd r15,Y+8
-	rjmp .L47
+	rjmp .L48
 .L50:
+	ldd r15,Y+7
+	rjmp .L48
+.L51:
 	ldd r15,Y+9
-	rjmp .L47
-.L48:
+	rjmp .L48
+.L49:
 	ldd r15,Y+10
-.L47:
+.L48:
 	ldd r24,Y+2
 	tst r24
-	breq .L52
+	breq .L54
 	cpi r24,lo8(1)
-	brne .L51
+	brne .L53
 	lds r24,106
 	or r24,r15
 	sts 106,r24
-	rjmp .L51
-.L52:
+	rjmp .L53
+.L54:
 	lds r24,105
 	or r24,r15
 	sts 105,r24
-.L51:
+.L53:
 	in r18,0x1d
 	ldi r24,lo8(1)
 	ldi r25,0
@@ -352,17 +363,17 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	ldd r30,Y+5
 	ldd r31,Y+6
 	st Z,r15
-.L59:
+.L58:
 /* #APP */
- ;  70 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  72 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* #NOAPP */
 	ldi r24,lo8(1)
-	rjmp .L46
-.L60:
+	rjmp .L47
+.L59:
 	cpi r16,lo8(4)
-	brne .L54
+	brne .L56
 	ldi r18,lo8(5)
 	mul r17,r18
 	movw r24,r0
@@ -371,7 +382,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	subi r30,lo8(-(_ZL17__flashMappedPort+2))
 	sbci r31,hi8(-(_ZL17__flashMappedPort+2))
 /* #APP */
- ;  76 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  78 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r18, Z
 	
  ;  0 "" 2
@@ -380,7 +391,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	subi r30,lo8(-(_ZL17__flashMappedPort))
 	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
- ;  75 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  77 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r26, Z+
 	lpm r27, Z
 	
@@ -400,9 +411,9 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	or r24,r19
 	adiw r26,2
 	st X,r24
-.L54:
+.L56:
 	ldi r24,0
-.L46:
+.L47:
 /* epilogue start */
 	adiw r28,18
 	in __tmp_reg__,__SREG__
@@ -418,7 +429,7 @@ _ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv:
 	pop r13
 	pop r12
 	ret
-	.size	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv, .-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhEPv
+	.size	_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE, .-_ZN9Interrupt15attachInterruptEh8INT_EDGEPFvhE
 .global	_ZN9Interrupt15deatchInterruptEh
 	.type	_ZN9Interrupt15deatchInterruptEh, @function
 _ZN9Interrupt15deatchInterruptEh:
@@ -444,17 +455,17 @@ _ZN9Interrupt15deatchInterruptEh:
 	sbci r23,-1
 	call _ZN9Interrupt9searchPinEhP9PCINT_PINP10HW_INT_PIN
 	cpi r24,lo8(1)
-	breq .L63
+	breq .L62
 	cpi r24,lo8(2)
-	breq .L64
-	rjmp .L76
-.L63:
+	breq .L63
+	rjmp .L75
+.L62:
 	ldd r24,Y+13
 	cpi r24,lo8(1)
-	breq .L65
-	brlo .L66
+	breq .L64
+	brlo .L65
 	cpi r24,lo8(2)
-	brne .L64
+	brne .L63
 	lds r18,109
 	ldi r24,lo8(1)
 	ldi r25,0
@@ -470,8 +481,8 @@ _ZN9Interrupt15deatchInterruptEh:
 	and r24,r18
 	sts 109,r24
 	lds r24,109
-	rjmp .L64
-.L66:
+	rjmp .L63
+.L65:
 	lds r18,107
 	ldi r24,lo8(1)
 	ldi r25,0
@@ -487,8 +498,8 @@ _ZN9Interrupt15deatchInterruptEh:
 	and r24,r18
 	sts 107,r24
 	lds r24,107
-	rjmp .L64
-.L65:
+	rjmp .L63
+.L64:
 	lds r18,108
 	ldi r24,lo8(1)
 	ldi r25,0
@@ -504,7 +515,7 @@ _ZN9Interrupt15deatchInterruptEh:
 	and r24,r18
 	sts 108,r24
 	lds r24,108
-.L64:
+.L63:
 	in r25,0x1d
 	ldi r18,lo8(1)
 	ldi r19,0
@@ -535,10 +546,10 @@ _ZN9Interrupt15deatchInterruptEh:
 	and r19,r25
 	ldi r24,lo8(1)
 	or r18,r19
-	breq .L62
-.L76:
+	breq .L61
+.L75:
 	ldi r24,0
-.L62:
+.L61:
 /* epilogue start */
 	adiw r28,18
 	in __tmp_reg__,__SREG__
@@ -550,7 +561,8 @@ _ZN9Interrupt15deatchInterruptEh:
 	pop r28
 	ret
 	.size	_ZN9Interrupt15deatchInterruptEh, .-_ZN9Interrupt15deatchInterruptEh
-.global	_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
+	.section	.text._Z17call_int_callbackPFvhE8INT_EDGEPVhhhh,"axG",@progbits,_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh,comdat
+	.weak	_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
 	.type	_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh, @function
 _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	push r14
@@ -570,21 +582,21 @@ _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	mov r24,r16
 	std Y+1,r14
 	cpi r22,lo8(3)
-	breq .L79
-	brsh .L80
+	breq .L78
+	brsh .L79
 	cpi r22,lo8(1)
-	breq .L81
+	breq .L80
 	cpi r22,lo8(2)
-	breq .L82
-	rjmp .L77
-.L80:
+	breq .L81
+	rjmp .L76
+.L79:
 	cpi r22,lo8(4)
-	breq .L83
+	breq .L82
 	cpi r22,lo8(5)
 	brne .+2
-	rjmp .L84
-	rjmp .L77
-.L81:
+	rjmp .L83
+	rjmp .L76
+.L80:
 	ld r18,X
 	ldi r19,0
 	rjmp 2f
@@ -595,8 +607,48 @@ _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	dec r25
 	brpl 1b
 	sbrs r18,0
-	rjmp .L77
-	rjmp .L84
+	rjmp .L76
+	rjmp .L83
+.L81:
+	ld r22,X
+	ldi r18,lo8(1)
+	ldi r19,0
+	mov r0,r25
+	rjmp 2f
+	1:
+	lsl r18
+	rol r19
+	2:
+	dec r0
+	brpl 1b
+	ldi r23,0
+	movw r20,r18
+	and r20,r22
+	and r21,r23
+	movw r18,r20
+	rjmp 2f
+	1:
+	asr r19
+	ror r18
+	2:
+	dec r25
+	brpl 1b
+	or r18,r19
+	brne .L76
+	rjmp .L83
+.L78:
+	ld r18,X
+	ldi r19,0
+	rjmp 2f
+	1:
+	asr r19
+	ror r18
+	2:
+	dec r25
+	brpl 1b
+	sbrs r18,0
+	rjmp .L83
+	rjmp .L94
 .L82:
 	ld r22,X
 	ldi r18,lo8(1)
@@ -622,50 +674,10 @@ _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	dec r25
 	brpl 1b
 	or r18,r19
-	brne .L77
-	rjmp .L84
-.L79:
-	ld r18,X
-	ldi r19,0
-	rjmp 2f
-	1:
-	asr r19
-	ror r18
-	2:
-	dec r25
-	brpl 1b
-	sbrs r18,0
-	rjmp .L84
-	rjmp .L95
-.L83:
-	ld r22,X
-	ldi r18,lo8(1)
-	ldi r19,0
-	mov r0,r25
-	rjmp 2f
-	1:
-	lsl r18
-	rol r19
-	2:
-	dec r0
-	brpl 1b
-	ldi r23,0
-	movw r20,r18
-	and r20,r22
-	and r21,r23
-	movw r18,r20
-	rjmp 2f
-	1:
-	asr r19
-	ror r18
-	2:
-	dec r25
-	brpl 1b
-	or r18,r19
-	brne .L84
-.L95:
+	brne .L83
+.L94:
 	ldd r25,Y+1
-.L84:
+.L83:
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -673,7 +685,7 @@ _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	pop r16
 	pop r14
 	eijmp
-.L77:
+.L76:
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -682,6 +694,7 @@ _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh:
 	pop r14
 	ret
 	.size	_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh, .-_Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
+	.text
 .global	__vector_9
 	.type	__vector_9, @function
 __vector_9:
@@ -723,7 +736,7 @@ __vector_9:
 	sts port_b_history,r24
 	ldi r18,0
 	ldi r19,0
-.L100:
+.L99:
 	ldd r24,Y+1
 	ldi r25,0
 	mov r0,r18
@@ -735,7 +748,7 @@ __vector_9:
 	dec r0
 	brpl 1b
 	sbrs r24,0
-	rjmp .L97
+	rjmp .L96
 	ldi r22,lo8(7)
 	mul r22,r18
 	movw r26,r0
@@ -772,7 +785,7 @@ __vector_9:
 	subi r30,lo8(-(_ZL17__flashMappedPort))
 	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
- ;  293 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  300 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
@@ -784,18 +797,18 @@ __vector_9:
 	sbiw r26,5+1
 	ld r22,Z
 	sbiw r24,0
-	breq .L96
+	breq .L95
 	lds r14,port_b_history
 	call _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
-	rjmp .L96
-.L97:
+	rjmp .L95
+.L96:
 	subi r18,-1
 	sbci r19,-1
 	cpi r18,8
 	cpc r19,__zero_reg__
 	breq .+2
-	rjmp .L100
-.L96:
+	rjmp .L99
+.L95:
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -863,19 +876,19 @@ __vector_10:
 	sts port_j_history,r24
 	ldd r24,Y+1
 	sbrc r24,0
-	rjmp .L107
+	rjmp .L106
 	ldd r24,Y+1
 	sbrs r24,1
-	rjmp .L104
+	rjmp .L103
 	ldi r24,lo8(1)
 	ldi r25,0
 	ldi r18,lo8(1)
-	rjmp .L105
-.L107:
+	rjmp .L104
+.L106:
 	ldi r24,0
 	ldi r25,0
 	ldi r18,0
-.L105:
+.L104:
 	ldi r19,lo8(7)
 	mul r19,r24
 	movw r26,r0
@@ -912,7 +925,7 @@ __vector_10:
 	subi r30,lo8(-(_ZL17__flashMappedPort))
 	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
- ;  324 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  331 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
@@ -924,10 +937,10 @@ __vector_10:
 	sbiw r26,5+1
 	ld r22,Z
 	sbiw r24,0
-	breq .L104
+	breq .L103
 	lds r14,port_j_history
 	call _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
-.L104:
+.L103:
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -1008,7 +1021,7 @@ __vector_11:
 	ldi r17,lo8(7)
 	ldi r20,lo8(5)
 	mov r15,r20
-.L116:
+.L115:
 	ldd r24,Y+1
 	ldi r25,0
 	mov r0,r12
@@ -1020,7 +1033,7 @@ __vector_11:
 	dec r0
 	brpl 1b
 	sbrs r24,0
-	rjmp .L115
+	rjmp .L114
 	movw r26,r10
 	adiw r26,3
 	ld r30,X+
@@ -1049,14 +1062,14 @@ __vector_11:
 	subi r30,lo8(-(_ZL17__flashMappedPort))
 	sbci r31,hi8(-(_ZL17__flashMappedPort))
 /* #APP */
- ;  354 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  361 "libs/gpio/interrupt/interrupt.cpp" 1
 	lpm r20, Z+
 	lpm r21, Z
 	
  ;  0 "" 2
 /* #NOAPP */
 	sbiw r24,0
-	breq .L115
+	breq .L114
 	lds r14,port_k_history
 	adiw r26,5
 	ld r30,X+
@@ -1065,7 +1078,7 @@ __vector_11:
 	mov r18,r12
 	ld r22,Z
 	call _Z17call_int_callbackPFvhE8INT_EDGEPVhhhh
-.L115:
+.L114:
 	ldi r27,-1
 	sub r12,r27
 	sbc r13,r27
@@ -1076,7 +1089,7 @@ __vector_11:
 	cp r12,r26
 	cpc r13,__zero_reg__
 	breq .+2
-	rjmp .L116
+	rjmp .L115
 /* epilogue start */
 	pop __tmp_reg__
 	pop r29
@@ -1136,7 +1149,7 @@ __vector_1:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  374 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  382 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1153,7 +1166,7 @@ __vector_1:
 	ld r24,X
 	eicall
 /* #APP */
- ;  377 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  385 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1205,7 +1218,7 @@ __vector_2:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  380 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  388 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1222,7 +1235,7 @@ __vector_2:
 	ld r24,X
 	eicall
 /* #APP */
- ;  383 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  391 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1274,7 +1287,7 @@ __vector_3:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  386 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  396 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1291,7 +1304,7 @@ __vector_3:
 	ld r24,X
 	eicall
 /* #APP */
- ;  389 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  399 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1343,7 +1356,7 @@ __vector_4:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  393 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  403 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1360,7 +1373,7 @@ __vector_4:
 	ld r24,X
 	eicall
 /* #APP */
- ;  396 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  406 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1412,7 +1425,7 @@ __vector_5:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  399 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  409 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1428,7 +1441,7 @@ __vector_5:
 	ld r24,X
 	eicall
 /* #APP */
- ;  402 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  412 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
@@ -1480,7 +1493,7 @@ __vector_6:
 /* stack size = 16 */
 .L__stack_usage = 16
 /* #APP */
- ;  405 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  415 "libs/gpio/interrupt/interrupt.cpp" 1
 	cli
  ;  0 "" 2
 /* #NOAPP */
@@ -1497,7 +1510,7 @@ __vector_6:
 	ld r24,X
 	eicall
 /* #APP */
- ;  408 "libs/gpio/interrupt/interrupt.cpp" 1
+ ;  418 "libs/gpio/interrupt/interrupt.cpp" 1
 	sei
  ;  0 "" 2
 /* epilogue start */
