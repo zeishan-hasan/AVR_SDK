@@ -1,9 +1,8 @@
 #pragma once
 #include <gpiodef.h>
+#include <avr/io.h>
 
-
-
-static const PROGMEM MappedPort __flashMappedPort[] ={
+const PROGMEM MappedPort __flashMappedPort[] ={
 	{&PIND, DD0, NONE},//0	RX - PCINT16
 	{&PIND, DD1, NONE},//1 TX- PCINT17
 	{&PIND, DD2, NONE}, //2 INT0 - PCINT18
@@ -39,15 +38,21 @@ enum Analogx:uint8_t{
 	A7,
 };
 
-static uint16_t __hw_timer_addr[] = {0x24,0x80,0xB0};
+const u8t PROGMEM __hw_timer_addr[] = {0x24, 0x80, 0xB0};
+const u8t PROGMEM __hw_int_mappedPin[] = {2, 3};
 
-static uint16_t __adc_channels[] = {
-	/*CHANNEL_00*/	 (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (0<<MUX0),
-	/*CHANNEL_01*/	 (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (1<<MUX0),
-	/*CHANNEL_02*/	 (0<<MUX3) | (0<<MUX2) | (1<<MUX1) | (0<<MUX0),
-	/*CHANNEL_03*/	 (0<<MUX3) | (0<<MUX2) | (1<<MUX1) | (1<<MUX0),
-	/*CHANNEL_04*/	 (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (0<<MUX0),
-	/*CHANNEL_05*/	 (0<<MUX3) | (1<<MUX2) | (0<<MUX1) | (1<<MUX0),
-	/*CHANNEL_06*/	 (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (0<<MUX0),
-	/*CHANNEL_07*/	 (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0),
-};
+
+
+//const u8t PROGMEM __hw_int_mappedPin[8] = {2, 3, 255, 255, 255, 255, 255, 255};
+
+//const uint8_t PROGMEM __adc_channels[] = {
+//	/*CHANNEL_00*/	 (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (0 << MUX0),
+//	/*CHANNEL_01*/	 (0 << MUX3) | (0 << MUX2) | (0 << MUX1) | (1 << MUX0),
+//	/*CHANNEL_02*/	 (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (0 << MUX0),
+//	/*CHANNEL_03*/	 (0 << MUX3) | (0 << MUX2) | (1 << MUX1) | (1 << MUX0),
+//	/*CHANNEL_04*/	 (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (0 << MUX0),
+//	/*CHANNEL_05*/	 (0 << MUX3) | (1 << MUX2) | (0 << MUX1) | (1 << MUX0),
+//	/*CHANNEL_06*/	 (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (0 << MUX0),
+//	/*CHANNEL_07*/	 (0 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0),
+//};
+

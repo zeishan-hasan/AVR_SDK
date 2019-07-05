@@ -104,9 +104,13 @@ enum Analogx:uint8_t{
 	A14,
 	A15
 };
-static uint16_t __hw_timer_addr[] = {0x24,0x80,0xB0,0x90,0xA0,0x120};
 
-static uint16_t __adc_channels[] = {
+
+
+const uint16_t PROGMEM __hw_timer_addr[] = {0x24,0x80,0xB0,0x90,0xA0,0x120};
+//const volatile u8t* PROGMEM __hw_timer_addr[] = {&TCCR0A, &TCCR1A, &TCCR2A, &TCCR3A, &TCCR3A, &TCCR4A};
+
+const uint16_t PROGMEM __adc_channels[] = {
 	/*CHANNEL_00*/	 (0<<MUX5) | (0<<MUX4) | (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (0<<MUX0),
 	/*CHANNEL_01*/	 (0<<MUX5) | (0<<MUX4) | (0<<MUX3) | (0<<MUX2) | (0<<MUX1) | (1<<MUX0),
 	/*CHANNEL_02*/	 (0<<MUX5) | (0<<MUX4) | (0<<MUX3) | (0<<MUX2) | (1<<MUX1) | (0<<MUX0),
@@ -124,3 +128,6 @@ static uint16_t __adc_channels[] = {
 	/*CHANNEL_14*/	 (1<<MUX5) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (0<<MUX0),
 	/*CHANNEL_15*/	 (1<<MUX5) | (0<<MUX4) | (0<<MUX3) | (1<<MUX2) | (1<<MUX1) | (1<<MUX0)
 };
+
+const u8t PROGMEM __hw_int_mappedPin[8] = {21, 20, 19, 18, 2, 3, 255, 255};
+

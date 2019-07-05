@@ -215,7 +215,7 @@ void Enc28j60::enableInterrupt(u8t value)
 
 	//int_cb_t *callback = (int_cb_t*)&([&](){	this->_callback(this);	});
 
-	Interrupt::attachInterrupt(13, FALLING, this);
+	//Interrupt::attachInterrupt(13, FALLING, this);
 }
 
 void Enc28j60::disableInterrupt()

@@ -28,15 +28,10 @@ int main(){
 	serial0->setEchoServer(false);
 	serial0->clear();
 
+	Pin pin(13,OUTPUT);
+	pin.setPWM(1000, 50);
 
-	//NetworkManager networkmanager;
-	//networkmanager.send("CIAO", tcp, XX..X..X, 1565);
 
-
-	//asd.setPWM(2000,50);
-
-	//_delay_ms(2000);
-	//char c[] = {0xA0,0xB1,0xC2,0xD3,0xE4,0xF5};
 	macaddr_t asd(0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5);
 	Enc28j60 encj2860(asd);
 	//encj2860.setSPI(MISO,MOSI,SCK,SS);
@@ -125,7 +120,7 @@ int main(){
 	//		serial0->printf("[%02u] 0x%02X ", i, frame[i]);
 	//	}
 	//encj2860._spi_selectBank(3);
-	u8t buff[512];
+	//u8t buff[512];
 
 	//for(size_t i = 0; i < SIZE_OF_ARRAY(frameLittle); ++i){
 	//	if(i % 15 == 0){
@@ -136,7 +131,7 @@ int main(){
 
 	//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
 
-	u16t size = 0;
+	//u16t size = 0;
 	//serial0->printf("\r\n");
 	//if(encj2860.isLinkUp()) {
 	//serial0->printf("Link is up\r\n");
@@ -154,21 +149,21 @@ int main(){
 	//																																																								) );
 	//int_cb_t *ptr =  (int_cb_t*)func;
 	//ptr(0);
-	eth_header_t _eth;
-	arp_header_t _arp;
+	//eth_header_t _eth;
+	//arp_header_t _arp;
 	//DDRB = 0x80;
 
 	while(1){
-		if(encj2860.isLinkUp()) {
-			serial0->printf("link is up\r\n");
-			serial0->printf("unread packet %u\r\n", encj2860.getUnreadPacket());
-			if(encj2860.isReceivingData()) {
-				serial0->printf("Receiving data\r\n");
-			}
-		}
+		//if(encj2860.isLinkUp()) {
+		//	serial0->printf("link is up\r\n");
+		//	serial0->printf("unread packet %u\r\n", encj2860.getUnreadPacket());
+		//	if(encj2860.isReceivingData()) {
+		//		serial0->printf("Receiving data\r\n");
+		//	}
+		//}
 		//serial0->printf("Sending...\r\n");
 		//encj2860.sendPacket(ptr.begin(), ptr.size());
-		encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
+		//encj2860.sendPacket(frameLittle, SIZE_OF_ARRAY(frameLittle));
 		///	//if(encj2860.newPacket()){
 		//size = encj2860.receivePacket(buff, SIZE_OF_ARRAY(buff));
 		//if(size){

@@ -2,7 +2,6 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
-__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -136,8 +135,7 @@ _Z25__inet_ipv4_netmask_splitPhPKc:
 	push r17
 	push r28
 	push r29
-	push __zero_reg__
-	push __zero_reg__
+	rcall .
 	in r28,__SP_L__
 	in r29,__SP_H__
 /* prologue: function */
@@ -224,7 +222,7 @@ _Z28__inet_ipv4_getBroadcastAddrPKc:
 	push r28
 	push r29
 	rcall .
-	push __zero_reg__
+	rcall .
 	push __zero_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
@@ -285,7 +283,7 @@ _Z26__inet_ipv4_getNetworkAddrPKc:
 	push r28
 	push r29
 	rcall .
-	push __zero_reg__
+	rcall .
 	push __zero_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
@@ -342,8 +340,7 @@ _Z25__inet_ipv4_netmask_splitPKc:
 	push r17
 	push r28
 	push r29
-	push __zero_reg__
-	push __zero_reg__
+	rcall .
 	in r28,__SP_L__
 	in r29,__SP_H__
 /* prologue: function */
@@ -396,7 +393,7 @@ _Z21__inet_ipv4_isValidIPPKc:
 	push r28
 	push r29
 	rcall .
-	push __zero_reg__
+	rcall .
 	push __zero_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
@@ -488,6 +485,7 @@ _Z16__inet_ipv4_atonPKc:
 	push r17
 	push r28
 	push r29
+	rcall .
 	rcall .
 	rcall .
 	in r28,__SP_L__
@@ -706,6 +704,7 @@ _Z15__inet_eth_atonPKc:
 _Z15__inet_eth_ntoaPc9macaddr_t:
 	push r28
 	push r29
+	rcall .
 	rcall .
 	rcall .
 	in r28,__SP_L__
@@ -1175,6 +1174,7 @@ _Z15__inet_eth_ntoa9macaddr_t:
 	push r17
 	push r28
 	push r29
+	rcall .
 	rcall .
 	rcall .
 	in r28,__SP_L__

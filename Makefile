@@ -34,7 +34,7 @@ INCLUDE_DIR := -I /usr/lib/avr/include -I $(STL) -I $(SDK_PATH)/libs \
 
 CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)
 #LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
-LD_FLAGS  = -Wl,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk$(MICROCONTROLLER)_stl -L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_$(MICROCONTROLLER)
+LD_FLAGS  = -Wl,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk$(MICROCONTROLLER)_stl -L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_$(MICROCONTROLLER) -Wl,-gc-sections
 
 
 # Select programmer (default: stk500v2)
@@ -97,7 +97,7 @@ app: main.elf
 	@avr-objcopy -j .text -j .data -O ihex $(BUILD_DIR)/main.elf $(FIRMW_DIR)/main.hex
 #
 main.elf: $(CXX_OBJS) $(ASM_OBJS)
-	@$(CXX) -mmcu=$(MICROCONTROLLER) -o $(BUILD_DIR)/$@ $(BUILD_DIR)/*.o $(LD_FLAGS) -Wl,-gc-sections
+	@$(CXX) -mmcu=$(MICROCONTROLLER) -o $(BUILD_DIR)/$@ $(BUILD_DIR)/*.o $(LD_FLAGS) 
 #@$(CXX) -mmcu=$(MICROCONTROLLER) $(LD_FLAGS) -Wl,-Map,$(BUILD_DIR)/main.map -o $(BUILD_DIR)/main.elf build/*.o
 # Show Memory Usage
 size:

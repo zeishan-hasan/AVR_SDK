@@ -2,74 +2,24 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
-__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
-	.section	.text._ZN3PinC2Ev,"axG",@progbits,_ZN3PinC5Ev,comdat
-	.weak	_ZN3PinC2Ev
-	.type	_ZN3PinC2Ev, @function
-_ZN3PinC2Ev:
-/* prologue: function */
-/* frame size = 0 */
-/* stack size = 0 */
-.L__stack_usage = 0
-	movw r30,r24
-	ldi r24,lo8(-1)
-	ldi r25,lo8(-1)
-	std Z+7,r25
-	std Z+6,r24
-	std Z+10,__zero_reg__
-	std Z+9,__zero_reg__
-	std Z+12,__zero_reg__
-	std Z+11,__zero_reg__
-	std Z+14,__zero_reg__
-	std Z+13,__zero_reg__
-	std Z+16,__zero_reg__
-	std Z+15,__zero_reg__
-	std Z+18,__zero_reg__
-	std Z+17,__zero_reg__
-	std Z+20,__zero_reg__
-	std Z+19,__zero_reg__
-	std Z+22,__zero_reg__
-	std Z+21,__zero_reg__
-	std Z+24,__zero_reg__
-	std Z+23,__zero_reg__
-	std Z+26,__zero_reg__
-	std Z+25,__zero_reg__
-	std Z+28,__zero_reg__
-	std Z+27,__zero_reg__
-	ret
-	.size	_ZN3PinC2Ev, .-_ZN3PinC2Ev
-	.weak	_ZN3PinC1Ev
-	.set	_ZN3PinC1Ev,_ZN3PinC2Ev
 	.text
 .global	_ZN5Dht11C2E3Pin
 	.type	_ZN5Dht11C2E3Pin, @function
 _ZN5Dht11C2E3Pin:
-	push r16
-	push r17
-	push r28
-	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 4 */
-.L__stack_usage = 4
-	movw r28,r24
-	movw r16,r22
-	call _ZN3PinC1Ev
-	ldi r24,lo8(36)
-	movw r30,r16
-	movw r26,r28
+/* stack size = 0 */
+.L__stack_usage = 0
+	movw r26,r24
+	ldi r25,lo8(12)
+	movw r30,r22
 	0:
 	ld r0,Z+
 	st X+,r0
-	dec r24
+	dec r25
 	brne 0b
-/* epilogue start */
-	pop r29
-	pop r28
-	pop r17
-	pop r16
 	ret
 	.size	_ZN5Dht11C2E3Pin, .-_ZN5Dht11C2E3Pin
 .global	_ZN5Dht11C1E3Pin
@@ -77,32 +27,28 @@ _ZN5Dht11C2E3Pin:
 .global	_ZN5Dht11C2Eh
 	.type	_ZN5Dht11C2Eh, @function
 _ZN5Dht11C2Eh:
-	push r15
 	push r16
 	push r17
 	push r28
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,36
+	sbiw r28,12
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 36 */
-/* stack size = 41 */
-.L__stack_usage = 41
+/* frame size = 12 */
+/* stack size = 16 */
+.L__stack_usage = 16
 	movw r16,r24
-	mov r15,r22
-	call _ZN3PinC1Ev
 	ldi r20,lo8(2)
-	mov r22,r15
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
-	ldi r24,lo8(36)
+	ldi r24,lo8(12)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r16
@@ -115,7 +61,7 @@ _ZN5Dht11C2Eh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 /* epilogue start */
-	adiw r28,36
+	adiw r28,12
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
@@ -125,7 +71,6 @@ _ZN5Dht11C2Eh:
 	pop r28
 	pop r17
 	pop r16
-	pop r15
 	ret
 	.size	_ZN5Dht11C2Eh, .-_ZN5Dht11C2Eh
 .global	_ZN5Dht11C1Eh
@@ -133,30 +78,18 @@ _ZN5Dht11C2Eh:
 .global	_ZN5Dht11C2E7dht11_t
 	.type	_ZN5Dht11C2E7dht11_t, @function
 _ZN5Dht11C2E7dht11_t:
-	push r16
-	push r17
-	push r28
-	push r29
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 4 */
-.L__stack_usage = 4
-	movw r28,r24
-	movw r16,r22
-	call _ZN3PinC1Ev
-	ldi r24,lo8(41)
-	movw r30,r16
-	movw r26,r28
+/* stack size = 0 */
+.L__stack_usage = 0
+	movw r26,r24
+	ldi r25,lo8(17)
+	movw r30,r22
 	0:
 	ld r0,Z+
 	st X+,r0
-	dec r24
+	dec r25
 	brne 0b
-/* epilogue start */
-	pop r29
-	pop r28
-	pop r17
-	pop r16
 	ret
 	.size	_ZN5Dht11C2E7dht11_t, .-_ZN5Dht11C2E7dht11_t
 .global	_ZN5Dht11C1E7dht11_t
@@ -169,7 +102,7 @@ _ZN5Dht1114getTemperatureEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+38
+	ldd r24,Z+14
 	ret
 	.size	_ZN5Dht1114getTemperatureEv, .-_ZN5Dht1114getTemperatureEv
 .global	_ZN5Dht1111getHumidityEv
@@ -180,7 +113,7 @@ _ZN5Dht1111getHumidityEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+36
+	ldd r24,Z+12
 	ret
 	.size	_ZN5Dht1111getHumidityEv, .-_ZN5Dht1111getHumidityEv
 .global	_ZN5Dht1114startContitionEv
@@ -215,50 +148,50 @@ _ZN5Dht1114startContitionEv:
 	movw r24,r28
 	call _ZN3Pin12setDirectionE4DDRx
 	ldi r17,lo8(21)
-.L9:
+.L8:
 	movw r24,r28
 	call _ZN3Pin11digitalReadEv
 	tst r24
-	breq .L8
+	breq .L7
 	ldi r18,lo8(10)
 1:	dec r18
 	brne 1b
 	rjmp .
 	subi r17,lo8(-(-1))
-	brne .L9
-.L12:
+	brne .L8
+.L11:
 	ldi r17,0
-	rjmp .L10
-.L8:
+	rjmp .L9
+.L7:
 	ldi r16,lo8(46)
-.L13:
+.L12:
 	movw r24,r28
 	call _ZN3Pin11digitalReadEv
 	mov r17,r24
 	cpse r24,__zero_reg__
-	rjmp .L11
+	rjmp .L10
 	ldi r24,lo8(10)
 1:	dec r24
 	brne 1b
 	rjmp .
 	subi r16,lo8(-(-1))
-	brne .L13
-	rjmp .L12
-.L11:
+	brne .L12
+	rjmp .L11
+.L10:
 	ldi r16,lo8(46)
-.L14:
+.L13:
 	movw r24,r28
 	call _ZN3Pin11digitalReadEv
 	tst r24
-	breq .L10
+	breq .L9
 	ldi r25,lo8(10)
 1:	dec r25
 	brne 1b
 	rjmp .
 	subi r16,lo8(-(-1))
-	brne .L14
-	rjmp .L12
-.L10:
+	brne .L13
+	rjmp .L11
+.L9:
 	mov r24,r17
 /* epilogue start */
 	pop r29
@@ -289,7 +222,7 @@ _ZN5Dht117getDataEv:
 	push r28
 	push r29
 	rcall .
-	push __zero_reg__
+	rcall .
 	push __zero_reg__
 	in r28,__SP_L__
 	in r29,__SP_H__
@@ -310,7 +243,7 @@ _ZN5Dht117getDataEv:
 	movw r24,r16
 	call _ZN5Dht1114startContitionEv
 	cpse r24,__zero_reg__
-	rjmp .L27
+	rjmp .L26
 	ldi r31,lo8(6399999)
 	ldi r18,hi8(6399999)
 	ldi r24,hlo8(6399999)
@@ -320,8 +253,8 @@ _ZN5Dht117getDataEv:
 	brne 1b
 	rjmp .
 	nop
-	rjmp .L26
-.L27:
+	rjmp .L25
+.L26:
 	ldi r22,lo8(2)
 	movw r24,r16
 	call _ZN3Pin12setDirectionE4DDRx
@@ -329,19 +262,19 @@ _ZN5Dht117getDataEv:
 	ldi r25,6
 	add r2,r25
 	adc r3,__zero_reg__
-.L36:
+.L35:
 	ldi r24,lo8(7)
 	mov r12,r24
 	mov r13,__zero_reg__
-.L35:
+.L34:
 	call _ZN5Timer3nowEv
 	movw r4,r22
 	movw r6,r24
-.L31:
+.L30:
 	movw r24,r16
 	call _ZN3Pin11digitalReadEv
 	cpse r24,__zero_reg__
-	rjmp .L29
+	rjmp .L28
 	call _ZN5Timer3nowEv
 	movw r8,r22
 	movw r10,r24
@@ -359,17 +292,17 @@ _ZN5Dht117getDataEv:
 	cpc r25,__zero_reg__
 	cpc r26,__zero_reg__
 	cpc r27,__zero_reg__
-	brlo .L31
-	rjmp .L26
-.L29:
+	brlo .L30
+	rjmp .L25
+.L28:
 	call _ZN5Timer3nowEv
 	movw r4,r22
 	movw r6,r24
-.L33:
+.L32:
 	movw r24,r16
 	call _ZN3Pin11digitalReadEv
 	tst r24
-	breq .L32
+	breq .L31
 	call _ZN5Timer3nowEv
 	movw r8,r22
 	movw r10,r24
@@ -382,15 +315,15 @@ _ZN5Dht117getDataEv:
 	cpc r9,__zero_reg__
 	cpc r10,__zero_reg__
 	cpc r11,__zero_reg__
-	brlo .L33
-	rjmp .L26
-.L32:
+	brlo .L32
+	rjmp .L25
+.L31:
 	ldi r31,20
 	cp r8,r31
 	cpc r9,__zero_reg__
 	cpc r10,__zero_reg__
 	cpc r11,__zero_reg__
-	brlo .L34
+	brlo .L33
 	ldi r24,lo8(1)
 	ldi r25,0
 	mov r0,r12
@@ -405,31 +338,31 @@ _ZN5Dht117getDataEv:
 	ld r25,Z
 	and r24,r25
 	st Z,r24
-.L34:
+.L33:
 	ldi r31,1
 	sub r12,r31
 	sbc r13,__zero_reg__
 	brcs .+2
-	rjmp .L35
+	rjmp .L34
 	ldi r24,-1
 	sub r14,r24
 	sbc r15,r24
 	cp r14,r2
 	cpc r15,r3
 	breq .+2
-	rjmp .L36
+	rjmp .L35
 	ldd r24,Y+1
 	movw r30,r16
-	std Z+36,r24
+	std Z+12,r24
 	ldd r24,Y+2
-	std Z+37,r24
+	std Z+13,r24
 	ldd r24,Y+3
-	std Z+38,r24
+	std Z+14,r24
 	ldd r24,Y+4
-	std Z+39,r24
+	std Z+15,r24
 	ldd r24,Y+5
-	std Z+40,r24
-.L26:
+	std Z+16,r24
+.L25:
 /* epilogue start */
 	pop __tmp_reg__
 	pop __tmp_reg__
@@ -464,18 +397,18 @@ _ZN5Dht118checkCrcEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r25,Z+36
-	ldd r24,Z+37
+	ldd r25,Z+12
+	ldd r24,Z+13
 	add r25,r24
-	ldd r24,Z+38
+	ldd r24,Z+14
 	add r25,r24
-	ldd r24,Z+39
+	ldd r24,Z+15
 	add r25,r24
 	ldi r24,lo8(1)
-	ldd r18,Z+40
+	ldd r18,Z+16
 	cpse r25,r18
 	ldi r24,0
-.L41:
+.L40:
 	ret
 	.size	_ZN5Dht118checkCrcEv, .-_ZN5Dht118checkCrcEv
 	.ident	"GCC: (GNU) 5.4.0"

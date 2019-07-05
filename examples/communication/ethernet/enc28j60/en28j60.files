@@ -22,8 +22,13 @@ libs/core/micro/atmega328p.h
 libs/core/micro/gpiodef.h
 libs/gpio/adc_comparator/adccomparator.cpp
 libs/gpio/adc_comparator/adccomparator.h
+libs/gpio/interrupt/hwint.cpp
+libs/gpio/interrupt/hwint.h
+libs/gpio/interrupt/intdef.h
 libs/gpio/interrupt/interrupt.cpp
 libs/gpio/interrupt/interrupt.h
+libs/gpio/interrupt/pcint.cpp
+libs/gpio/interrupt/pcint.h
 libs/gpio/portmanager/portmanager.cpp
 libs/gpio/portmanager/portmanager.h
 libs/network/tcpip/global/inet_global/inet_global.cpp
