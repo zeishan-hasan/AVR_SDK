@@ -32,7 +32,7 @@ INCLUDE_DIR := -I /usr/lib/avr/include -I $(STL) -I $(SDK_PATH)/libs \
 	$(addprefix -I ,$(shell find $(LIBS_DIR)/ -name  '*.inc' -exec dirname {} \; | sort| uniq))
 
 
-CXX_FLAGS = -lstdc++ -std=c++11 $(INCLUDE_DIR)
+CXX_FLAGS = -lstdc++ -std=c++14 $(INCLUDE_DIR)
 #LD_FLAGS  = -Wl,-u,vfscanf,-lscanf_flt,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk_stl
 LD_FLAGS  = -Wl,-u,vfprintf,-lprintf_flt -L$(STL)/static_lib -lysdk$(MICROCONTROLLER)_stl -L/home/zetes/Documents/GitHub/AVR_SDK/libs/static_lib -lysdk_$(MICROCONTROLLER) -Wl,-gc-sections
 

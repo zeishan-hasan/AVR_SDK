@@ -1,5 +1,7 @@
 #include "avr_sdk.h"
 
+#include <pins.h>
+
 bool debug = true;
 #define MISO 50
 #define MOSI 51
@@ -20,6 +22,7 @@ void func(uint8_t pin){
 	serial0->printf("Interrupt dal pin %u\r\n", pin);
 }
 
+//extern void toggle(u8t pin);
 
 int main(){
 	Serial *serial0 = SerialManager::getInstance(SERIAL0);
@@ -28,8 +31,8 @@ int main(){
 	serial0->setEchoServer(false);
 	serial0->clear();
 
-	Pin pin(13,OUTPUT);
-	pin.setPWM(1000, 50);
+	//Pin pin(13,OUTPUT);
+	//pin.setPWM(1000, 50);
 
 
 	macaddr_t asd(0xA0, 0xB1, 0xC2, 0xD3, 0xE4, 0xF5);
@@ -151,9 +154,12 @@ int main(){
 	//ptr(0);
 	//eth_header_t _eth;
 	//arp_header_t _arp;
-	//DDRB = 0x80;
+	pinMode(13, OUTPUT);
 
 	while(1){
+		toggle(13);
+
+		//PORTB ^= 0x80;
 		//if(encj2860.isLinkUp()) {
 		//	serial0->printf("link is up\r\n");
 		//	serial0->printf("unread packet %u\r\n", encj2860.getUnreadPacket());
@@ -190,7 +196,7 @@ int main(){
 		//	}
 		//
 		//}
-		_delay_ms(500);
+		//	_delay_ms(500);
 	}
 }
 

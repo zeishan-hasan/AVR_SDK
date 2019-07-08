@@ -8,23 +8,19 @@
 #include <stdio.h>
 #include "macros.h"
 
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-#include <atmega2560.h>
-#endif
-#if defined(__AVR_ATmega48p__) ||  defined(__AVR_ATmega88P__) || defined(__AVR_ATmega328P__)
-#include <atmega328p.h>
-#endif
 
+#include <pins.h>
 
-/**
-								* @brief The DDRx enum
-								*/
-enum DDRx:uint8_t{
-	INPUT,
-	OUTPUT,
-	INPUT_PULLUP
-};
-
+//
+///**
+//								* @brief The DDRx enum
+//								*/
+//enum DDRx:uint8_t{
+//	INPUT,
+//	OUTPUT,
+//	INPUT_PULLUP
+//};
+//
 /**
 								* @brief The LogicStates enum
 								*/
@@ -35,43 +31,6 @@ enum LogicStates:uint8_t{
 
 
 
-/**
-								* @brief The _ADMUX enum
-								*/
-enum _ADMUX: u8t {
-	INTERNAL_VREF   = (0<<REFS1) | (0<<REFS0), // AREF,Internal VREF turned OFF
-	AVCC            = (0<<REFS1) | (1<<REFS0), // AVCC at AREF Pin with external capacitor
-	INTERNAL_1_1V   = (1<<REFS1) | (0<<REFS0), // Internal 1.1Voltage reference with external capacitor at AREF pin
-	INTERNAL_2_56V  = (1<<REFS1) | (1<<REFS0), // Internal 2.56Voltage reference with external capacitor at AREF pin
-};
-
-/**
-								* @brief The _ADCSRA_PRESCALER enum
-								*/
-enum _ADCSRA_PRESCALER: u8t {
-	F_CPU_BY_2	  = (0<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
-	F_CPU_BY_4	  = (0<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
-	F_CPU_BY_8	  = (0<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
-	F_CPU_BY_16	 = (1<<ADPS2)|(0<<ADPS1)|(0<<ADPS0),
-	F_CPU_BY_32	 = (1<<ADPS2)|(0<<ADPS1)|(1<<ADPS0),
-	F_CPU_BY_64	 = (1<<ADPS2)|(1<<ADPS1)|(0<<ADPS0),
-	F_CPU_BY_128 = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0),
-};
-
-
-/**
-								* @brief The _ADCSRB_AUTOTRIGGER enum
-								*/
-enum _ADCSRB_AUTOTRIGGER: u8t{
-	FREE_RUNNING_MODE         = (0<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
-	ANALOG_COMPARATOR         = (0<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
-	EXTERNAL_INTERRUPT_REQ_0  = (0<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
-	TNCT0_COMP_A              = (0<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
-	TNCT0_OVERFLOW												= (1<<ADTS2) | (0<<ADTS1) |(0<<ADTS0),
-	TNCT1_COMP_B														= (1<<ADTS2) | (0<<ADTS1) |(1<<ADTS0),
-	TNCT1_OVERFLOW												= (1<<ADTS2) | (1<<ADTS1) |(0<<ADTS0),
-	TNCT1_CAPTURE_EVENT	      = (1<<ADTS2) | (1<<ADTS1) |(1<<ADTS0),
-};
 
 /**
 								* @brief The PWM_8BIT struct

@@ -1,7 +1,12 @@
 #pragma once
 
 #include <avr/pgmspace.h>
+#include <avr/eeprom.h>
 #include <macros.h>
+#include <avr/io.h>
+#include <util/delay.h>
+
+/*
 #define _TIMER0 (0x00 << 7)
 #define _TIMER1 (0x01	<< 7)
 #define _TIMER2 (0x02	<< 7)
@@ -41,32 +46,35 @@
 #define _ADC(x) (x << 0)
 #define NONE 0
 #pragma pack(1)
-/**
-	* @brief The MappedPort struct. It's used to manage pins.
-	*/
-struct MappedPort {
-	/**
-					* @brief Is the pointer used to manage a pin
-					*/
-	volatile uint8_t * pinx;
-	/**
-					* @brief The bit into own register
-					*/
-	uint8_t registerBit;
 
-	/*! @var controlBits
-								@brief Used to get pin functions mode.
-								@verbatim
-								╔════╦════╦════╦═══════╦═════╦════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╗
-								║ 15 ║ 14 ║ 13 ║ 12    ║ 11  ║ 10 ║ 9    ║ 8    ║ 7    ║ 6    ║ 5   ║ 4     ║ 3 ║ 2 ║ 1 ║ 0 ║
-								╠════╬════╬════╬═══════╬═════╩════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╣
-								║    ║    ║    ║ isPWM ║ PWM bits ║ Output Compare Sel ║ letter Sel ║ isADC ║    ADC_SEL    ║
-								╚════╩════╩════╩═══════╩══════════╩════════════════════╩════════════╩═══════╩═══════════════╝
-								@endverbatim
-		*/
-	uint16_t controlBits;
+///
+//**
+//* @brief The MappedPort struct. It's used to manage pins.
+//*/
+//truct MappedPort {
+///**
+//				* @brief Is the pointer used to manage a pin
+//				*/
+//volatile uint8_t * pinx;
+///**
+//				* @brief The bit into own register
+//				*/
+//uint8_t registerBit;
+//
+///*! @var controlBits
+//							@brief Used to get pin functions mode.
+//							@verbatim
+//							╔════╦════╦════╦═══════╦═════╦════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╗
+//							║ 15 ║ 14 ║ 13 ║ 12    ║ 11  ║ 10 ║ 9    ║ 8    ║ 7    ║ 6    ║ 5   ║ 4     ║ 3 ║ 2 ║ 1 ║ 0 ║
+//							╠════╬════╬════╬═══════╬═════╩════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╣
+//							║    ║    ║    ║ isPWM ║ PWM bits ║ Output Compare Sel ║ letter Sel ║ isADC ║    ADC_SEL    ║
+//							╚════╩════╩════╩═══════╩══════════╩════════════════════╩════════════╩═══════╩═══════════════╝
+//							@endverbatim
+//
+//	*/
+//uint16_t controlBits;
+//
+//;
 
-};
 
-
-#pragma pop
+//#pragma pop

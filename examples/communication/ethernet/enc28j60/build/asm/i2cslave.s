@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -62,14 +63,16 @@ _Z8I2C_stopv:
 /* #NOAPP */
 	ret
 	.size	_Z8I2C_stopv, .-_Z8I2C_stopv
-.global	__vector_24
-	.type	__vector_24, @function
-__vector_24:
+.global	__vector_39
+	.type	__vector_39, @function
+__vector_39:
 	push r1
 	push r0
 	in r0,__SREG__
 	push r0
 	clr __zero_reg__
+	in r0,__RAMPZ__
+	push r0
 	push r18
 	push r19
 	push r20
@@ -84,8 +87,8 @@ __vector_24:
 	push r31
 /* prologue: Signal */
 /* frame size = 0 */
-/* stack size = 15 */
-.L__stack_usage = 15
+/* stack size = 16 */
+.L__stack_usage = 16
 	lds r24,185
 	andi r24,lo8(-8)
 	cpi r24,lo8(-128)
@@ -105,12 +108,12 @@ __vector_24:
 	lds r24,187
 	lds r30,_ZL8I2C_recv
 	lds r31,_ZL8I2C_recv+1
-	icall
+	eicall
 	rjmp .L5
 .L10:
 	lds r30,_ZL7I2C_req
 	lds r31,_ZL7I2C_req+1
-	icall
+	eicall
 .L5:
 	ldi r24,lo8(-59)
 	sts 188,r24
@@ -128,11 +131,13 @@ __vector_24:
 	pop r19
 	pop r18
 	pop r0
+	out __RAMPZ__,r0
+	pop r0
 	out __SREG__,r0
 	pop r0
 	pop r1
 	reti
-	.size	__vector_24, .-__vector_24
+	.size	__vector_39, .-__vector_39
 	.local	_ZL7I2C_req
 	.comm	_ZL7I2C_req,2,1
 	.local	_ZL8I2C_recv

@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -25,7 +26,7 @@ _ZNSt6vectorI3PinSaIS0_EE7reserveEj.part.7:
 	ldd r15,Z+1
 	std Z+3,r23
 	std Z+2,r22
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	mov r31,r24
 	mul r31,r22
 	movw r24,r0
@@ -55,7 +56,7 @@ _ZNSt6vectorI3PinSaIS0_EE7reserveEj.part.7:
 	adc r27,r25
 	sbiw r26,0
 	breq .L3
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	0:
 	ld r0,Z+
@@ -68,7 +69,7 @@ _ZNSt6vectorI3PinSaIS0_EE7reserveEj.part.7:
 	ldi r31,-1
 	sub r12,r31
 	sbc r13,r31
-	adiw r28,12
+	adiw r28,14
 	rjmp .L4
 .L2:
 	movw r24,r14
@@ -115,7 +116,7 @@ _ZN9MasterSPI8setClockE10SPI_CLKSEL:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	std Z+43,r22
+	std Z+49,r22
 	in r24,0x2c
 	andi r24,lo8(-4)
 	out 0x2c,r24
@@ -123,14 +124,14 @@ _ZN9MasterSPI8setClockE10SPI_CLKSEL:
 	andi r24,lo8(-2)
 	out 0x2d,r24
 	in r24,0x2d
-	ldd r18,Z+43
+	ldd r18,Z+49
 	bst r18,2
 	clr r25
 	bld r25,0
 	or r25,r24
 	out 0x2d,r25
 	in r25,0x2c
-	ldd r24,Z+43
+	ldd r24,Z+49
 	andi r24,lo8(3)
 	or r24,r25
 	out 0x2c,r24
@@ -144,7 +145,7 @@ _ZN9MasterSPI8getClockEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+43
+	ldd r24,Z+49
 	ret
 	.size	_ZN9MasterSPI8getClockEv, .-_ZN9MasterSPI8getClockEv
 .global	_ZN9MasterSPI12setDataOrderE8SPI_DORD
@@ -155,12 +156,12 @@ _ZN9MasterSPI12setDataOrderE8SPI_DORD:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	std Z+44,r22
+	std Z+50,r22
 	in r25,0x2c
 	andi r25,lo8(-33)
 	out 0x2c,r25
 	in r18,0x2c
-	ldd r25,Z+44
+	ldd r25,Z+50
 	ldi r19,lo8(32)
 	mul r25,r19
 	movw r24,r0
@@ -177,7 +178,7 @@ _ZN9MasterSPI12getDataOrderEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+44
+	ldd r24,Z+50
 	ret
 	.size	_ZN9MasterSPI12getDataOrderEv, .-_ZN9MasterSPI12getDataOrderEv
 .global	_ZN9MasterSPI16setClockPolarityE8SPI_CPOL
@@ -188,12 +189,12 @@ _ZN9MasterSPI16setClockPolarityE8SPI_CPOL:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	std Z+45,r22
+	std Z+51,r22
 	in r25,0x2c
 	andi r25,lo8(-9)
 	out 0x2c,r25
 	in r18,0x2c
-	ldd r25,Z+45
+	ldd r25,Z+51
 	ldi r19,lo8(8)
 	mul r25,r19
 	movw r24,r0
@@ -210,7 +211,7 @@ _ZN9MasterSPI16getClockPolarityEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+45
+	ldd r24,Z+51
 	ret
 	.size	_ZN9MasterSPI16getClockPolarityEv, .-_ZN9MasterSPI16getClockPolarityEv
 .global	_ZN9MasterSPI13setClockPhaseE8SPI_CPHA
@@ -221,12 +222,12 @@ _ZN9MasterSPI13setClockPhaseE8SPI_CPHA:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	std Z+46,r22
+	std Z+52,r22
 	in r25,0x2c
 	andi r25,lo8(-5)
 	out 0x2c,r25
 	in r18,0x2c
-	ldd r25,Z+46
+	ldd r25,Z+52
 	ldi r19,lo8(4)
 	mul r25,r19
 	movw r24,r0
@@ -243,7 +244,7 @@ _ZN9MasterSPI13getClockPhaseEv:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+46
+	ldd r24,Z+52
 	ret
 	.size	_ZN9MasterSPI13getClockPhaseEv, .-_ZN9MasterSPI13getClockPhaseEv
 .global	_ZN9MasterSPI11enableSlaveEh
@@ -258,14 +259,14 @@ _ZN9MasterSPI11enableSlaveEh:
 	subi r18,-1
 	sbci r19,-1
 	movw r30,r24
-	ldd r20,Z+40
-	ldd r21,Z+41
+	ldd r20,Z+46
+	ldd r21,Z+47
 	cp r20,r18
 	cpc r21,r19
 	brlo .L21
-	ldd r24,Z+36
-	ldd r25,Z+37
-	ldi r31,lo8(12)
+	ldd r24,Z+42
+	ldd r25,Z+43
+	ldi r31,lo8(14)
 	mul r22,r31
 	add r24,r0
 	adc r25,r1
@@ -286,14 +287,14 @@ _ZN9MasterSPI12disableSlaveEh:
 	subi r18,-1
 	sbci r19,-1
 	movw r30,r24
-	ldd r20,Z+40
-	ldd r21,Z+41
+	ldd r20,Z+46
+	ldd r21,Z+47
 	cp r20,r18
 	cpc r21,r19
 	brlo .L24
-	ldd r24,Z+36
-	ldd r25,Z+37
-	ldi r31,lo8(12)
+	ldd r24,Z+42
+	ldd r25,Z+43
+	ldi r31,lo8(14)
 	mul r22,r31
 	add r24,r0
 	adc r25,r1
@@ -509,8 +510,8 @@ _ZN9MasterSPI12slaveIsValidEh:
 	sbci r23,-1
 	ldi r18,lo8(1)
 	movw r30,r24
-	ldd r24,Z+40
-	ldd r25,Z+41
+	ldd r24,Z+46
+	ldd r25,Z+47
 	cp r24,r22
 	cpc r25,r23
 	brsh .L43
@@ -540,9 +541,9 @@ _ZN9MasterSPI11getSlavePinEh:
 /* stack size = 0 */
 .L__stack_usage = 0
 	movw r30,r24
-	ldd r24,Z+36
-	ldd r25,Z+37
-	ldi r31,lo8(12)
+	ldd r24,Z+42
+	ldd r25,Z+43
+	ldi r31,lo8(14)
 	mul r22,r31
 	add r24,r0
 	adc r25,r1
@@ -575,7 +576,7 @@ _ZNSt6vectorI3PinSaIS0_EE8downsizeEj:
 	brsh .L46
 	movw r12,r22
 	movw r28,r24
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	mul r24,r22
 	movw r10,r0
 	mul r24,r23
@@ -601,7 +602,7 @@ _ZNSt6vectorI3PinSaIS0_EE8downsizeEj:
 	ldi r31,-1
 	sub r14,r31
 	sbc r15,r31
-	subi r16,-12
+	subi r16,-14
 	sbci r17,-1
 	rjmp .L49
 .L48:
@@ -637,50 +638,59 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,12
+	sbiw r28,14
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 12 */
-/* stack size = 22 */
-.L__stack_usage = 22
+/* frame size = 14 */
+/* stack size = 24 */
+.L__stack_usage = 24
 	movw r14,r24
 	mov r10,r22
 	mov r11,r20
 	mov r17,r18
-	movw r12,r24
-	ldi r24,36
-	add r12,r24
+	ldi r24,lo8(-1)
+	ldi r25,lo8(-1)
+	movw r30,r14
+	std Z+5,r25
+	std Z+4,r24
+	std Z+19,r25
+	std Z+18,r24
+	std Z+33,r25
+	std Z+32,r24
+	movw r12,r14
+	ldi r31,42
+	add r12,r31
 	adc r13,__zero_reg__
 	movw r30,r14
-	std Z+37,__zero_reg__
-	std Z+36,__zero_reg__
+	std Z+43,__zero_reg__
+	std Z+42,__zero_reg__
 	ldi r24,lo8(8)
 	ldi r25,0
-	std Z+39,r25
-	std Z+38,r24
-	std Z+41,__zero_reg__
-	std Z+40,__zero_reg__
-	ldi r24,lo8(96)
+	std Z+45,r25
+	std Z+44,r24
+	std Z+47,__zero_reg__
+	std Z+46,__zero_reg__
+	ldi r24,lo8(112)
 	ldi r25,0
 	call _Znwj
 	movw r30,r14
-	std Z+37,r25
-	std Z+36,r24
+	std Z+43,r25
+	std Z+42,r24
 	ldi r24,lo8(3)
-	std Z+43,r24
-	std Z+44,__zero_reg__
-	std Z+45,__zero_reg__
-	std Z+46,__zero_reg__
+	std Z+49,r24
+	std Z+50,__zero_reg__
+	std Z+51,__zero_reg__
+	std Z+52,__zero_reg__
 	ldi r20,0
 	mov r22,r10
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r14
@@ -697,11 +707,11 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r14
-	adiw r26,12
+	adiw r26,14
 	0:
 	ld r0,Z+
 	st X+,r0
@@ -715,11 +725,11 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r14
-	adiw r26,24
+	adiw r26,28
 	0:
 	ld r0,Z+
 	st X+,r0
@@ -734,16 +744,16 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
 	movw r30,r14
-	ldd r22,Z+40
-	ldd r23,Z+41
+	ldd r22,Z+46
+	ldd r23,Z+47
 	movw r16,r22
 	subi r16,-1
 	sbci r17,-1
 	cp r22,r16
 	cpc r23,r17
 	brsh .L51
-	ldd r24,Z+38
-	ldd r25,Z+39
+	ldd r24,Z+44
+	ldd r25,Z+45
 	cp r24,r16
 	cpc r25,r17
 	brsh .L52
@@ -756,9 +766,9 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	call _ZNSt6vectorI3PinSaIS0_EE7reserveEj.part.7
 .L52:
 	movw r30,r14
-	ldd r18,Z+40
-	ldd r19,Z+41
-	ldi r24,lo8(12)
+	ldd r18,Z+46
+	ldd r19,Z+47
+	ldi r24,lo8(14)
 	mul r24,r18
 	movw r22,r0
 	mul r24,r19
@@ -771,8 +781,8 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	cp r18,r16
 	cpc r19,r17
 	brsh .L53
-	ldd r26,Z+36
-	ldd r27,Z+37
+	ldd r26,Z+42
+	ldd r27,Z+43
 	movw r24,r20
 	add r24,r22
 	adc r25,r23
@@ -780,7 +790,7 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adc r27,r25
 	sbiw r26,0
 	breq .L54
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	adiw r30,1
 	0:
@@ -791,12 +801,12 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 .L54:
 	subi r18,-1
 	sbci r19,-1
-	subi r20,-12
+	subi r20,-14
 	sbci r21,-1
 	rjmp .L55
 .L53:
-	std Z+41,r17
-	std Z+40,r16
+	std Z+47,r17
+	std Z+46,r16
 	rjmp .L56
 .L51:
 	movw r22,r16
@@ -807,21 +817,21 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 	movw r30,r14
-	ldd r18,Z+40
-	ldd r19,Z+41
-	ldi r20,lo8(12)
+	ldd r18,Z+46
+	ldd r19,Z+47
+	ldi r20,lo8(14)
 	mul r20,r18
 	movw r24,r0
 	mul r20,r19
 	add r25,r0
 	clr __zero_reg__
-	ldd r18,Z+36
-	ldd r19,Z+37
+	ldd r18,Z+42
+	ldd r19,Z+43
 	add r24,r18
 	adc r25,r19
 	call _ZN3Pin2onEv
 /* epilogue start */
-	adiw r28,12
+	adiw r28,14
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
@@ -875,16 +885,16 @@ _ZN9MasterSPIC2Ehhhh:
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,47
+	sbiw r28,53
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 47 */
-/* stack size = 56 */
-.L__stack_usage = 56
+/* frame size = 53 */
+/* stack size = 62 */
+.L__stack_usage = 62
 	movw r14,r24
 	mov r17,r22
 	mov r13,r20
@@ -902,7 +912,7 @@ _ZN9MasterSPIC2Ehhhh:
 	movw r24,r28
 	adiw r24,1
 	call _ZN9MasterSPI12_masterSPI_tC1Ehhhh
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
 	adiw r30,1
 	movw r26,r14
@@ -911,47 +921,47 @@ _ZN9MasterSPIC2Ehhhh:
 	st X+,r0
 	dec r24
 	brne 0b
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
-	adiw r30,13
+	adiw r30,15
 	movw r26,r14
-	adiw r26,12
+	adiw r26,14
 	0:
 	ld r0,Z+
 	st X+,r0
 	dec r24
 	brne 0b
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	movw r30,r28
-	adiw r30,25
+	adiw r30,29
 	movw r26,r14
-	adiw r26,24
+	adiw r26,28
 	0:
 	ld r0,Z+
 	st X+,r0
 	dec r24
 	brne 0b
 	movw r16,r14
-	subi r16,-36
+	subi r16,-42
 	sbci r17,-1
-	ldd r22,Y+41
-	ldd r23,Y+42
+	ldd r22,Y+47
+	ldd r23,Y+48
 	movw r26,r14
-	adiw r26,38
+	adiw r26,44
 	ld r24,X+
 	ld r25,X
-	sbiw r26,38+1
+	sbiw r26,44+1
 	cp r24,r22
 	cpc r25,r23
 	brsh .L62
 	movw r24,r16
 	call _ZNSt6vectorI3PinSaIS0_EE7reserveEj.part.7
 .L62:
-	ldd r24,Y+41
-	ldd r25,Y+42
+	ldd r24,Y+47
+	ldd r25,Y+48
 	movw r30,r14
-	ldd r20,Z+40
-	ldd r21,Z+41
+	ldd r20,Z+46
+	ldd r21,Z+47
 	cp r24,r20
 	cpc r25,r21
 	brsh .L63
@@ -966,15 +976,15 @@ _ZN9MasterSPIC2Ehhhh:
 	cpc r19,r21
 	breq .L64
 	movw r30,r14
-	ldd r26,Z+36
-	ldd r27,Z+37
+	ldd r26,Z+42
+	ldd r27,Z+43
 	add r26,r24
 	adc r27,r25
-	ldd r30,Y+37
-	ldd r31,Y+38
+	ldd r30,Y+43
+	ldd r31,Y+44
 	add r30,r24
 	adc r31,r25
-	ldi r22,lo8(12)
+	ldi r22,lo8(14)
 	0:
 	ld r0,Z+
 	st X+,r0
@@ -982,20 +992,20 @@ _ZN9MasterSPIC2Ehhhh:
 	brne 0b
 	subi r18,-1
 	sbci r19,-1
-	adiw r24,12
+	adiw r24,14
 	rjmp .L65
 .L64:
 	movw r26,r14
-	adiw r26,40
+	adiw r26,46
 	ld r18,X+
 	ld r19,X
-	sbiw r26,40+1
-	ldd r24,Y+41
-	ldd r25,Y+42
+	sbiw r26,46+1
+	ldd r24,Y+47
+	ldd r25,Y+48
 	cp r18,r24
 	cpc r19,r25
 	brsh .L66
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	mul r24,r18
 	movw r22,r0
 	mul r24,r19
@@ -1004,29 +1014,29 @@ _ZN9MasterSPIC2Ehhhh:
 	ldi r20,0
 	ldi r21,0
 .L68:
-	ldd r24,Y+41
-	ldd r25,Y+42
+	ldd r24,Y+47
+	ldd r25,Y+48
 	cp r18,r24
 	cpc r19,r25
 	brsh .L66
-	ldd r30,Y+37
-	ldd r31,Y+38
+	ldd r30,Y+43
+	ldd r31,Y+44
 	movw r24,r22
 	add r24,r20
 	adc r25,r21
 	add r30,r24
 	adc r31,r25
 	movw r26,r14
-	adiw r26,36
+	adiw r26,42
 	ld r12,X+
 	ld r13,X
-	sbiw r26,36+1
+	sbiw r26,42+1
 	movw r26,r12
 	add r26,r24
 	adc r27,r25
 	sbiw r26,0
 	breq .L67
-	ldi r24,lo8(12)
+	ldi r24,lo8(14)
 	0:
 	ld r0,Z+
 	st X+,r0
@@ -1034,48 +1044,48 @@ _ZN9MasterSPIC2Ehhhh:
 	brne 0b
 .L67:
 	movw r30,r14
-	ldd r24,Z+40
-	ldd r25,Z+41
+	ldd r24,Z+46
+	ldd r25,Z+47
 	adiw r24,1
-	std Z+41,r25
-	std Z+40,r24
+	std Z+47,r25
+	std Z+46,r24
 	subi r18,-1
 	sbci r19,-1
-	subi r20,-12
+	subi r20,-14
 	sbci r21,-1
 	rjmp .L68
 .L66:
-	ldd r22,Y+41
-	ldd r23,Y+42
+	ldd r22,Y+47
+	ldd r23,Y+48
 	movw r26,r14
-	adiw r26,40
+	adiw r26,46
 	ld r24,X+
 	ld r25,X
-	sbiw r26,40+1
+	sbiw r26,46+1
 	cp r22,r24
 	cpc r23,r25
 	brsh .L69
 	movw r24,r16
 	call _ZNSt6vectorI3PinSaIS0_EE8downsizeEj
 .L69:
-	ldd r24,Y+44
-	ldd r25,Y+45
-	ldd r26,Y+46
-	ldd r27,Y+47
+	ldd r24,Y+50
+	ldd r25,Y+51
+	ldd r26,Y+52
+	ldd r27,Y+53
 	movw r30,r14
-	std Z+43,r24
-	std Z+44,r25
-	std Z+45,r26
-	std Z+46,r27
+	std Z+49,r24
+	std Z+50,r25
+	std Z+51,r26
+	std Z+52,r27
 	ldi r16,0
 	ldi r17,0
 	mov r12,__zero_reg__
 	mov r13,__zero_reg__
 .L71:
-	ldd r18,Y+41
-	ldd r19,Y+42
-	ldd r24,Y+37
-	ldd r25,Y+38
+	ldd r18,Y+47
+	ldd r19,Y+48
+	ldd r24,Y+43
+	ldd r25,Y+44
 	cp r12,r18
 	cpc r13,r19
 	brsh .L70
@@ -1085,36 +1095,36 @@ _ZN9MasterSPIC2Ehhhh:
 	ldi r31,-1
 	sub r12,r31
 	sbc r13,r31
-	subi r16,-12
+	subi r16,-14
 	sbci r17,-1
 	rjmp .L71
 .L70:
 	call _ZdlPv
 	movw r24,r28
-	adiw r24,25
+	adiw r24,29
 	call _ZN3PinD1Ev
 	movw r24,r28
-	adiw r24,13
+	adiw r24,15
 	call _ZN3PinD1Ev
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinD1Ev
 	movw r26,r14
-	adiw r26,46
+	adiw r26,52
 	ld r22,X
 	movw r24,r14
 	call _ZN9MasterSPI13setClockPhaseE8SPI_CPHA
 	movw r30,r14
-	ldd r22,Z+45
+	ldd r22,Z+51
 	movw r24,r14
 	call _ZN9MasterSPI16setClockPolarityE8SPI_CPOL
 	movw r26,r14
-	adiw r26,43
+	adiw r26,49
 	ld r22,X
 	movw r24,r14
 	call _ZN9MasterSPI8setClockE10SPI_CLKSEL
 	movw r30,r14
-	ldd r22,Z+44
+	ldd r22,Z+50
 	movw r24,r14
 	call _ZN9MasterSPI12setDataOrderE8SPI_DORD
 	in r24,0x2c
@@ -1123,7 +1133,7 @@ _ZN9MasterSPIC2Ehhhh:
 	movw r24,r14
 	call _ZN9MasterSPI6enableEv
 /* epilogue start */
-	adiw r28,47
+	adiw r28,53
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29

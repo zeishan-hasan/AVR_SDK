@@ -1,7 +1,7 @@
 #include "portmanager.h"
 
-#define _DDRx(x) (*(x  + 1))
-#define _PORTx(x) (*(x  + 2))
+//#define _DDRx(x) (*(x  + 1))
+//#define _PORTx(x) (*(x  + 2))
 /*
 Pin::Pin(uint8_t portNo, DDRx direction)
 {
@@ -44,6 +44,7 @@ Pin::Pin(uint8_t portNo, DDRx direction)
 	setDirection(direction);
 }
 */
+/*
 Pin::Pin(uint8_t portNo, DDRx direction)
 {
 	if(portNo > ELEMENT_IN_ARRAY(__flashMappedPort)){
@@ -275,10 +276,6 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 		return 65535;
 	}
 
-
-
-
-
 	/*
 	╔════════╦═══════╦═══════╦═══════╦══════╦══════╦═══════╦═══════╦═══════╗
 	║        ║   7   ║   6   ║   5   ║   4  ║   3  ║   2   ║   1   ║   0   ║
@@ -288,6 +285,7 @@ uint16_t Pin::analogRead(_ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOT
 	║  ADMUX ║ REFS1 ║ REFS0 ║ ADLAR ║ MUX4 ║ MUX3 ║  MUX2 ║  MUX1 ║  MUX0 ║
 	╚════════╩═══════╩═══════╩═══════╩══════╩══════╩═══════╩═══════╩═══════╝
 	*/
+/*
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	if(channel == 65535){
 		return 65535;
@@ -342,3 +340,76 @@ uint16_t Pin::calculateTicks(uint32_t freq)
 	return (1.0/freq)/(1.0/F_CPU);
 }
 
+*/
+
+
+
+
+
+
+
+/*
+
+if(temp == 2){
+	//_local_ctrl_bits = _PWM_8BIT;
+	_pwm_8BIT.TCCRxA = (volatile u8t*)pgm_read_word(&__hw_timer_addr[temp]);
+	_pwm_8BIT.TCCRxB = (volatile u8t*)_pwm_8BIT.TCCRxA + 1;
+	_pwm_8BIT.TCNTx	 = (volatile u8t*)_pwm_8BIT.TCCRxB + 1;
+}
+else if(temp){
+	//_local_ctrl_bits  = _PWM_16BIT;
+	_pwm_16BIT.TCCRxA = (volatile u8t*)pgm_read_word(&__hw_timer_addr[temp]);
+	_pwm_16BIT.TCCRxB = (volatile u8t*)_pwm_16BIT.TCCRxA + 1;
+	_pwm_16BIT.TCCRxC = (volatile u8t*)_pwm_16BIT.TCCRxB + 1;
+	_pwm_16BIT.TCNTx  = (volatile u8t*)_pwm_16BIT.TCCRxC + 2;
+	_pwm_16BIT.ICRx   = (volatile u8t*)_pwm_16BIT.TCNTx  + 2;
+
+
+}
+
+	switch (PWM_BITS_MASK(_controlBits)) {
+	case _PWM_8BIT:
+		_duty_pwm=(-2.55*duty) + 255;
+		switch (PWM_LETTER_MASK(_controlBits)) {
+		case 0:
+			_pwm_8BIT.OCRx = (volatile u8t*)_pwm_8BIT.TCNTx + 1;
+			*_pwm_8BIT.TCCRxA |= (1 << 7) | (1 << 6);
+			break;
+		case 1:
+			_pwm_8BIT.OCRx = (volatile u8t*) _pwm_8BIT.TCNTx + 2;
+			*_pwm_8BIT.TCCRxA |= (1 << 5) | (1 << 4);
+			break;
+		}
+		*((volatile u8t*) _pwm_8BIT.TCNTx + 2) = 10;
+		*((volatile u8t*)_pwm_8BIT.OCRx)=_duty_pwm;
+		*_pwm_8BIT.TCCRxA |= (0 << WGM11) | (1 << WGM10);													// Setting PWM, Phase Correct
+		*_pwm_8BIT.TCCRxB |= (0 << WGM22);																												// TOP = OCRnA TOVx Flag = BOTTOM
+		*_pwm_8BIT.TCCRxB |= (0 << CS12) | (1 << CS11) | (0 << CS10);	// Setting prescaler to 1, so F_CPU
+		return true;
+
+	case _PWM_16BIT:
+		_freq_pwm = calculateTicks(freq);
+		_duty_pwm = _freq_pwm-(_freq_pwm*((float)duty/100));
+		*((volatile u16t*)_pwm_16BIT.ICRx) = _freq_pwm;
+		switch(PWM_LETTER_MASK(_controlBits)){
+		case 0:
+			_pwm_16BIT.OCRx = (volatile u8t*)_pwm_16BIT.ICRx + 2;
+			*_pwm_16BIT.TCCRxA |= (1 << 7 ) | (1 << 6) ;
+			break;
+		case 1:
+			_pwm_16BIT.OCRx = (volatile u8t*)_pwm_16BIT.ICRx + 4;
+			*_pwm_16BIT.TCCRxA |= (1 << 5) | (1 << 4) ;
+			break;
+		case 2:
+			_pwm_16BIT.OCRx = (volatile u8t*)_pwm_16BIT.ICRx + 6;
+			*_pwm_16BIT.TCCRxA |= (1 << 3) | (1 << 2) ;
+			break;
+		};
+
+		*((volatile u16t*)_pwm_16BIT.OCRx) = _duty_pwm;
+		*_pwm_16BIT.TCCRxA  |= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
+		*_pwm_16BIT.TCCRxB  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
+		*_pwm_16BIT.TCCRxB  |= (0 << CS12) | (0 << CS11) | (1 << CS10); //Setting prescaler to 1, so F_CPU
+		return true;
+
+*/

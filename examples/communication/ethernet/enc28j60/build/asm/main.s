@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.section	.rodata.str1.1,"aMS",@progbits,1
@@ -88,16 +89,16 @@ main:
 	push r29
 	in r28,__SP_L__
 	in r29,__SP_H__
-	sbiw r28,43
+	sbiw r28,31
 	in __tmp_reg__,__SREG__
 	cli
 	out __SP_H__,r29
 	out __SREG__,__tmp_reg__
 	out __SP_L__,r28
 /* prologue: function */
-/* frame size = 43 */
-/* stack size = 45 */
-.L__stack_usage = 45
+/* frame size = 31 */
+/* stack size = 33 */
+.L__stack_usage = 33
 	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
 	or r24,r25
@@ -157,47 +158,29 @@ main:
 	call _ZN6Serial13setEchoServerEb
 	movw r24,r16
 	call _ZN6Serial5clearEv
-	ldi r20,lo8(1)
-	ldi r22,lo8(13)
-	movw r24,r28
-	adiw r24,26
-	call _ZN3PinC1Eh4DDRx
-	ldi r18,lo8(50)
-	ldi r20,lo8(-24)
-	ldi r21,lo8(3)
-	ldi r22,0
-	ldi r23,0
-	movw r24,r28
-	adiw r24,26
-	call _ZN3Pin6setPWMEmh
 	ldi r24,lo8(-96)
-	std Y+38,r24
+	std Y+26,r24
 	ldi r24,lo8(-79)
-	std Y+39,r24
+	std Y+27,r24
 	ldi r24,lo8(-62)
-	std Y+40,r24
+	std Y+28,r24
 	ldi r24,lo8(-45)
-	std Y+41,r24
+	std Y+29,r24
 	ldi r24,lo8(-28)
-	std Y+42,r24
+	std Y+30,r24
 	ldi r24,lo8(-11)
-	std Y+43,r24
+	std Y+31,r24
 	movw r22,r28
-	subi r22,-38
+	subi r22,-26
 	sbci r23,-1
 	movw r24,r28
 	adiw r24,1
 	call _ZN8Enc28j60C1ER9macaddr_t
+	sbi 0x4,7
 .L6:
-	ldi r18,lo8(1599999)
-	ldi r24,hi8(1599999)
-	ldi r25,hlo8(1599999)
-1:	subi r18,1
-	sbci r24,0
-	sbci r25,0
-	brne 1b
-	rjmp .
-	nop
+	in r24,0x5
+	subi r24,lo8(-(-128))
+	out 0x5,r24
 	rjmp .L6
 	.size	main, .-main
 .global	debug
@@ -209,9 +192,9 @@ debug:
 	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
 	.type	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, @object
-	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 2
+	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
-	.zero	2
+	.zero	8
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data
 .global __do_clear_bss

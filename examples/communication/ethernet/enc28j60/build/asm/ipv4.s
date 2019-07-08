@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -650,9 +651,9 @@ _ZN4IPv411encapsulateERSt6vectorIhSaIhEE:
 	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
 	.type	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, @object
-	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 2
+	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
-	.zero	2
+	.zero	8
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data
 .global __do_clear_bss

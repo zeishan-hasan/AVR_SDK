@@ -35,6 +35,10 @@ extern bool debug;
 
 
 
+#define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
+#define CALCULATE_DUTY_16BIT(freq, duty) (CALCULATE_PWM_TICKS(freq)-(CALCULATE_PWM_TICKS(freq)*((float)duty/100)))
+#define CALCULATE_DUTY_8BIT(duty) ((-2.55*duty) + 255)
+
 #define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
 
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
