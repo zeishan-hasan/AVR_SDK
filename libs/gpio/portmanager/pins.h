@@ -146,10 +146,12 @@ inline void setPWM(u8t pin, size_t freq, u8t duty){
 			TCCRxA(pinToTimer(pin))	|= bitValue(5) | bitValue(4);
 			OCRxB_16BIT(pinToTimer(pin)) = CALCULATE_DUTY_16BIT(freq, duty);
 			break;
+#if defined(LETTER_C)
 		case LETTER_C:
 			TCCRxA(pinToTimer(pin))	|= bitValue(3) | bitValue(2);
 			OCRxC_16BIT(pinToTimer(pin)) = CALCULATE_DUTY_16BIT(freq, duty);
 			break;
+#endif
 		default:
 			break;
 		}
@@ -170,7 +172,7 @@ inline uint16_t analogRead(u8t pin, _ADMUX vRef = AVCC, _ADCSRA_PRESCALER presca
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 	uint16_t _adcsrb_adxmux_reg = (autoTrigger << 8) | vRef | (pin > 7 ? (bitValue(11) | pin) : pin);
 #elif defined(__AVR_ATmega328P__)
-	uint16_t _adcsrb_adxmux_reg = (autoTrigger << 8) | vRef | (_pinNumber - A0);
+	uint16_t _adcsrb_adxmux_reg = (autoTrigger << 8) | vRef | pin;
 #endif
 	if(ADCSRA == 0){
 		ADCSRA |= (1<<ADEN) | (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)

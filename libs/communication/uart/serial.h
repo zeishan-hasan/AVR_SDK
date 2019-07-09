@@ -278,7 +278,7 @@ public:
 	static Serial* getInstance(SerialPort port){
 
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		static Serial* instance[4] = {nullptr};
+		static Serial* instance[1] = {nullptr};
 #elif defined (__AVR_ATmega328P__)
 		static Serial* instance[1] = {nullptr};
 #endif
@@ -291,17 +291,17 @@ public:
 				instance[port] = new Serial0;
 				break;
 			#endif
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-			case SERIAL1:
-				instance[port] = new Serial1;
-				break;
-			case SERIAL2:
-				instance[port] = new Serial2;
-				break;
-			case SERIAL3:
-				instance[port] = new Serial3;
-				break;
-#endif
+//#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+//			case SERIAL1:
+//				instance[port] = new Serial1;
+//				break;
+//			case SERIAL2:
+//				instance[port] = new Serial2;
+//				break;
+//			case SERIAL3:
+//				instance[port] = new Serial3;
+//				break;
+//#endif
 			}
 		}
 		return instance[port];

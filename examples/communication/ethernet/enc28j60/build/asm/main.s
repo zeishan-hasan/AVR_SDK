@@ -2,7 +2,6 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
-__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.section	.rodata.str1.1,"aMS",@progbits,1
@@ -176,10 +175,11 @@ main:
 	movw r24,r28
 	adiw r24,1
 	call _ZN8Enc28j60C1ER9macaddr_t
-	sbi 0x4,7
+	sbi 0x4,5
+	ldi r25,lo8(32)
 .L6:
 	in r24,0x5
-	subi r24,lo8(-(-128))
+	eor r24,r25
 	out 0x5,r24
 	rjmp .L6
 	.size	main, .-main
@@ -192,9 +192,9 @@ debug:
 	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
 	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
 	.type	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, @object
-	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 8
+	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 2
 _ZZN13SerialManager11getInstanceE10SerialPortE8instance:
-	.zero	8
+	.zero	2
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data
 .global __do_clear_bss
