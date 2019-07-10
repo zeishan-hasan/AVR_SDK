@@ -27,7 +27,7 @@ private:
     void buzzerDenied();
 
     //---- Variables ----//
-    Serial *serial;
+				//Serial *serial;
     std::vector<uint8_t> lastCard;
     Pin *buzzer;
 };

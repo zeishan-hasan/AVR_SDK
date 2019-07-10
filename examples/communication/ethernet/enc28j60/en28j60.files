@@ -8,6 +8,8 @@ libs/communication/spi/master/spimaster.h
 libs/communication/spi/slave/spislave.cpp
 libs/communication/spi/slave/spislave.h
 libs/communication/spi/spi.h
+libs/communication/uart/hardwareserial.cpp
+libs/communication/uart/hardwareserial.h
 libs/communication/uart/serial.cpp
 libs/communication/uart/serial.h
 libs/core/cppfix.cpp

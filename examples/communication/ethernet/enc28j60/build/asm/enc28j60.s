@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -33,7 +34,7 @@ _ZN8Enc28j606setSPIEhhhh:
 	mov r17,r22
 	mov r13,r20
 	mov r12,r18
-	ldi r24,lo8(47)
+	ldi r24,lo8(53)
 	ldi r25,0
 	call _Znwj
 	movw r28,r24
@@ -1176,10 +1177,10 @@ _ZN8Enc28j60C2ER9macaddr_t:
 	call _ZN9MasterSPI15isInitilizedSPIEv
 	cpse r24,__zero_reg__
 	rjmp .L72
-	ldi r16,lo8(10)
-	ldi r18,lo8(13)
-	ldi r20,lo8(11)
-	ldi r22,lo8(12)
+	ldi r16,lo8(53)
+	ldi r18,lo8(52)
+	ldi r20,lo8(51)
+	ldi r22,lo8(50)
 	movw r24,r28
 	call _ZN8Enc28j606setSPIEhhhh
 .L72:
@@ -1472,7 +1473,7 @@ _ZN8Enc28j609_callbackEhPv:
 /* epilogue start */
 	pop r29
 	pop r28
-	ijmp
+	eijmp
 .L79:
 /* epilogue start */
 	pop r29

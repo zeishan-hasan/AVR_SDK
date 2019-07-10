@@ -2,82 +2,17 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
-	.section	.rodata.str1.1,"aMS",@progbits,1
-.LC2:
-	.string	"Interrupt dal pin %u\r\n"
 	.text
 .global	_Z4funch
 	.type	_Z4funch, @function
 _Z4funch:
-	push r28
 /* prologue: function */
 /* frame size = 0 */
-/* stack size = 1 */
-.L__stack_usage = 1
-	mov r28,r24
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	or r24,r25
-	brne .L2
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-64)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-63)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-62)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-59)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-60)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-58)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
-.L2:
-	push __zero_reg__
-	push r28
-	ldi r24,lo8(.LC2)
-	ldi r25,hi8(.LC2)
-	push r25
-	push r24
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	push r24
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	push r24
-	call _ZN6Serial6printfEPKcz
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-	pop __tmp_reg__
-/* epilogue start */
-	pop r28
+/* stack size = 0 */
+.L__stack_usage = 0
 	ret
 	.size	_Z4funch, .-_Z4funch
 	.section	.text.startup,"ax",@progbits
@@ -98,65 +33,6 @@ main:
 /* frame size = 31 */
 /* stack size = 33 */
 .L__stack_usage = 33
-	lds r24,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r25,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	or r24,r25
-	brne .L5
-	ldi r24,lo8(22)
-	ldi r25,lo8(1)
-	call _Znwj
-	movw r30,r24
-	subi r30,-7
-	sbci r31,-2
-	ldi r18,lo8(-64)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-63)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-62)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-59)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-60)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	adiw r30,2
-	ldi r18,lo8(-58)
-	ldi r19,0
-	std Z+1,r19
-	st Z,r18
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance+1,r25
-	sts _ZZN13SerialManager11getInstanceE10SerialPortE8instance,r24
-.L5:
-	lds r16,_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	lds r17,_ZZN13SerialManager11getInstanceE10SerialPortE8instance+1
-	ldi r18,0
-	ldi r20,lo8(64)
-	ldi r21,lo8(66)
-	ldi r22,lo8(15)
-	ldi r23,0
-	movw r24,r16
-	call _ZN6Serial4initE4UART14SerialPriority
-	ldi r22,0
-	movw r24,r16
-	call _ZN6Serial16setRxISRCallBackEb
-	ldi r22,0
-	movw r24,r16
-	call _ZN6Serial13setEchoServerEb
-	movw r24,r16
-	call _ZN6Serial5clearEv
 	ldi r24,lo8(-96)
 	std Y+26,r24
 	ldi r24,lo8(-79)
@@ -175,13 +51,12 @@ main:
 	movw r24,r28
 	adiw r24,1
 	call _ZN8Enc28j60C1ER9macaddr_t
-	sbi 0x4,5
-	ldi r25,lo8(32)
-.L6:
+	sbi 0x4,7
+.L3:
 	in r24,0x5
-	eor r24,r25
+	subi r24,lo8(-(-128))
 	out 0x5,r24
-	rjmp .L6
+	rjmp .L3
 	.size	main, .-main
 .global	debug
 	.data
@@ -189,12 +64,5 @@ main:
 	.size	debug, 1
 debug:
 	.byte	1
-	.weak	_ZZN13SerialManager11getInstanceE10SerialPortE8instance
-	.section	.bss._ZZN13SerialManager11getInstanceE10SerialPortE8instance,"awG",@nobits,_ZZN13SerialManager11getInstanceE10SerialPortE8instance,comdat
-	.type	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, @object
-	.size	_ZZN13SerialManager11getInstanceE10SerialPortE8instance, 2
-_ZZN13SerialManager11getInstanceE10SerialPortE8instance:
-	.zero	2
 	.ident	"GCC: (GNU) 5.4.0"
 .global __do_copy_data
-.global __do_clear_bss

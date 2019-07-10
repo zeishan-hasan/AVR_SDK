@@ -6,12 +6,20 @@
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
 #include <stdio.h>
+
+
 ///@file
 
 /**
 	* @brief Used to handle interrupts
 	*/
 typedef void ser_cb_t();
+
+#define _UCSRxB(x) (*(x  + 1))
+#define _UCSRxC(x) (*(x  + 2))
+#define _UBRRxL(x)  (*(x  + 4))
+#define _UBRRxH(x)  (*(x  + 5))
+#define _UDRx(x)   (*(x  + 6))
 
 /**
 	* @brief The UART enum
@@ -66,6 +74,7 @@ struct serial_t
 	volatile uint8_t *UBRRxL;
 	volatile uint8_t *UDRx;
 };
+
 
 
 class Serial
@@ -193,10 +202,10 @@ public:
 	/**
 					* @brief A FIFO Rotating buffer
 					*/
-	uint8_t USART_BUFF[MAX_SERIAL_BUFFER];
+	uint8_t USART_BUFF[32];
 protected:
 	//-----------------METHODS-----------------//
-	Serial(void) {}
+	Serial() {}
 	void _print(const char *str);
 
 	//-----------------VARIABLES---------------//
@@ -205,73 +214,79 @@ protected:
 	bool _bufferReadable;
 	uint8_t *_read;
 	uint8_t *_write;
-	serial_t _self;
+	//serial_t _self;
+	volatile u8t* UCSRxA;
 	SerialPriority _priority;
 	ser_cb_t *_callback;
 };
 
 
 
+extern Serial* __hw_serial[4];
+extern ser_cb_t* __hw_serial_cb[4];
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 class Serial0 : public Serial {
 	friend class SerialManager;
-private:
-	Serial0(): Serial() {
-		_self.UCSRxA = (volatile uint8_t*)&UCSR0A;
-		_self.UCSRxB = (volatile uint8_t*)&UCSR0B;
-		_self.UCSRxC = (volatile uint8_t*)&UCSR0C;
-		_self.UBRRxH = (volatile uint8_t*)&UBRR0H;
-		_self.UBRRxL = (volatile uint8_t*)&UBRR0L;
-		_self.UDRx   = (volatile uint8_t*)&UDR0;
+public:
+	Serial0(UART baud): Serial() {
+		UCSRxA = (volatile uint8_t*)&UCSR0A;
+		//_self.UCSRxB = (volatile uint8_t*)&UCSR0B;
+		//_self.UCSRxC = (volatile uint8_t*)&UCSR0C;
+		//_self.UBRRxH = (volatile uint8_t*)&UBRR0H;
+		//_self.UBRRxL = (volatile uint8_t*)&UBRR0L;
+		//_self.UDRx   = (volatile uint8_t*)&UDR0;
+		init(baud);
+		__hw_serial[0] = this;
 	}
 };
 #endif
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-class Serial1 : public Serial {
-	friend class SerialManager;
-private:
-	Serial1(): Serial() {
-		_self.UCSRxA = (volatile uint8_t*)&UCSR1A;
-		_self.UCSRxB = (volatile uint8_t*)&UCSR1B;
-		_self.UCSRxC = (volatile uint8_t*)&UCSR1C;
-		_self.UBRRxH = (volatile uint8_t*)&UBRR1H;
-		_self.UBRRxL = (volatile uint8_t*)&UBRR1L;
-		_self.UDRx   = (volatile uint8_t*)&UDR1;
-	}
-
-};
-
-
-class Serial2 : public Serial {
-	friend class SerialManager;
-private:
-	Serial2(): Serial() {
-		_self.UCSRxA = (volatile uint8_t*)&UCSR2A;
-		_self.UCSRxB = (volatile uint8_t*)&UCSR2B;
-		_self.UCSRxC = (volatile uint8_t*)&UCSR2C;
-		_self.UBRRxH = (volatile uint8_t*)&UBRR2H;
-		_self.UBRRxL = (volatile uint8_t*)&UBRR2L;
-		_self.UDRx   = (volatile uint8_t*)&UDR2;
-	}
-
-};
-
-class Serial3 : public Serial {
-	friend class SerialManager;
-private:
-	Serial3(): Serial() {
-		_self.UCSRxA = (volatile uint8_t*)&UCSR3A;
-		_self.UCSRxB = (volatile uint8_t*)&UCSR3B;
-		_self.UCSRxC = (volatile uint8_t*)&UCSR3C;
-		_self.UBRRxH = (volatile uint8_t*)&UBRR3H;
-		_self.UBRRxL = (volatile uint8_t*)&UBRR3L;
-		_self.UDRx   = (volatile uint8_t*)&UDR3;
-	}
+//class Serial1 : public Serial {
+//	friend class SerialManager;
+//private:
+//	Serial1(): Serial() {
+//		_self.UCSRxA = (volatile uint8_t*)&UCSR1A;
+//		_self.UCSRxB = (volatile uint8_t*)&UCSR1B;
+//		_self.UCSRxC = (volatile uint8_t*)&UCSR1C;
+//		_self.UBRRxH = (volatile uint8_t*)&UBRR1H;
+//		_self.UBRRxL = (volatile uint8_t*)&UBRR1L;
+//		_self.UDRx   = (volatile uint8_t*)&UDR1;
+//	}
+//
+//};
 
 
-};
+//class Serial2 : public Serial {
+//	friend class SerialManager;
+//private:
+//	Serial2(): Serial() {
+//		_self.UCSRxA = (volatile uint8_t*)&UCSR2A;
+//		_self.UCSRxB = (volatile uint8_t*)&UCSR2B;
+//		_self.UCSRxC = (volatile uint8_t*)&UCSR2C;
+//		_self.UBRRxH = (volatile uint8_t*)&UBRR2H;
+//		_self.UBRRxL = (volatile uint8_t*)&UBRR2L;
+//		_self.UDRx   = (volatile uint8_t*)&UDR2;
+//	}
+//
+//};
+
+//class Serial3 : public Serial {
+//	friend class SerialManager;
+//private:
+//	Serial3(): Serial() {
+//		_self.UCSRxA = (volatile uint8_t*)&UCSR3A;
+//		_self.UCSRxB = (volatile uint8_t*)&UCSR3B;
+//		_self.UCSRxC = (volatile uint8_t*)&UCSR3C;
+//		_self.UBRRxH = (volatile uint8_t*)&UBRR3H;
+//		_self.UBRRxL = (volatile uint8_t*)&UBRR3L;
+//		_self.UDRx   = (volatile uint8_t*)&UDR3;
+//	}
+//
+//
+//};
 #endif
+/*
 class SerialManager
 {
 public:
@@ -291,17 +306,17 @@ public:
 				instance[port] = new Serial0;
 				break;
 			#endif
-//#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-//			case SERIAL1:
-//				instance[port] = new Serial1;
-//				break;
-//			case SERIAL2:
-//				instance[port] = new Serial2;
-//				break;
-//			case SERIAL3:
-//				instance[port] = new Serial3;
-//				break;
-//#endif
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+			case SERIAL1:
+				instance[port] = new Serial1;
+				break;
+			case SERIAL2:
+				instance[port] = new Serial2;
+				break;
+			case SERIAL3:
+				instance[port] = new Serial3;
+				break;
+#endif
 			}
 		}
 		return instance[port];
@@ -311,7 +326,7 @@ private:
 
 };
 
-
+*/
 
 
 

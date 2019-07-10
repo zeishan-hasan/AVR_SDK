@@ -2,6 +2,7 @@
 __SP_H__ = 0x3e
 __SP_L__ = 0x3d
 __SREG__ = 0x3f
+__RAMPZ__ = 0x3b
 __tmp_reg__ = 0
 __zero_reg__ = 1
 	.text
@@ -483,7 +484,7 @@ _ZN8SlaveSPI8callbackEh:
 	sbiw r30,0
 	breq .L24
 	mov r24,r22
-	ijmp
+	eijmp
 .L24:
 	ret
 	.size	_ZN8SlaveSPI8callbackEh, .-_ZN8SlaveSPI8callbackEh
@@ -623,14 +624,16 @@ _ZN8SlaveSPI16bufferIsReadableEv:
 .L38:
 	ret
 	.size	_ZN8SlaveSPI16bufferIsReadableEv, .-_ZN8SlaveSPI16bufferIsReadableEv
-.global	__vector_17
-	.type	__vector_17, @function
-__vector_17:
+.global	__vector_24
+	.type	__vector_24, @function
+__vector_24:
 	push r1
 	push r0
 	in r0,__SREG__
 	push r0
 	clr __zero_reg__
+	in r0,__RAMPZ__
+	push r0
 	push r16
 	push r17
 	push r18
@@ -654,8 +657,8 @@ __vector_17:
 	out __SP_L__,r28
 /* prologue: Signal */
 /* frame size = 10 */
-/* stack size = 29 */
-.L__stack_usage = 29
+/* stack size = 30 */
+.L__stack_usage = 30
 	ldi r24,lo8(-1)
 	std Y+7,r24
 	std Y+8,r24
@@ -704,11 +707,13 @@ __vector_17:
 	pop r17
 	pop r16
 	pop r0
+	out __RAMPZ__,r0
+	pop r0
 	out __SREG__,r0
 	pop r0
 	pop r1
 	reti
-	.size	__vector_17, .-__vector_17
+	.size	__vector_24, .-__vector_24
 	.local	_ZZN8SlaveSPI11getInstanceE10slaveSPI_tE8instance
 	.comm	_ZZN8SlaveSPI11getInstanceE10slaveSPI_tE8instance,2,1
 	.ident	"GCC: (GNU) 5.4.0"

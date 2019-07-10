@@ -18,18 +18,18 @@ struct  eth_header_t
 
 
 void func(uint8_t pin){
-	Serial *serial0 = SerialManager::getInstance(SERIAL0);
-	serial0->printf("Interrupt dal pin %u\r\n", pin);
+	//Serial *serial0 = SerialManager::getInstance(SERIAL0);
+//	serial0->printf("Interrupt dal pin %u\r\n", pin);
 }
 
 //extern void toggle(u8t pin);
 
 int main(){
-	Serial *serial0 = SerialManager::getInstance(SERIAL0);
-	serial0->init(BAUD_1000000);
-	serial0->setRxISRCallBack(false);
-	serial0->setEchoServer(false);
-	serial0->clear();
+	//Serial *serial0 = SerialManager::getInstance(SERIAL0);
+	//serial0->init(BAUD_1000000);
+	//serial0->setRxISRCallBack(false);
+	//serial0->setEchoServer(false);
+	//serial0->clear();
 
 	//Pin pin(13,OUTPUT);
 	//pin.setPWM(1000, 50);

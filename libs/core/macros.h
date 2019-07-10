@@ -33,6 +33,7 @@ extern bool debug;
 				serial->printf(__VA_ARGS__); } \
 				} while (0)
 
+#define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 
 #define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
@@ -44,7 +45,7 @@ extern bool debug;
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
 
 
-#define MYUBRR(x) (F_CPU/16/(float)x-1)
+#define MYUBRR(x) (ROUND((F_CPU/16/(float)x-1)))
 
 #define BAUD 9600
 #define MAX_SERIAL_BUFFER   256

@@ -13,14 +13,14 @@ Rdm6300::~Rdm6300()
 
 bool Rdm6300::attachTo(SerialPort serial, UART baud)
 {
-    this->serial = SerialManager::getInstance(serial);
-    this->serial->init(baud);
-    this->serial->setRxISRCallBack(false);
-    this->serial->setEchoServer(false);
-    if(this->serial != nullptr){
-        return true;
-    }
-    return false;
+				//this->serial = SerialManager::getInstance(serial);
+				//this->serial->init(baud);
+				//this->serial->setRxISRCallBack(false);
+				//this->serial->setEchoServer(false);
+				//if(this->serial != nullptr){
+				//    return true;
+				//}
+				//return false;
 }
 
 std::vector<uint8_t> Rdm6300::getData()
@@ -107,6 +107,7 @@ void Rdm6300::buzzerDenied()
 
 bool Rdm6300::isNewCard()
 {
+	/*
     static uint16_t count = 0;
 
     uint8_t temp = 0;
@@ -144,4 +145,5 @@ bool Rdm6300::isNewCard()
     }
 
     return false;
+				*/
 }

@@ -154,7 +154,7 @@ private:
 
 
 				// REMOVE ME
-				Serial *serial;
+				//Serial *serial;
 };
 
 #endif
