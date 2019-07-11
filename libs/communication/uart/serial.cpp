@@ -2,27 +2,15 @@
 #include <string.h>
 
 Serial* __hw_serial[4] = {nullptr, nullptr, nullptr, nullptr};
-ser_cb_t* __hw_serial_cb[4] = {nullptr, nullptr, nullptr, nullptr};
+//ser_cb_t* __hw_serial_cb[4] = {nullptr, nullptr, nullptr, nullptr};
+__HW_INT_ISR __hw_serial_cb[4];
 
 
-
-void Serial::init(UART baud, SerialPriority priority)
+void Serial::init(UART baud)
 {
-	//*_self.UBRRxH = (u8t)MYUBRR(baud) >> 8;
-	//*_self.UBRRxL = (u8t)ROUND((MYUBRR(baud)));
-	//
-	//// Enable receiver and transmitter //
-	//*_self.UCSRxB = (1<<RXEN0)|(1<<TXEN0);
-	//
-	//// Set frame format: 8data, 1stop bit //
-	//*_self.UCSRxC = (1<<UCSZ01)|(1<<UCSZ00);
-	////UCSR0A = (1<<U2X0); // Clock multiplier
 
-
-
-
-	_UBRRxH(UCSRxA) = (u8t)MYUBRR(baud) >> 8;
-	_UBRRxL(UCSRxA) = (u8t)(MYUBRR(baud));
+	_UBRRxH(UCSRxA) = HI(baud);
+	_UBRRxL(UCSRxA) = LO(baud);
 
 	// Enable receiver and transmitter //
 	_UCSRxB(UCSRxA) = (1<<RXEN0)|(1<<TXEN0);
@@ -31,7 +19,7 @@ void Serial::init(UART baud, SerialPriority priority)
 	_UCSRxC(UCSRxA) = (1<<UCSZ01)|(1<<UCSZ00);
 	//UCSR0A = (1<<U2X0); // Clock multiplier
 
-	this->_priority =  priority;
+	//this->_priority =  priority;
 
 	//memset(USART_BUFF,0xFF,MAX_SERIAL_BUFFER);
 	_read  = USART_BUFF;
@@ -39,7 +27,7 @@ void Serial::init(UART baud, SerialPriority priority)
 
 	_bufferReadable = true;
 
-	registerCallback();
+
 
 
 }
@@ -65,12 +53,12 @@ void Serial::readUntil(char *buffer, char chr)
 			break;
 		}
 		buffer[i++] = temp;
-		//++i;
 	}
 }
 
 void Serial::flush()
 {
+
 	uint8_t dummy;
 	//while(*_self.UCSRxA & (1<<RXC0))
 	//dummy = *_self.UDRx;
@@ -114,34 +102,34 @@ void Serial::insertData(uint8_t data)
 	}
 }
 
-void Serial::incReadData(uint8_t value)
-{
-	//WARNING Not Tested
-	_read = (_read+value);
-}
+//void Serial::incReadData(uint8_t value)
+//{
+//	//WARNING Not Tested
+//	_read = (_read+value);
+//}
 
-void Serial::enableShell(bool value)
-{
-	_shellEnabled = value;
-	setRxISRCallBack(true);
-}
+//void Serial::enableShell(bool value)
+//{
+//	_shellEnabled = value;
+//	setRxISRCallBack(true);
+//}
 
-void Serial::registerCallback(ser_cb_t *cb)
-{
-	_callback = cb;
-}
+//void Serial::registerCallback(ser_cb_t *cb)
+//{
+//	_callback = cb;
+//}
 
-void Serial::rxCallBack()
-{
-	if(_callback != nullptr){
-		_callback();
-	}
-}
+//void Serial::rxCallBack()
+//{
+//	if(_callback != nullptr){
+//		_callback();
+//	}
+//}
 
-bool Serial::shellIsEnabled()
-{
-	return _shellEnabled;
-}
+//bool Serial::shellIsEnabled()
+//{
+//	return _shellEnabled;
+//}
 
 bool Serial::bufferIsReadable()
 {
@@ -186,14 +174,14 @@ uint8_t Serial::readData()
 	return temp;
 }
 
-SerialPriority Serial::getPriority()
-{
-	return _priority;
-}
+//SerialPriority Serial::getPriority()
+//{
+//	return _priority;
+//}
 
 void Serial::clear()
 {
-	printf("\e[1;1H\e[2J");
+	_print("\e[1;1H\e[2J");
 }
 void Serial::_print(const char *str)
 {
@@ -212,11 +200,20 @@ void Serial::_print(const char *str)
 
 ISR(USART0_RX_vect){
 	char temp = UDR0;
-	//__hw_serial[0]->insertData(temp);
+	__hw_serial[0]->insertData(temp);
 	if(__hw_serial[0]->echoIsEnabled()){
 		UDR0 = temp;
 	}
-	//__hw_serial[0]->rxCallBack();
+	//if(__hw_serial_cb[0] != nullptr){
+	//	__hw_serial_cb[0]();
+	//}
+
+	if(__hw_serial_cb[0].user_cb_vect != nullptr){
+		((void(*)())__hw_serial_cb[4].user_cb_vect)();
+	}
+	else if(__hw_serial_cb[0].sys_cb_vect != nullptr) {
+		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
+	}
 }
 
 

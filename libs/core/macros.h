@@ -45,7 +45,7 @@ extern bool debug;
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
 
 
-#define MYUBRR(x) (ROUND((F_CPU/16/(float)x-1)))
+#define MYUBRR(x) (F_CPU/16/(float)x-1)
 
 #define BAUD 9600
 #define MAX_SERIAL_BUFFER   256

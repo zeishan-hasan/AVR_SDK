@@ -5,8 +5,9 @@ class SystemEventHandler
 {
 public:
 	SystemEventHandler();
-	static void call_int_callback(SystemEventHandler *context, u8t pin);
+	static void call_int_callback(SystemEventHandler *context, u8t pin = 0);
 	virtual void callback(u8t pin) = 0;
+	//virtual void callback() = 0;
 protected:
 };
 

@@ -6,6 +6,7 @@
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
 #include <stdio.h>
+#include <systemevent.h>
 
 
 ///@file
@@ -14,6 +15,15 @@
 	* @brief Used to handle interrupts
 	*/
 typedef void ser_cb_t();
+
+struct __HW_INT_ISR
+{
+	ser_cb_t* user_cb_vect;
+	SystemEventHandler* sys_cb_vect;
+};
+
+
+
 
 #define _UCSRxB(x) (*(x  + 1))
 #define _UCSRxC(x) (*(x  + 2))
@@ -25,20 +35,19 @@ typedef void ser_cb_t();
 	* @brief The UART enum
 	*/
 enum UART{
-	BAUD_2400    =    2400,
-	BAUD_4800    =    4800,
-	BAUD_9600    =    9600,
-	BAUD_14400   =   14400,
-	BAUD_19200   =   19200,
-	BAUD_28800   =   28800,
-	BAUD_38400   =   38400,
-	BAUD_57600   =   57600,
-	BAUD_76800   =   76800,
-	BAUD_115200  =  115200,
-	BAUD_250000  =  250000,
-	BAUD_500000  =  500000,
-	BAUD_1000000 = 1000000,
-	//BAUD_2000000 = 20000000
+	BAUD_2400    = 416,
+	BAUD_4800    = 207,
+	BAUD_9600    = 103,
+	BAUD_14400   =	 68,
+	BAUD_19200   =		51,
+	BAUD_28800   =  34,
+	BAUD_38400   =  25,
+	BAUD_57600   =  16,
+	BAUD_76800   =  12,
+	BAUD_115200  =   8,
+	BAUD_250000  =   3,
+	BAUD_500000  =   1,
+	BAUD_1000000 =   0
 };
 
 /**
@@ -65,6 +74,7 @@ enum SerialPriority: uint8_t{
 /**
 	* @brief The serial_t struct
 	*/
+/*
 struct serial_t
 {
 	volatile uint8_t *UCSRxA;
@@ -74,7 +84,7 @@ struct serial_t
 	volatile uint8_t *UBRRxL;
 	volatile uint8_t *UDRx;
 };
-
+*/
 
 
 class Serial
@@ -88,7 +98,7 @@ public:
 					* @param[in] baud Check UART enum
 					* @param[in] priority Check SerialPriority enum
 					*/
-	void init(UART baud, SerialPriority _priority = _LOW_PRIORITY);
+	void init(UART baud);
 
 	/**
 					* @brief printf
@@ -132,30 +142,31 @@ public:
 					* @param[in] value Number of steps
 					* @bug NOT WORKING ATM
 					*/
-	void incReadData(uint8_t value = 1);
+	//void incReadData(uint8_t value = 1);
 
 	/**
 					* @brief enableShell
 					* @param[in] value
 					*/
-	void enableShell(bool value = false);
+	//void enableShell(bool value = false);
 
 	/**
 					* @brief registerCallback
 					* @param[in] cb
 					*/
-	void registerCallback(ser_cb_t *cb = nullptr);
+	virtual void registerCallback(ser_cb_t *cb = nullptr)  = 0;
+	virtual void registerCallback(SystemEventHandler *cb = nullptr)  = 0;
 
 	/**
 					* @brief Used to call registered callback function
 					*/
-	void rxCallBack();
+	//	inline void rxCallBack();
 
 	/**
 					* @brief
 					* @return
 					*/
-	bool shellIsEnabled();
+	//	bool shellIsEnabled();
 
 	/**
 					* @brief bufferIsReadable
@@ -191,7 +202,7 @@ public:
 					* @brief getPriority
 					* @return
 					*/
-	SerialPriority getPriority();
+	//SerialPriority getPriority();
 
 	/**
 					* @brief clear
@@ -202,7 +213,7 @@ public:
 	/**
 					* @brief A FIFO Rotating buffer
 					*/
-	uint8_t USART_BUFF[32];
+	uint8_t USART_BUFF[MAX_SERIAL_BUFFER];
 protected:
 	//-----------------METHODS-----------------//
 	Serial() {}
@@ -210,36 +221,36 @@ protected:
 
 	//-----------------VARIABLES---------------//
 	bool _echoServer;
-	bool _shellEnabled;
+	//bool _shellEnabled;
 	bool _bufferReadable;
 	uint8_t *_read;
 	uint8_t *_write;
 	//serial_t _self;
 	volatile u8t* UCSRxA;
-	SerialPriority _priority;
-	ser_cb_t *_callback;
+	//SerialPriority _priority;
+	//ser_cb_t *_callback;
 };
 
-
-
 extern Serial* __hw_serial[4];
-extern ser_cb_t* __hw_serial_cb[4];
+extern __HW_INT_ISR __hw_serial_cb[4];
 
-#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 class Serial0 : public Serial {
 	friend class SerialManager;
 public:
 	Serial0(UART baud): Serial() {
 		UCSRxA = (volatile uint8_t*)&UCSR0A;
-		//_self.UCSRxB = (volatile uint8_t*)&UCSR0B;
-		//_self.UCSRxC = (volatile uint8_t*)&UCSR0C;
-		//_self.UBRRxH = (volatile uint8_t*)&UBRR0H;
-		//_self.UBRRxL = (volatile uint8_t*)&UBRR0L;
-		//_self.UDRx   = (volatile uint8_t*)&UDR0;
+
 		init(baud);
 		__hw_serial[0] = this;
 	}
+	void registerCallback(ser_cb_t* cb = nullptr){
+		__hw_serial_cb[0].user_cb_vect = cb;
+	}
+	void registerCallback(SystemEventHandler* cb = nullptr){
+		__hw_serial_cb[0].sys_cb_vect = cb;
+	}
 };
+#if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #endif
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 //class Serial1 : public Serial {

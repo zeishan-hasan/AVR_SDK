@@ -4,7 +4,7 @@
 #include <intdef.h>
 
 
-struct __HW_ISR
+struct __HW_INT_ISR
 {
 	int_cb_t* user_cb_vect;
 	SystemEventHandler* sys_cb_vect;

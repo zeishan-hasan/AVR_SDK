@@ -12,8 +12,12 @@ libs/communication/uart/hardwareserial.cpp
 libs/communication/uart/hardwareserial.h
 libs/communication/uart/serial.cpp
 libs/communication/uart/serial.h
+libs/communication/uart/printf.h
+libs/communication/uart/printf.cpp
 libs/core/cppfix.cpp
 libs/core/cppfix.h
+libs/core/fifo/fifo.cpp
+libs/core/fifo/fifo.h
 libs/core/macros.h
 libs/core/micro/atiny85.h
 libs/core/system_event/systemevent.cpp
