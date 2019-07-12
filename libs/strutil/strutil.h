@@ -13,6 +13,9 @@
 std::string to_lower(std::string str);
 std::string to_upper(std::string str);
 
+char* to_lower(char* str);
+char* to_upper(char* str);
+
 // remove space & tabs from string
 void filterWhite(std::string &str);
 
