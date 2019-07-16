@@ -255,7 +255,6 @@ enum TEMP_UNITS : uint8_t{
     KELVIN_DEGREES
 };
 
-#pragma pack(1)
 struct mpu6050_f
 {
     mpu6050_f() {}
@@ -310,7 +309,6 @@ struct mpu6050_t
     mpu6050_s settings;
 
 };
-#pragma pop
 
 class Mpu6050
 {

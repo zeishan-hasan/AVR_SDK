@@ -35,7 +35,7 @@ libs/gpio/interrupt/interrupt.cpp
 libs/gpio/interrupt/interrupt.h
 libs/gpio/interrupt/pcint.cpp
 libs/gpio/interrupt/pcint.h
-libs/gpio/portmanager/pins.cpp
+libs/gpio/portmanager/pins.c
 libs/gpio/portmanager/pins.h
 libs/gpio/portmanager/portmanager.cpp
 libs/gpio/portmanager/portmanager.h

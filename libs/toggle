@@ -1,0 +1,25 @@
+
+build/toggle.o:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <toggle>:
+   0:	e0 e0       	ldi	r30, 0x00	; 0
+   2:	f0 e0       	ldi	r31, 0x00	; 0
+   4:	e8 0f       	add	r30, r24
+   6:	e8 0f       	add	r30, r24
+   8:	85 91       	lpm	r24, Z+
+   a:	94 91       	lpm	r25, Z
+   c:	ef e1       	ldi	r30, 0x1F	; 31
+   e:	e8 23       	and	r30, r24
+  10:	b2 96       	adiw	r30, 0x22	; 34
+  12:	00 81       	ld	r16, Z
+  14:	97 70       	andi	r25, 0x07	; 7
+  16:	c0 e0       	ldi	r28, 0x00	; 0
+  18:	d0 e0       	ldi	r29, 0x00	; 0
+  1a:	c9 0f       	add	r28, r25
+  1c:	98 81       	ld	r25, Y
+  1e:	90 27       	eor	r25, r16
+  20:	90 83       	st	Z, r25
+  22:	08 95       	ret

@@ -154,10 +154,10 @@ int main(){
 	//ptr(0);
 	//eth_header_t _eth;
 	//arp_header_t _arp;
-	pinMode(13, OUTPUT);
+	//pinMode(13, OUTPUT);
 
 	while(1){
-		toggle(13);
+		//toggle(13);
 
 		//PORTB ^= 0x80;
 		//if(encj2860.isLinkUp()) {

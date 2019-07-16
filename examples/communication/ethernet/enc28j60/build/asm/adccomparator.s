@@ -22,9 +22,12 @@ _Z11adc_compare11ADC_COMPARE6_ADMUX17_ADCSRA_PRESCALER19_ADCSRB_AUTOTRIGGER:
 /* frame size = 0 */
 /* stack size = 5 */
 .L__stack_usage = 5
-	ldi r23,0
 	or r22,r24
-	or r23,r18
+	ldi r30,0
+	ldi r31,0
+	mov r31,r18
+	or r30,r22
+	or r31,r23
 	lds r18,122
 	cpse r18,__zero_reg__
 	rjmp .L2
@@ -34,8 +37,8 @@ _Z11adc_compare11ADC_COMPARE6_ADMUX17_ADCSRA_PRESCALER19_ADCSRB_AUTOTRIGGER:
 	sts 122,r20
 .L2:
 	lds r18,122
-	sts 123,r23
-	sts 124,r22
+	sts 123,r31
+	sts 124,r30
 	lds r18,122
 	ori r18,lo8(64)
 	sts 122,r18

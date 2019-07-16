@@ -6,6 +6,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+/*
 #define TCCRxA(x) (*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]))))
 
 // Must pass TCCRxA
@@ -33,6 +34,25 @@
 #define OCRxB_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 10)))
 // Must pass TCCRxA
 #define OCRxC_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 12)))
+*/
+
+
+#define TCCRxA(x) (*(&_SFR_MEM8(__hw_timer_addr[x])))
+
+#define TCCRxB_8BIT(x)(*(x + 1))
+#define TCNTx_8BIT(x)	(*(x + 2))
+#define OCRxA_8BIT(x)	(*(x + 3))
+#define OCRxB_8BIT(x)	(*(x + 4))
+
+
+#define TCCRxB_16BIT(x) (*(x + 1))
+#define TCCRxC_16BIT(x) (*(x + 2))
+#define TCNTx_16BIT(x)  (*(&_SFR_MEM16(x + 4)))
+#define ICRx_16BIT(x)   (*(&_SFR_MEM16(x + 6)))
+#define OCRxA_16BIT(x)		(*(&_SFR_MEM16(x + 8)))
+#define OCRxB_16BIT(x)		(*(&_SFR_MEM16(x + 10)))
+#define OCRxC_16BIT(x)		(*(&_SFR_MEM16(x + 12)))
+
 
 /*
 #define _TIMER0 (0x00 << 7)

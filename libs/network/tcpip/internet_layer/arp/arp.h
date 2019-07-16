@@ -20,7 +20,6 @@
 |                                                        Destination protocol address                                                                 |
 +-----------------------------------------------------------------------------------------------------------------------------------------------------+
 */
-#pragma pack(1)
 struct arp_header_t{
 				u8t hardwareType[2];
 				u8t protocolType[2];
@@ -103,7 +102,6 @@ enum class OPCODE{
 };
 
 
-#pragma pop
 class Arp
 {
 public:

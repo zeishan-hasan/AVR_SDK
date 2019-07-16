@@ -4,7 +4,6 @@
 //#include <utils.h>
 #include <strutil.h>
 #define MACADDR_N_OCTECTS 6
-#pragma pack(1)
 //---- IPV4 ----//
 struct ipv4_header_t
 {
@@ -109,5 +108,4 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
 
 //---- End Ethernet ----//
 
-#pragma pop
 #endif // INET_GLOBAL_H

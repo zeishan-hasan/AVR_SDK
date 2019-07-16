@@ -24,11 +24,11 @@
 #define NO_PINX 0xF
 
 
-#define pinToPinx(x) (&_SFR_IO8(__flashMappedPort[x] & 0xF))
-#define pinToRegBit(x) ((__flashMappedPort[x] >> 4) & 0x07)
-#define pinToPWMGroup(x) ((__flashMappedPort[x] >> 7) & 0x01)
-#define pinToTimer(x) (((__flashMappedPort[x] >> 8) & 0x07))
-#define pinToLetter(x) (((__flashMappedPort[x] >> 10) & 0x03))
+#define pinToPinx(x) (&_SFR_IO8(pgm_read_word(&__flashMappedPort[x]) & 0xF))
+#define pinToRegBit(x) ((pgm_read_word(&__flashMappedPort[x]) >> 4) & 0x07)
+#define pinToPWMGroup(x) ((pgm_read_word(&__flashMappedPort[x]) >> 7) & 0x01)
+#define pinToTimer(x) (((pgm_read_word(&__flashMappedPort[x]) >> 8) & 0x07))
+#define pinToLetter(x) (((pgm_read_word(&__flashMappedPort[x]) >> 10) & 0x03))
 
 
 /*
@@ -61,7 +61,7 @@
 #define OCRxC_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 12)))
 
 */
-enum Analogx:uint8_t{
+enum Analogx{
 	A0 = 14,
 	A1,
 	A2,

@@ -4,7 +4,6 @@
 #include <spi.h>
 #include <vector>
 ///@file
-#pragma pack(1)
 /*
 struct mSPIsetting_t
 {
@@ -50,10 +49,6 @@ struct masterSPI_t
 };
 */
 
-
-
-
-#pragma pop
 
 class MasterSPI
 {

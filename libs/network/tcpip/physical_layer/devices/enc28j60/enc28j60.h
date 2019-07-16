@@ -630,7 +630,6 @@ enum ENC28J60_EBSTCON_REG_CFG {
 
 #define ENC28J60_BANK(x) (x << 8)
 #define ENC28J60_KoR(x) (x << 10)
-#pragma pack(1)
 enum ENC28J60_REGS {
 
 	//----------------------------- BANK0 -----------------------------//	 //------------------------- BANK1 -------------------------//
@@ -712,7 +711,6 @@ enum ENC28J60_INT: u8t{
 };
 
 typedef void enc_cb_t(ENC28J60_INT type);
-#pragma pop
 class Enc28j60 : public SystemEventHandler
 {
 

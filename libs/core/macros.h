@@ -24,16 +24,17 @@ typedef uint32_t u32t;
 typedef uint64_t u64t;
 
 /**
- * @brief debug
- */
-extern bool debug;
+	* @brief debug
+	*/
+//extern bool debug;
 
+/*
 #define dbg( ... ) do{ \
-    if (debug) { \
+				if (debug) { \
 				serial->printf(__VA_ARGS__); } \
 				} while (0)
-
-#define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+*/
+//#define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 
 #define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
@@ -136,4 +137,13 @@ extern bool debug;
 #define bitValue(x) (1 << x)
 
 #define valueFromMask(var, mask) (var & mask)
+
+
+//---- UART MACROS ----//
+
+#define _UCSRxB(x) (*(x  + 1))
+#define _UCSRxC(x) (*(x  + 2))
+#define _UBRRxL(x)  (*(x  + 4))
+#define _UBRRxH(x)  (*(x  + 5))
+#define _UDRx(x)   (*(x  + 6))
 #endif

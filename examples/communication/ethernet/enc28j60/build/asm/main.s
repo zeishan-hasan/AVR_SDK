@@ -51,11 +51,7 @@ main:
 	movw r24,r28
 	adiw r24,1
 	call _ZN8Enc28j60C1ER9macaddr_t
-	sbi 0x4,7
 .L3:
-	in r24,0x5
-	subi r24,lo8(-(-128))
-	out 0x5,r24
 	rjmp .L3
 	.size	main, .-main
 .global	debug

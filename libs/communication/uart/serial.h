@@ -7,7 +7,7 @@
 #include <util/setbaud.h>
 #include <stdio.h>
 #include <systemevent.h>
-
+#include <printf/printf.h>
 
 ///@file
 
@@ -25,11 +25,11 @@ struct __HW_INT_ISR
 
 
 
-#define _UCSRxB(x) (*(x  + 1))
-#define _UCSRxC(x) (*(x  + 2))
-#define _UBRRxL(x)  (*(x  + 4))
-#define _UBRRxH(x)  (*(x  + 5))
-#define _UDRx(x)   (*(x  + 6))
+//#define _UCSRxB(x) (*(x  + 1))
+//#define _UCSRxC(x) (*(x  + 2))
+//#define _UBRRxL(x)  (*(x  + 4))
+//#define _UBRRxH(x)  (*(x  + 5))
+//#define _UDRx(x)   (*(x  + 6))
 
 /**
 	* @brief The UART enum
@@ -138,19 +138,6 @@ public:
 	void insertData(uint8_t data);
 
 	/**
-					* @brief Moves \ref *_read pointer forward
-					* @param[in] value Number of steps
-					* @bug NOT WORKING ATM
-					*/
-	//void incReadData(uint8_t value = 1);
-
-	/**
-					* @brief enableShell
-					* @param[in] value
-					*/
-	//void enableShell(bool value = false);
-
-	/**
 					* @brief registerCallback
 					* @param[in] cb
 					*/
@@ -198,11 +185,6 @@ public:
 					*/
 	uint8_t readData();
 
-	/**
-					* @brief getPriority
-					* @return
-					*/
-	//SerialPriority getPriority();
 
 	/**
 					* @brief clear
@@ -217,18 +199,14 @@ public:
 protected:
 	//-----------------METHODS-----------------//
 	Serial() {}
-	void _print(const char *str);
+	//void _print(const char *str);
 
 	//-----------------VARIABLES---------------//
 	bool _echoServer;
-	//bool _shellEnabled;
 	bool _bufferReadable;
-	uint8_t *_read;
-	uint8_t *_write;
-	//serial_t _self;
+	u8t *_read;
+	u8t *_write;
 	volatile u8t* UCSRxA;
-	//SerialPriority _priority;
-	//ser_cb_t *_callback;
 };
 
 extern Serial* __hw_serial[4];
@@ -237,12 +215,19 @@ extern __HW_INT_ISR __hw_serial_cb[4];
 class Serial0 : public Serial {
 	friend class SerialManager;
 public:
-	Serial0(UART baud): Serial() {
-		UCSRxA = (volatile uint8_t*)&UCSR0A;
-
+	Serial0(UART baud, bool setRxIrq = false, bool setEcho = false): Serial() {
+		UCSRxA = (volatile u8t*)&UCSR0A;
 		init(baud);
+		if(setRxIrq){
+			setRxISRCallBack(true);
+		}
+		if(setEcho){
+			setEchoServer(true);
+		}
+
 		__hw_serial[0] = this;
 	}
+
 	void registerCallback(ser_cb_t* cb = nullptr){
 		__hw_serial_cb[0].user_cb_vect = cb;
 	}
@@ -250,6 +235,19 @@ public:
 		__hw_serial_cb[0].sys_cb_vect = cb;
 	}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 #endif
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)

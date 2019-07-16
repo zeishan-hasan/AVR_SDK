@@ -5,7 +5,6 @@
 #include <utils.h>
 #include <serial.h>
 #include <inet_global.h>
-#pragma pack(1)
 /*
 struct macaddr_t
 {
@@ -67,7 +66,6 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
 
 };
 */
-#pragma pop
 
 
 enum class EtherType : u16t {

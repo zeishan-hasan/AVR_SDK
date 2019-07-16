@@ -7,7 +7,6 @@
 #include <ethernet.h>
 
 
-#pragma pack(1)
 struct arp_table_t
 {
     arp_table_t(u32t ip, u8t *mac){
@@ -18,8 +17,6 @@ struct arp_table_t
     ipv4addr_t ip;
     macaddr_t mac;
 };
-
-#pragma pop
 
 
 

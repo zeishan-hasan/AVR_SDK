@@ -57,6 +57,7 @@ _ZN5Dht11C2Eh:
 	std Z+5,r25
 	std Z+4,r24
 	ldi r20,lo8(2)
+	ldi r21,0
 	movw r24,r28
 	adiw r24,1
 	call _ZN3PinC1Eh4DDRx
@@ -147,10 +148,12 @@ _ZN5Dht1114startContitionEv:
 .L__stack_usage = 4
 	movw r28,r24
 	ldi r22,lo8(2)
+	ldi r23,0
 	call _ZN3Pin12setDirectionE4DDRx
 	movw r24,r28
 	call _ZN3Pin3offEv
 	ldi r22,lo8(1)
+	ldi r23,0
 	movw r24,r28
 	call _ZN3Pin12setDirectionE4DDRx
 	ldi r18,lo8(63999)
@@ -163,6 +166,7 @@ _ZN5Dht1114startContitionEv:
 	rjmp .
 	nop
 	ldi r22,lo8(2)
+	ldi r23,0
 	movw r24,r28
 	call _ZN3Pin12setDirectionE4DDRx
 	ldi r17,lo8(21)
@@ -274,6 +278,7 @@ _ZN5Dht117getDataEv:
 	rjmp .L25
 .L26:
 	ldi r22,lo8(2)
+	ldi r23,0
 	movw r24,r16
 	call _ZN3Pin12setDirectionE4DDRx
 	movw r2,r28

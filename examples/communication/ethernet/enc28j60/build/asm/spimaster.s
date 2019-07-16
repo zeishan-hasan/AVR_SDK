@@ -686,6 +686,7 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	std Z+51,__zero_reg__
 	std Z+52,__zero_reg__
 	ldi r20,0
+	ldi r21,0
 	mov r22,r10
 	movw r24,r28
 	adiw r24,1
@@ -703,6 +704,7 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 	ldi r20,lo8(1)
+	ldi r21,0
 	mov r22,r11
 	movw r24,r28
 	adiw r24,1
@@ -721,6 +723,7 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 	ldi r20,lo8(1)
+	ldi r21,0
 	mov r22,r17
 	movw r24,r28
 	adiw r24,1
@@ -739,6 +742,7 @@ _ZN9MasterSPI12_masterSPI_tC2Ehhhh:
 	adiw r24,1
 	call _ZN3PinD1Ev
 	ldi r20,lo8(1)
+	ldi r21,0
 	mov r22,r16
 	movw r24,r28
 	adiw r24,1

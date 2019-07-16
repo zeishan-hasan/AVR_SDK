@@ -76,6 +76,7 @@ _ZN7Rdm630012setBuzzerPinEh:
 	call _Znwj
 	movw r28,r24
 	ldi r20,lo8(1)
+	ldi r21,0
 	mov r22,r15
 	call _ZN3PinC1Eh4DDRx
 	movw r30,r16

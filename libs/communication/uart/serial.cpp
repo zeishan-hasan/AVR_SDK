@@ -1,8 +1,6 @@
 #include "serial.h"
-#include <string.h>
 
 Serial* __hw_serial[4] = {nullptr, nullptr, nullptr, nullptr};
-//ser_cb_t* __hw_serial_cb[4] = {nullptr, nullptr, nullptr, nullptr};
 __HW_INT_ISR __hw_serial_cb[4];
 
 
@@ -28,18 +26,16 @@ void Serial::init(UART baud)
 	_bufferReadable = true;
 
 
-
-
 }
 
 void Serial::printf(const char *fmt,...)
 {
 	va_list arg;
-	char buff[MAX_SERIAL_BUFFER];
+	//char buff[MAX_SERIAL_BUFFER];
 	va_start(arg,fmt);
-	vsprintf(buff,fmt,arg);
+	__vfprintf(UCSRxA, fmt, arg);
 	va_end(arg);
-	_print(buff);
+	//_print(buff);
 
 }
 
@@ -156,8 +152,7 @@ bool Serial::echoIsEnabled()
 
 uint8_t Serial::receive()
 {
-	while (!(*UCSRxA & (1<<RXC0)));
-	return _UDRx(UCSRxA);
+	return __getc(UCSRxA);
 }
 
 uint8_t Serial::readData()
@@ -174,26 +169,22 @@ uint8_t Serial::readData()
 	return temp;
 }
 
-//SerialPriority Serial::getPriority()
-//{
-//	return _priority;
-//}
-
 void Serial::clear()
 {
-	_print("\e[1;1H\e[2J");
+	__puts("\e[1;1H\e[2J", UCSRxA);
 }
-void Serial::_print(const char *str)
-{
-	register uint8_t i=0;
-	while (str[i]!=0) {
-		// Wait for empty transmit buffer
-		while ( !( *UCSRxA & (1<<UDRE0)) );
-		//*_self.UDRx = str[i];
-		_UDRx(UCSRxA) = str[i];
-		++i;
-	}
-}
+
+//void Serial::_print(const char *str)
+//{
+//	register uint8_t i=0;
+//	while (str[i]!=0) {
+//		// Wait for empty transmit buffer
+//		while ( !( *UCSRxA & (1<<UDRE0)) );
+//		//*_self.UDRx = str[i];
+//		_UDRx(UCSRxA) = str[i];
+//		++i;
+//	}
+//}
 
 
 
@@ -209,7 +200,7 @@ ISR(USART0_RX_vect){
 	//}
 
 	if(__hw_serial_cb[0].user_cb_vect != nullptr){
-		((void(*)())__hw_serial_cb[4].user_cb_vect)();
+		((void(*)())__hw_serial_cb[0].user_cb_vect)();
 	}
 	else if(__hw_serial_cb[0].sys_cb_vect != nullptr) {
 		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
