@@ -21,11 +21,15 @@ C_OBJS  = $(C_SRCS:.c=.o)
 INCLUDE_DIR := -I /usr/lib/avr/include -I ../standardCpp \
 	$(addprefix -I ,$(shell find ./ -name  '*.h' -exec dirname {} \;)) 
 #
-CXX_FLAGS = -std=c++14 -nostdlib  -Wmain -Wextra  -Wno-maybe-uninitialized -fdata-sections -ffunction-sections -funsigned-char -funsigned-bitfields -fshort-enums $(INCLUDE_DIR)
-CC_FLAGS  = -std=gnu99 -nostdlib  -Wmain -Wextra  -Wno-maybe-uninitialized -fdata-sections -ffunction-sections -funsigned-char -funsigned-bitfields -fshort-enums  $(INCLUDE_DIR)
+CXX_FLAGS =  $(INCLUDE_DIR) -Os -D__COMPILE__ -DF_CPU=$(F_CPU) -std=c++14 -nostartfiles -nostdlib -nodefaultlibs -Wmain -Wextra  -Wno-maybe-uninitialized \
+			-fdata-sections -ffunction-sections -funsigned-char -funsigned-bitfields -fno-sized-deallocation
+
+CC_FLAGS  =  $(INCLUDE_DIR) -Os -D__COMPILE__ -DF_CPU=$(F_CPU) -std=gnu99 -nostartfiles -nostdlib -nodefaultlibs -Wmain -Wextra  -Wno-maybe-uninitialized \
+			-fdata-sections -ffunction-sections -funsigned-char -funsigned-bitfields 
 #
 CXX = avr-g++ 
 CC  = avr-gcc 
+AS  = avr-as
 #
 all: atmega2560
 
@@ -38,15 +42,15 @@ lib: $(CXX_OBJS)
 	
 %.o: %.c
 	@echo "Compiling file : $(notdir $<)"
-	@$(CC) $(CC_FLAGS) -Os -DF_CPU=$(F_CPU) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CC) $(CC_FLAGS) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
 %.o: %.cpp
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -Os -DF_CPU=$(F_CPU) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(CXX) $(CXX_FLAGS) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
 %.o: %.s
 	@echo "Compiling file : $(notdir $<)"
-	@$(CXX) $(CXX_FLAGS) -Os -DF_CPU=$(F_CPU) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
+	@$(AS) -mmcu=$(MICRO)  -c $<  -o $(BUILD_DIR)/$(notdir $@)
 
 
 #
@@ -73,7 +77,7 @@ atmega2560: createdir $(ASM_OBJS) $(C_OBJS) $(CXX_OBJS) lib
 
 # ATMEGA328P
 # Compile for atmega2560
-atmega328p: MPROG := m328P
+atmega328p: MPROG := m328p
 #
 atmega328p: MICRO := atmega328p
 atmega328p: F_CPU := 16000000

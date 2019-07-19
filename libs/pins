@@ -1,8 +1,3 @@
 
 build/pins.o:     file format elf32-avr
 
-
-Disassembly of section .text.setPWM:
-
-00000000 <setPWM>:
-   0:	08 95       	ret

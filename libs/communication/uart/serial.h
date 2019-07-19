@@ -7,7 +7,7 @@
 #include <util/setbaud.h>
 #include <stdio.h>
 #include <systemevent.h>
-#include <printf/printf.h>
+#include <printf.h>
 
 ///@file
 

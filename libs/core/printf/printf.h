@@ -66,7 +66,7 @@ inline int __vfprintf(volatile u8t* __stdout, const char *fmt, va_list arg)
     //buffer[31] = 0;
     //u8t i;
     //int int_temp;
-    while ( ch = *fmt++) {
+				while ( (ch = *fmt++) ) {
         if ( '%' == ch ) {
             switch (ch = *fmt++) {
             /* %c: print out a character    */

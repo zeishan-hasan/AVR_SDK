@@ -198,7 +198,7 @@ u8t MasterSPI::transfer(u8t data)
 }
 
 
-bool MasterSPI::slaveIsValid(uint8_t slave)
+bool MasterSPI::slaveIsValid(size_t slave)
 {
 	if((slave+1) <= _self.SS.size()){
 		return true;

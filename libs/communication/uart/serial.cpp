@@ -188,7 +188,7 @@ void Serial::clear()
 
 
 
-
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 ISR(USART0_RX_vect){
 	char temp = UDR0;
 	__hw_serial[0]->insertData(temp);
@@ -206,21 +206,29 @@ ISR(USART0_RX_vect){
 		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
 	}
 }
+#endif
 
+#if defined(__AVR_ATmega328P__)
 
-
-/*
-#if defined (__AVR_ATmega328P__)
 ISR(USART_RX_vect){
-				Serial *serial0 = __hw_serial[0];
-				char temp = UDR0;
-				serial0->insertData(temp);
-				if(serial0->echoIsEnabled()){
-								UDR0 = temp;
-				}
-				serial0->rxCallBack();
-}
+	char temp = UDR0;
+	__hw_serial[0]->insertData(temp);
+	if(__hw_serial[0]->echoIsEnabled()){
+		UDR0 = temp;
+	}
+	//if(__hw_serial_cb[0] != nullptr){
+	//	__hw_serial_cb[0]();
+	//}
 
+	if(__hw_serial_cb[0].user_cb_vect != nullptr){
+		((void(*)())__hw_serial_cb[0].user_cb_vect)();
+	}
+	else if(__hw_serial_cb[0].sys_cb_vect != nullptr) {
+		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
+	}
+}
+#endif
+/*
 #elif defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
 
 

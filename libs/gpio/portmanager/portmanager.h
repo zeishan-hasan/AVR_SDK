@@ -24,9 +24,9 @@
 /**
 								* @brief The LogicStates enum
 								*/
-enum LogicStates:uint8_t{
-	LOW, HIGH
-};
+//enum LogicStates:uint8_t{
+//	LOW, HIGH
+//};
 
 
 
@@ -68,6 +68,7 @@ enum _PWM_BITS : u8t {
 /**
 	* @brief The Pin class
 	*/
+
 class Pin{
 public:
 
@@ -200,6 +201,53 @@ private:
 
 	uint8_t _pinNumber;
 };
+
+
+
+
+
+
+
+
+
+
+/*
+inline void setPWM(u8t pin, size_t _freq, u8t _duty){
+	u16t freq = getFreq(_freq);
+	u16t duty = getDuty(freq, _duty);
+
+	switch (pwm[pin].pwmGroup) {
+	case PWM16BIT:
+		ICRx_16BIT(pwm[pin].TCCRxA) = freq;
+		switch (pwm[pin].letter) {
+		case LETTER_A:
+			*pwm[pin].TCCRxA |= bitValue(7) | bitValue(6);
+			//OCRxA_16BIT(TCCRxA) = CALCULATE_DUTY_16BIT(freq, duty);
+			break;
+		case LETTER_B:
+			*pwm[pin].TCCRxA	|= bitValue(5) | bitValue(4);
+
+			break;
+#if defined(LETTER_C)
+		case LETTER_C:
+			*pwm[pin].TCCRxA	|= bitValue(3) | bitValue(2);
+			//*(pwm[pin].TCCRxA+12)	 = duty;
+			OCRxC_16BIT(pwm[pin].TCCRxA) = duty;
+			break;
+#endif
+		}
+		//OCRxB_16BIT(TCCRxA) = CALCULATE_DUTY_16BIT(freq, duty);
+		*pwm[pin].TCCRxA   |= (1 << WGM11) | (0 << WGM10);// Setting PWM, Phase Correct
+		*(pwm[pin].TCCRxA+1)  |= (1 << WGM13) | (1 << WGM12);// TOP = OCRnA TOVx Flag = BOTTOM
+		*(pwm[pin].TCCRxA+1)  |= (0 << CS12) | (0 << CS11) | (1 << CS10); //Setting prescaler to 1, so F_CPU
+	default:
+		break;
+	}
+
+
+}*/
+
+
 
 
 #endif // PORTMANAGER_H

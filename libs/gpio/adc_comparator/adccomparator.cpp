@@ -1,6 +1,6 @@
 #include "adccomparator.h"
 
-
+/*
 int32_t adc_compare(ADC_COMPARE compare, _ADMUX vRef, _ADCSRA_PRESCALER prescaler, _ADCSRB_AUTOTRIGGER autoTrigger){
 
     uint16_t _adcsrb_adxmux_reg = (autoTrigger<<8) | vRef | toU8(compare);
@@ -32,3 +32,4 @@ int32_t adc_compare(ADC_COMPARE compare, _ADMUX vRef, _ADCSRA_PRESCALER prescale
     var =  round(var * 5000.0/(512.0 * pgm_read_byte(&adc_gain_vect[index])));
     return var;//*0.004882813; ADC*VREF(mV)/(512*GAIN) 4,874−3,326 = 1,548
 }
+*/

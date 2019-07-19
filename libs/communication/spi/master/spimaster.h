@@ -94,7 +94,7 @@ public:
 				u8t getSlavePin(u8t index);
 
 private:
-    bool slaveIsValid(uint8_t slave);
+				bool slaveIsValid(size_t slave);
 
     struct _masterSPI_t
     {

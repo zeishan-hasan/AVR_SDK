@@ -1,7 +1,10 @@
 #ifndef MACROS_H
 #define MACROS_H
 #include <stdint.h>
+#include <stdlib.h>
 ///@file
+
+
 
 /**
  * @brief Shortname of uint8_t
@@ -23,6 +26,8 @@ typedef uint32_t u32t;
  */
 typedef uint64_t u64t;
 
+
+
 /**
 	* @brief debug
 	*/
@@ -40,6 +45,7 @@ typedef uint64_t u64t;
 #define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
 #define CALCULATE_DUTY_16BIT(freq, duty) (CALCULATE_PWM_TICKS(freq)-(CALCULATE_PWM_TICKS(freq)*((float)duty/100)))
 #define CALCULATE_DUTY_8BIT(duty) ((-2.55*duty) + 255)
+
 
 #define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
 
@@ -138,6 +144,19 @@ typedef uint64_t u64t;
 
 #define valueFromMask(var, mask) (var & mask)
 
+constexpr u16t calcPwmTicks(size_t freq){
+	return F_CPU/freq;
+}
+constexpr u16t calcDuty16bit(u16t ticks, u8t duty){
+	return toU32(ticks) - ( (toU32(ticks) * toU32(duty)) /100);
+}
+constexpr u8t calcDuty8bit(u8t duty){
+	return 255-(2.55*duty);
+}
+
+
+
+
 
 //---- UART MACROS ----//
 
@@ -146,4 +165,5 @@ typedef uint64_t u64t;
 #define _UBRRxL(x)  (*(x  + 4))
 #define _UBRRxH(x)  (*(x  + 5))
 #define _UDRx(x)   (*(x  + 6))
+
 #endif

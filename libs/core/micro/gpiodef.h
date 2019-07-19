@@ -6,38 +6,9 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-/*
-#define TCCRxA(x) (*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]))))
-
-// Must pass TCCRxA
-#define TCCRxB_8BIT(x) (*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 1)))
-// Must pass TCCRxA
-#define TCNTx_8BIT(x)	(*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 2)))
-// Must pass TCCRxA
-#define OCRxA_8BIT(x)	(*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 3)))
-// Must pass TCCRxA
-#define OCRxB_8BIT(x)	(*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 4)))
 
 
-
-// Must pass TCCRxA
-#define TCCRxB_16BIT(x) (*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 1)))
-// Must pass TCCRxA
-#define TCCRxC_16BIT(x) (*(&_SFR_MEM8(pgm_read_word(&__hw_timer_addr[x]) + 2)))
-// Must pass TCCRxA
-#define TCNTx_16BIT(x) (*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 4)))
-// Must pass TCCRxA
-#define ICRx_16BIT(x) (*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 6)))
-// Must pass TCCRxA
-#define OCRxA_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 8)))
-// Must pass TCCRxA
-#define OCRxB_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 10)))
-// Must pass TCCRxA
-#define OCRxC_16BIT(x)		(*(&_SFR_MEM16(pgm_read_word(&__hw_timer_addr[x]) + 12)))
-*/
-
-
-#define TCCRxA(x) (*(&_SFR_MEM8(__hw_timer_addr[x])))
+//#define TCCRxA(x) (*(&_SFR_MEM8(__hw_timer_addr[x])))
 
 #define TCCRxB_8BIT(x)(*(x + 1))
 #define TCNTx_8BIT(x)	(*(x + 2))
@@ -52,77 +23,103 @@
 #define OCRxA_16BIT(x)		(*(&_SFR_MEM16(x + 8)))
 #define OCRxB_16BIT(x)		(*(&_SFR_MEM16(x + 10)))
 #define OCRxC_16BIT(x)		(*(&_SFR_MEM16(x + 12)))
+static const u8t __bitToValue[] = {1,2,4,8,16,32,64,128};
+static const u8t __bitToValue_compl[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
 
 
-/*
-#define _TIMER0 (0x00 << 7)
-#define _TIMER1 (0x01	<< 7)
-#define _TIMER2 (0x02	<< 7)
-#define _TIMER3 (0x03	<< 7)
-#define _TIMER4 (0x04	<< 7)
-#define _TIMER5 (0x05 << 7)
-#define _A	0x00
-#define _B	0x01
-#define _C	0x02
-//#define _UART0	0x00
-//#define _UART1	0x01
-//#define _UART2	0x02
-//#define _UART3	0x03
-#define isPWM 12
-#define PWM_BITS 10
-#define OUT_CMP_SEL 7
-#define isADC 4
-#define LETTER_SEL 5
-#define ADC_SEL 0
 
-#define PWM_LETTER_MASK(x) ((x >> LETTER_SEL) & 0x03)
-#define PWM_BITS_MASK(x) ((x >> 10) & 0x03)
-#define IS_PWM_MASK(x) (x & bitValue(isPWM))
-#define OUT_CMP_SEL_MASK(x) ((x >> OUT_CMP_SEL)  & 0x7)
-#define IS_ADC_MASK(x) (x & bitValue(isADC))
-#define ADC_CH_MASK(x) (x & 0xF)
-//#define isUART 2
-//#define UART_SEL 0
-
-#define IS_PWM (1 << 12)
-#define PWM8BIT (0 << 10)
-#define PWM16BIT (1 << 10)
-#define LETTER_A (0 << 5)
-#define LETTER_B (1 << 5)
-#define LETTER_C (2 << 5)
-#define IS_ADC (1 << 4)
-#define _ADC(x) (x << 0)
-#define NONE 0
-#pragma pack(1)
-
-///
-//**
-//* @brief The MappedPort struct. It's used to manage pins.
-//*/
-//truct MappedPort {
-///**
-//				* @brief Is the pointer used to manage a pin
-//				*/
-//volatile uint8_t * pinx;
-///**
-//				* @brief The bit into own register
-//				*/
-//uint8_t registerBit;
-//
-///*! @var controlBits
-//							@brief Used to get pin functions mode.
-//							@verbatim
-//							╔════╦════╦════╦═══════╦═════╦════╦══════╦══════╦══════╦══════╦═════╦═══════╦═══╦═══╦═══╦═══╗
-//							║ 15 ║ 14 ║ 13 ║ 12    ║ 11  ║ 10 ║ 9    ║ 8    ║ 7    ║ 6    ║ 5   ║ 4     ║ 3 ║ 2 ║ 1 ║ 0 ║
-//							╠════╬════╬════╬═══════╬═════╩════╬══════╩══════╩══════╬══════╩═════╬═══════╬═══╩═══╩═══╩═══╣
-//							║    ║    ║    ║ isPWM ║ PWM bits ║ Output Compare Sel ║ letter Sel ║ isADC ║    ADC_SEL    ║
-//							╚════╩════╩════╩═══════╩══════════╩════════════════════╩════════════╩═══════╩═══════════════╝
-//							@endverbatim
-//
-//	*/
-//uint16_t controlBits;
-//
-//;
-
-
+// Dummy declaration of gpios
+#if defined(__COMPILE__)
+#else
+enum class PIN : u16t {
+	IO0,
+	IO1,
+	IO2,
+	IO3,
+	IO4,
+	IO5,
+	IO6,
+	IO7,
+	IO8,
+	IO9,
+	IO10,
+	IO11,
+	IO12,
+	IO13,
+	IO14,
+	IO15,
+	IO16,
+	IO17,
+	IO18,
+	IO19,
+	IO20,
+	IO21,
+	IO22,
+	IO23,
+	IO24,
+	IO25,
+	IO26,
+	IO27,
+	IO28,
+	IO29,
+	IO30,
+	IO31,
+	IO32,
+	IO33,
+	IO34,
+	IO35,
+	IO36,
+	IO37,
+	IO38,
+	IO39,
+	IO40,
+	IO41,
+	IO42,
+	IO43,
+	IO44,
+	IO45,
+	IO46,
+	IO47,
+	IO48,
+	IO49,
+	IO50,
+	IO51,
+	IO52,
+	IO53,
+	A0,
+	A1,
+	A2,
+	A3,
+	A4,
+	A5,
+	A6,
+	A7,
+	A8,
+	A9,
+	A10,
+	A11,
+	A12,
+	A13,
+	A14,
+	A15
+};
+enum class PIN_ADC : u8t {
+	A0,
+	A1,
+	A2,
+	A3,
+	A4,
+	A5,
+	A6,
+	A7,
+	A8,
+	A9,
+	A10,
+	A11,
+	A12,
+	A13,
+	A14,
+	A15
+};
+#endif
 //#pragma pop
