@@ -81,55 +81,14 @@ typedef enum {
 
 
 
-//extern void pinMode(u8t pin, DDRx direction);
-//
-//extern void toggle(u8t pin);
-//
-//extern void set_pwm_freq_duty(u8t pin, size_t freq, u8t duty);
-//
-//extern void set_pwm(u8t pin,DUTY duty);
-
-//constexpr u16t getVar(u8t pin){
-//	return pgm_read_word(&__flashMappedPort[pin]);
-//}
-
-//inline uint16_t analogRead(u8t pin, _ADMUX vRef = AVCC, _ADCSRA_PRESCALER prescaler = F_CPU_BY_128, _ADCSRB_AUTOTRIGGER autoTrigger = FREE_RUNNING_MODE){
-//	if(pin < A0){
-//		return 0;
-//	}
-//	pin -= A0;
-//#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-//	uint16_t _adcsrb_adxmux_reg = (autoTrigger << 8) | vRef | (pin > 7 ? (bitValue(11) | pin) : pin);
-//#elif defined(__AVR_ATmega328P__)
-//	uint16_t _adcsrb_adxmux_reg = (autoTrigger << 8) | vRef | pin;
-//#endif
-//	if(ADCSRA == 0){
-//		ADCSRA |= (1<<ADEN) | (0<<ADIE) | prescaler;//FIXME if set ADIE will not work and crash(it's necessary?)
-//	}
-//
-//	while(ADCSRA & bitValue(ADIF) == 0);
-//
-//	ADCSRB = HI(_adcsrb_adxmux_reg);
-//
-//	ADMUX = LO(_adcsrb_adxmux_reg);
-//
-//	ADCSRA |= bitValue(ADSC);
-//
-//	while(ADCSRA & bitValue(ADSC));
-//
-//	return ADC;//*0.004882813;
-//
-//}
-
-
-
 #ifdef __cplusplus
 }
 #endif
 
-inline void pinMode(PIN pin, DDRx dir) {
+inline void pinMode(PIN pin, DDRx dir)  {
 	if (dir == OUTPUT) {
 		*(varToPinx(pin)+1) |= __bitToValue[varToRegBit(pin)];
+		return;
 	} else {
 		*(varToPinx(pin)+1) &= ~__bitToValue[varToRegBit(pin)];
 
@@ -241,30 +200,31 @@ inline uint16_t analogRead(PIN_ADC pin, _ADMUX vRef = AVCC, _ADCSRA_PRESCALER pr
 }
 
 
-/*
-
-inline void changeDuty(u8t pin, u8t duty){
-	if(_mappedPort[pin].TCCRxA == nullptr){
+inline void changeDuty(PIN pin, u8t duty){
+	u8t timer = varToTimer(pin);
+	if( timer == NO_TIMER){
 		return;
 	}
-	volatile u8t* TCCRxA = _mappedPort[pin].TCCRxA;
-	if(_mappedPort[pin].pwmGroup == PWM8BIT){
-		//u8t duty8 = calcDuty8bit(duty);
-		//switch (_mappedPort[pin].letter) {
-		//case LETTER_A:
-		//	OCRxA_8BIT(TCCRxA) = duty8;
-		//	break;
-		//case LETTER_B:
-		//	OCRxB_8BIT(TCCRxA) = duty8;
-		//	break;
-		//default:
-		//	break;
-		//}
+	u8t pwmGroup = varToPWMGroup(pin);
+	u8t letter = varToLetter(pin);
+	volatile u8t* TCCRxA = (volatile u8t*)__hw_timer_addr[timer];
+	if(pwmGroup == PWM8BIT){
+		u8t duty8 = calcDuty8bit(duty);
+		switch (letter) {
+		case LETTER_A:
+			OCRxA_8BIT(TCCRxA) = duty8;
+			break;
+		case LETTER_B:
+			OCRxB_8BIT(TCCRxA) = duty8;
+			break;
+		default:
+			break;
+		}
 	}
 	else {
-		u16t freq = ICRx_16BIT(_mappedPort[pin].TCCRxA);
+		u16t freq = ICRx_16BIT(TCCRxA);
 		u16t duty16 = calcDuty16bit(freq, duty);
-		switch (_mappedPort[pin].letter) {
+		switch (letter) {
 		case LETTER_A:
 			OCRxA_16BIT(TCCRxA) = duty16;
 			break;
@@ -282,6 +242,5 @@ inline void changeDuty(u8t pin, u8t duty){
 	}
 
 }
-*/
 
 #endif

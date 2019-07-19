@@ -1,8 +1,4 @@
 #pragma once
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
-
 #include <gpiodef.h>
 
 #define PINx(x) (x << 0)
@@ -11,7 +7,6 @@
 #define BIT(x) (x << 8)
 #define PWM_GROUP(x) (x << 11)
 #define TIMERx(x) (x << 12)
-
 
 #define TIMER_0 0x00
 #define TIMER_1 0x01
@@ -29,8 +24,6 @@
 #define PWM8BIT 0
 #define PWM16BIT 1
 
-
-
 #define _PINA 0x00
 #define _PINB 0x03
 #define _PINC 0x06
@@ -46,11 +39,12 @@
 
 //#define pinToPinx(x) (pgm_read_word(&__flashMappedPort[x]) & OR100 ? &_SFR_MEM8(0x100 | pgm_read_word(&__flashMappedPort[x]) & 0x1F) :  &_SFR_IO8(pgm_read_word(&__flashMappedPort[x]) & 0x1F))
 
-#define varToPinx(x) (toU16(x) & OR100 ? &_SFR_MEM8(0x100 | (toU16(x) & 0x1F)) :  &_SFR_IO8(toU16(x) & 0x1F))
-#define varToLetter(x) (((toU16(x) >> 6) & 0x03))
-#define varToRegBit(x) ((toU16(x) >> 8) & 0x07)
-#define varToPWMGroup(x) ((toU16(x) >> 11) & 0x01)
-#define varToTimer(x) (((toU16(x) >> 12) & 0x07))
+//#define varToPinx(x) (toU16(x) & OR100 ? &_SFR_MEM8(0x100 | (toU16(x) & 0x1F)) :  &_SFR_IO8(toU16(x) & 0x1F))
+//#define varToLetter(x) (((toU16(x) >> 6) & 0x03))
+//#define varToRegBit(x) ((toU16(x) >> 8) & 0x07)
+//#define varToPWMGroup(x) ((toU16(x) >> 11) & 0x01)
+//#define varToTimer(x) (((toU16(x) >> 12) & 0x07))
+
 
 
 enum class PIN_ADC : u8t {
@@ -153,8 +147,6 @@ enum class PIN :  int {
 	A15  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD7) |  PINx(_PINK) //A15	69	| ADC15/PCINT23
 };
 
-//extern const u16t __flashMappedPort[] PROGMEM;
-
 
 constexpr u16t __hw_timer_addr[] = {0x24, 0x80, 0xB0, 0x90, 0xA0, 0x120};
 constexpr u8t PROGMEM __hw_int_mappedPin[8] = {21, 20, 19, 18, 2, 3, 255, 255};
@@ -234,11 +226,21 @@ constexpr pin_setting _mappedPort[] {
 };
 */
 
-/*
-constexpr pwm_settings _mappedPwmPort[] {
-	{&TCCR1A, PWM16BIT, LETTER_C}
-};*/
-
+constexpr volatile u8t* varToPinx(PIN x){
+	return (toU16(x) & OR100 ? &_SFR_MEM8(0x100 | (toU16(x) & 0x1F)) :  &_SFR_IO8(toU16(x) & 0x1F));
+}
+constexpr u8t varToLetter(PIN x){
+	return (((toU16(x) >> 6) & 0x03));
+}
+constexpr u8t varToRegBit(PIN x){
+	return	((toU16(x) >> 8) & 0x07);
+}
+constexpr u8t varToPWMGroup(PIN x){
+	return ((toU16(x) >> 11) & 0x01);
+}
+constexpr u8t varToTimer(PIN x){
+	return (((toU16(x) >> 12) & 0x07));
+}
 
 
 //#ifdef __cplusplus

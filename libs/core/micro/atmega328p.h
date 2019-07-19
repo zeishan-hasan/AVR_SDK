@@ -1,6 +1,6 @@
 #pragma once
 #include <gpiodef.h>
-#include <avr/io.h>
+
 #define PINx(x) (x << 0)
 #define BIT(x) (x << 4)
 #define PWM_GROUP(x) (x << 7)
@@ -25,11 +25,11 @@
 
 
 
-#define varToPinx(x) (&_SFR_IO8(toU16(x) & 0xF))
-#define varToRegBit(x) ((toU16(x) >> 4) & 0x07)
-#define varToPWMGroup(x) ((toU16(x) >> 7) & 0x01)
-#define varToTimer(x) (((toU16(x) >> 8) & 0x07))
-#define varToLetter(x) (((toU16(x) >> 10) & 0x03))
+//#define varToPinx(x) (&_SFR_IO8(toU16(x) & 0xF))
+//#define varToRegBit(x) ((toU16(x) >> 4) & 0x07)
+//#define varToPWMGroup(x) ((toU16(x) >> 7) & 0x01)
+//#define varToTimer(x) (((toU16(x) >> 8) & 0x07))
+//#define varToLetter(x) (((toU16(x) >> 10) & 0x03))
 
 
 
@@ -42,10 +42,6 @@ enum class PIN_ADC : u8t {
 	A4,
 	A5
 };
-
-constexpr u16t __hw_timer_addr[] = {0x24, 0x80, 0xB0};
-const u8t PROGMEM __hw_int_mappedPin[] = {2, 3};
-
 
 /*
 ╔════╦════╦════╦════╦════╦═════════╦════╦═══╦═══════════╦═══╦═══╦═══╦═══╦═══╦═══╦═══╗
@@ -78,6 +74,26 @@ enum class PIN :  int
 	A4	  = LETTERx(0)        | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD4) |  PINx(_PINC), //18 PCINT12 - SCK
 	A5 	 = LETTERx(0)        | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD5) |  PINx(_PINC), //19 PCINT13 - SCK
 };
+
+constexpr u16t __hw_timer_addr[] = {0x24, 0x80, 0xB0};
+constexpr u8t PROGMEM __hw_int_mappedPin[] = {2, 3};
+
+
+constexpr volatile u8t* varToPinx(PIN x){
+	return (&_SFR_IO8(toU16(x) & 0xF));
+}
+constexpr u8t varToRegBit(PIN x){
+	return ((toU16(x) >> 4) & 0x07);
+}
+constexpr u8t varToPWMGroup(PIN x){
+	return ((toU16(x) >> 7) & 0x01);
+}
+constexpr u8t varToTimer(PIN x){
+	return ((toU16(x) >> 8) & 0x07);
+}
+constexpr u8t varToLetter(PIN x){
+	return 	(((toU16(x) >> 10) & 0x03));
+}
 
 
 /*

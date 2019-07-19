@@ -151,7 +151,7 @@ constexpr u16t calcDuty16bit(u16t ticks, u8t duty){
 	return toU32(ticks) - ( (toU32(ticks) * toU32(duty)) /100);
 }
 constexpr u8t calcDuty8bit(u8t duty){
-	return 255-(2.55*duty);
+	return  (25500-(255*duty))/100;
 }
 
 
