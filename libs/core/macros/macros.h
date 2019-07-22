@@ -7,23 +7,23 @@
 
 
 /**
- * @brief Shortname of uint8_t
- */
+	* @brief Shortname of uint8_t
+	*/
 typedef uint8_t u8t;
 
 /**
- * @brief Shortname of uint16_t
- */
+	* @brief Shortname of uint16_t
+	*/
 typedef uint16_t u16t;
 
 /**
- * @brief Shortname of uint32_t
- */
+	* @brief Shortname of uint32_t
+	*/
 typedef uint32_t u32t;
 
 /**
- * @brief Shortname of uint64_t
- */
+	* @brief Shortname of uint64_t
+	*/
 typedef uint64_t u64t;
 
 
@@ -60,19 +60,22 @@ typedef uint64_t u64t;
 
 
 /**
-  *@return Absolute value
-  */
+		*@return Absolute value
+		*/
 #define ABS(N) ((N<0)?(-N):(N))
+constexpr unsigned int toABS(int x){
+	return ((x<0)?(-x):(x));
+}
 
 
 /**
-  * @return LSB of 16 bit value
-  */
+		* @return LSB of 16 bit value
+		*/
 #define LO(x) (x & 0xFF)
 
 /**
-  * @return MSB of 16 bit value
-  */
+		* @return MSB of 16 bit value
+		*/
 #define HI(x) ((x >> 8) & 0xFF)
 
 
@@ -101,41 +104,41 @@ typedef uint64_t u64t;
 
 //-------- Bit Manipulation --------//
 /**
-  * @brief Checks if a bit in a var is set to 1
-  * @param[in] var The variable to test
-  * @param[in] bit The bit you want to test in var
-  * @return If the bit is on, it return the corresponding bit value into var. If the bit if off it retuns 0
-  */
+		* @brief Checks if a bit in a var is set to 1
+		* @param[in] var The variable to test
+		* @param[in] bit The bit you want to test in var
+		* @return If the bit is on, it return the corresponding bit value into var. If the bit if off it retuns 0
+		*/
 #define is_bit_on(var, bit) ((var)&(1<<(bit)))
 
 /**
-  * @brief Reads bit value in a var
-  * @param[in] var The variable to read
-  * @param[in] bit The bit you want to read
-  * @return If bit is on 1, else 0
-  */
+		* @brief Reads bit value in a var
+		* @param[in] var The variable to read
+		* @param[in] bit The bit you want to read
+		* @return If bit is on 1, else 0
+		*/
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
 
 /**
-  *@brief Sets a bit into a var
-  * @param[in] value The input variable
-  * @param[in] bit The bit you want to set
-  */
+		*@brief Sets a bit into a var
+		* @param[in] value The input variable
+		* @param[in] bit The bit you want to set
+		*/
 #define bitSet(value, bit) ((value) |= (1 << (bit)))
 
 /**
-  *@brief Clears a bit into a variable
-  * @param[in] value The input variable
-  * @param[in] bit The bit you want to clear
-  */
+		*@brief Clears a bit into a variable
+		* @param[in] value The input variable
+		* @param[in] bit The bit you want to clear
+		*/
 #define bitClear(value, bit) ((value) &= ~(1 << bit) )
 
 /**
-  *@brief Writes a bit value into a variable
-  * @param[in] value The input variable
-  * @param[in] bit The bit you want to write
-  * @param[in] bitvalue The bit value you want to write
-  */
+		*@brief Writes a bit value into a variable
+		* @param[in] value The input variable
+		* @param[in] bit The bit you want to write
+		* @param[in] bitvalue The bit value you want to write
+		*/
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 
 

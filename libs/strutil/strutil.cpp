@@ -23,7 +23,7 @@ char *to_lower(char *str)
 char *to_upper(char *str)
 {
 	while (*str) {
-		toupper(*str);
+		toupper(*str++);
 	}
 return str;
 }

@@ -73,6 +73,7 @@ enum class PIN_ADC : u8t {
 ║    ║    TIMERx    ║ PWM GROUP ║   REG BIT  ║ LETTERx ║ OR100 ║        PINx       ║
 ╚════╩══════════════╩═══════════╩════════════╩═════════╩═══════╩═══════════════════╝
 */
+
 enum class PIN :  int {
 	IO0  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD0) |  PINx(_PINE), //0 RX0 - RXD0/PCINT8
 	IO1  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD1) |  PINx(_PINE), //1 TX0 - TXD0

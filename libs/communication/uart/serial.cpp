@@ -33,7 +33,7 @@ void Serial::printf(const char *fmt,...)
 	va_list arg;
 	//char buff[MAX_SERIAL_BUFFER];
 	va_start(arg,fmt);
-	__vfprintf(UCSRxA, fmt, arg);
+	yanujz::vfprintf(UCSRxA, fmt, arg);
 	va_end(arg);
 	//_print(buff);
 
@@ -152,7 +152,7 @@ bool Serial::echoIsEnabled()
 
 uint8_t Serial::receive()
 {
-	return __getc(UCSRxA);
+	return yanujz::getc(UCSRxA);
 }
 
 uint8_t Serial::readData()
@@ -171,7 +171,7 @@ uint8_t Serial::readData()
 
 void Serial::clear()
 {
-	__puts("\e[1;1H\e[2J", UCSRxA);
+	yanujz::puts("\e[1;1H\e[2J", UCSRxA);
 }
 
 //void Serial::_print(const char *str)
@@ -195,10 +195,6 @@ ISR(USART0_RX_vect){
 	if(__hw_serial[0]->echoIsEnabled()){
 		UDR0 = temp;
 	}
-	//if(__hw_serial_cb[0] != nullptr){
-	//	__hw_serial_cb[0]();
-	//}
-
 	if(__hw_serial_cb[0].user_cb_vect != nullptr){
 		((void(*)())__hw_serial_cb[0].user_cb_vect)();
 	}
