@@ -126,7 +126,7 @@ enum class EtherType : u16t {
 };
 #define MIN_PAYLOAD_SIZE 46
 #define MAX_PAYLOAD_SIZE 1500
-
+/*
 class Ethernet
 {
 public:
@@ -137,5 +137,5 @@ private:
     eth_frame_t frame;
     eth_vlan_frame_t vlan_frame;
 };
-
+*/
 #endif // ETHERNET_H

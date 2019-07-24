@@ -1,6 +1,6 @@
 #include "strutil.h"
 
-
+#if defined(__STL_SUPPORT__)
 
 std::string to_lower(std::string str)
 {
@@ -8,24 +8,6 @@ std::string to_lower(std::string str)
 		str[i] = tolower(str[i]);
 	}
 	return str;
-}
-
-
-char *to_lower(char *str)
-{
-	while (*str) {
-		tolower(*str);
-	}
-	return str;
-}
-
-
-char *to_upper(char *str)
-{
-	while (*str) {
-		toupper(*str++);
-	}
-return str;
 }
 
 
@@ -144,7 +126,7 @@ void removeChar(char *str, char chr)
 	//
 	//}
 }
-
+#endif
 
 
 size_t split(const char *src, char **&dst, const char *delim)

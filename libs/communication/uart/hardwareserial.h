@@ -7,47 +7,45 @@
 #include <string.h>
 #include <ctype.h>
 #include <printf.h>
-//#include <strutil.h>
-//#include <math.h>
 
 
-
-
-
-/*
-extern Serial* __hw_serial[4];
-
-class HardwareSerial
+class UART
 {
 public:
-	HardwareSerial();
+	void printf(const char* fmt, ...);
+	virtual void registerCallback(ser_cb_t *cb = nullptr) = 0;
+	virtual void registerCallback(SystemEventHandler *cb = nullptr) = 0;
+
+protected:
+	UART(volatile u8t* UCSRxA, HW_UART baud);
+	volatile u8t* UCSRxA;
+
 };
 
-class Serial0
+class UART0 : public UART
 {
 public:
-	Serial0(UART baud);
-	void _printf(const char *fmt,...);
-	void _print(const char *str);
+	UART0(HW_UART baud) : UART((volatile u8t*)&UCSR1A, baud){
+		UCSRxA = (volatile u8t*)&UCSR1A;
+	}
+	virtual void registerCallback(ser_cb_t* cb = nullptr) override;
+	virtual void registerCallback(SystemEventHandler* cb = nullptr) override;
+
 private:
 };
 
-*/
-
-
-/*
-class SerialX
+class UART1 : public UART
 {
 public:
-	SerialX(UART baud);
-	void printf(const char *fmt,...);
-	//void _print(const char *str);
-	//void _putc(u8t c);
-private:
-	//int _vfprintf(char const *fmt, va_list arg);
+	UART1(HW_UART baud) : UART((volatile u8t*)&UCSR0A, baud){
+		UCSRxA = (volatile u8t*)&UCSR0A;
+	}
+	virtual void registerCallback(ser_cb_t* cb = nullptr) override;
+	virtual void registerCallback(SystemEventHandler* cb = nullptr) override;
 
+private:
 };
 
 
-*/
+
 #endif // HARDWARESERIAL_H

@@ -1,13 +1,21 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 #include <macros.h>
-//#include "cppfix.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
 #include <stdio.h>
 #include <systemevent.h>
 #include <printf.h>
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#include <atmega2560.h>
+#elif defined(__AVR_ATmega48p__) ||  defined(__AVR_ATmega88P__) || defined(__AVR_ATmega328P__)
+#include <atmega328p.h>
+#else
+#include <gpiodef.h>
+#endif
+
+
 
 ///@file
 
@@ -15,7 +23,6 @@
 	* @brief Used to handle interrupts
 	*/
 typedef void ser_cb_t();
-
 struct __HW_INT_ISR
 {
 	ser_cb_t* user_cb_vect;
@@ -25,72 +32,11 @@ struct __HW_INT_ISR
 
 
 
-//#define _UCSRxB(x) (*(x  + 1))
-//#define _UCSRxC(x) (*(x  + 2))
-//#define _UBRRxL(x)  (*(x  + 4))
-//#define _UBRRxH(x)  (*(x  + 5))
-//#define _UDRx(x)   (*(x  + 6))
 
-/**
-	* @brief The UART enum
-	*/
-enum UART{
-	BAUD_2400    = 416,
-	BAUD_4800    = 207,
-	BAUD_9600    = 103,
-	BAUD_14400   =	 68,
-	BAUD_19200   =		51,
-	BAUD_28800   =  34,
-	BAUD_38400   =  25,
-	BAUD_57600   =  16,
-	BAUD_76800   =  12,
-	BAUD_115200  =   8,
-	BAUD_250000  =   3,
-	BAUD_500000  =   1,
-	BAUD_1000000 =   0
-};
-
-/**
-	* @brief The SerialPort enum
-	*/
-enum SerialPort: uint8_t{
-	SERIAL0 = 0,
-	SERIAL1 = 1,
-	SERIAL2 = 2,
-	SERIAL3 = 3,
-	MAX_SERIAL
-};
-
-/**
-	* @brief The SerialPriority enum
-	*/
-enum SerialPriority: uint8_t{
-	_LOW_PRIORITY,
-	_MEDIUM_PRIORITY,
-	_HIGH_PRIORITY
-};
-
-
-/**
-	* @brief The serial_t struct
-	*/
-/*
-struct serial_t
-{
-	volatile uint8_t *UCSRxA;
-	volatile uint8_t *UCSRxB;
-	volatile uint8_t *UCSRxC;
-	volatile uint8_t *UBRRxH;
-	volatile uint8_t *UBRRxL;
-	volatile uint8_t *UDRx;
-};
-*/
 
 
 class Serial
 {
-
-
 public:
 	//-----------------METHODS-----------------//
 	/**
@@ -98,7 +44,7 @@ public:
 					* @param[in] baud Check UART enum
 					* @param[in] priority Check SerialPriority enum
 					*/
-	void init(UART baud);
+	void init(HW_UART baud);
 
 	/**
 					* @brief printf
@@ -145,17 +91,6 @@ public:
 	virtual void registerCallback(SystemEventHandler *cb = nullptr)  = 0;
 
 	/**
-					* @brief Used to call registered callback function
-					*/
-	//	inline void rxCallBack();
-
-	/**
-					* @brief
-					* @return
-					*/
-	//	bool shellIsEnabled();
-
-	/**
 					* @brief bufferIsReadable
 					* @return
 					*/
@@ -195,57 +130,77 @@ public:
 	/**
 					* @brief A FIFO Rotating buffer
 					*/
-	uint8_t USART_BUFF[MAX_SERIAL_BUFFER];
 protected:
 	//-----------------METHODS-----------------//
-	Serial() {}
-	//void _print(const char *str);
+	Serial(volatile u8t* UCSRxA, HW_UART baud);
 
 	//-----------------VARIABLES---------------//
 	bool _echoServer;
 	bool _bufferReadable;
 	u8t *_read;
 	u8t *_write;
+	u8t USART_BUFF[MAX_SERIAL_BUFFER];
+
 	volatile u8t* UCSRxA;
 };
 
-extern Serial* __hw_serial[4];
-extern __HW_INT_ISR __hw_serial_cb[4];
+
+
+static Serial* __hw_serial[4] = {nullptr, nullptr, nullptr, nullptr};
+static __HW_INT_ISR __hw_serial_cb[4] = {nullptr, nullptr, nullptr, nullptr};
+
+
 
 class Serial0 : public Serial {
 	friend class SerialManager;
-public:
-	Serial0(UART baud, bool setRxIrq = false, bool setEcho = false): Serial() {
+private:
+	Serial0(HW_UART baud, bool setRxIrq = false, bool setEcho = false) : Serial((volatile u8t*)&UCSR0A, baud) {
 		UCSRxA = (volatile u8t*)&UCSR0A;
-		init(baud);
-		if(setRxIrq){
-			setRxISRCallBack(true);
-		}
-		if(setEcho){
-			setEchoServer(true);
-		}
 
-		__hw_serial[0] = this;
+		setRxISRCallBack(setRxIrq);
+		setEchoServer(setEcho);
+
+		__hw_serial_cb[0].user_cb_vect = nullptr;
+		__hw_serial_cb[0].sys_cb_vect = nullptr;
 	}
 
-	void registerCallback(ser_cb_t* cb = nullptr){
+	virtual void registerCallback(ser_cb_t* cb = nullptr) override {
 		__hw_serial_cb[0].user_cb_vect = cb;
 	}
-	void registerCallback(SystemEventHandler* cb = nullptr){
+	virtual void registerCallback(SystemEventHandler* cb = nullptr) override {
 		__hw_serial_cb[0].sys_cb_vect = cb;
 	}
 };
 
+class Serial1 : public Serial {
+	friend class SerialManager;
+private:
+	Serial1(HW_UART baud, bool setRxIrq = false, bool setEcho = false) : Serial((volatile u8t*)&UCSR1A, baud) {
+		UCSRxA = (volatile u8t*)&UCSR1A;
+
+	_echoServer = true;
+		setRxISRCallBack(setRxIrq);
+		setEchoServer(setEcho);
+
+		__hw_serial_cb[1].user_cb_vect = nullptr;
+		__hw_serial_cb[1].sys_cb_vect = nullptr;
+	}
+
+	virtual void registerCallback(ser_cb_t* cb = nullptr) override {
+		__hw_serial_cb[1].user_cb_vect = cb;
+	}
+
+	virtual void registerCallback(SystemEventHandler* cb = nullptr) override {
+		__hw_serial_cb[1].sys_cb_vect = cb;
+	}
+};
 
 
 
 
 
 
-
-
-
-
+/*
 
 
 #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -295,47 +250,20 @@ public:
 //
 //};
 #endif
-/*
+*/
+
+
 class SerialManager
 {
 public:
-	static Serial* getInstance(SerialPort port){
-
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-		static Serial* instance[1] = {nullptr};
-#elif defined (__AVR_ATmega328P__)
-		static Serial* instance[1] = {nullptr};
-#endif
-		if (instance[port] == nullptr)
-		{
-			switch (port) {
-#if defined (__AVR_ATmega328P__) || defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-
-			case SERIAL0:
-				instance[port] = new Serial0;
-				break;
-			#endif
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-			case SERIAL1:
-				instance[port] = new Serial1;
-				break;
-			case SERIAL2:
-				instance[port] = new Serial2;
-				break;
-			case SERIAL3:
-				instance[port] = new Serial3;
-				break;
-#endif
-			}
-		}
-		return instance[port];
-	}
+	static Serial* getInstance(u8t port,HW_UART baud, bool setRxIrq = false, bool setEcho = false);
 private:
-
+	static Serial* _getPtr(u8t port){
+		return __hw_serial[port];
+	}
 
 };
 
-*/
 
 
 

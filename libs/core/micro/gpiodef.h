@@ -31,6 +31,8 @@ static const u8t __bitToValue_compl[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xB
 // Dummy declaration of gpios
 #if defined(__COMPILE__)
 #else
+
+
 enum class PIN : u16t {
 	IO0,
 	IO1,
@@ -121,5 +123,24 @@ enum class PIN_ADC : u8t {
 	A14,
 	A15
 };
+enum class HW_UART : int{
+	BAUD2400,
+	BAUD4800,
+	BAUD9600,
+	BAUD14400,
+	BAUD19200,
+	BAUD28800,
+	BAUD38400,
+	BAUD57600,
+	BAUD76800,
+	BAUD115200,
+	BAUD250000,
+	BAUD500000,
+	BAUD1000000 = 0
+};
+
 #endif
+
+
+
 //#pragma pop

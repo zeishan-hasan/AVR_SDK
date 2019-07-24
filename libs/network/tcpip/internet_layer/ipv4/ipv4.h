@@ -148,7 +148,7 @@ private:
     //---- Variables ----//
     ipv4addr_t self;
     ipv4_header_t packet;
-    Ethernet ethernet;
+				//Ethernet ethernet;
 
 
 				// REMOVE ME

@@ -1,5 +1,5 @@
 #include "net_utils.h"
-
+/*
 //---- IPV4 ----//
 
 ipv4addr_t __inet_ipv4_getBroadcastAddr(const char *ip)
@@ -231,3 +231,4 @@ string __inet_eth_ntoa(macaddr_t mac)
     return _mac;
 }
 //---- End Ethernet ----//
+*/

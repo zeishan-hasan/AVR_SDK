@@ -74,7 +74,8 @@ enum class PIN_ADC : u8t {
 ╚════╩══════════════╩═══════════╩════════════╩═════════╩═══════╩═══════════════════╝
 */
 
-enum class PIN :  int {
+enum class PIN : int
+{
 	IO0  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD0) |  PINx(_PINE), //0 RX0 - RXD0/PCINT8
 	IO1  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD1) |  PINx(_PINE), //1 TX0 - TXD0
 	IO2  = LETTERx(LETTER_B)  | TIMERx(TIMER_3)  | PWM_GROUP(PWM16BIT) | BIT(DD4) |  PINx(_PINE), //2 - 0C3B/INT4
@@ -148,84 +149,25 @@ enum class PIN :  int {
 	A15  = LETTERx(NO_LETTER) | TIMERx(NO_TIMER) | PWM_GROUP(0)        | BIT(DD7) |  PINx(_PINK) //A15	69	| ADC15/PCINT23
 };
 
+enum class HW_UART : int{
+	BAUD2400    = 416,
+	BAUD4800    = 207,
+	BAUD9600    = 103,
+	BAUD14400   =	 68,
+	BAUD19200   =		51,
+	BAUD28800   =  34,
+	BAUD38400   =  25,
+	BAUD57600   =  16,
+	BAUD76800   =  12,
+	BAUD115200  =   8,
+	BAUD250000  =   3,
+	BAUD500000  =   1,
+	BAUD1000000 =   0
+};
 
 constexpr u16t __hw_timer_addr[] = {0x24, 0x80, 0xB0, 0x90, 0xA0, 0x120};
 constexpr u8t PROGMEM __hw_int_mappedPin[8] = {21, 20, 19, 18, 2, 3, 255, 255};
-/*
-constexpr pin_setting _mappedPort[] {
-	{&PINE, _BV(DD0), nullptr, 0, NO_LETTER}, //0 RX0 - RXD0/PCINT8
-	{&PINE, _BV(DD1), nullptr, 0, NO_LETTER}, //1 TX0 - TXD0
-	{&PINE, _BV(DD4), &TCCR3A, PWM16BIT, LETTER_B}, //2 - 0C3B/INT4
-	{&PINE, _BV(DD5), &TCCR3A, PWM16BIT, LETTER_C}, //3	- OC3C/INT5
-	{&PING, _BV(DD5), nullptr, 0, NO_LETTER}, //4			| OC0B
-	{&PINE, _BV(DD3), &TCCR3A, PWM16BIT, LETTER_A}, //5			| OC3A/AIN1
-	{&PINH, _BV(DD3), &TCCR4A, PWM16BIT, LETTER_A}, //6			| OC4A
-	{&PINH, _BV(DD4), &TCCR4A, PWM16BIT, LETTER_B}, //7			| OC4B
-	{&PINH, _BV(DD5), &TCCR4A, PWM16BIT, LETTER_C}, //8			| OC4C
-	{&PINH, _BV(DD6), &TCCR2A, PWM8BIT,  LETTER_B}, //9			| OC2B
-	{&PINB, _BV(DD4), &TCCR2A, PWM8BIT,  LETTER_A}, //10		| OC2A/PCINT4
-	{&PINB, _BV(DD5), &TCCR1A, PWM16BIT, LETTER_A}, //11		| OC1A/PCINT5
-	{&PINB, _BV(DD6), &TCCR1A, PWM16BIT, LETTER_B}, //12		| OC1B/PCINT6
-	{&PINB, _BV(DD7), &TCCR1A, PWM16BIT, LETTER_C}, //13		| OC0A/OC1C/PCINT7
-	{&PINJ, _BV(DD1), nullptr, 0, NO_LETTER}, //14	TX3	| TXD3/PCINT10
-	{&PINJ, _BV(DD0), nullptr, 0, NO_LETTER}, //15	RX3	| RXD3/PCINT9
-	{&PINH, _BV(DD1), nullptr, 0, NO_LETTER}, //16	TX2	| TXD2
-	{&PINH, _BV(DD0), nullptr, 0, NO_LETTER}, //17	RX2	| RXD2
-	{&PIND, _BV(DD3), nullptr, 0, NO_LETTER}, //18	TX1	| TXD1/INT3
-	{&PIND, _BV(DD2), nullptr, 0, NO_LETTER}, //19	RX1	| RXD1/INT2
-	{&PIND, _BV(DD1), nullptr, 0, NO_LETTER}, //20	SDA	| SDA/INT1
-	{&PIND, _BV(DD0), nullptr, 0, NO_LETTER}, //21	SCL	| SCL/INT0
-	{&PINA, _BV(DD0), nullptr, 0, NO_LETTER}, //22		| AD0
-	{&PINA, _BV(DD1), nullptr, 0, NO_LETTER}, //23		| AD1
-	{&PINA, _BV(DD2), nullptr, 0, NO_LETTER}, //24		| AD2
-	{&PINA, _BV(DD3), nullptr, 0, NO_LETTER}, //25		| AD3
-	{&PINA, _BV(DD4), nullptr, 0, NO_LETTER}, //26		| AD4
-	{&PINA, _BV(DD5), nullptr, 0, NO_LETTER}, //27		| AD5
-	{&PINA, _BV(DD6), nullptr, 0, NO_LETTER}, //28		| AD6
-	{&PINA, _BV(DD7), nullptr, 0, NO_LETTER}, //29		| AD7
-	{&PINC, _BV(DD7), nullptr, 0, NO_LETTER}, //30		| A15
-	{&PINC, _BV(DD6), nullptr, 0, NO_LETTER}, //31		| A14
-	{&PINC, _BV(DD5), nullptr, 0, NO_LETTER}, //32		| A13
-	{&PINC, _BV(DD4), nullptr, 0, NO_LETTER}, //33		| A12
-	{&PINC, _BV(DD3), nullptr, 0, NO_LETTER}, //34		| A11
-	{&PINC, _BV(DD2), nullptr, 0, NO_LETTER}, //35		| A10
-	{&PINC, _BV(DD1), nullptr, 0, NO_LETTER}, //36		| A9
-	{&PINC, _BV(DD0), nullptr, 0, NO_LETTER}, //37		| A8
-	{&PIND, _BV(DD7), nullptr, 0, NO_LETTER}, //38		| T0
-	{&PING, _BV(DD2), nullptr, 0, NO_LETTER}, //39		| ALE
-	{&PING, _BV(DD1), nullptr, 0, NO_LETTER}, //40		| RD
-	{&PING, _BV(DD0), nullptr, 0, NO_LETTER}, //41		| WR
-	{&PINL, _BV(DD7), nullptr, 0, NO_LETTER}, //42		|
-	{&PINL, _BV(DD6), nullptr, 0, NO_LETTER}, //43		|
-	{&PINL, _BV(DD5), &TCCR5A, PWM16BIT, LETTER_C}, //44		| OC5C
-	{&PINL, _BV(DD4), &TCCR5A, PWM16BIT, LETTER_B}, //45		| OC5B
-	{&PINL, _BV(DD3), &TCCR5A, PWM16BIT, LETTER_A}, //46		| OC5A
-	{&PINL, _BV(DD2), nullptr, 0, NO_LETTER}, //47		| T5
-	{&PINL, _BV(DD1), nullptr, 0, NO_LETTER}, //48		| ICP5
-	{&PINL, _BV(DD0), nullptr, 0, NO_LETTER}, //49		| ICP4
-	{&PINB, _BV(DD3), nullptr, 0, NO_LETTER}, //50	MISO| MISO/PCINT3
-	{&PINB, _BV(DD2), nullptr, 0, NO_LETTER}, //51	MOSI| MOSI/PCINT2
-	{&PINB, _BV(DD1), nullptr, 0, NO_LETTER}, //52	SCK	| SCK/PCINT1
-	{&PINB, _BV(DD0), nullptr, 0, NO_LETTER}, //53	SS	| SS/PCINT0
 
-	{&PINF, _BV(DD0), nullptr, 0, NO_LETTER}, //A00	54	| ADC0
-	{&PINF, _BV(DD1), nullptr, 0, NO_LETTER}, //A01	55	| ADC1
-	{&PINF, _BV(DD2), nullptr, 0, NO_LETTER}, //A02	56	| ADC2
-	{&PINF, _BV(DD3), nullptr, 0, NO_LETTER}, //A03	57	| ADC3
-	{&PINF, _BV(DD4), nullptr, 0, NO_LETTER}, //A04	58	| ADC4/TMK
-	{&PINF, _BV(DD5), nullptr, 0, NO_LETTER}, //A05	59	| ADC5/TMS
-	{&PINF, _BV(DD6), nullptr, 0, NO_LETTER}, //A06	60	| ADC6
-	{&PINF, _BV(DD7), nullptr, 0, NO_LETTER}, //A07	61	| ADC7
-	{&PINK, _BV(DD0), nullptr, 0, NO_LETTER}, //A08	62	| ADC8/PCINT16
-	{&PINK, _BV(DD1), nullptr, 0, NO_LETTER}, //A09	63	| ADC9/PCINT17
-	{&PINK, _BV(DD2), nullptr, 0, NO_LETTER}, //A10	64	| ADC10/PCINT18
-	{&PINK, _BV(DD3), nullptr, 0, NO_LETTER}, //A11	65	| ADC11/PCINT19
-	{&PINK, _BV(DD4), nullptr, 0, NO_LETTER}, //A12	66	| ADC12/PCINT20
-	{&PINK, _BV(DD5), nullptr, 0, NO_LETTER}, //A13	67	| ADC13/PCINT21
-	{&PINK, _BV(DD6), nullptr, 0, NO_LETTER}, //A14	68	| ADC14/PCINT22
-	{&PINK, _BV(DD7), nullptr, 0, NO_LETTER}	//A15	69	| ADC15/PCINT23
-};
-*/
 
 constexpr volatile u8t* varToPinx(PIN x){
 	return (toU16(x) & OR100 ? &_SFR_MEM8(0x100 | (toU16(x) & 0x1F)) :  &_SFR_IO8(toU16(x) & 0x1F));

@@ -1,14 +1,20 @@
 #include "serial.h"
 
-Serial* __hw_serial[4] = {nullptr, nullptr, nullptr, nullptr};
-__HW_INT_ISR __hw_serial_cb[4];
+Serial::Serial(volatile u8t *UCSRxA, HW_UART baud) {
+	_UBRRxH(UCSRxA) = HI(toU16(baud));
+	_UBRRxL(UCSRxA) = LO(toU16(baud));
 
+	// Enable receiver and transmitter //
+	_UCSRxB(UCSRxA) = (1<<RXEN0)|(1<<TXEN0);
 
-void Serial::init(UART baud)
+	// Set frame format: 8data, 1stop bit //
+	_UCSRxC(UCSRxA) = (1<<UCSZ01)|(1<<UCSZ00);
+}
+
+void Serial::init(HW_UART baud)
 {
-
-	_UBRRxH(UCSRxA) = HI(baud);
-	_UBRRxL(UCSRxA) = LO(baud);
+	_UBRRxH(UCSRxA) = HI(toU16(baud));
+	_UBRRxL(UCSRxA) = LO(toU16(baud));
 
 	// Enable receiver and transmitter //
 	_UCSRxB(UCSRxA) = (1<<RXEN0)|(1<<TXEN0);
@@ -17,7 +23,6 @@ void Serial::init(UART baud)
 	_UCSRxC(UCSRxA) = (1<<UCSZ01)|(1<<UCSZ00);
 	//UCSR0A = (1<<U2X0); // Clock multiplier
 
-	//this->_priority =  priority;
 
 	//memset(USART_BUFF,0xFF,MAX_SERIAL_BUFFER);
 	_read  = USART_BUFF;
@@ -25,18 +30,14 @@ void Serial::init(UART baud)
 
 	_bufferReadable = true;
 
-
 }
 
-void Serial::printf(const char *fmt,...)
+void Serial::printf(const char *fmt, ...)
 {
 	va_list arg;
-	//char buff[MAX_SERIAL_BUFFER];
 	va_start(arg,fmt);
 	yanujz::vfprintf(UCSRxA, fmt, arg);
 	va_end(arg);
-	//_print(buff);
-
 }
 
 void Serial::readUntil(char *buffer, char chr)
@@ -55,22 +56,19 @@ void Serial::readUntil(char *buffer, char chr)
 void Serial::flush()
 {
 
-	uint8_t dummy;
-	//while(*_self.UCSRxA & (1<<RXC0))
-	//dummy = *_self.UDRx;
-	while(*UCSRxA & (1<<RXC0))
+	u8t dummy;
+	while(*UCSRxA & (1<<RXC0)){
 		dummy = _UDRx(UCSRxA);
+	}
 }
 
 void Serial::setRxISRCallBack(bool state)
 {
 	if(state) {
-		//*_self.UCSRxB |= (1 << RXCIE0);
 		_UCSRxB(UCSRxA) |= (1 << RXCIE0);
 		sei();
 		return;
 	}
-	//*_self.UCSRxB &= ~(1 << RXCIE0);
 	_UCSRxB(UCSRxA) &= ~(1 << RXCIE0);
 }
 
@@ -98,34 +96,6 @@ void Serial::insertData(uint8_t data)
 	}
 }
 
-//void Serial::incReadData(uint8_t value)
-//{
-//	//WARNING Not Tested
-//	_read = (_read+value);
-//}
-
-//void Serial::enableShell(bool value)
-//{
-//	_shellEnabled = value;
-//	setRxISRCallBack(true);
-//}
-
-//void Serial::registerCallback(ser_cb_t *cb)
-//{
-//	_callback = cb;
-//}
-
-//void Serial::rxCallBack()
-//{
-//	if(_callback != nullptr){
-//		_callback();
-//	}
-//}
-
-//bool Serial::shellIsEnabled()
-//{
-//	return _shellEnabled;
-//}
 
 bool Serial::bufferIsReadable()
 {
@@ -139,13 +109,13 @@ bool Serial::bufferIsReadable()
 
 bool Serial::isAvailable()
 {
-	return (*UCSRxA & (1<<RXC0))>>RXC0; // Return true means is available
+	return ((*UCSRxA & (1 << RXC0)) >> RXC0); // Return true means is available
 }
 
 bool Serial::echoIsEnabled()
 {
+	return true;
 	if(_echoServer){
-		return true;
 	}
 	return false;
 }
@@ -174,24 +144,52 @@ void Serial::clear()
 	yanujz::puts("\e[1;1H\e[2J", UCSRxA);
 }
 
-//void Serial::_print(const char *str)
-//{
-//	register uint8_t i=0;
-//	while (str[i]!=0) {
-//		// Wait for empty transmit buffer
-//		while ( !( *UCSRxA & (1<<UDRE0)) );
-//		//*_self.UDRx = str[i];
-//		_UDRx(UCSRxA) = str[i];
-//		++i;
-//	}
-//}
+
+
+
+
+
+
+
+Serial *SerialManager::getInstance(u8t port, HW_UART baud, bool setRxIrq, bool setEcho) {
+	Serial* ptr = _getPtr(port);
+	switch (port) {
+	case 0:
+		if(ptr ==  nullptr){
+			__hw_serial[0] = new Serial0(baud, setRxIrq, setEcho);
+		}
+		break;
+	case 1:
+		if(ptr ==  nullptr){
+			__hw_serial[1] = new Serial1(baud, setRxIrq, setEcho);
+		}
+		break;
+		//case 2:
+		//	if(ptr == nullptr){
+		//		__hw_serial[port] = new Serial2(baud, setRxIrq, setEcho);
+		//	}
+		//	break;
+		//case 3:
+		//	if(ptr == nullptr){
+		//		__hw_serial[port] = new Serial3(baud, setRxIrq, setEcho);
+		//	}
+		//	break;
+	}
+	return __hw_serial[port];
+}
+
+
+
+
 
 
 
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#endif
+
 ISR(USART0_RX_vect){
 	char temp = UDR0;
-	__hw_serial[0]->insertData(temp);
+	//__hw_serial[0]->insertData(temp);
 	if(__hw_serial[0]->echoIsEnabled()){
 		UDR0 = temp;
 	}
@@ -202,10 +200,26 @@ ISR(USART0_RX_vect){
 		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
 	}
 }
-#endif
+
+ISR(USART1_RX_vect){
+	char temp = UDR1;
+	//__hw_serial[0]->insertData(temp);
+	if(__hw_serial[1]->echoIsEnabled()){
+		UDR1 = temp;
+	}
+	if(__hw_serial_cb[0].user_cb_vect != nullptr){
+		((void(*)())__hw_serial_cb[0].user_cb_vect)();
+	}
+
+	else if(__hw_serial_cb[0].sys_cb_vect != nullptr) {
+		SystemEventHandler::call_int_callback(__hw_serial_cb[0].sys_cb_vect);
+
+	}
+}
+
+
 
 #if defined(__AVR_ATmega328P__)
-
 ISR(USART_RX_vect){
 	char temp = UDR0;
 	__hw_serial[0]->insertData(temp);
@@ -270,3 +284,4 @@ ISR(USART3_RX_vect){
 }
 #endif
 */
+

@@ -1,5 +1,5 @@
 #include "ethernet.h"
-
+/*
 Ethernet::Ethernet()
 {
 
@@ -23,3 +23,4 @@ void Ethernet::decapsulate(std::vector<u8t> & data)
 {
 
 }
+*/

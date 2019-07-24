@@ -22,7 +22,7 @@ struct ipv4_header_t
 	u32t destinationAddress;
 	u8t option;
 	u8t padding[3];
-	std::vector<u8t> payload;
+//	std::vector<u8t> payload;
 
 };
 typedef union{
@@ -100,7 +100,7 @@ struct eth_vlan_frame_t // IEE802.3 and IEE802.1Q
 	macaddr_t srcMAC;
 	u32t vlanTag;
 	u16t etherType;
-	std::vector<uint8_t> payload;
+//	std::vector<uint8_t> payload;
 	u32t crc;
 	u8t interpacket_gap[12];
 

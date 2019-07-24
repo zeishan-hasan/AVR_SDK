@@ -1,7 +1,7 @@
 #include "rdm630.h"
 
 
-
+/*
 Rdm6300::Rdm6300(){
 
 }
@@ -11,7 +11,7 @@ Rdm6300::~Rdm6300()
 
 }
 
-bool Rdm6300::attachTo(SerialPort serial, UART baud)
+bool Rdm6300::attachTo(SerialPort serial, HW_UART baud)
 {
 				//this->serial = SerialManager::getInstance(serial);
 				//this->serial->init(baud);
@@ -146,4 +146,4 @@ bool Rdm6300::isNewCard()
 
     return false;
 				*/
-}
+//}*/

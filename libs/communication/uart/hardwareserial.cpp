@@ -1,42 +1,35 @@
 #include "hardwareserial.h"
-/*
-HardwareSerial::HardwareSerial()
-{
 
-}
-*/
-
-/*
-SerialX::SerialX(UART baud)
-{
-
-	_UBRR0H(&UCSR0A) = HI(baud);
-	//_UBRR0L(&UCSR0A) = (u8t)round((MYUBRR(baud)));
-	_UBRR0L(&UCSR0A) = LO(baud);//(u8t)(MYUBRR(baud));
+UART::UART(volatile u8t *UCSRxA, HW_UART baud){
+	_UBRRxH(UCSRxA) = HI(toU16(baud));
+	_UBRRxL(UCSRxA) = LO(toU16(baud));
 
 	// Enable receiver and transmitter //
-	_UCSR0B(&UCSR0A) = (1<<RXEN0)|(1<<TXEN0);
+	_UCSRxB(UCSRxA) = (1<<RXEN0)|(1<<TXEN0);
 
 	// Set frame format: 8data, 1stop bit //
-	_UCSR0C(&UCSR0A) = (1<<UCSZ01)|(1<<UCSZ00);
-	//UCSR0A = (1 << U2X0); // Clock multiplier
-
+	_UCSRxC(UCSRxA) = (1<<UCSZ01)|(1<<UCSZ00);
 }
 
-void SerialX::printf(const char *fmt, ...)
-{
+void UART::printf(const char *fmt, ...){
 	va_list arg;
 	va_start(arg,fmt);
-	__vfprintf(&UCSR0A, fmt, arg);
+	yanujz::vfprintf(UCSRxA, fmt, arg);
 	va_end(arg);
 }
 
+void UART0::registerCallback(ser_cb_t *cb){
+	//__hw_serial_cb[0].user_cb_vect = cb;
+}
 
+void UART0::registerCallback(SystemEventHandler *cb) {
+	//	__hw_serial_cb[0].sys_cb_vect = cb;
+}
 
+void UART1::registerCallback(ser_cb_t *cb) {
+	//__hw_serial_cb[0].user_cb_vect = cb;
+}
 
-*/
-
-
-
-
-
+void UART1::registerCallback(SystemEventHandler *cb) {
+	//__hw_serial_cb[0].sys_cb_vect = cb;
+}

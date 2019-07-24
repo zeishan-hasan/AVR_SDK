@@ -26,6 +26,10 @@ typedef uint32_t u32t;
 	*/
 typedef uint64_t u64t;
 
+/**
+	* @brief Shortname of unsigned int
+	*/
+typedef unsigned int uint;
 
 
 /**
@@ -42,19 +46,18 @@ typedef uint64_t u64t;
 //#define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 
-#define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
-#define CALCULATE_DUTY_16BIT(freq, duty) (CALCULATE_PWM_TICKS(freq)-(CALCULATE_PWM_TICKS(freq)*((float)duty/100)))
-#define CALCULATE_DUTY_8BIT(duty) ((-2.55*duty) + 255)
 
 
 #define SIZE_OF_ARRAY(x) sizeof(x)/sizeof(x[0])
+template<size_t N, class T>
+constexpr size_t sizeOfArray(T(&)[N]) { return N; }
 
 #define ELEMENT_IN_ARRAY(x)  (*(&x + 1) - x)
 
 
 #define MYUBRR(x) (F_CPU/16/(float)x-1)
 
-#define BAUD 9600
+//#define BAUD 9600
 #define MAX_SERIAL_BUFFER   256
 #define MAX_SPI_BUFFER      256
 
@@ -147,16 +150,21 @@ constexpr unsigned int toABS(int x){
 
 #define valueFromMask(var, mask) (var & mask)
 
+
+
+#define CALCULATE_PWM_TICKS(freq) (1.0/freq)/(1.0/F_CPU)
+#define CALCULATE_DUTY_16BIT(freq, duty) (CALCULATE_PWM_TICKS(freq)-(CALCULATE_PWM_TICKS(freq)*((float)duty/100)))
+#define CALCULATE_DUTY_8BIT(duty) ((-2.55*duty) + 255)
+
 constexpr u16t calcPwmTicks(size_t freq){
 	return F_CPU/freq;
 }
 constexpr u16t calcDuty16bit(u16t ticks, u8t duty){
-	return toU32(ticks) - ( (toU32(ticks) * toU32(duty)) /100);
+	return toU32(ticks) - ( (toU32(ticks) * toU32(duty))/100);
 }
 constexpr u8t calcDuty8bit(u8t duty){
 	return  (25500-(255*duty))/100;
 }
-
 
 
 

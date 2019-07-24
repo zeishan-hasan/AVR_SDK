@@ -2,6 +2,7 @@
 #define NET_UTILS_H
 #include <stdlib.h>
 #include <inet_global.h>
+
 //extern struct macaddr_t _macaddr_t;
 
 ///@file
@@ -119,7 +120,7 @@ bool __inet_ipv4_isValidIP(const char* ip);
  * @param[in] ip without netmask in format XXX.XXX.XXX.XXX
  * @return
  */
-ipv4addr_t __inet_ipv4_aton(const std::string &ip);
+//ipv4addr_t __inet_ipv4_aton(const std::string &ip);
 
 /**
  * @brief Converts ASCII to Network an ip address
@@ -140,16 +141,16 @@ void __inet_ipv4_ntoa(char *dst, ipv4addr_t ip);
  * @param[in] ip without netmask in format XXX.XXX.XXX.XXX
  * @return Ther resulting string
  */
-std::string  __inet_ipv4_ntoa(ipv4addr_t ip);
+//std::string  __inet_ipv4_ntoa(ipv4addr_t ip);
 //---- End IPV4 ----//
 
 
 //---- Ethernet ----//
 
-macaddr_t __inet_eth_aton(const std::string &mac);
-macaddr_t __inet_eth_aton(const char *mac);
-void __inet_eth_ntoa(char *dst, macaddr_t mac);
-std::string  __inet_eth_ntoa(macaddr_t mac);
+//macaddr_t __inet_eth_aton(const std::string &mac);
+//macaddr_t __inet_eth_aton(const char *mac);
+//void __inet_eth_ntoa(char *dst, macaddr_t mac);
+//std::string  __inet_eth_ntoa(macaddr_t mac);
 
 
 //---- End Ethernet ----//
